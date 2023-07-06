@@ -15,8 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
-    
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws IOException, ServletException {
@@ -31,20 +29,13 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
         String backUrl = (String) httpSession.getAttribute("url");
 
         // 필요시 이전 페이지로 이동함
-        if (role.equals("ROLE_CUSTOMER")) { // 권한이 고객
-            response.sendRedirect(request.getContextPath() + "/customer/home.bubble");
-        }
-        else if (role.equals("ROLE_WASHING")) { // 권한이 판매자
-            response.sendRedirect(request.getContextPath() + "/washing/home.bubble");
-        }
-        else if (role.equals("ROLE_ADMIN")) { // 권한이 관리자
-            response.sendRedirect(request.getContextPath() + "/admin/home.bubble");
-        }
-        else { // 위의 권한이 아닌 경우
-            response.sendRedirect(request.getContextPath() + "/home.bubble");
+        if (role.equals("ROLE_C")) { // 권한이 고객
+            response.sendRedirect(request.getContextPath() + "/home.com");
+        } else if (role.equals("ROLE_A")) { // 권한이 관리자
+            response.sendRedirect(request.getContextPath() + "/home.com");
+        } else { // 위의 권한이 아닌 경우
+            response.sendRedirect(request.getContextPath() + "/home.com");
         }
     }
 
-
-    
 }
