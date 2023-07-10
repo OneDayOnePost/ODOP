@@ -12,7 +12,7 @@ import org.apache.ibatis.annotations.Update;
 import com.example.dto.Reply;
 
 @Mapper
-public interface ReplyMapper {
+public interface WjReplyMapper {
 
     //댓글 작성
     @Insert({" INSERT INTO REPLY(content, writer, bno) VALUES(#{obj.content}, #{obj.writer}, #{obj.bno}) "}) // #{obj.filename}, #{obj.filedata}, #{obj.filetype}, #{obj.filesize}

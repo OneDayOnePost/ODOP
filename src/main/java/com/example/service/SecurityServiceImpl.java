@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class SecurityServiceImpl implements UserDetailsService {
     final String format = "SecurityServiceImpl => {}";
-    final CustomerRepository cRepository;
+    final ArCustomerRepository cRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
