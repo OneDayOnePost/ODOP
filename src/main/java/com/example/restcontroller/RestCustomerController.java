@@ -92,7 +92,9 @@ public class RestCustomerController {
                     retMap.put("ret", emailchk);
                 }
                 else { // 이미 탈퇴한 회원인 경우
+
                     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
                     if (auth != null) {
                         new SecurityContextLogoutHandler().logout(request, response, auth);
                     }
@@ -101,6 +103,7 @@ public class RestCustomerController {
                 }
             }
             else { // 카카오 계정 이메일이 기존 테이블에 없는 경우
+                
                 // (2) 세션에 저장할 객체 생성하기 (저장할 객체, null)
                 User user = new User(map.get("id").toString(), "", role);
                 UsernamePasswordAuthenticationToken authenticationToken 
