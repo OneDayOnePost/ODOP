@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import com.example.dto.SendMail;
 
 @Component
-public class MailService {
+public class WjMailService {
     
     @Autowired
     private JavaMailSender mailSender;

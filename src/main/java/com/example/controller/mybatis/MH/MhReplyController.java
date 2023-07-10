@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value = "/reply")
 @RequiredArgsConstructor
 @Slf4j
-public class ReplyController {
+public class MhReplyController {
 
     final ReplyMybatisService rMybatisService;
 

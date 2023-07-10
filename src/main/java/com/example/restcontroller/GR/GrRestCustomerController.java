@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value = "/api/customer")
 @RequiredArgsConstructor
 @Slf4j
-public class RestCustomerController {
+public class GrRestCustomerController {
     final CustomerService cService;
 
     // 아이디 중복 확인

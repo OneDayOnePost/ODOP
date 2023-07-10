@@ -41,9 +41,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequestMapping(value = "/customer")
 @RequiredArgsConstructor
-public class CustomerController {
+public class SgCustomerController {
     final CustomerService cService;
-    final MailService mService; // 비밀번호 찾기 - 이메일 전송
+    final ArMailService mService; // 비밀번호 찾기 - 이메일 전송
     final ReserveMybatisService rService;
     final WashingMybatisService wService;
     final CityMybatisService cityService;

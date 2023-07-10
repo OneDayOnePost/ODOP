@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.example.entity.Customer;
 
 @Repository
-public interface CustomerRepository extends JpaRepository<Customer, String> {
+public interface MhCustomerRepository extends JpaRepository<Customer, String> {
 	// 아이디 중복 확인
     int countByid(String id);
 
