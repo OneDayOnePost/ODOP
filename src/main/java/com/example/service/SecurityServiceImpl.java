@@ -6,9 +6,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.example.entity.Customer;
-import com.example.repository.CustomerRepository;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class SecurityServiceImpl implements UserDetailsService {
     final String format = "SecurityServiceImpl => {}";
-    final ArCustomerRepository cRepository;
+    // final ArCustomerRepository cRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -27,19 +24,19 @@ public class SecurityServiceImpl implements UserDetailsService {
         // 시큐리티가 비교 후에 로그인 처리를 자동으로 수행함
         log.info(format, username);
 
-        Customer obj = cRepository.findById(username).orElse(null);
+        // Customer obj = cRepository.findById(username).orElse(null);
 
-        if (obj != null) { // 아이디가 있는 경우
-            if (obj.getPassword() != null) {
-                return User.builder()
-                        .username(obj.getId())
-                        .password(obj.getPassword())
-                        .roles("C")
-                        .build();
-            }
-        }
+        // if (obj != null) { // 아이디가 있는 경우
+        //     if (obj.getPassword() != null) {
+        //         return User.builder()
+        //                 .username(obj.getId())
+        //                 .password(obj.getPassword())
+        //                 .roles("C")
+        //                 .build();
+        //     }
+        // }
 
-        // 아이디가 없는 경우는 User로 처리
+        // // 아이디가 없는 경우는 User로 처리
         return User.builder()
                 .username("_")
                 .password("_")
