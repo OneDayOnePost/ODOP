@@ -4,13 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BUBBLE BUMUL</title>
+    <title>ODOP</title>
     <!--1. BootStrap용 CSS CDM 추가-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel='stylesheet' th:href="@{/css/bootstrap.min.css.map}" />
     <link rel='stylesheet' th:href="@{/css/layout.css}" />
+    <!-- Link Swiper's CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    <th:block th:replace="~{/fragments/header :: headerCSS}"></th:block>
     
     <!--jQuery 추가-->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"
@@ -19,7 +22,44 @@
 
 </head>
 <body>
-     
-</div>
+
+    <!-- header -->
+    <th:block th:replace="~{/fragments/header :: headerHTML}"></th:block>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
 </body>
+   <!-- Swiper JS -->
+   <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+   <!-- Initialize Swiper -->
+   <script>
+     var menuButton = document.querySelector('.menu-button');
+     var openMenu = function () {
+       swiper.slidePrev();
+     };
+     var swiper = new Swiper('.swiper', {
+       slidesPerView: 'auto',
+       initialSlide: 1,
+       resistanceRatio: 0,
+       slideToClickedSlide: true,
+       on: {
+         slideChangeTransitionStart: function () {
+           var slider = this;
+           if (slider.activeIndex === 0) {
+             menuButton.classList.add('cross');
+             // required because of slideToClickedSlide
+             menuButton.removeEventListener('click', openMenu, true);
+           } else {
+             menuButton.classList.remove('cross');
+           }
+         },
+         slideChangeTransitionEnd: function () {
+           var slider = this;
+           if (slider.activeIndex === 1) {
+             menuButton.addEventListener('click', openMenu, true);
+           }
+         },
+       },
+     });
+   </script>
 </html>

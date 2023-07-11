@@ -1,112 +1,264 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 
-<head th:fragment="fragment-header">
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>BUBBLE BUMUL</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <!--1. BootStrap용 CSS CDM 추가-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+<head>
+  <meta charset="utf-8" />
+  <title>Swiper demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+
+  <!-- Link Swiper's CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
 
 
-        <link rel='stylesheet' th:href="@{/css/home.css}" />
-
-    <!--jQuery 추가-->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
-        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
-
-    <!-- 한글 font  -->
-    <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square.css" rel="stylesheet">
-
-    <!-- font -->
+  <th:block th:fragment="headerCSS">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Geologica:wght@100;200;300;400;500;600;700;800;900&display=swap');
+      html,
+      body {
+        position: relative;
+        height: 100%;
+      }
+
+      body {
+        background: #eee;
+        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        color: #000;
+        margin: 0;
+        padding: 0;
+      }
+
+      .swiper {
+        width: 100%;
+        height: 100%;
+      }
+
+      .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .menu {
+        min-width: 100px;
+        width: 70%;
+        max-width: 320px;
+
+        background-color: #B6C6D3;
+        color: #fff;
+      }
+
+      .content {
+        width: 100%;
+      }
+
+      .menu-button {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+
+        padding: 15px;
+
+        cursor: pointer;
+
+        -webkit-transition: 0.3s;
+        transition: 0.3s;
+
+        background-color: #B6C6D3;
+
+
+      }
+
+      .menu-button .bar:nth-of-type(1) {
+        margin-top: 0px;
+      }
+
+      .menu-button .bar:nth-of-type(3) {
+        margin-bottom: 0px;
+      }
+
+      .bar {
+        position: relative;
+        display: block;
+        width: 37px;
+        height: 5px;
+        margin: 8px 2px;
+        background-color: #3A5485;
+        border-radius: 10px;
+        -webkit-transition: 0.3s;
+        transition: 0.3s;
+      }
+
+      .menu-button:hover .bar:nth-of-type(1) {
+        -webkit-transform: translateY(1.5px) rotate(-4.5deg);
+        -ms-transform: translateY(1.5px) rotate(-4.5deg);
+        transform: translateY(1.5px) rotate(-4.5deg);
+      }
+
+      .menu-button:hover .bar:nth-of-type(2) {
+        opacity: 0.9;
+      }
+
+      .menu-button:hover .bar:nth-of-type(3) {
+        -webkit-transform: translateY(-1.5px) rotate(4.5deg);
+        -ms-transform: translateY(-1.5px) rotate(4.5deg);
+        transform: translateY(-1.5px) rotate(4.5deg);
+      }
+
+      .cross .bar:nth-of-type(1) {
+        -webkit-transform: translateY(15px) rotate(-45deg);
+        -ms-transform: translateY(15px) rotate(-45deg);
+        transform: translateY(15px) rotate(-45deg);
+      }
+
+      .cross .bar:nth-of-type(2) {
+        opacity: 0;
+      }
+
+      .cross .bar:nth-of-type(3) {
+        -webkit-transform: translateY(-15px) rotate(45deg);
+        -ms-transform: translateY(-15px) rotate(45deg);
+        transform: translateY(-15px) rotate(45deg);
+      }
+
+      .cross:hover .bar:nth-of-type(1) {
+        -webkit-transform: translateY(13.5px) rotate(-40.5deg);
+        -ms-transform: translateY(13.5px) rotate(-40.5deg);
+        transform: translateY(13.5px) rotate(-40.5deg);
+      }
+
+      .cross:hover .bar:nth-of-type(2) {
+        opacity: 0.1;
+      }
+
+      .cross:hover .bar:nth-of-type(3) {
+        -webkit-transform: translateY(-13.5px) rotate(40.5deg);
+        -ms-transform: translateY(-13.5px) rotate(40.5deg);
+        transform: translateY(-13.5px) rotate(40.5deg);
+      }
+
+      .a {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        padding: 8px;
+        /* cursor: pointer; */
+        -webkit-transition: 0.3s;
+        transition: 0.3s;
+        background-color: #B6C6D3;
+        width: 100%;
+        display: flex;
+        align-items: center;
+      }
+
+      .logo {
+        flex: 1;
+        text-align: center;
+      }
+
+      .logo1 {
+        color: #3A5485;
+        font-size: 24px;
+        font-weight: bold;
+        margin-left: 8vh;
+
+      }
+
+      .logo2 {
+        color: #3A5485;
+        font-size: 14px;
+        margin-left: 8vh;
+
+      }
+
+      .login {
+        text-align: right;
+        margin-right: 6vh;
+      }
+
+      .login input {
+        height: 2rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        font-size: 1rem;
+        border-radius: 1rem;
+        border: none;
+        outline: none;
+        font-weight: bold;
+        word-break: keep-all;
+        background: #3A5485;
+        color: white;
+        transition: all 0.125s ease-in 0s;
+        cursor: pointer;
+      }
     </style>
-        
+  </th:block>
 </head>
-<body th:fragment="header" id="header">
-    <header style="background-color: white;  position: fixed; top: 0; left: 0; right: 0;">
-        <div id="notice">
-            <a>신규 가입 10% 할인 쿠폰 > </a>
-            <a th:href="@{/board/}">[BS휴먼크린피아] 내부 수리 공지 > </a>
-            <a>예약 시간 관련 공지 > </a>
-        </div>
-        <div>
-            <div id="logo-section">
-                <p style="background-color: black; color: white; width: 200px; padding-left: 3px;"> Coin , Laundry , Reserve !</p>
-                <div id="logo">
-                    <a th:href="@{/customer/home.bubble}">Bubble Bumul</a>
-                </div>
+
+<body>
+  <th:block th:fragment="headerHTML">
+    <!-- Swiper -->
+    <div class="swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide menu">Menu slide</div>
+        <div class="swiper-slide content">
+          <div class="a">
+            <div class="logo">
+              <span class="logo1">O D O P</span><br>
+              <span class="logo2">ONE DAY ONE POST</span>
             </div>
-            <div class="navigation">
-                <div class="navlist">
-                  <a th:href="@{/customer/home.bubble}">Home</a>
-                  <a th:href="@{/reserve/letsgo.bubble}">Reserve</a>
-                  <a th:href="@{/customer/home.bubble}">Board</a>
-                  <!-- 로그인 O -->
-                    <div th:if="${user != null}">
-                        <a th:href="@{/customer/mypage.bubble}">Mypage</a>
-                    </div>
-                    <div th:if="${user != null}" >
-                        <a href="javascript:logoutAction()">Logout</a>
-                    </div>
-                    <!-- 로그인 X -->
-                    <div  th:if="${user == null}">
-                        <a th:href="@{/customer/login.bubble}">Login</a>
-                    </div>
-                    
-                    <div  th:if="${user == null}">
-                        <a th:href="@{/customer/join.bubble}">Join</a>
-                    </div>
-                </div>
+            <div class="login">
+              <input type="submit" value="로그인"></button>
             </div>
+          </div>
+          <div class="menu-button">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
         </div>
-    </header>
-    
-    <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
-    <script th:inline="javascript" type="text/javascript">
-        function logoutAction() {
-            if (confirm('로그아웃 하시겠습니까?')) {
-                const form = document.createElement("form");
-                form.setAttribute("action", [[@{/logout.bubble}]]);
-                form.setAttribute("method", "post");
-                form.style.display = "none";
+      </div>
+    </div>
 
-                const input = document.createElement("input");
-                input.type = "hidden";
-                input.name = "_csrf";
-                input.value = [[${ _csrf.token }]];
 
-                form.appendChild(input);
 
-                // 카카오로 소셜 로그인 한 경우
-                // console.log([[${user?.username}]]);
-                const userid = [[${user?.username}]]; // 로그인한 고객의 아이디
-                // console.log(userid.startsWith("kakao"));
-                if (userid.startsWith("kakao") == true) {
-                    if (Kakao.Auth.getAccessToken()) {
+      <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 
-                        Kakao.API.request({
-                            url: '/v1/user/unlink',
-                            success: function (response) {
-                                // console.log(response)
-                            },
-                            fail: function (error) {
-                                console.log(error)
-                            },
-                        });
-
-                        Kakao.Auth.setAccessToken(null);
-                    }
-                }
-
-                document.body.appendChild(form);
-                form.submit();
-            }
-        }
-    </script>
+  <!-- Initialize Swiper -->
+  <script>
+    var menuButton = document.querySelector('.menu-button');
+    var openMenu = function () {
+      swiper.slidePrev();
+    };
+    var swiper = new Swiper('.swiper', {
+      slidesPerView: 'auto',
+      initialSlide: 1,
+      resistanceRatio: 0,
+      slideToClickedSlide: true,
+      on: {
+        slideChangeTransitionStart: function () {
+          var slider = this;
+          if (slider.activeIndex === 0) {
+            menuButton.classList.add('cross');
+            // required because of slideToClickedSlide
+            menuButton.removeEventListener('click', openMenu, true);
+          } else {
+            menuButton.classList.remove('cross');
+          }
+        },
+        slideChangeTransitionEnd: function () {
+          var slider = this;
+          if (slider.activeIndex === 1) {
+            menuButton.addEventListener('click', openMenu, true);
+          }
+        },
+      },
+    });
+  </script>
+  </th:block>
 </body>
 
 </html>
