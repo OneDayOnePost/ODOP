@@ -79,19 +79,15 @@
     }
 
     .bar {
-      position: relative;
-      display: block;
-
-      width: 50px;
-      height: 5px;
-
-      margin: 10px auto;
-      background-color: #3A5485;
-
-      border-radius: 10px;
-
-      -webkit-transition: 0.3s;
-      transition: 0.3s;
+        position: relative;
+        display: block;
+        width: 37px;
+        height: 5px;
+        margin: 8px 2px;
+        background-color: #3A5485;
+        border-radius: 10px;
+        -webkit-transition: 0.3s;
+        transition: 0.3s;
     }
 
     .menu-button:hover .bar:nth-of-type(1) {
@@ -145,7 +141,7 @@
         position: absolute;
         top: 0px;
         left: 0px;
-        padding: 15px;
+        padding: 8px;
         /* cursor: pointer; */
         -webkit-transition: 0.3s;
         transition: 0.3s;
@@ -163,17 +159,42 @@
         color: #3A5485;
         font-size: 24px;
         font-weight: bold;
+        margin-left: 8vh;
+
     }
 
     .logo2{
         color: #3A5485;
         font-size: 14px;
+        margin-left: 8vh;
+
     }
 
     .login {
         text-align: right;
         margin-right: 6vh;
     }
+
+    .login input
+    {
+        height: 2rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        font-size: 1rem;
+        border-radius: 1rem;
+        border: none;
+        outline: none;
+        font-weight: bold;
+        word-break: keep-all;
+        background: #3A5485;
+        color: white;
+        transition: all 0.125s ease-in 0s;
+        cursor: pointer;
+    }
+
+ 
+
+
   </style>
 </head>
 
@@ -189,7 +210,7 @@
                     <span class="logo2">ONE DAY ONE POST</span>
                 </div>
                 <div class="login">
-                    <button>로그인</button>
+                    <input type="submit" value="로그인"></button>              
                 </div>
             </div>
         <div class="menu-button">
@@ -200,6 +221,8 @@
         </div>
       </div>
     </div>
+
+    
 
   <!-- Swiper JS -->
   <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
