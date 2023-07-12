@@ -3,8 +3,8 @@
     "version": "2.2.11",
     "width": 3500,
     "height": 3500,
-    "scrollTop": -470.33332604832276,
-    "scrollLeft": -1449.16660908196,
+    "scrollTop": -614.3333260483228,
+    "scrollLeft": -282.1666090819599,
     "zoomLevel": 1,
     "show": {
       "tableComment": true,
@@ -594,7 +594,7 @@
           },
           {
             "name": "state",
-            "comment": "상태(0:신고X / 1:신고O)",
+            "comment": "삭제유무(0:삭제X / 1:삭제O)",
             "dataType": "NUMBER",
             "default": "0",
             "option": {
@@ -643,7 +643,7 @@
           "active": false,
           "left": 734.4781,
           "top": 404.1978,
-          "zIndex": 9,
+          "zIndex": 54,
           "widthName": 60,
           "widthComment": 60,
           "color": "#3F51B5"
@@ -1151,7 +1151,7 @@
           },
           {
             "name": "state",
-            "comment": "상태(0:신고X / 1:신고O)",
+            "comment": "삭제유무(0:삭제X / 1:삭제O)",
             "dataType": "NUMBER",
             "default": "0",
             "option": {
@@ -1246,7 +1246,7 @@
           "active": false,
           "left": 741.0352,
           "top": 820.1005,
-          "zIndex": 15,
+          "zIndex": 52,
           "widthName": 60,
           "widthComment": 60,
           "color": "#FFC107"
@@ -1417,8 +1417,8 @@
         "ui": {
           "active": false,
           "left": 1473.3353,
-          "top": 579.9999,
-          "zIndex": 2,
+          "top": 546.9999,
+          "zIndex": 18,
           "widthName": 69.69140625,
           "widthComment": 71.5703125,
           "color": "#FF9800"
@@ -2273,7 +2273,7 @@
           "active": false,
           "left": 742.1666,
           "top": 1263.667,
-          "zIndex": 16,
+          "zIndex": 15,
           "widthName": 60,
           "widthComment": 60,
           "color": "#CDDC39"
@@ -2292,7 +2292,7 @@
           "active": false,
           "left": 294,
           "top": 1260,
-          "zIndex": 14,
+          "zIndex": 13,
           "width": 407,
           "height": 100
         },
@@ -2503,7 +2503,7 @@
             "fd0e03a3-62ed-434e-aa30-b85cf06dbb22"
           ],
           "x": 1971.45297578125,
-          "y": 655.4999,
+          "y": 622.4999,
           "direction": "right"
         },
         "constraintName": "fk_post_reason_to_post_report",
@@ -2529,7 +2529,7 @@
             "6fa7ac89-d360-4e95-a32d-fc4311c250a5"
           ],
           "x": 1473.3353,
-          "y": 655.4999,
+          "y": 622.4999,
           "direction": "left"
         },
         "constraintName": "fk_post_to_post_report",
