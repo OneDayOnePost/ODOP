@@ -1,169 +1,129 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-  <meta charset="utf-8" />
-  <title>Swiper demo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
-
-  <!-- Link Swiper's CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
 </head>
-
 <body>
-  <div th:fragment="side">
-    <div class="swiper-slide menu">
-      <div id="layoutLeftSide">
-        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-          <div class="sb-sidenav-menu">
-            <div class="nav">
-              <!-- <div class="sb-sidenav-menu-heading">메인</div>
+    <div class="swiper-slide menu" th:fragment="aside">
+        <div id="layoutLeftSide">
+          <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+            <div class="sb-sidenav-menu">
+              <div class="nav">
+                <!-- <div class="sb-sidenav-menu-heading">메인</div>
                       <a class="nav-link" href="./index.html">
                           <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                           대시보드
                       </a> -->
-              <div class="sb-sidenav-menu-heading" style="margin-bottom: 50px;"></div>
-              <div class="col">
-                <div class="col2">
-                  <i class="fas fa-angle-down"></i>
-                  <div class="title_detail">CATEGORY </div>
+                <div class="sb-sidenav-menu-heading" style="margin-bottom: 50px;"></div>
+                <div class="col">
+                  <div class="col2">
+                    <i class="fas fa-angle-down"></i>
+                    <div class="title_detail">CATEGORY </div>
+                  </div>
+                  <div class="line"></div>
+                  <div class="category">
+                    <table>
+                      <tr>
+                        <td><input type="checkbox"></td>
+                        <td>여기는</td>
+                      </tr>
+                      <tr>
+                        <td><input type="checkbox"></td>
+                        <td>DB에서</td>
+                      </tr>
+                      <tr>
+                        <td><input type="checkbox"></td>
+                        <td>카테고리</td>
+                      </tr>
+                      <tr>
+                        <td><input type="checkbox"></td>
+                        <td>불러와서</td>
+                      </tr>
+                      <tr>
+                        <td><input type="checkbox"></td>
+                        <td>넣는걸로</td>
+                      </tr>
+                      <tr>
+                        <td><input type="checkbox"></td>
+                        <td>합쉬다~</td>
+                      </tr>
+                    </table>
+                  </div>
                 </div>
-                <div class="line"></div>
-                <div class="category">
-                  <table>
-                    <tr>
-                      <td><input type="checkbox"></td>
-                      <td>여기는</td>
-                    </tr>
-                    <tr>
-                      <td><input type="checkbox"></td>
-                      <td>DB에서</td>
-                    </tr>
-                    <tr>
-                      <td><input type="checkbox"></td>
-                      <td>카테고리</td>
-                    </tr>
-                    <tr>
-                      <td><input type="checkbox"></td>
-                      <td>불러와서</td>
-                    </tr>
-                    <tr>
-                      <td><input type="checkbox"></td>
-                      <td>넣는걸로</td>
-                    </tr>
-                    <tr>
-                      <td><input type="checkbox"></td>
-                      <td>합쉬다~</td>
-                    </tr>
-                  </table>
+                <div class="col">
+                  <div class="col2">
+                    <i class="fas fa-angle-down"></i>
+                    <div class="title_detail">MBTI </div>
+                  </div>
+                  <div class="line"></div>
+                  <div class="select_mbti">
+                    <table>
+                      <tr>
+                        <td><input type="checkbox"></td>
+                        <td>ENFP</td>
+                        <td><input type="checkbox"></td>
+                        <td>ENFJ</td>
+                      </tr>
+                      <tr>
+                        <td><input type="checkbox"></td>
+                        <td>ENTP</td>
+                        <td><input type="checkbox"></td>
+                        <td>ENTJ</td>
+                      </tr>
+                      <tr>
+                        <td><input type="checkbox"></td>
+                        <td>ESTP</td>
+                        <td><input type="checkbox"></td>
+                        <td>ESTJ</td>
+                      </tr>
+                      <tr>
+                        <td><input type="checkbox"></td>
+                        <td>ESFP</td>
+                        <td><input type="checkbox"></td>
+                        <td>ESFJ</td>
+                      </tr>
+                      <tr>
+                        <td><input type="checkbox"></td>
+                        <td>INFP</td>
+                        <td><input type="checkbox"></td>
+                        <td>INFJ</td>
+                      </tr>
+                      <tr>
+                        <td><input type="checkbox"></td>
+                        <td>INTP</td>
+                        <td><input type="checkbox"></td>
+                        <td>INTJ</td>
+                      </tr>
+                      <tr>
+                        <td><input type="checkbox"></td>
+                        <td>ISTP</td>
+                        <td><input type="checkbox"></td>
+                        <td>ISTJ</td>
+                      </tr>
+                      <tr>
+                        <td><input type="checkbox"></td>
+                        <td>ISFP</td>
+                        <td><input type="checkbox"></td>
+                        <td>ISFJ</td>
+                      </tr>
+                    </table>
+                  </div>
                 </div>
               </div>
-              <div class="col">
-                <div class="col2">
-                  <i class="fas fa-angle-down"></i>
-                  <div class="title_detail">MBTI </div>
-                </div>
-                <div class="line"></div>
-                <div class="select_mbti">
-                  <table>
-                    <tr>
-                      <td><input type="checkbox"></td>
-                      <td>ENFP</td>
-                      <td><input type="checkbox"></td>
-                      <td>ENFJ</td>
-                    </tr>
-                    <tr>
-                      <td><input type="checkbox"></td>
-                      <td>ENTP</td>
-                      <td><input type="checkbox"></td>
-                      <td>ENTJ</td>
-                    </tr>
-                    <tr>
-                      <td><input type="checkbox"></td>
-                      <td>ESTP</td>
-                      <td><input type="checkbox"></td>
-                      <td>ESTJ</td>
-                    </tr>
-                    <tr>
-                      <td><input type="checkbox"></td>
-                      <td>ESFP</td>
-                      <td><input type="checkbox"></td>
-                      <td>ESFJ</td>
-                    </tr>
-                    <tr>
-                      <td><input type="checkbox"></td>
-                      <td>INFP</td>
-                      <td><input type="checkbox"></td>
-                      <td>INFJ</td>
-                    </tr>
-                    <tr>
-                      <td><input type="checkbox"></td>
-                      <td>INTP</td>
-                      <td><input type="checkbox"></td>
-                      <td>INTJ</td>
-                    </tr>
-                    <tr>
-                      <td><input type="checkbox"></td>
-                      <td>ISTP</td>
-                      <td><input type="checkbox"></td>
-                      <td>ISTJ</td>
-                    </tr>
-                    <tr>
-                      <td><input type="checkbox"></td>
-                      <td>ISFP</td>
-                      <td><input type="checkbox"></td>
-                      <td>ISFJ</td>
-                    </tr>
-                  </table>
-                </div>
+
+              <div class="search">
+                <input type="button" value="조 회">
               </div>
             </div>
 
-            <div class="search">
-              <input type="button" value="조 회">
-            </div>
-          </div>
+          </nav>
+        </div>
 
-        </nav>
       </div>
-
-    </div>
-
-    <!-- Swiper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
-
-    <!-- Initialize Swiper -->
-    <script>
-      var menuButton = document.querySelector('.menu-button');
-      var openMenu = function () {
-        swiper.slidePrev();
-      };
-      var swiper = new Swiper('.swiper', {
-        slidesPerView: 'auto',
-        initialSlide: 1,
-        resistanceRatio: 0,
-        slideToClickedSlide: true,
-        on: {
-          slideChangeTransitionStart: function () {
-            var slider = this;
-            if (slider.activeIndex === 0) {
-              menuButton.classList.add('cross');
-              // required because of slideToClickedSlide
-              menuButton.removeEventListener('click', openMenu, true);
-            } else {
-              menuButton.classList.remove('cross');
-            }
-          },
-          slideChangeTransitionEnd: function () {
-            var slider = this;
-            if (slider.activeIndex === 1) {
-              menuButton.addEventListener('click', openMenu, true);
-            }
-          },
-        },
-      });
-    </script>
-  </div>
 </body>
-
 </html>
