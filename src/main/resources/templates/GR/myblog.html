@@ -11,6 +11,7 @@
         integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel='stylesheet' th:href="@{/css/bootstrap.min.css.map}" />
+    <link rel='stylesheet' th:href="@{/css/header.css}" />
 
     <!--jQuery 추가-->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"
@@ -19,322 +20,90 @@
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
     <style>
-        html,
         body {
-            position: relative;
-            height: 100%;
-        }
-
-        body {
-            background: #eee;
-            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-            font-size: 14px;
-            color: #000;
-            margin: 0;
-            padding: 0;
-        }
-
-        .swiper {
-            width: 100%;
-            height: 100%;
-        }
-
-        .swiper-slide {
-            text-align: center;
-            font-size: 18px;
-            background: #fff;
-            /* display: flex;
+            min-height:100vh;
+            display: flex;
             justify-content: center;
-            align-items: center; */
+            align-items: center;
         }
 
-        .menu {
-            min-width: 100px;
-            width: 70%;
-            max-width: 320px;
-
-            background-color: #B6C6D3;
-            color: #fff;
+        .blogname h3{
+            font-size: 22px;
+            padding-top: 90px;
+            padding-bottom: 33px;
         }
 
-        .content {
-            width: 100%;
+        #blog_box {
+            border: 1.5px solid #A2B2CD;
+            background: rgba(254, 254, 254, 0.65);
         }
 
-        .menu-button {
+        #left-area{
+            border: 1.5px solid #A2B2CD;
             position: absolute;
-            top: 0px;
-            left: 0px;
-
-            padding: 15px;
-
-            cursor: pointer;
-
-            -webkit-transition: 0.3s;
-            transition: 0.3s;
-
-            background-color: #B6C6D3;
-
-
+            width: 300px;
+            left: 312px;
         }
 
-        .menu-button .bar:nth-of-type(1) {
-            margin-top: 0px;
-        }
 
-        .menu-button .bar:nth-of-type(3) {
-            margin-bottom: 0px;
-        }
 
-        .bar {
-            position: relative;
-            display: block;
-            width: 37px;
-            height: 5px;
-            margin: 8px 2px;
-            background-color: #3A5485;
-            border-radius: 10px;
-            -webkit-transition: 0.3s;
-            transition: 0.3s;
+        #box_row1 {
+            padding: 120px 0px 50px 0px;
         }
-
-        .menu-button:hover .bar:nth-of-type(1) {
-            -webkit-transform: translateY(1.5px) rotate(-4.5deg);
-            -ms-transform: translateY(1.5px) rotate(-4.5deg);
-            transform: translateY(1.5px) rotate(-4.5deg);
+        #box_row2 {
+            padding-bottom: 50px;
         }
-
-        .menu-button:hover .bar:nth-of-type(2) {
-            opacity: 0.9;
-        }
-
-        .menu-button:hover .bar:nth-of-type(3) {
-            -webkit-transform: translateY(-1.5px) rotate(4.5deg);
-            -ms-transform: translateY(-1.5px) rotate(4.5deg);
-            transform: translateY(-1.5px) rotate(4.5deg);
-        }
-
-        .cross .bar:nth-of-type(1) {
-            -webkit-transform: translateY(15px) rotate(-45deg);
-            -ms-transform: translateY(15px) rotate(-45deg);
-            transform: translateY(15px) rotate(-45deg);
-        }
-
-        .cross .bar:nth-of-type(2) {
-            opacity: 0;
-        }
-
-        .cross .bar:nth-of-type(3) {
-            -webkit-transform: translateY(-15px) rotate(45deg);
-            -ms-transform: translateY(-15px) rotate(45deg);
-            transform: translateY(-15px) rotate(45deg);
-        }
-
-        .cross:hover .bar:nth-of-type(1) {
-            -webkit-transform: translateY(13.5px) rotate(-40.5deg);
-            -ms-transform: translateY(13.5px) rotate(-40.5deg);
-            transform: translateY(13.5px) rotate(-40.5deg);
-        }
-
-        .cross:hover .bar:nth-of-type(2) {
-            opacity: 0.1;
-        }
-
-        .cross:hover .bar:nth-of-type(3) {
-            -webkit-transform: translateY(-13.5px) rotate(40.5deg);
-            -ms-transform: translateY(-13.5px) rotate(40.5deg);
-            transform: translateY(-13.5px) rotate(40.5deg);
-        }
-
-        
-        .a {
-            /* position: absolute; */
-            top: 0px;
-            left: 0px;
-            padding: 8px;
-            cursor: pointer;
-            -webkit-transition: 0.3s;
-            transition: 0.3s;
-            background-color: #B6C6D3;
-            width: 100%;
-            display: flex;
-            align-items: center;
-        }
-
-        .logo {
-            flex: 1;
-            text-align: center;
-        }
-
-        .logo1 {
-            color: #3A5485;
-            font-size: 24px;
-            font-weight: bold;
-            margin-left: 8vh;
-        }
-
-        .logo2 {
-            color: #3A5485;
-            font-size: 14px;
-            margin-left: 8vh;
-        }
-
-        .login {
-            text-align: right;
-            margin-right: 6vh;
-        }
-
-        .login input {
-            height: 2rem;
-            padding-left: 1rem;
-            padding-right: 1rem;
-            font-size: 1rem;
-            border-radius: 1rem;
+        .login_input {
             border: none;
-            outline: none;
-            font-weight: bold;
-            word-break: keep-all;
-            background: #3A5485;
-            color: white;
-            transition: all 0.125s ease-in 0s;
+            background: #EFEFEF;
+            width: 330px;
+            height: 40px;
+            border-radius: 5px;
+        }
+
+        .login_span {
+            font-weight: 400;
+            font-size: 20px;
+            line-height: 40px;
+        }
+
+        #login_button {
+            width: 180px;
+            height: 70px;
+            border-radius: 5px;
+            background: #1D3563;
+            color: #FFF;
+            font-size: 20px;
+        }
+
+        #join_button {
+            border: 1.5px solid #A2B2CD;
+            background: rgba(254, 254, 254, 0.65);
+            font-size: 20px;
+            width: 450px;
+            height: 60px;
+        }
+
+        #join_guide {
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 800;
+            line-height: 60px;
+        }
+
+        .login_social {
+            border-radius: 100%;
+            width: 80px;
+            height: 80px;
+        }
+        .login_social:hover {
             cursor: pointer;
         }
-
-        /* 왼쪽 메뉴 */
-        .sb-sidenav {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            flex-wrap: nowrap;
-            color: #3A5485;
+        #divider {
+            border: 0;
+            height: 2px;
+            background: #213251;
         }
-
-        .sb-sidenav .sb-sidenav-menu {
-            flex-grow: 1;
-        }
-
-        .sb-sidenav .sb-sidenav-menu .nav {
-            flex-direction: column;
-            flex-wrap: nowrap;
-        }
-
-        .sb-sidenav .sb-sidenav-menu .nav .sb-sidenav-menu-heading {
-            padding: 1.75rem 1rem 0.75rem;
-            font-size: 0.75rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            /* 영어로 입력한 경우 대문자로 */
-        }
-
-        .sb-sidenav .sb-sidenav-menu .nav .nav-link {
-            display: flex;
-            align-items: center;
-            padding-top: 0.75rem;
-            padding-bottom: 0.75rem;
-            position: relative;
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #3A5485;
-        }
-
-        .sb-sidenav .sb-sidenav-menu .nav .nav-link .sb-nav-link-icon {
-            font-size: 0.9rem;
-            padding-right: 0.5rem;
-        }
-
-        .sb-sidenav .sb-sidenav-menu .nav .nav-link .sb-sidenav-collapse-arrow {
-            display: inline-block;
-            margin-left: auto;
-        }
-
-
-        .sb-sidenav .sb-sidenav-menu .nav .sb-sidenav-menu-nested {
-            margin-left: 1.5rem;
-            flex-direction: column;
-        }
-
-        .sb-sidenav .sb-sidenav-footer {
-            padding: 0.75rem;
-            flex-shrink: 0;
-        }
-
-        /* 왼쪽 메뉴 디자인 */
-        .sb-sidenav-dark {
-            background-color: #B6C6D3;
-            /* color: #3A5485; */
-        }
-
-        .sb-sidenav-dark .sb-sidenav-menu .sb-sidenav-menu-heading {
-            color: #3A5485;
-        }
-
-        .sb-sidenav-dark .sb-sidenav-menu .nav-link {
-            color: #3A5485;
-        }
-
-        .sb-sidenav-dark .sb-sidenav-menu .nav-link:hover,
-        .sb-sidenav-dark .sb-sidenav-menu .nav-link:active {
-            color: #000;
-            font-weight: 900;
-        }
-
-        .sb-sidenav-dark .sb-sidenav-menu .sb-nav-link-icon {
-            color: #3A5485;
-            /* 각 메뉴의 아이콘은 글자보다 좀 어둡게 */
-        }
-
-        .sb-sidenav-dark .sb-sidenav-footer {
-            background-color: #343a40;
-        }
-
-        .line {
-            border-top: 3px solid #3A5485;
-            margin-left: 10px;
-            margin-right: 10px;
-            margin-top: 3px;
-            margin-bottom: 9px;
-            background-color: #3A5485;
-        }
-
-        .title_detail {
-            font-weight: 900;
-            font-size: 26px;
-
-        }
-
-        .category ul {
-            list-style: none;
-        }
-
-        .col2 {
-            display: flex;
-            flex-direction: row-reverse;
-            justify-content: space-around;
-            align-items: center;
-            /* margin-left: -19px; */
-        }
-
-        /* category */
-        .category {
-            padding-left: 25px;
-        }
-
-        /* mbti */
-        .select_mbti {
-            padding-left: 25px;
-        }
-
-
-        th,
-        td {
-            padding-top: 10px;
-            padding-bottom: 5px;
-            padding-left: 15px;
-            padding-right: 15px;
-        }
-
-        /* 조회 버튼 */
-        .search {}
     </style>
 
 
@@ -365,44 +134,14 @@
                   </div>
           
                   <div id="blog_box" class="container">
-                      <!-- <div id="box_row1" class="row">
-                          <div class="col-7 d-flex justify-content-end">
-                              <div>
-                                  <div class="mb-3 d-flex">
-                                      <span class="login_span me-auto pe-4 align-items-center">이메일</span>
-                                      <input class="login_input" type="text">
-                                  </div>
-                                  <div class="d-flex">
-                                      <span class="login_span me-auto pe-4">비밀번호</span>
-                                      <input class="login_input" type="text">
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="col-5">
-                              <div class="d-flex align-items-center">
-                                  <button id="login_button">로그인</button>
-                              </div>
-                              <div class="d-flex pt-2">
-                                  <a href="#" class="nav-link"><span>아이디 찾기</span></a>
-                                  <span class="vr mx-2"></span>
-                                  <a href="#" class="nav-link"><span>비밀번호 찾기</span></a>
-                              </div>
-                          </div>
-                      </div> -->
+
                       <div id="left-area" class="side-width side-width-1">
                           <div class="blog-profile">
           
                           </div>
                       </div>
-                      <div id="box_row2" class="row">
-                          <div class="d-flex justify-content-center">
-                              <img onclick="naver_login()" class="login_social me-2" th:src="@{/images/logo_naver.png}" style="width: 50px; height: 50px;">
-                              <img class="login_social me-2" th:src="@{/images/logo_kakao.png}" style="width: 50px; height: 50px;">
-                              <img class="login_social me-2" th:src="@{/images/logo_google.png}" style="width: 50px; height: 50px; border: lightgray 1px solid;">
-                              <img class="login_social me-2" th:src="@{/images/logo_apple.png}" style="width: 50px; height: 50px; border: lightgray 1px solid;">
-                          </div>
-                      </div>
                       
+                      <div id=""
           
           
                   </div>
