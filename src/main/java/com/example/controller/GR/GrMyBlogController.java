@@ -20,7 +20,7 @@ public class GrMyBlogController {
     public String myblogGET(@AuthenticationPrincipal User user, Model model) {
         try {
             model.addAttribute("user", user);
-            return "/GR/myblog2";
+            return "/GR/myblog";
         } catch (Exception e) {
             e.printStackTrace();
             return "/home";
