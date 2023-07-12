@@ -10,18 +10,71 @@
         integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel='stylesheet' th:href="@{/css/bootstrap.min.css.map}" />
-    <link rel='stylesheet' th:href="@{/css/layout.css}" />
     
     <!--jQuery 추가-->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"
         integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
 
+    <style>
+        table {
+            border: 1px solid #000;
+            border-collapse: collapse;
+        }
+
+        tr, td {
+            border: 1px solid #000;
+        }
+    </style>
 
 </head>
 <body>
-     <!-- header -->
-     <th:block th:replace="~{/fragments/header :: headerHTML}"></th:block>
+     <div>
+        <div>
+            <a href="">게시글 신고</a>
+            <a href="">댓글 신고</a>
+            <a href="">회원목록</a>
 
+            <select name="" id="">
+                <option value="">신고 사유 목록</option>
+            </select>
+        </div>
+        <div>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>이미지</td>
+                        <td>1</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>이미지</td>
+                        <td>1</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>이미지</td>
+                        <td>1</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>이미지</td>
+                        <td>1</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>이미지</td>
+                        <td>1</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>이미지</td>
+                        <td>1</td>
+                        <td>2</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+     </div>
      
      <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 </body>

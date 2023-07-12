@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,10 +10,10 @@
         integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel='stylesheet' th:href="@{/css/bootstrap.min.css.map}" />
-    <link rel='stylesheet' th:href="@{/css/layout.css}" />
+    <link rel='stylesheet' th:href="@{/css/home.css}" />
+
     <!-- Link Swiper's CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
-    <th:block th:replace="~{/fragments/header :: headerCSS}"></th:block>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
     
     <!--jQuery 추가-->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"
@@ -24,42 +24,47 @@
 <body>
 
   <!-- header -->
-  <th:block th:replace="~{/fragments/header :: headerHTML}"></th:block>
+  <header th:replace="~{/fragments/header.html :: header}"></header>
+
+  <!-- sidebar -->
+  <!-- <div th:replace="~{/fragments/aside.html :: side}"></div> -->
+
+  <div>본문으아아</div>
+  
   <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  <!-- Swiper JS -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script> -->
 
+  <!-- Initialize Swiper -->
+  <!-- <script>
+    var menuButton = document.querySelector('.menu-button');
+    var openMenu = function () {
+      swiper.slidePrev();
+    };
+    var swiper = new Swiper('.swiper', {
+      slidesPerView: 'auto',
+      initialSlide: 1,
+      resistanceRatio: 0,
+      slideToClickedSlide: true,
+      on: {
+        slideChangeTransitionStart: function () {
+          var slider = this;
+          if (slider.activeIndex === 0) {
+            menuButton.classList.add('cross');
+            // required because of slideToClickedSlide
+            menuButton.removeEventListener('click', openMenu, true);
+          } else {
+            menuButton.classList.remove('cross');
+          }
+        },
+        slideChangeTransitionEnd: function () {
+          var slider = this;
+          if (slider.activeIndex === 1) {
+            menuButton.addEventListener('click', openMenu, true);
+          }
+        },
+      },
+    }); -->
+  </script>
 </body>
-   <!-- Swiper JS -->
-   <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
-
-   <!-- Initialize Swiper -->
-   <script>
-     var menuButton = document.querySelector('.menu-button');
-     var openMenu = function () {
-       swiper.slidePrev();
-     };
-     var swiper = new Swiper('.swiper', {
-       slidesPerView: 'auto',
-       initialSlide: 1,
-       resistanceRatio: 0,
-       slideToClickedSlide: true,
-       on: {
-         slideChangeTransitionStart: function () {
-           var slider = this;
-           if (slider.activeIndex === 0) {
-             menuButton.classList.add('cross');
-             // required because of slideToClickedSlide
-             menuButton.removeEventListener('click', openMenu, true);
-           } else {
-             menuButton.classList.remove('cross');
-           }
-         },
-         slideChangeTransitionEnd: function () {
-           var slider = this;
-           if (slider.activeIndex === 1) {
-             menuButton.addEventListener('click', openMenu, true);
-           }
-         },
-       },
-     });
-   </script>
 </html>
