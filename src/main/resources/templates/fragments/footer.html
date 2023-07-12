@@ -54,14 +54,15 @@
             position: absolute !important;
             bottom: 0 !important;
             
-            max-width: 3000px;
+            width: 100%;
             padding-left: 0 !important;  
             padding-right: 0 !important;
             /* margin-top: 5000px; */
         }
 
         footer > * {
-            padding-top: 14px;
+            padding-top: 18px;
+           
         }
         footer .title_detail {
             font-weight: 900;
@@ -69,7 +70,7 @@
         }
         
         #footer1 {
-            height: 50px;
+            height: 40px;
             border-top: 1.5px solid #d4d4d4;
             border-bottom: 1.5px solid #d4d4d4;
             /* background-color: #f1f1ed; */
@@ -80,10 +81,9 @@
             margin-right: 20px;
         }
         #footer2 {
-            height: 200px;
+            height: 150px;
             padding-top: 45px;
-            background-repeat : no-repeat;
-            background-size : cover;    
+           
         }
         #footer2 .footer2_logo {
             margin-bottom: 10px;
@@ -114,6 +114,9 @@
         footer a {
             text-decoration: none;
         }
+        .col ul{
+            list-style: none;
+        }
 
 
     </style>
@@ -123,31 +126,32 @@
 <body id='wrapper'>
 
 <th:block th:fragment="footerHTML">
-    <footer class="container-fluid">
+    <footer >
         
         <div id="footer1">
             <div class="footer-width">
                         <p>회사소개</p>
                         <p>이용약관</p>
                         <p>개인정보처리방침</p>
-                        <p>이용안내</p>
+                        <p>공지사항</p>
             </div>
         </div>
-        <div id="footer2"  th:style="'background-image:url('+ @{/images/km/footer.png} +');'">
-            <div class="footer-width">
-                <div class="row">
+        <div id="footer2" >
+            <div class="footer-width" style="margin-left: 300px;">
+                <div class="row" style="display: flex;">
                     <div class="col-5">
-                        <img th:src="@{/images/se/logo1.png}" class="footer2_logo" width="180px" >
+                        <!-- <img th:src="@{/images/se/logo1.png}" class="footer2_logo" width="180px" > -->
                         <div class="footer_text1">
-                            상호명 : (주) 소분소분 | 대표 : 홍길동<br>
+                            <div class="title_detail" style="padding-bottom: 7px;"> One Day One Post , ODOP</div>
+                           
                             주소 : 18548 부산시 남구 신선로 365<br>
-                            개인정보관리책임자 : 홍길동 | 제휴/협력문의 : sobun@gmail.com
+                            개인정보관리책임자 : 김오돕 | 제휴/협력문의 : odop2307@gmail.com
                         </div>
                     </div>
                     <div class="col">
                         <div class="title_detail">CS CENTER</div>
                         <div class="footer_text2">
-                            <div>1688-1360</div>
+                            <div>1688-1111</div>
                             <div>
                                 <span>WEEK</span>
                                 <span>10:00 ~ 17:00</span><br>
@@ -159,37 +163,14 @@
                             </div>
                         </div>
                     </div>
+                    
                     <div class="col">
-                        <div class="title_detail">ACCOUNT INFO</div>
-                        <div class="footer_text3">
-                            <ul>
-                                <li>
-                                    <span>농협</span>
-                                    <span>000-0000-0000-00</span>
-                                </li>
-                                <li>
-                                    <span>국민</span>
-                                    <span>000-0000-0000-00</span>
-                                </li>
-                                <li>
-                                    <span>우체국</span>
-                                    <span>000-0000-0000-00</span>
-                                </li>
-                                <li>
-                                    <span>우리</span>
-                                    <span>000-0000-0000-00</span>
-                                </li>
-                                <li>예금주: (주)소분소분</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="title_detail">RETURN</div>
-                        <div class="footer_text4">
-                            <a href="#">교환/반품 정책 확인</a>
-                            <div>
-                                부산시 남구 신선로 365
-                            </div>
+                        <div class="title_detail">Notice</div>
+                        <ul class="footer_text4" >
+                            <li><a href="#">공지사항이 한 세개 .. ?</a></li>
+                            <li><a href="#">공지사항이 한 세개 .. ?</a></li>
+                            <li><a href="#">공지사항이 한 세개 .. ?</a></li>
+                           
                         </div>
                     </div>
                 </div>
@@ -197,8 +178,8 @@
         </div>
         
         <div id="footer3">
-            <div class="footer-width">
-                Copyright &copy; <strong>소분소분</strong> All right reserved. Design by PKNU.
+            <div class="footer-width" style="float: right;">
+                Copyright &copy; <strong>E1I4</strong> All right reserved. Design by E1I4.
             </div>   
         </div>
         
