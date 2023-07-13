@@ -19,6 +19,5 @@ public class WjHomeController {
     public String homeGET(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("user", user);
         return "/WJ/WjAdminPostReport";
-
     }
 }

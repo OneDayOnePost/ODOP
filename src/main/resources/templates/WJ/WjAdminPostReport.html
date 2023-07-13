@@ -22,16 +22,76 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
 
     <style>
-        #hometable > table {
-            border: 1px solid #000;
-            border-collapse: collapse;
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        #hometable > table > tbody > tr{
-            border: 1px solid #000;
+        #wrapper {
+            margin-top: 90px;
         }
 
+        .link-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+        }
 
+        /* 테이블 상단 */
+        a {
+            text-decoration: none;
+            color: #000;
+            font-weight: bold;
+            font-size: 25px;
+            margin-right: 15px;
+        }
+
+        a:hover {
+            color: #B6C6D3;
+        }
+
+        #reasonlist{
+            background-color: #DFECF6;
+            border: none;
+            width: 200px;
+            height: 30px;
+            padding-left: 10px;
+            border-radius: 10px;
+        }
+
+        /* 테이블 */
+        #post_report {
+            margin-top: 20px;
+        }
+
+        #post_report table {
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        #post_report table tbody tr {
+            border: 1px solid #000;
+            height: 200px;
+        }
+
+        .image {
+            background-color: lightblue;
+            width: 25%;
+        }
+
+        .tnr {
+            background-color: lightpink;
+            text-align: left;
+            width: 50%;
+        }
+
+        .report {
+            background-color: yellow;
+            width: 25%;
+        }
     </style>
 
 </head>
@@ -53,89 +113,98 @@
 
                 <div th:replace="~{fragments/header :: header}"> </div>
 
-                <div>
-                    <div>
-                        <a href="">게시글 신고</a>
-                        <a href="">댓글 신고</a>
-                        <a href="">회원목록</a>
-            
-                        <select name="" id="">
-                            <option value="">신고 사유 목록</option>
-                        </select>
+                <div id="wrapper" class="container">
+                    <div class="link-container">
+                        <div>
+                            <a href="">게시글 신고</a>
+                            <a href="">댓글 신고</a>
+                            <a href="">회원목록</a>
+                        </div>
+                        <div>
+                            <select name="" id="reasonlist">
+                                <option value="">신고 사유 목록</option>
+                            </select>
+                        </div>
                     </div>
-                    <div id="hometable">
+
+                    <div id="post_report">
                         <table>
                             <tbody>
                                 <tr>
-                                    <td>이미지</td>
-                                    <td>
+                                    <td class="image">이미지</td>
+                                    <td class="tnr">
                                         <div>제목</div>
                                         <div>닉네임</div>
                                         <div>작성일</div>
                                     </td>
-                                    <td>
+                                    <td class="report">
                                         <div>신고 사유</div>
                                         <div>사유사유</div>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>이미지</td>
-                                    <td>
+                                    <td class="image">이미지</td>
+                                    <td class="tnr">
                                         <div>제목</div>
                                         <div>닉네임</div>
                                         <div>작성일</div>
                                     </td>
-                                    <td>
+                                    <td class="report">
                                         <div>신고 사유</div>
                                         <div>사유사유</div>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>이미지</td>
-                                    <td>
+                                    <td class="image">이미지</td>
+                                    <td class="tnr">
                                         <div>제목</div>
                                         <div>닉네임</div>
                                         <div>작성일</div>
                                     </td>
-                                    <td>
+                                    <td class="report">
+                                        <div>신고 사유</div>
+                                        <div>사유사유</div>
+                                    </td>
+                                </tr>
+                                <!-- <tr>
+                                    <td class="image">이미지</td>
+                                    <td class="tnr">
+                                        <div>제목</div>
+                                        <div>닉네임</div>
+                                        <div>작성일</div>
+                                    </td>
+                                    <td class="report">
                                         <div>신고 사유</div>
                                         <div>사유사유</div>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>이미지</td>
-                                    <td>
+                                    <td class="image">이미지</td>
+                                    <td class="tnr">
                                         <div>제목</div>
                                         <div>닉네임</div>
                                         <div>작성일</div>
                                     </td>
-                                    <td>
+                                    <td class="report">
                                         <div>신고 사유</div>
                                         <div>사유사유</div>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td>이미지</td>
-                                    <td>
-                                        <div>제목</div>
-                                        <div>닉네임</div>
-                                        <div>작성일</div>
-                                    </td>
-                                    <td>
-                                        <div>신고 사유</div>
-                                        <div>사유사유</div>
-                                    </td>
-                                </tr>
+                                </tr> -->
+                                
                             </tbody>
                         </table>
+                    </div> 
+
+                    <div>
+                        여기는 페이지네이션 자리!
                     </div>
-                </div>
+                </div> 
             </div>
 
         </div>
 
     </div>
-    
+
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 
     <!-- Swiper JS -->
@@ -143,34 +212,34 @@
 
     <!-- Initialize Swiper -->
     <script>
-      var menuButton = document.querySelector('.menu-button');
-      var openMenu = function () {
-        swiper.slidePrev();
-      };
-      var swiper = new Swiper('.swiper', {
-        slidesPerView: 'auto',
-        initialSlide: 1,
-        resistanceRatio: 0,
-        slideToClickedSlide: true,
-        on: {
-          slideChangeTransitionStart: function () {
-            var slider = this;
-            if (slider.activeIndex === 0) {
-              menuButton.classList.add('cross');
-              // required because of slideToClickedSlide
-              menuButton.removeEventListener('click', openMenu, true);
-            } else {
-              menuButton.classList.remove('cross');
-            }
-          },
-          slideChangeTransitionEnd: function () {
-            var slider = this;
-            if (slider.activeIndex === 1) {
-              menuButton.addEventListener('click', openMenu, true);
-            }
-          },
-        },
-      });
+        var menuButton = document.querySelector('.menu-button');
+        var openMenu = function () {
+            swiper.slidePrev();
+        };
+        var swiper = new Swiper('.swiper', {
+            slidesPerView: 'auto',
+            initialSlide: 1,
+            resistanceRatio: 0,
+            slideToClickedSlide: true,
+            on: {
+                slideChangeTransitionStart: function () {
+                    var slider = this;
+                    if (slider.activeIndex === 0) {
+                        menuButton.classList.add('cross');
+                        // required because of slideToClickedSlide
+                        menuButton.removeEventListener('click', openMenu, true);
+                    } else {
+                        menuButton.classList.remove('cross');
+                    }
+                },
+                slideChangeTransitionEnd: function () {
+                    var slider = this;
+                    if (slider.activeIndex === 1) {
+                        menuButton.addEventListener('click', openMenu, true);
+                    }
+                },
+            },
+        });
     </script>
 </body>
 
