@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>회원가입</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <!--1. BootStrap용 CSS CDM 추가-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link rel='stylesheet' th:href="@{/css/bootstrap.min.css.map}" />
+
+    <link rel='stylesheet' th:href="@{/css/header.css}" />
+    <!--Bootstrap 용 Icon CDN-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <!--font awesome 용-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!--jQuery 추가-->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+
+    <!-- Link Swiper's CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    <style>
+        @import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
+
+        body {
+            
+            /* font-family: 'nanumsquare','MinSans-Regular', sans-serif; */
+            font-family: 'NanumSquare';
+            font-size: 15px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #wrapper{
+            padding-top: 100px;
+        }
+
+        #jointitle{
+            float: left;
+        }
+
+        
+
+        #homeline {
+            padding-bottom: 27px;
+            border-top: 2.4px solid #A2B2CD;
+            /* margin-left: 5px;
+            margin-right: 5px; */
+            margin-top: 41px;
+            margin-bottom: 30px;
+
+        }
+
+        #emailchk{
+            width: 120px;
+            height: 50px;
+            border: solid;
+            border-radius: 50px;
+            background: #1D3563;
+            color: #FFF;
+            font-size: 18px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="swiper">
+        <div class="swiper-wrapper">
+
+            <div th:replace="~{fragments/aside :: aside}"></div>
+
+            <div class="swiper-slide content">
+                
+                <div class="menu-button">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+
+                <div th:replace="~{fragments/header :: header}"> </div>
+                
+                <div id="wrapper" class="container">
+                    <h3 id="jointitle">회원가입</h3>
+                    <div id="homeline"></div>
+                    <form th:action="@{/join.do}" method="post" id="form">
+                        <div>
+                            <table border="2">
+                                <tr>
+                                    <th style="border: 3px solid;">이메일</th>
+                                    <td class="email-box"  style="border: 3px solid;">
+                                        <div class="email">
+                                            <input name="email1" id="email1" type="text" > @ <input name="email2" id="email2" type="text" placeholder="이메일을 입력하세요">
+                                            <select name="selectemail" id="selectemail" onChange="selectEmail(this)">
+                                                <option value="" selected>선택하세요</option>
+                                                <option value="naver.com">naver.com</option>
+                                                <option value="gmail.com">gmail.com</option>
+                                                <option value="daum.net">daum.net</option>
+                                                <option value="nate.com">nate.com</option>
+                                                <option value="1">직접입력</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td style="border: 3px solid;">
+                                        <button id="emailchk">중복확인</button>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th style="border: 3px solid;">비밀번호변경</th>
+                                    <td style="border: 3px solid;">
+                                        <div class="password">
+                                            <p>
+                                                <div class="pw1" >
+                                                    <label>비밀번호</label>
+                                                    <input type="password" id="pw" name="pw" >
+                                                    <label id="pwcheck" name="pwcheck" class="pwcheck"></label>
+                                                </div>
+                                            </p>
+                                            <p>
+                                                <div class="pw2">
+                                                    <label>비밀번호 확인</label>
+                                                    <input type="password" id="pwConfirm" name="pwConfirm" onkeyup="isSame()" >
+                                                    
+                                                </div>
+                                            </p>
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th style="border: 3px solid;">이름</th>
+                                    <td style="border: 3px solid;"><input type="name" id="name" name="name" ></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th style="border: 3px solid;">닉네임</th>
+                                    <td style="border: 3px solid;"><input type="nickname" id="nickname" name="nickname" ></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th style="border: 3px solid;">전화 번호</th>
+                                    <td style="border: 3px solid;"><input type="phonenum" id="phonenum" name="phonenum" placeholder="010 - 0000 - 0000" ></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th style="border: 3px solid;">MBTI</th>
+                                    <td><select name="selectmbti" id="selectmbti" onChange="selectMbti(this)" style="padding: 2% 5% 2% 5%">
+                                        <option value="" selected>선택하세요</option>
+                                        <option value="ENFP">ENFP</option>
+                                        <option value="ENTP">ENTP</option>
+                                        <option value="ESFP">ESFP</option>
+                                        <option value="ESTP">ESTP</option>
+                                        <option value="ENFJ">ENFJ</option>
+                                        <option value="ENTJ">ENTJ</option>
+                                        <option value="ESFJ">ESFJ</option>
+                                        <option value="ESTJ">ESTJ</option>
+                                        <option value="INFP">INFP</option>
+                                        <option value="INTP">INTP</option>
+                                        <option value="ISFP">ISFP</option>
+                                        <option value="ISTP">ISTP</option>
+                                        <option value="INFJ">INFJ</option>
+                                        <option value="INTJ">INTJ</option>
+                                        <option value="ISFJ">ISFJ</option>
+                                        <option value="ISTJ">ISTJ</option>
+                                       
+                                    </select></td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </form>
+                    
+            
+                </div>
+            </div>
+            
+        </div>
+        
+    </div>
+
+
+    
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+    <!-- Initialize Swiper -->
+    <script>
+        var menuButton = document.querySelector('.menu-button');
+        var openMenu = function () {
+            swiper.slidePrev();
+        };
+        var swiper = new Swiper('.swiper', {
+            slidesPerView: 'auto',
+            initialSlide: 1,
+            resistanceRatio: 0,
+            slideToClickedSlide: true,
+            on: {
+                slideChangeTransitionStart: function () {
+                    var slider = this;
+                    if (slider.activeIndex === 0) {
+                    menuButton.classList.add('cross');
+                    // required because of slideToClickedSlide
+                    menuButton.removeEventListener('click', openMenu, true);
+                    } else {
+                        menuButton.classList.remove('cross');
+                    }
+                },
+                slideChangeTransitionEnd: function () {
+                    var slider = this;
+                    if (slider.activeIndex === 1) {
+                    menuButton.addEventListener('click', openMenu, true);
+                    }
+                },
+            },
+        });
+
+
+
+        //email 셀렉트박스
+        function selectEmail(em){
+            var $em = $(em);
+            var $email2 = $('input[name=email2]');
+
+            // '1'인경우 직접 입력
+            if($em.val() == "1"){
+                $email2.attr('readonly', false);
+                $email2.val('');
+            }
+            else{
+                $email2.attr('readonly', true);
+                $email2.val($em.val());
+            }
+        }
+    </script>
+ </body>
+
+</html>
