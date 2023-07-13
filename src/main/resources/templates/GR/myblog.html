@@ -34,19 +34,236 @@
         }
 
         #blog_box {
-            border: 1.5px solid #A2B2CD;
+            /* border: 1.5px solid #A2B2CD; */
             background: rgba(254, 254, 254, 0.65);
+            display: flex;
         }
 
         #left-area{
-            border: 1.5px solid #A2B2CD;
-            position: absolute;
+            /* border: 1.5px solid #A2B2CD; */
+            /* position: absolute; */
             width: 300px;
             left: 312px;
         }
 
+        .myimg{
+            float: left;
+            padding-left: 15px;
+            padding-top: 23px;
+        }
+
+        .myinfo{
+            padding-top: 29px;
+
+            display: flex;
+            flex-direction: column;
+        }
+
+        .myinfo p{
+            margin-bottom: -3px;
+            float: left;
+            margin-right: 80px;
+        }
+
+        .myinfo_follow{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+
+        }
+
+        .myinfo_follow .follow_number{
+            font-size: 25px;
+        }
+
+        .myinfo_follow .follow_word{
+            font-size: 15px;
+            color: #5C5960;
+        }
+
+        .myinfo_follow::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 1px;
+            background-color: #e5e5e5;
+            transform: translateX(-50%);
+        }
+        
+        .myfollowing,
+        .myfollower{
+            flex-basis: 50%;
+        }
+
+        .myfollowing div,
+        .myfollower div{
+            text-align: center;
+        }
+
+        .my_btn input{
+            /* padding-top: 55px; */
+            width: 245px;
+            height: 40px;
+            border-radius: 15px;
+            margin-top: 22px;
+            background-color: #3A5485;
+            border : none;
+
+            color: white;
+            font-weight: bold;
+        }
+
+        .introduce{
+            padding-top: 20px;
+            padding-left: 20px;
+            float: left;
+        }
+
+        .my_category{
+            clear: both;
+            float: left;
+            padding-left: 20px;
+            padding-top: 25px;
+        }
+
+        .cate_name_box{
+            font-weight: bold;
+            border-bottom: 2px solid #e5e5e5;
+            padding-bottom: 5px;
+            width: 260px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .cate_name{
+            padding-left: 15px;
+        }
+        .cate_name p{
+            margin-bottom: -3px;
+        }
+
+        .cate{
+            padding-top: 15px;
+            padding-left: 20px;
+            padding-right: 20px;
+            display: flex;
+            align-items: flex-start;
+            font-size: 14px;
+        }
+
+        .cate_1{
+            margin-right: auto;
+        }
+
+        .cate_num{
+            margin-left: auto;
+        }
 
 
+        #right-area{
+            flex: 1;
+            /* background-color: #EFEFEF; */
+        }
+
+        #right-area p{
+            float: left;
+        }
+
+        .post{
+            padding-left: 120px;
+        }
+
+        .post_img{
+            float: right;
+        }
+
+        .post_box{
+            padding-left: 30px;
+            padding-top: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mypost{
+            padding-top: 50px;
+        }
+
+        .post_info{
+            width: 820px;
+            /* background-color: #DFECF6; */
+            padding-left: 120px;
+            padding-top: 22px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            flex-direction: row;
+            justify-content: flex-start;
+        }
+
+        .post_title{
+            padding-left: 15px;
+            font-weight: bold;
+            
+        }
+
+        .post_info p{
+            text-align: left;
+            width: 695px;
+            margin: 0;
+        }
+
+        .post_content{
+            width: 815px;
+            padding-left: 15px;
+            padding-top: 5px;
+        }
+
+        .post_tag{
+            padding-top: 15px;
+            display: flex;
+            margin-right: 5px;
+
+        }
+
+        .post_tag input{
+            border-radius: 50px;
+            border: none;
+            background-color: #FDFDFD;
+            font-size: 13px;
+            width: 100px;
+            height: 25px;
+            display: inline-block;
+        }
+
+        .post_lastline{
+            padding-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .post_date{
+            order: 1;
+            font-size: 13px;
+            color: #5C5960;
+            margin-right: auto;
+        }
+
+        .post_infoinfo{
+            order: 2;
+            font-size: 13px;
+            margin-left: auto;
+        }
+
+
+
+
+
+/* 
         #box_row1 {
             padding: 120px 0px 50px 0px;
         }
@@ -103,7 +320,7 @@
             border: 0;
             height: 2px;
             background: #213251;
-        }
+        } */
     </style>
 
 
@@ -133,27 +350,175 @@
                       <h3>블로그 이름 수정해야함!</h3>
                   </div>
           
-                  <div id="blog_box" class="container">
-
-                      <div id="left-area" class="side-width side-width-1">
-                          <div class="blog-profile">
-          
-                          </div>
-                      </div>
-                      
-                      <div id=""
-          
-          
-                  </div>
-                  <div class="row d-flex justify-content-center mt-5">
-                      <div class="col-5 d-flex justify-content-center">
-                          <span id="join_guide">아직도 회원이 아니신가요?</span>
-                      </div>
-                      <div class="col-5 d-flex justify-content-center">
-                          <button id="join_button">이메일로 가입하기</button>
-                      </div>
-                  </div>
-          
+                    <div id="blog_box" class="container">
+                        <div id="left-area">
+                            <div class="blog-profile">
+                                <div class="myimg">
+                                    <img th:src="@{/images/logo_kakao.png}" width="100px" height="100px">
+                                </div>
+                                <div class="myinfo_box">
+                                    <div class="myinfo">
+                                        <p>닉네임</p>
+                                        <div class="myinfo_follow">
+                                            <div class="myfollowing">
+                                                <div class="follow_number">
+                                                    00
+                                                </div>
+                                                <div class="follow_word">
+                                                    팔로잉
+                                                </div>
+                                            </div>
+                                            <div class="myfollower">
+                                                <div class="follow_number">
+                                                    00
+                                                </div>
+                                                <div class="follow_word">
+                                                    팔로우
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="my_btn">
+                                        <input type="button" value="내 정보 수정">
+                                    </div>
+                                    <div class="introduce">
+                                        <p>한 줄 소개 </p>
+                                    </div>
+                                </div>
+                                <div class="my_category">
+                                    <div class="cate_name_box">
+                                        <div class="cate_name">
+                                            <p>카테고리</p>
+                                        </div>
+                                    </div>
+                                    <div class="cate">
+                                        <div class="cate_1">
+                                            카테고리1
+                                        </div>
+                                        <div class="cate_num">
+                                            00
+                                        </div>
+                                    </div>
+                                    <div class="cate">
+                                        <div class="cate_1">
+                                            카테고리2
+                                        </div>
+                                        <div class="cate_num">
+                                            00
+                                        </div>
+                                    </div>
+                                    <div class="cate">
+                                        <div class="cate_1">
+                                            카테고리3
+                                        </div>
+                                        <div class="cate_num">
+                                            00
+                                        </div>
+                                    </div>
+                                    <div class="cate">
+                                        <div class="cate_1">
+                                            카테고리4
+                                        </div>
+                                        <div class="cate_num">
+                                            00
+                                        </div>
+                                    </div>
+                                    <div class="cate">
+                                        <div class="cate_1">
+                                            카테고리5
+                                        </div>
+                                        <div class="cate_num">
+                                            00
+                                        </div>
+                                    </div>
+                                    <div class="cate">
+                                        <div class="cate_1">
+                                            카테고리6
+                                        </div>
+                                        <div class="cate_num">
+                                            00
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="right-area" class="side-width side-width-1">
+                            <div class="post_box">
+                                <div class="post">
+                                    <p>post 00</p>
+                                </div>
+                                <div class="mypost">
+                                    <div class="post_img">
+                                        <img th:src="@{/images/123123.jpg}" width="820px" height="300px">
+                                    </div>
+                                    <div class="post_info">
+                                        <div class="post_title">
+                                            <p>제목제목제목</p>
+                                        </div>
+                                        <div class="post_content">
+                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore aliquam vel minus magni odio quam mollitia minima fugit perferendis dolorem eum provident necessitatibus quaerat voluptatum optio, odit omnis incidunt reiciendis!</p>
+                                        </div>
+                                        <div class="post_tag">
+                                            <input type="button" value="#태그태그">
+                                        </div>
+                                        <div class="post_tag">
+                                            <input type="button" value="#태그태그">
+                                        </div>
+                                        <div class="post_tag">
+                                            <input type="button" value="#태그태그">
+                                        </div>
+                                        <div class="post_tag">
+                                            <input type="button" value="#태그태그">
+                                        </div>
+                                        <div class="post_lastline">
+                                            <div class="post_date">
+                                                <p>2023.07.07</p>
+                                            </div>
+                                            <div class="post_infoinfo">
+                                                <p>댓글  100 좋아요 100</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="mypost">
+                                    <div class="post_img">
+                                        <img th:src="@{/images/123123.jpg}" width="820px" height="300px">
+                                    </div>
+                                    <div class="post_info">
+                                        <div class="post_title">
+                                            <p>제목제목제목</p>
+                                        </div>
+                                        <div class="post_content">
+                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore aliquam vel minus magni odio quam mollitia minima fugit perferendis dolorem eum provident necessitatibus quaerat voluptatum optio, odit omnis incidunt reiciendis!</p>
+                                        </div>
+                                        <div class="post_tag">
+                                            <input type="button" value="#태그태그">
+                                        </div>
+                                        <div class="post_tag">
+                                            <input type="button" value="#태그태그">
+                                        </div>
+                                        <div class="post_tag">
+                                            <input type="button" value="#태그태그">
+                                        </div>
+                                        <div class="post_tag">
+                                            <input type="button" value="#태그태그">
+                                        </div>
+                                        <div class="post_lastline">
+                                            <div class="post_date">
+                                                <p>2023.07.07</p>
+                                            </div>
+                                            <div class="post_infoinfo">
+                                                <p>댓글  100 좋아요 100</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                
+                            </div>
+                            
+                        </div>
+                    </div>
               </div>
             </div>
             
