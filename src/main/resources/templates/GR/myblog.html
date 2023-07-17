@@ -189,7 +189,7 @@
         }
 
         .mypost{
-            padding-top: 50px;
+            padding-bottom: 50px;
         }
 
         .post_info{
@@ -347,7 +347,7 @@
                 
                 <div id="wrapper" class="container">
                   <div class="blogname d-flex justify-content-center">
-                      <h3>블로그 이름 수정해야함!</h3>
+                      <h3 th:text="${user.blogname}"></h3>
                   </div>
           
                     <div id="blog_box" class="container">
@@ -358,20 +358,16 @@
                                 </div>
                                 <div class="myinfo_box">
                                     <div class="myinfo">
-                                        <p>닉네임</p>
+                                        <p th:text="${user.nickname}"></p>
                                         <div class="myinfo_follow">
                                             <div class="myfollowing">
-                                                <div class="follow_number">
-                                                    00
-                                                </div>
+                                                <div class="follow_number" th:text="${following}"></div>
                                                 <div class="follow_word">
                                                     팔로잉
                                                 </div>
                                             </div>
                                             <div class="myfollower">
-                                                <div class="follow_number">
-                                                    00
-                                                </div>
+                                                <div class="follow_number" th:text="${follower}"></div>
                                                 <div class="follow_word">
                                                     팔로우
                                                 </div>
@@ -382,7 +378,7 @@
                                         <input type="button" value="내 정보 수정">
                                     </div>
                                     <div class="introduce">
-                                        <p>한 줄 소개 </p>
+                                        <p th:text="${user.introduce}"></p>
                                     </div>
                                 </div>
                                 <div class="my_category">
@@ -391,54 +387,11 @@
                                             <p>카테고리</p>
                                         </div>
                                     </div>
-                                    <div class="cate">
-                                        <div class="cate_1">
-                                            카테고리1
-                                        </div>
-                                        <div class="cate_num">
-                                            00
-                                        </div>
+                                    <div class="cate" th:each="obj:${pclist}">
+                                        <div class="cate_1" th:text="${obj.CATEGORY}"></div>
+                                        <div class="cate_num" th:text="${obj.COUNT}"></div>
                                     </div>
-                                    <div class="cate">
-                                        <div class="cate_1">
-                                            카테고리2
-                                        </div>
-                                        <div class="cate_num">
-                                            00
-                                        </div>
-                                    </div>
-                                    <div class="cate">
-                                        <div class="cate_1">
-                                            카테고리3
-                                        </div>
-                                        <div class="cate_num">
-                                            00
-                                        </div>
-                                    </div>
-                                    <div class="cate">
-                                        <div class="cate_1">
-                                            카테고리4
-                                        </div>
-                                        <div class="cate_num">
-                                            00
-                                        </div>
-                                    </div>
-                                    <div class="cate">
-                                        <div class="cate_1">
-                                            카테고리5
-                                        </div>
-                                        <div class="cate_num">
-                                            00
-                                        </div>
-                                    </div>
-                                    <div class="cate">
-                                        <div class="cate_1">
-                                            카테고리6
-                                        </div>
-                                        <div class="cate_num">
-                                            00
-                                        </div>
-                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -446,18 +399,18 @@
                         <div id="right-area" class="side-width side-width-1">
                             <div class="post_box">
                                 <div class="post">
-                                    <p>post 00</p>
+                                    <p>post&nbsp;&nbsp;</p><p th:text="${formattedpostcount}"></p>
                                 </div>
                                 <div class="mypost">
                                     <div class="post_img">
                                         <img th:src="@{/images/123123.jpg}" width="820px" height="300px">
                                     </div>
-                                    <div class="post_info">
+                                    <div class="post_info" th:each="obj:${plist}">
                                         <div class="post_title">
-                                            <p>제목제목제목</p>
+                                            <p th:text="${obj.title}"></p>
                                         </div>
                                         <div class="post_content">
-                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore aliquam vel minus magni odio quam mollitia minima fugit perferendis dolorem eum provident necessitatibus quaerat voluptatum optio, odit omnis incidunt reiciendis!</p>
+                                            <p th:text="${obj.content}"></p>
                                         </div>
                                         <div class="post_tag">
                                             <input type="button" value="#태그태그">
@@ -473,47 +426,14 @@
                                         </div>
                                         <div class="post_lastline">
                                             <div class="post_date">
-                                                <p>2023.07.07</p>
+                                                <p th:text="${obj.regdate}"></p>
                                             </div>
                                             <div class="post_infoinfo">
-                                                <p>댓글  100 좋아요 100</p>
+                                                <p>댓글&nbsp;</p><p></p> 좋아요 100</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- <div class="mypost">
-                                    <div class="post_img">
-                                        <img th:src="@{/images/123123.jpg}" width="820px" height="300px">
-                                    </div>
-                                    <div class="post_info">
-                                        <div class="post_title">
-                                            <p>제목제목제목</p>
-                                        </div>
-                                        <div class="post_content">
-                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore aliquam vel minus magni odio quam mollitia minima fugit perferendis dolorem eum provident necessitatibus quaerat voluptatum optio, odit omnis incidunt reiciendis!</p>
-                                        </div>
-                                        <div class="post_tag">
-                                            <input type="button" value="#태그태그">
-                                        </div>
-                                        <div class="post_tag">
-                                            <input type="button" value="#태그태그">
-                                        </div>
-                                        <div class="post_tag">
-                                            <input type="button" value="#태그태그">
-                                        </div>
-                                        <div class="post_tag">
-                                            <input type="button" value="#태그태그">
-                                        </div>
-                                        <div class="post_lastline">
-                                            <div class="post_date">
-                                                <p>2023.07.07</p>
-                                            </div>
-                                            <div class="post_infoinfo">
-                                                <p>댓글  100 좋아요 100</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> -->
                                 
                             </div>
                             
