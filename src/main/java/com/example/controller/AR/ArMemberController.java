@@ -1,8 +1,6 @@
 package com.example.controller.AR;
 
-import java.text.Format;
 
-import org.apache.tomcat.util.descriptor.tagplugin.TagPluginParser;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class ArMemberController {
     
-    final ArMemberMapper mMapper;
+    // final ArMemberMapper mMapper;
     final ArMemberService mService;
     //암호화
     BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();
@@ -74,6 +72,6 @@ public class ArMemberController {
 
 
 
-    
+
 
 }

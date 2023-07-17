@@ -143,11 +143,13 @@
                                 <tr>
                                     <th style="border: 3px solid;">닉네임</th>
                                     <td style="border: 3px solid;"><input type="nickname" id="nickname" name="nickname" ></td>
-                                    <td></td>
+                                    <td style="border: 3px solid;">
+                                        <button id="emailchk">중복확인</button>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th style="border: 3px solid;">전화 번호</th>
-                                    <td style="border: 3px solid;"><input type="phonenum" id="phonenum" name="phonenum" placeholder="010 - 0000 - 0000" ></td>
+                                    <td style="border: 3px solid;"><input type="phone" id="phone" name="phone" placeholder="010 - 0000 - 0000" ></td>
                                     <td></td>
                                 </tr>
                                 <tr>
@@ -192,7 +194,7 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 
     <!-- Initialize Swiper -->
-    <script>
+    <script th:inline="javascript" type="text/javascript">
         var menuButton = document.querySelector('.menu-button');
         var openMenu = function () {
             swiper.slidePrev();
@@ -239,6 +241,10 @@
                 $email2.val($em.val());
             }
         }
+
+        //이메일 중복 확인
+        const email = document.getElementById("email");
+
     </script>
  </body>
 
