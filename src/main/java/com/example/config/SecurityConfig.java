@@ -10,8 +10,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 import com.example.handler.CustomLogoutSuccessHandler;
+import com.example.handler.CustomLoginFailHandler;
 import com.example.service.SecurityServiceImpl;
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 
     final private SecurityServiceImpl userLoginService;
+    final private AuthenticationFailureHandler customLoginFailHandler = new CustomLoginFailHandler();
 
     @Bean // 객체를 생성(자동으로 호출됨)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -38,10 +41,11 @@ public class SecurityConfig {
         http.formLogin()
             .loginPage("/login.do")
             .loginProcessingUrl("/loginaction.do")
-            .usernameParameter("id")
+            .usernameParameter("email")
             .passwordParameter("password")
             .defaultSuccessUrl("/mhhome.do")
             // .successHandler(new LoginSuccessHandler())
+            .failureHandler(customLoginFailHandler) // 로그인 실패 핸들러
             .permitAll();
 
         // (2) 로그아웃 처리 (get은 안됨. 반드시 post로 호출해야 됨)
