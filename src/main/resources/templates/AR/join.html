@@ -106,34 +106,37 @@
                                                 <option value="nate.com">nate.com</option>
                                                 <option value="1">직접입력</option>
                                             </select>
+                                            <input name="email" id="email" type="hidden">
                                         </div>
                                     </td>
                                     <td style="border: 3px solid;">
-                                        <button id="emailchk">중복확인</button>
+                                        <input type="button" id="emailchk" value="중복 확인" onclick="ajaxEmCheck(email)" ></input>
+                                        <!-- <button id="emailchk" onclick="ajaxEmCheck(email)">중복확인</button> -->
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th style="border: 3px solid;">비밀번호변경</th>
+                                    <th style="border: 3px solid;">비밀번호</th>
                                     <td style="border: 3px solid;">
                                         <div class="password">
                                             <p>
                                                 <div class="pw1" >
                                                     <label>비밀번호</label>
-                                                    <input type="password" id="pw" name="pw" >
-                                                    <label id="pwcheck" name="pwcheck" class="pwcheck"></label>
+                                                    <input type="password" id="pw" name="pw"  autoComplete="off" />
                                                 </div>
                                             </p>
                                             <p>
                                                 <div class="pw2">
                                                     <label>비밀번호 확인</label>
-                                                    <input type="password" id="pwConfirm" name="pwConfirm" onkeyup="isSame()" >
-                                                    
+                                                    <input type="password" id="pwcheck" name="pwcheck" autoComplete="off" onkeyup="pwConfirm()" />
                                                 </div>
                                             </p>
                                         </div>
                                     </td>
-                                    <td></td>
+                                    <td>
+                                        <p></p>
+                                        <p id ="confirmMsg"></p>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th style="border: 3px solid;">이름</th>
@@ -193,6 +196,9 @@
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.5/axios.min.js"></script>
     <!-- Initialize Swiper -->
     <script th:inline="javascript" type="text/javascript">
         var menuButton = document.querySelector('.menu-button');
@@ -223,27 +229,106 @@
                 },
             },
         });
-
-
-
+    
+    
         //email 셀렉트박스
         function selectEmail(em){
-            var $em = $(em);
-            var $email2 = $('input[name=email2]');
 
-            // '1'인경우 직접 입력
-            if($em.val() == "1"){
-                $email2.attr('readonly', false);
-                $email2.val('');
+        var email1 = $('input[name=email1]');
+        var email2 = $('input[name=email2]');
+
+        // '1'인경우 직접 입력
+        if(em.value == "1"){
+            email2.attr('readonly', false);
+            email2.val('');
+        }
+        else{
+            email2.attr('readonly', true);
+            email2.attr('value', em.value);
+        }
+
+        //이메일 합치기 (email1 + email2)
+        $('input[name=email]').attr("value", `${email1.val()}@${email2.val()}`);
+
+        console.log($('input[name=email]').val());
+        }
+
+        // 주소 직접 입력 시(oninput) 호출되는 함수 
+        function inputEmail(email2) {
+
+        var email1 = $('input[name=email1]');
+
+        $('input[name=email]').attr("value", `${email1.val()}@${email2.value}`);
+
+        // console.log($('input[name=email]').val());
+        }
+
+
+
+        //-----------------------------------------------------------------
+
+
+
+        //이메일 중복 확인
+        var emcheck = 0; //1 이면 사용 가능
+        async function ajaxEmCheck(e){
+            const email = document.getElementById("email");
+
+            if(email.value.length > 0){
+               // rest api 호출
+               const url = [[@{/api/emailcheck.do}]] + `?email=${email.value}`;
+                const headers = {"Content-Type":"application/json"};
+                const {data} = await axios.get(url, {headers});
+
+                console.log(data.ret);
+
+
+                if (data.ret === 1) {
+                    // 사용 불가
+                    emcheck = 0;
+                    alert('사용 불가능한 이메일입니다.');
+                    e.value = '';
+                }
+                else if (data.ret === 0) {
+                    // 사용 가능
+                    emcheck = 1;
+                    alert('사용 가능한 이메일입니다.');
+                    document.getElementById("pw").focus();
+                }
             }
-            else{
-                $email2.attr('readonly', true);
-                $email2.val($em.val());
+            else {
+                alert('이메일을 입력하세요.');
+                e.focus();
             }
         }
 
-        //이메일 중복 확인
-        const email = document.getElementById("email");
+        //-----------------------------------------------------------------
+
+        //비밀번호 일치 확인
+        function pwConfirm(){
+            var password = document.getElementById("pw");
+            var pwcheck = document.getElementById("pwcheck");
+            var confirmMsg = document.getElementById('confirmMsg');	//확인 메세지
+		    var correctColor = "#1D3563";	//맞았을 때 출력되는 색깔
+		    var wrongColor ="#ff0000";	//틀렸을 때 출력되는 색깔
+
+
+            if(password.value == pwcheck.value){
+                confirmMsg.style.color = correctColor;
+                confirmMsg.innerHTML = "비밀번호가 일치합니다";
+            }
+            else{
+                confirmMsg.style.color = wrongColor;
+                confirmMsg.innerHTML = "비밀번호를 확인해주세요";
+            }
+
+        }
+
+
+        //-----------------------------------------------------------------
+
+
+
 
     </script>
  </body>

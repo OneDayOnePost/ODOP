@@ -26,5 +26,17 @@ public class ArMemberServiceImpl implements ArMemberService {
 		}
 	}
 
+    //이메일 중복 확인
+    @Override
+    public int selectMemberEmailCheck(String email) {
+        try{
+            return mRepository.countByEmail(email);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
     
 }
