@@ -15,13 +15,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class SecurityServiceImpl implements UserDetailsService {
+
     final String format = "SecurityServiceImpl => {}";
     // final ArCustomerRepository cRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
         // (2) 아이디를 이용해서 Customer 테이블에서 정보를 꺼낸 후 User 타입으로 변환해서 리턴하면
         // 시큐리티가 비교 후에 로그인 처리를 자동으로 수행함
+        
         log.info(format, username);
 
         // Customer obj = cRepository.findById(username).orElse(null);
