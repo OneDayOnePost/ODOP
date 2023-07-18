@@ -15,7 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.dto.CateDTO;
 import com.example.dto.MemberDTO;
 import com.example.dto.PostDTO;
+import com.example.entity.Post;
+import com.example.entity.PostTag;
+import com.example.entity.GR.postall;
 import com.example.mapper.GR.GrMyblogMapper;
+import com.example.repository.GR.PostRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +32,7 @@ public class GrMyBlogController {
 
     // test용
     final GrMyblogMapper gMapper;
+    final PostRepository postRepository;
 
     @GetMapping(value = "/myblog.do")
     public String myblogGET(Model model) { // @AuthenticationPrincipal User user
@@ -52,17 +57,31 @@ public class GrMyBlogController {
             }
 
             // 포스트 목록 불러오기
-            // List<PostDTO> plist = gMapper.selectpostAll("test1@naver.com");
-            // log.info("postall => {}", plist.toString());
+            List<postall> plist = gMapper.selectpostAll("test1@naver.com");
+
+            List<Post> list = postRepository.findByWriter("test1@naver.com");
+
+            log.info("list => {}", list.toString());
+
+            for (Post post : list) {
+
+                // List<PostTag> list1 = post.getPostTagList();
+
+                // log.info("태그 => {}", list1.);
+
+                // System.out.println(post.getPostTagList().toString());
+
+            }
+
+            log.info("postall => {}", plist.toString());
 
             // 태그 불러오기
-            // for (int i = 0; i < plist.size(); i++) {
-            // plist.get(i).getNo()
-            // List<Map<BigInteger, String>> tlist =
-            // gMapper.selecttag(plist.get(i).getNo());
-            // log.info("rkrkrk=>{}", tlist.toString());
-            // log.info(plist.get(i).getNo().toString());
-            // }
+            for (int i = 0; i < plist.size(); i++) {
+                List<Map<String, Integer>> tlist = gMapper.selectposttag("test1@naver.com", plist.get(i).getNo());
+                log.info("rkrkrk=>{}", tlist.toString());
+                log.info(plist.get(i).getNo().toString());
+                model.addAttribute("tlist", tlist);
+            }
 
             // 댓글 갯수
             PostDTO post = new PostDTO();
@@ -73,8 +92,8 @@ public class GrMyBlogController {
             model.addAttribute("follower", follower);
             model.addAttribute("pclist", pclist);
             model.addAttribute("formattedpostcount", formattedpostcount);
-            // model.addAttribute("plist", plist);
-            // model.addAttribute("tlist", tlist);
+            model.addAttribute("plist", plist);
+            model.addAttribute("list", list);
 
             return "/GR/myblog";
         } catch (
