@@ -1,8 +1,8 @@
 package com.example.controller.MH;
 
+import java.math.BigInteger;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -14,12 +14,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.entity.Cate;
 import com.example.entity.Member;
+import com.example.entity.Post;
 import com.example.repository.MH.MemberRepository;
 import com.example.service.MH.PostInsertService;
+import com.example.service.MH.PostSelectService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,7 @@ public class MhHomeController {
 
     final private MemberRepository mRepository;
     final private PostInsertService pService;
+    final private PostSelectService postSelectService;
 
     BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();
 
@@ -41,19 +43,9 @@ public class MhHomeController {
     // @Value("${google.redirect.url}") String redirectUrl;
 
     @GetMapping(value = "/mhlogin.do")
-    public String loginGET(
-        @RequestParam(name = "state", defaultValue = "", required = false) String state,
-        HttpServletRequest request) {
+    public String loginGET() {
 
         // log.info(format, clientId);
-
-        HttpSession httpSession = request.getSession();
-
-        log.info(format, state);
-
-        if(state.equals("error")) {
-            log.info(format, (String)httpSession.getAttribute("errorMessage"));
-        }
 
         return "/MH/login";
 
@@ -124,6 +116,30 @@ public class MhHomeController {
         model.addAttribute("catelist", catelist);
 
         return "/MH/write";
+    }
+
+    @GetMapping(value = "/mhselect.do")
+    public String selectGET(Model model) {
+
+        BigInteger postno = new BigInteger("35");
+
+        Post post = postSelectService.selectPostOne(postno);
+
+        model.addAttribute("post", post);
+
+        return "/MH/selectone";
+    }
+
+    @GetMapping(value = "/mhupdate.do")
+    public String updateGET(Model model) {
+
+        BigInteger postno = new BigInteger("35");
+
+        Post post = postSelectService.selectPostOne(postno);
+
+        model.addAttribute("post", post);
+        
+        return "/MH/update";
     }
 
     // 구글 로그인창 호출

@@ -19,7 +19,7 @@
     },
     "database": "Oracle",
     "databaseName": "",
-    "canvasType": "ERD",
+    "canvasType": "@vuerd/builtin-sql-ddl",
     "language": "JPA",
     "tableCase": "pascalCase",
     "columnCase": "camelCase",
@@ -1246,7 +1246,7 @@
           "active": false,
           "left": 741.0352,
           "top": 820.1005,
-          "zIndex": 15,
+          "zIndex": 14,
           "widthName": 60,
           "widthComment": 60,
           "color": "#FFC107"
@@ -2273,7 +2273,7 @@
           "active": false,
           "left": 742.1666,
           "top": 1263.667,
-          "zIndex": 16,
+          "zIndex": 15,
           "widthName": 60,
           "widthComment": 60,
           "color": "#CDDC39"
@@ -2292,7 +2292,7 @@
           "active": false,
           "left": 294,
           "top": 1260,
-          "zIndex": 14,
+          "zIndex": 13,
           "width": 407,
           "height": 100
         },

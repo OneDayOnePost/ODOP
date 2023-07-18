@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>작성</title>
+    <title>수정</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <!--Bootstrap 용 CSS-->
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
@@ -22,55 +22,6 @@
     <link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
     <!--thymeleaf contextpath-->
     <link id="contextPathHolder" th:data-contextPath="${#httpServletRequest.getContextPath()}" />
-    <style>
-        #write_writer {
-            font-size: 22px;
-            font-weight: 700;
-        }
-
-        #wirte_today {
-            font-size: 22px;
-            font-weight: 400;
-            color: #5C5960;
-        }
-
-        #write_box {
-            border: 1px solid #D9D9D9;
-            background: #FFF;
-            padding: 20px;
-        }
-
-        #write_title {
-            font-size: 30px;
-            width: 100%;
-            border: none;
-        }
-
-        #write_select {
-            width: 220px;
-            height: 40px;
-            border-radius: 11px;
-            border: 2px solid #B6C6D3;
-            background: #FFF;
-            text-align: center;
-        }
-
-        #write_tagbox {
-            width: 100%;
-        }
-
-        .tagify {
-            width: 100%;
-        }
-
-        .write_button {
-            width: 125px;
-            height: 40px;
-            border-radius: 20.5px;
-            border: 1px solid #3A5485;
-            background: #FFF;
-        }
-    </style>
 </head>
 
 <body>
@@ -110,7 +61,6 @@
         </div>
     </div>
 
-
     <!--jQuery-->
     <script th:src="@{/js/jquery-3.6.4.min.js}"></script>
     <!--axios library-->
@@ -119,95 +69,24 @@
     <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
     <!--Tagify JS-->
     <script src="https://unpkg.com/@yaireo/tagify"></script>
-    <script>
-
+    <script th:inline="javascript">
         const contextPath = $('#contextPathHolder').attr('data-contextPath');
+
+        var origin_content = /*[[${post.content}]]*/''; 
 
         // TOAST editor 생성
         const editor = new toastui.Editor({
             el: document.querySelector('#editor'),
             previewStyle: 'vertical',
             height: '500px',
-            initialValue: 'markdown',
+            initialValue: origin_content
         });
 
         // tagify 생성
         var input_tag = document.querySelector('#tagify');
         var tagify = new Tagify(input_tag, {
-            maxTags : 5
+            maxTags: 5
         });
-
-        async function writeAction() {
-
-            var cate = document.querySelector("#write_select");
-            var title = document.querySelector("#write_title");
-            var secret = 0;
-
-            var content1 = editor.getHTML();
-            var content2 = editor.getMarkdown();
-
-            // console.log(content1);
-            // console.log(content2);
-
-            if ($("#secret_check").is(":checked")) {
-                secret = 1;
-            }
-
-            // console.log(secret);
-            // console.log(cate.value);
-            // console.log(title.value);
-            // console.log(editor.getMarkdown().length);
-
-            // 1. 해시태그 저장 -> 배열 객체 생성
-            var tag_list = [];
-
-            var tagify_list = tagify.value;
-
-            tagify_list.forEach(function(item) {
-
-                // console.log(item.value);
-
-                tag_list.push(item.value);
-
-                // console.log(tag_list);
-            })
-            
-            // 1. 유효성 검사
-
-            if (Number(cate.value) === 0) {
-                alert("카테고리를 선택해주세요");
-                cate.focus();
-                return false;
-            }
-            if (title.value.length < 1) {
-                alert("제목을 입력해주세요");
-                title.focus();
-                return false;
-            }
-            if (editor.getMarkdown().length < 1) {
-                alert("내용을 입력해주세요");
-                editor.focus();
-                return false;
-            }
-
-            // 2. 전송
-
-            const url = contextPath + '/api/post/write.json';
-            const headers = { "Content-Type" : "application/json" };
-            const body = { title: title.value, content: content1, cate: {no: cate.value}, secret: secret,
-                            tagList: tag_list };
-
-            console.log(url);    
-            console.log(body);
-            const { data } = await axios.post(url, body, { headers });
-
-            if(data.status === 200) {
-                window.location.href = contextPath + "/"; // 어디로 이동?
-            }
-
-
-        }
-
     </script>
 </body>
 
