@@ -143,11 +143,11 @@
             var title = document.querySelector("#write_title");
             var secret = 0;
 
-            var content1 = editor.getHTML();
-            var content2 = editor.getMarkdown();
+            var content_html = editor.getHTML();
+            var content_markdown = editor.getMarkdown();
 
-            // console.log(content1);
-            // console.log(content2);
+            // console.log(content_html);
+            // console.log(content_markdown);
 
             if ($("#secret_check").is(":checked")) {
                 secret = 1;
@@ -194,8 +194,8 @@
 
             const url = contextPath + '/api/post/write.json';
             const headers = { "Content-Type" : "application/json" };
-            const body = { title: title.value, content: content1, cate: {no: cate.value}, secret: secret,
-                            tagList: tag_list };
+            const body = { title: title.value, content: content_html, markdown: content_markdown, cate: {no: cate.value}, 
+                        secret: secret, tagList: tag_list }; // 로그인 email 추가
 
             console.log(url);    
             console.log(body);

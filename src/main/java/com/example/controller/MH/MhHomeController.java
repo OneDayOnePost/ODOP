@@ -133,10 +133,12 @@ public class MhHomeController {
     @GetMapping(value = "/mhupdate.do")
     public String updateGET(Model model) {
 
-        BigInteger postno = new BigInteger("35");
+        BigInteger postno = new BigInteger("37");
 
+        List<Cate> catelist = pService.selectCateList();
         Post post = postSelectService.selectPostOne(postno);
-
+        
+        model.addAttribute("catelist", catelist);
         model.addAttribute("post", post);
         
         return "/MH/update";

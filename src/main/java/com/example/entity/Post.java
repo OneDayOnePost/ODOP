@@ -20,10 +20,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Immutable;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
@@ -46,9 +44,13 @@ public class Post {
   // 제목
   private String title;
 
-  // 내용
+  // 내용 (html)
   @Lob
   private String content;
+
+  // 내용 (markdown)
+  @Lob
+  private String markdown;
 
   // 조회수
   private BigInteger hit = new BigInteger("1");
@@ -95,6 +97,7 @@ public class Post {
   @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
   private List<Dope> dopeList = new ArrayList<>();
 
+  // 해시태그 리스트를 저장할 임시 변수
   @Transient
   private List<String> tagList = new ArrayList<>();
 
