@@ -101,4 +101,8 @@ public class Post {
   @Transient
   private List<String> tagList = new ArrayList<>();
 
+  // 댓글수를 저장할 임시 변수
+  @Transient
+  private int replyCount;
+
 }

@@ -137,6 +137,7 @@
             maxTags : 5
         });
 
+        /* 글 작성 */
         async function writeAction() {
 
             var cate = document.querySelector("#write_select");
@@ -158,20 +159,6 @@
             // console.log(title.value);
             // console.log(editor.getMarkdown().length);
 
-            // 1. 해시태그 저장 -> 배열 객체 생성
-            var tag_list = [];
-
-            var tagify_list = tagify.value;
-
-            tagify_list.forEach(function(item) {
-
-                // console.log(item.value);
-
-                tag_list.push(item.value);
-
-                // console.log(tag_list);
-            })
-            
             // 1. 유효성 검사
 
             if (Number(cate.value) === 0) {
@@ -190,15 +177,28 @@
                 return false;
             }
 
-            // 2. 전송
+            // 2. 해시태그 저장 -> 배열 객체 생성
+            var tag_list = [];
+
+            var tagify_list = tagify.value;
+
+            tagify_list.forEach(function(item) {
+
+                // console.log(item.value);
+
+                tag_list.push(item.value);
+                
+            })
+
+            // console.log(tag_list);
+
+            // 3. 전송
 
             const url = contextPath + '/api/post/write.json';
             const headers = { "Content-Type" : "application/json" };
             const body = { title: title.value, content: content_html, markdown: content_markdown, cate: {no: cate.value}, 
                         secret: secret, tagList: tag_list }; // 로그인 email 추가
 
-            console.log(url);    
-            console.log(body);
             const { data } = await axios.post(url, body, { headers });
 
             if(data.status === 200) {
