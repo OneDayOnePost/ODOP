@@ -61,11 +61,13 @@
         }
 
         .reply_output_content {
-            width: 100%;
+            min-width: 100%;
+            width: auto;
             background: #EFEFEF;
         }
 
-        .reply_output_content>textarea {
+        .reply_output_content > .reply_read {
+
             width: 100%;
             background: #EFEFEF;
             border: none;
@@ -73,6 +75,15 @@
             box-shadow: none !important;
             resize: none;
 
+        }
+        .reply_output_content > .reply_modify {
+            
+            display: block;
+            width: 100%;
+            border: none;
+            outline-color: #FE6B8B;
+            box-shadow: none !important;
+            resize: none;
         }
 
         .reply_output_button {
@@ -142,26 +153,32 @@
             <div class="reply_output">
                 <!--동적 생성-->
                 <!-- <div class="reply_box mb-3">
-                    <div class="d-flex">
-                        <div>
-                            이미지
+                    <div class="d-flex mb-2">
+                        <div class="me-2">
+                            <img class="d-block img-thumbnail w-100" th:src="@{/images/default_thumbnail.png}" style="width: 73px; height: 73px;">
                         </div>
                         <div class="d-flex flex-column">
                             <div>닉네임</div>
                             <div>날짜</div>
                         </div>
+                        <div class="d-flex flex-column ms-auto mt-auto">
+                            <div class="d-flex justify-content-end">
+                                <button class="reply_output_button me-1">수정</button>
+                                <span class="vr"></span>
+                                <button class="reply_output_button mx-1">삭제</button>
+                                <span class="vr"></span>
+                                <button class="reply_output_button ms-1">신고</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="d-flex justify-content-end mb-1">
-                        <button class="reply_output_button me-1">수정</button>
-                        <span class="vr"></span>
-                        <button class="reply_output_button mx-1">삭제</button>
-                        <span class="vr"></span>
-                        <button class="reply_output_button ms-1">신고</button>
-                    </div>
+                    
+                    
                     <div class="reply_output_content">
-                        <div class="pt-4 ps-4 pb-2" style="font-size: 18px; font-weight: 600;">댓글 내용</div>
-                        <textarea readonly></textarea>
+                        <div class="pt-4 px-4" style="font-size: 18px; font-weight: 600;">댓글 내용</div>
+                        <div class="p-4" readonly>댓글 내용입력합니다.</div>
+                        <button class="mx-4">답글</button>
                     </div>
+                    
                 </div> -->
             </div>
         </div>
@@ -229,19 +246,28 @@
 
             if (data.status === 200) {
 
-                $('.reply_output').empty();
+                // 댓글 영역 초기화
+                // $('.reply_output').empty();
 
                 data.list.forEach((obj, index) => {
 
                     var reply_box = document.createElement("div");
+                    reply_box.id = "reply_box" + obj.no;
                     reply_box.className = "reply_box mb-3";
 
                     /* 첫 번째 <div> */
 
                     var div1 = document.createElement('div');
-                    div1.className = "d-flex";
+                    div1.className = "d-flex mb-2";
 
                     var div1_1 = document.createElement('div');
+                    div1_1.className = "me-2";
+
+                    var div1_1_img = document.createElement('img');
+                    div1_1_img.src = `${contextPath}/images/default_thumbnail.png`;
+                    div1_1_img.className = "d-block img-thumbnail w-100";
+                    div1_1_img.style.width = "73px";
+                    div1_1_img.style.height = "73px";
 
                     var div1_2 = document.createElement('div');
                     div1_2.className = "d-flex flex-column";
@@ -252,16 +278,13 @@
                     var div1_2_2 = document.createElement('div');
                     div1_2_2.textContent = dateformat(obj.regdate);
 
-                    div1_2.append(div1_2_1);
-                    div1_2.append(div1_2_2);
+                    var div1_3 = document.createElement('div');
+                    div1_3.className = "d-flex flex-column ms-auto mt-auto";
 
-                    div1.append(div1_1);
-                    div1.append(div1_2);
-
-                    /* 두 번째 <div> */
+                    /* 버튼 영역 <div> */
 
                     var div2 = document.createElement('div');
-                    div2.className = "d-flex justify-content-end mb-1";
+                    div2.className = "d-flex justify-content-end";
 
                     var div2_button1 = document.createElement('button');
                     div2_button1.className = "reply_output_button me-1";
@@ -290,19 +313,31 @@
                     div2.append(div2_span2);
                     div2.append(div2_button3);
 
-                    /* 세 번째 <div> */
+                    /************/
+
+                    div1_1.append(div1_1_img);
+
+                    div1_2.append(div1_2_1);
+                    div1_2.append(div1_2_2);
+
+                    div1_3.append(div2);
+
+                    div1.append(div1_1);
+                    div1.append(div1_2);
+                    div1.append(div1_3);
+
+                    /* 두 번째 <div> */
 
                     var div3 = document.createElement('div');
                     div3.className = "reply_output_content"
 
                     var div3_1 = document.createElement('div');
                     div3_1.className = "pt-4 ps-4 pb-2";
-                    div3_1.style = "font-size: 18px; font-weight: 600;";
+                    div3_1.style = "font-size: 15px; font-weight: 600;";
                     div3_1.textContent = "댓글 내용"
 
                     var div3_textarea = document.createElement('textarea');
-                    div3_textarea.id = "reply_text" + obj.no;
-                    div3_textarea.className = "p-4";
+                    div3_textarea.className = "reply_read p-4";
                     div3_textarea.textContent = obj.content;
                     div3_textarea.readOnly = true;
 
@@ -312,7 +347,6 @@
                     /***********/
 
                     reply_box.append(div1);
-                    reply_box.append(div2);
                     reply_box.append(div3);
 
                     reply_output.append(reply_box);
@@ -339,10 +373,61 @@
         /* 댓글 수정 */
         function updateAction(no) {
 
-            console.log(no);
-            $(`#reply_text${no}`).attr("readOnly", false);
-            $(`#reply_text${no}`).css("background-color", "white");
-            $(`#reply_text${no}`).css("background-clip", "content-box");
+            // console.log(no);
+
+            var reply_output_content = $(`#reply_box${no}`).find(".reply_output_content");
+            var reply_text = reply_output_content.find("textarea").val();
+
+            reply_output_content.empty();
+
+            /* 첫 번째 div */
+
+            var div1 = document.createElement('div');
+            div1.className = "form-check d-flex justify-content-end";
+
+            var div1_input = document.createElement('input');
+            div1_input.id = "secret_check" + no;
+            div1_input.className = "form-check-input me-2 secret_check";
+            div1_input.type = "checkbox";
+
+            var div1_label = document.createElement('label');
+            div1_label.className = "form-check-label";
+            div1_label.htmlFor = "secret_check" + no;
+            div1_label.textContent = "비밀 댓글"
+
+            div1.append(div1_input);
+            div1.append(div1_label);
+
+            /* 두 번째 div */
+
+            var div2 = document.createElement('div');
+            div2.className = "reply_modify my-2";
+
+            var textarea = document.createElement('textarea');
+            textarea.className = "reply_modify";
+            textarea.textContent = reply_text;
+
+            
+
+            // <div class="form-check d-flex justify-content-end">
+            //     <input class="form-check-input me-2" type="checkbox" id="secret_check">
+            //     <label class="form-check-label" for="secret_check">
+            //         비밀 댓글
+            //     </label>
+            // </div>
+            // <div id="reply_input" class="my-2">
+            //     <textarea id="reply_content" rows="5"></textarea>
+            //     <div class="d-flex justify-content-end mt-2">
+            //         <button id="reply_input_button" onclick="writeAction()">댓글 작성</button>
+            //     </div>
+            // </div>
+
+            // console.log(reply_output_content);
+            // console.log(reply_text);
+
+            // $(`#reply_text${no}`).attr("readOnly", false);
+            // $(`#reply_text${no}`).css("background-color", "white");
+            // $(`#reply_text${no}`).css("background-clip", "content-box");
         }
 
         /* 댓글 삭제 */
