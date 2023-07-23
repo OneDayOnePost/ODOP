@@ -72,10 +72,10 @@ public class Member {
   private String blogname;
 
   // 탈퇴유무(-1:강제탈퇴 / 0:탈퇴O / 1:탈퇴X)
-  private BigInteger quitchk;
+  private BigInteger quitchk = new BigInteger("1");
 
   // C:고객 / A:관리자
-  private String role;
+  private String role="C";
 
   // 팔로우
   @ToString.Exclude

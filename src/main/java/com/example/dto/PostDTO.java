@@ -35,8 +35,5 @@ public class PostDTO {
 
   // 상태(0:신고X / 1:신고O)
   private BigInteger state;
-
-  // 권한(C:멤버 / A:관리자)
-  private String role;
   
 }

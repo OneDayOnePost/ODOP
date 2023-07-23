@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>조회</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <!--Bootstrap 용 CSS-->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <!--Bootstrap 용 Icon CDN-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <!--font awesome 용-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!--google fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+    <!--thymeleaf contextpath-->
+    <link id="contextPathHolder" th:data-contextPath="${#httpServletRequest.getContextPath()}" />
+    <style>
+        .select_button {
+            width: 120px;
+            height: 50px;
+            border-radius: 25px;
+            border: 2px solid #213251;
+            background: #FFF;
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+        .divider {
+            border: 0;
+            height: 2px;
+            background: #213251;
+        }
+
+        .select_tag {
+            padding: 10px;
+            border: none;
+            border-radius: 14px;
+            background: #DFECF6;
+        }
+
+        #reply_input {
+            width: 100%;
+        }
+
+        #reply_content {
+            width: 100%;
+            border: 1px solid #D9D9D9;
+            outline-color: #FE6B8B;
+            resize: none;
+        }
+
+        #reply_input_button {
+            width: 125px;
+            height: 40px;
+            border-radius: 17px;
+            background: #D9D9D9;
+        }
+
+        .reply_output_content {
+            min-width: 100%;
+            width: auto;
+            background: #EFEFEF;
+        }
+
+        .reply_output_content > .reply_read {
+
+            width: 100%;
+            background: #EFEFEF;
+            border: none;
+            outline: none !important;
+            box-shadow: none !important;
+            resize: none;
+
+        }
+        .reply_output_content > .reply_modify {
+            
+            display: block;
+            width: 100%;
+            border: none;
+            outline-color: #FE6B8B;
+            box-shadow: none !important;
+            resize: none;
+        }
+
+        .reply_output_button {
+            border: none;
+            background-color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="p-3">
+            <div>
+                <h3 th:text="${post.title}"></h3>
+            </div>
+            <div class="d-flex">
+                <div class="d-flex">
+                    <div class="me-3" th:text="${post.writer}"></div>
+                    <div th:text="${#dates.format(post.regdate, 'yyyy년 MM월 dd일 hh:mm')}">작성 날짜</div>
+                </div>
+                <div class="ms-auto d-flex">
+                    <div class="me-3"><i class="bi bi-eye me-2"></i><span th:text="${post.hit}"></span></div>
+                    <div class="me-3"><i class="bi bi-chat-dots me-2"></i><span th:text="${post.replyCount}"></span></div>
+                    <div class="me-3"><i class="bi bi-heart me-2"></i>좋아요</div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="divider mb-5">
+
+        <!--본문 영역-->
+        <div class="p-3" th:utext="${post.content}"></div>
+
+        <!--태그 영역-->
+        <div class="mb-4 p-3 text-center">
+            <th:block th:each="temp : ${post.postTagList}">
+                <button class="select_tag" th:text="|#${temp.tag}|"></button>
+            </th:block>
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center mb-5">
+            <button class="select_button me-3" type="button"><i class="bi bi-heart me-2"></i>좋아요</button>
+            <button class="select_button" type="button"><i class="bi bi-megaphone me-2"></i>신고</button>
+        </div>
+
+        <hr class="divider">
+
+        <!--댓글 영역-->
+        <div class="p-3">
+            <div th:text="|${post.replyCount}개의 댓글|"></div>
+
+            <!--댓글 입력-->
+            <div class="form-check d-flex justify-content-end">
+                <input class="form-check-input me-2" type="checkbox" id="secret_check">
+                <label class="form-check-label" for="secret_check">
+                    비밀 댓글
+                </label>
+            </div>
+            <div id="reply_input" class="my-2">
+                <textarea id="reply_content" rows="5"></textarea>
+                <div class="d-flex justify-content-end mt-2">
+                    <button id="reply_input_button" onclick="writeAction()">댓글 작성</button>
+                </div>
+            </div>
+
+            <!--댓글 조회-->
+            <div class="reply_output">
+                <!--동적 생성-->
+                <!-- <div class="reply_box mb-3">
+                    <div class="d-flex mb-2">
+                        <div class="me-2">
+                            <img class="d-block img-thumbnail w-100" th:src="@{/images/default_thumbnail.png}" style="width: 73px; height: 73px;">
+                        </div>
+                        <div class="d-flex flex-column">
+                            <div>닉네임</div>
+                            <div>날짜</div>
+                        </div>
+                        <div class="d-flex flex-column ms-auto mt-auto">
+                            <div class="d-flex justify-content-end">
+                                <button class="reply_output_button me-1">수정</button>
+                                <span class="vr"></span>
+                                <button class="reply_output_button mx-1">삭제</button>
+                                <span class="vr"></span>
+                                <button class="reply_output_button ms-1">신고</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="reply_output_content">
+                        <div class="pt-4 px-4" style="font-size: 18px; font-weight: 600;">댓글 내용</div>
+                        <div class="p-4" readonly>댓글 내용입력합니다.</div>
+                        <button class="mx-4">답글</button>
+                    </div>
+                    
+                </div> -->
+            </div>
+        </div>
+
+    </div>
+
+    <!--jQuery-->
+    <script th:src="@{/js/jquery-3.6.4.min.js}"></script>
+    <!--axios library-->
+    <script th:src="@{/js/axios.min.js}"></script>
+    <script th:inline="javascript">
+
+        const contextPath = $('#contextPathHolder').attr('data-contextPath');
+
+        const postno = /*[[${post.no}]]*/'';
+
+        /* 댓글 등록 */
+        async function writeAction() {
+
+            const reply_content = $("#reply_content");
+            var secret = 0;
+
+            if ($("#secret_check").is(":checked")) {
+                secret = 1;
+            }
+
+            // 1. 유효성 검사
+
+            if (reply_content.val().length < 1) {
+                alert("댓글 내용을 입력해주세요");
+                reply_content.focus();
+                return false;
+            }
+
+            // 2. 전송
+
+            const url = contextPath + '/api/reply/write.json';
+            const headers = { "Content-Type": "application/json" };
+            const body = {
+                writer: "writer", content: reply_content.val(), post: { no: postno },
+                secret: secret
+            }; // 로그인 email 추가
+
+            const { data } = await axios.post(url, body, { headers });
+
+            console.log(data);
+
+            if (data.status === 200) {
+                selectAction();
+            }
+
+        }
+
+        /* 댓글 조회 */
+        async function selectAction() {
+
+            const url = contextPath + '/api/reply/select.json?postno=' + postno;
+            const headers = { "Content-Type": "application/json" };
+
+            const { data } = await axios.get(url, { headers });
+
+            console.log(data);
+
+            var reply_output = document.querySelector(".reply_output");
+
+            if (data.status === 200) {
+
+                // 댓글 영역 초기화
+                // $('.reply_output').empty();
+
+                data.list.forEach((obj, index) => {
+
+                    var reply_box = document.createElement("div");
+                    reply_box.id = "reply_box" + obj.no;
+                    reply_box.className = "reply_box mb-3";
+
+                    /* 첫 번째 <div> */
+
+                    var div1 = document.createElement('div');
+                    div1.className = "d-flex mb-2";
+
+                    var div1_1 = document.createElement('div');
+                    div1_1.className = "me-2";
+
+                    var div1_1_img = document.createElement('img');
+                    div1_1_img.src = `${contextPath}/images/default_thumbnail.png`;
+                    div1_1_img.className = "d-block img-thumbnail w-100";
+                    div1_1_img.style.width = "73px";
+                    div1_1_img.style.height = "73px";
+
+                    var div1_2 = document.createElement('div');
+                    div1_2.className = "d-flex flex-column";
+
+                    var div1_2_1 = document.createElement('div');
+                    div1_2_1.textContent = obj.writer;
+
+                    var div1_2_2 = document.createElement('div');
+                    div1_2_2.textContent = dateformat(obj.regdate);
+
+                    var div1_3 = document.createElement('div');
+                    div1_3.className = "d-flex flex-column ms-auto mt-auto";
+
+                    /* 버튼 영역 <div> */
+
+                    var div2 = document.createElement('div');
+                    div2.className = "d-flex justify-content-end";
+
+                    var div2_button1 = document.createElement('button');
+                    div2_button1.className = "reply_output_button me-1";
+                    div2_button1.textContent = "수정";
+                    div2_button1.addEventListener('click', () => updateAction(obj.no));
+
+                    var div2_span1 = document.createElement('span');
+                    div2_span1.className = "vr";
+
+                    var div2_button2 = document.createElement('button');
+                    div2_button2.className = "reply_output_button mx-1";
+                    div2_button2.textContent = "삭제";
+                    div2_button2.addEventListener('click', () => deleteAction(obj.no));
+
+                    var div2_span2 = document.createElement('span');
+                    div2_span2.className = "vr";
+
+                    var div2_button3 = document.createElement('button');
+                    div2_button3.className = "reply_output_button ms-1";
+                    div2_button3.textContent = "신고";
+                    div2_button3.addEventListener('click', () => reportAction(obj.no));
+
+                    div2.append(div2_button1);
+                    div2.append(div2_span1);
+                    div2.append(div2_button2);
+                    div2.append(div2_span2);
+                    div2.append(div2_button3);
+
+                    /************/
+
+                    div1_1.append(div1_1_img);
+
+                    div1_2.append(div1_2_1);
+                    div1_2.append(div1_2_2);
+
+                    div1_3.append(div2);
+
+                    div1.append(div1_1);
+                    div1.append(div1_2);
+                    div1.append(div1_3);
+
+                    /* 두 번째 <div> */
+
+                    var div3 = document.createElement('div');
+                    div3.className = "reply_output_content"
+
+                    var div3_1 = document.createElement('div');
+                    div3_1.className = "pt-4 ps-4 pb-2";
+                    div3_1.style = "font-size: 15px; font-weight: 600;";
+                    div3_1.textContent = "댓글 내용"
+
+                    var div3_textarea = document.createElement('textarea');
+                    div3_textarea.className = "reply_read p-4";
+                    div3_textarea.textContent = obj.content;
+                    div3_textarea.readOnly = true;
+
+                    div3.append(div3_1);
+                    div3.append(div3_textarea);
+
+                    /***********/
+
+                    reply_box.append(div1);
+                    reply_box.append(div3);
+
+                    reply_output.append(reply_box);
+
+                })
+
+            }
+
+        }
+
+        selectAction();
+
+        /* 날짜 형식 변환 */
+        function dateformat(date) {
+
+            var regdate = new Date(date)
+            var day = ['일', '월', '화', '수', '목', '금', '토', '일']
+            var regdateFormat = regdate.getFullYear() + "년 "
+                + (regdate.getMonth() + 1) + "월" + regdate.getDate() + "일" + "\u00A0" + '(' + day[regdate.getDay()] + '요일)';
+
+            return regdateFormat;
+        }
+
+        /* 댓글 수정 */
+        function updateAction(no) {
+
+            // console.log(no);
+
+            var reply_output_content = $(`#reply_box${no}`).find(".reply_output_content");
+            var reply_text = reply_output_content.find("textarea").val();
+
+            reply_output_content.empty();
+
+            /* 첫 번째 div */
+
+            var div1 = document.createElement('div');
+            div1.className = "form-check d-flex justify-content-end";
+
+            var div1_input = document.createElement('input');
+            div1_input.id = "secret_check" + no;
+            div1_input.className = "form-check-input me-2 secret_check";
+            div1_input.type = "checkbox";
+
+            var div1_label = document.createElement('label');
+            div1_label.className = "form-check-label";
+            div1_label.htmlFor = "secret_check" + no;
+            div1_label.textContent = "비밀 댓글"
+
+            div1.append(div1_input);
+            div1.append(div1_label);
+
+            /* 두 번째 div */
+
+            var div2 = document.createElement('div');
+            div2.className = "reply_modify my-2";
+
+            var textarea = document.createElement('textarea');
+            textarea.className = "reply_modify";
+            textarea.textContent = reply_text;
+
+            
+
+            // <div class="form-check d-flex justify-content-end">
+            //     <input class="form-check-input me-2" type="checkbox" id="secret_check">
+            //     <label class="form-check-label" for="secret_check">
+            //         비밀 댓글
+            //     </label>
+            // </div>
+            // <div id="reply_input" class="my-2">
+            //     <textarea id="reply_content" rows="5"></textarea>
+            //     <div class="d-flex justify-content-end mt-2">
+            //         <button id="reply_input_button" onclick="writeAction()">댓글 작성</button>
+            //     </div>
+            // </div>
+
+            // console.log(reply_output_content);
+            // console.log(reply_text);
+
+            // $(`#reply_text${no}`).attr("readOnly", false);
+            // $(`#reply_text${no}`).css("background-color", "white");
+            // $(`#reply_text${no}`).css("background-clip", "content-box");
+        }
+
+        /* 댓글 삭제 */
+        async function deleteAction(no) {
+
+            const confirmMessage = "댓글을 정말 삭제하시겠습니까?";
+
+            if (confirm(confirmMessage)) {
+
+                const url = contextPath + '/api/reply/delete.json';
+                const headers = { "Content-Type": "application/json" };
+                const body = { no: no };
+
+                const { data } = await axios.put(url, body, { headers });
+
+                console.log(data);
+
+                if (data.status === 200) {
+                    selectAction();
+                }
+            }
+
+        }
+
+    </script>
+</body>
+
+</html>

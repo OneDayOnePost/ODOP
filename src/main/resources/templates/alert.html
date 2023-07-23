@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>알림</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <!--Bootstrap 용 CSS-->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <!--Bootstrap 용 Icon CDN-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
+    <!-- font awesome용 css CDN  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!--thymeleaf contextpath-->
+    <link id="contextPathHolder" th:data-contextPath="${#httpServletRequest.getContextPath()}" />
+    <style>
+        .modal-body > div {text-align: center;}
+    </style>
+</head>
+
+<body>
+
+    <div class="modal fade" id="alert" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body" style="display: inline-block;">
+                    <div style="margin-bottom: 10px;"><i class="fas fa-duotone fa-shield-check"></i></div>
+                    <!-- 적절한 아이콘 추후 변경 -->
+                    <div><label id="title"></label></div>
+                    <div>
+                        <label id="content" style="color: gray; font-weight: bold; font-size: small;"></label>
+                    </div><br />
+                    <div>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" 
+                            style="height: 35px; width: 80px;" onclick="pageRedirect()">확인</button>
+                    </div>
+                    <!-- 홈으로 이동 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--jQuery-->
+    <script th:src="@{/js/jquery-3.6.4.min.js}"></script>
+    <!--Bootstrap 용 js -->
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:inline="javascript">
+
+        const contextPath = $("#contextPathHolder").attr("data-contextPath");
+
+        var alertMessage = /*[[${alertMessage}]]*/'';
+        var alertTitle = /*[[${alertTitle}]]*/'';
+        var alertUrl = /*[[${alertUrl}]]*/'';
+
+        console.log(alertUrl);
+
+        document.querySelector("#title").textContent = alertTitle;
+        document.querySelector("#content").textContent = alertMessage;
+
+        const modal = new bootstrap.Modal(
+            document.getElementById("alert"),
+            {}
+        );
+
+        modal.show();
+
+        function pageRedirect() {
+            window.location.href = contextPath + alertUrl;
+        }
+    </script>
+</body>
+
+</html>
