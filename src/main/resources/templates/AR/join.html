@@ -53,11 +53,11 @@
             /* margin-left: 5px;
             margin-right: 5px; */
             margin-top: 41px;
-            margin-bottom: 30px;
+            /* margin-bottom: 30px; */
 
         }
 
-        #emailchk{
+        #emailchk, #nickchk{
             width: 120px;
             height: 50px;
             border: solid;
@@ -65,6 +65,28 @@
             background: #1D3563;
             color: #FFF;
             font-size: 18px;
+        }
+
+        .pw1{
+            padding-left: 38px;
+        }
+        
+        .joinbox{
+            padding-bottom: 100px;
+        }
+
+        .jointable{
+            width: 100%;
+            height: 550px;          
+        }
+
+        .tableline{
+            border-bottom: 1.5px solid #9ea5b2  ;
+        }
+
+        .jointable th, td{
+	        padding-top: 30px;
+            padding-bottom: 30px;
         }
 
     </style>
@@ -91,44 +113,42 @@
                     <h3 id="jointitle">회원가입</h3>
                     <div id="homeline"></div>
                     <form th:action="@{/join.do}" method="post" id="form">
-                        <div>
-                            <table border="2">
-                                <tr>
-                                    <th style="border: 3px solid;">이메일</th>
-                                    <td class="email-box"  style="border: 3px solid;">
-                                        <div class="email">
-                                            <input name="email1" id="email1" type="text" > @ <input name="email2" id="email2" type="text" placeholder="이메일을 입력하세요">
-                                            <select name="selectemail" id="selectemail" onChange="selectEmail(this)">
-                                                <option value="" selected>선택하세요</option>
-                                                <option value="naver.com">naver.com</option>
-                                                <option value="gmail.com">gmail.com</option>
-                                                <option value="daum.net">daum.net</option>
-                                                <option value="nate.com">nate.com</option>
-                                                <option value="1">직접입력</option>
-                                            </select>
-                                            <input name="email" id="email" type="hidden">
-                                        </div>
-                                    </td>
-                                    <td style="border: 3px solid;">
-                                        <input type="button" id="emailchk" value="중복 확인" onclick="ajaxEmCheck(email)" ></input>
-                                        <!-- <button id="emailchk" onclick="ajaxEmCheck(email)">중복확인</button> -->
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <th style="border: 3px solid;">비밀번호</th>
-                                    <td style="border: 3px solid;">
+                        <div class="joinbox">
+                            <table class="jointable">
+                                    <tr class="tableline">
+                                        <th>이메일</th>
+                                        <td class="email-box" >
+                                            <div class="email">
+                                                <input name="email1" id="email1" type="text" style="padding: 0.5% 3% 0.5% 3%" > @ <input name="email2" id="email2" type="text" placeholder="이메일을 입력하세요" style="padding: 0.5% 3% 0.5% 3%">
+                                                <select name="selectemail" id="selectemail" onChange="selectEmail(this)" style="padding: 1% 5% 1% 5%">
+                                                    <option value="" selected>선택하세요</option>
+                                                    <option value="naver.com">naver.com</option>
+                                                    <option value="gmail.com">gmail.com</option>
+                                                    <option value="daum.net">daum.net</option>
+                                                    <option value="nate.com">nate.com</option>
+                                                    <option value="1">직접입력</option>
+                                                </select>
+                                                <input name="email" id="email" type="hidden">
+                                                <input type="button" id="emailchk" value="중복 확인" onclick="ajaxEmCheck(email)" ></input>
+                                            </div>
+                                        </td>
+                                       
+                                    </tr>
+                                
+                                <tr class="tableline">
+                                    <th>비밀번호</th>
+                                    <td>
                                         <div class="password">
                                             <p>
                                                 <div class="pw1" >
                                                     <label>비밀번호</label>
-                                                    <input type="password" id="pw" name="pw"  autoComplete="off" />
+                                                    <input type="password" id="pw" name="pw"  style="padding: 0.5% 5% 0.5% 5%" autoComplete="off" />
                                                 </div>
                                             </p>
                                             <p>
                                                 <div class="pw2">
                                                     <label>비밀번호 확인</label>
-                                                    <input type="password" id="pwcheck" name="pwcheck" autoComplete="off" onkeyup="pwConfirm()" />
+                                                    <input type="password" id="pwcheck"  style="padding: 0.5% 5% 0.5% 5%" name="pwcheck" autoComplete="off" onkeyup="pwConfirm()" />
                                                 </div>
                                             </p>
                                         </div>
@@ -138,26 +158,25 @@
                                         <p id ="confirmMsg"></p>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <th style="border: 3px solid;">이름</th>
-                                    <td style="border: 3px solid;"><input type="name" id="name" name="name" ></td>
+                                <tr class="tableline">
+                                    <th>이름</th>
+                                    <td><input type="name" id="name" name="name" style="padding: 0.5% 5% 0.5% 5%" ></td>
                                     <td></td>
                                 </tr>
-                                <tr>
-                                    <th style="border: 3px solid;">닉네임</th>
-                                    <td style="border: 3px solid;"><input type="nickname" id="nickname" name="nickname" ></td>
-                                    <td style="border: 3px solid;">
-                                        <button id="emailchk">중복확인</button>
-                                    </td>
+                                <tr class="tableline">
+                                    <th>닉네임</th>
+                                    <td><input type="nickname" id="nickname" name="nickname"  style="padding: 0.5% 5% 0.5% 5%">
+                                        <input type="button" id="nickchk" value="중복 확인" onclick="ajaxNickCheck(nickname)" ></input></td>
+                                    
                                 </tr>
-                                <tr>
-                                    <th style="border: 3px solid;">전화 번호</th>
-                                    <td style="border: 3px solid;"><input type="phone" id="phone" name="phone" placeholder="010 - 0000 - 0000" ></td>
+                                <tr class="tableline">
+                                    <th>전화 번호</th>
+                                    <td><input type="phone" id="phone" name="phone" style="padding: 0.5% 5% 0.5% 5%" placeholder="010 - 0000 - 0000" ></td>
                                     <td></td>
                                 </tr>
-                                <tr>
-                                    <th style="border: 3px solid;">MBTI</th>
-                                    <td><select name="selectmbti" id="selectmbti" onChange="selectMbti(this)" style="padding: 2% 5% 2% 5%">
+                                <tr class="tableline">
+                                    <th>MBTI</th>
+                                    <td><select name="selectmbti" id="selectmbti" onChange="selectMbti(this)" style="padding: 1% 5% 1% 5%">
                                         <option value="" selected>선택하세요</option>
                                         <option value="ENFP">ENFP</option>
                                         <option value="ENTP">ENTP</option>
@@ -327,7 +346,37 @@
 
         //-----------------------------------------------------------------
 
+        //닉네임 중복 확인
+        var nickcheck = 0; //1이면 사용 가능
+        async function ajaxNickCheck(e){
+            const nickname = document.getElementById("nickname");
 
+            if(nickname.value.length > 0){
+                const url = [[@{/api/nickcheck.do}]] + `?nickname=${nickname.value}`;
+                const headers = {"Content-Type":"application/json"};
+                const {data} = await axios.get(url,{headers});
+
+                console.log(data.ret);
+
+                if(data.ret === 1){
+                    //사용 불가
+                    nickcheck = 0;
+                    alert('사용 불가능한 닉네임 입니다.');
+                    e.value='';
+                }
+                else if(data.ret === 0){
+                    //사용 가능
+                    nickcheck = 1;
+                    alert('사용 가능한 닉네임 입니다');
+                    document.getElementById("phone").focus();
+                }
+               
+            }
+            else{
+                alert('닉네임을 입력하세요.');
+                e.focus();
+            }
+        }
 
 
     </script>

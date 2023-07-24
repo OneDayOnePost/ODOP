@@ -24,8 +24,10 @@ public class ArMemberController {
     
     // final ArMemberMapper mMapper;
     final ArMemberService mService;
+
     //암호화
     BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();
+
 
 
     //로그인----------------------------------------
