@@ -63,16 +63,6 @@ public class GrMyBlogController {
 
             log.info("list => {}", list.toString());
 
-            for (Post post : list) {
-
-                // List<PostTag> list1 = post.getPostTagList();
-
-                // log.info("태그 => {}", list1.);
-
-                // System.out.println(post.getPostTagList().toString());
-
-            }
-
             log.info("postall => {}", plist.toString());
 
             // 태그 불러오기
@@ -84,7 +74,7 @@ public class GrMyBlogController {
             }
 
             // 댓글 갯수
-            PostDTO post = new PostDTO();
+            // PostDTO post = new PostDTO();
             // int countreply = gMapper.countreply();
 
             model.addAttribute("user", user);
