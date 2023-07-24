@@ -90,6 +90,13 @@
             border: none;
             background-color: white;
         }
+
+        .reply_modify_content {
+            width: 100%;
+            border: none;
+            outline-color: #FE6B8B;
+            resize: none;
+        }
     </style>
 </head>
 
@@ -378,6 +385,7 @@
             var reply_output_content = $(`#reply_box${no}`).find(".reply_output_content");
             var reply_text = reply_output_content.find("textarea").val();
 
+            reply_output_content.css("background-color", "white");
             reply_output_content.empty();
 
             /* 첫 번째 div */
@@ -403,12 +411,35 @@
             var div2 = document.createElement('div');
             div2.className = "reply_modify my-2";
 
-            var textarea = document.createElement('textarea');
-            textarea.className = "reply_modify";
-            textarea.textContent = reply_text;
+            var div2_textarea = document.createElement('textarea');
+            div2_textarea.className = "reply_modify_content";
+            div2_textarea.textContent = reply_text;
+            div2_textarea.onfocus = function(e) {
+                // console.log(e.target.value);
+                e.target.setSelectionRange(e.target.value.length, e.target.value.length);
+            };
 
+            var div2_1 = document.createElement('div');
+            div2_1.className = "d-flex justify-content-end mt-2";
+
+            var div2_1_button1 = document.createElement('button');
+            div2_1_button1.textContent = "수정";
+
+            var div2_1_button2 = document.createElement('button');
+            div2_1_button2.textContent = "취소";
+
+            div2_1.append(div2_1_button1);
+            div2_1.append(div2_1_button2);
+            div2.append(div2_textarea);
+            div2.append(div2_1);
+
+            /* ******* */
+
+            reply_output_content.append(div1);
+            reply_output_content.append(div2);
+
+            div2_textarea.focus();
             
-
             // <div class="form-check d-flex justify-content-end">
             //     <input class="form-check-input me-2" type="checkbox" id="secret_check">
             //     <label class="form-check-label" for="secret_check">
