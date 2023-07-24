@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.example.entity.Post;
 
 @Repository
-public interface PostRepository extends JpaRepository<Post, BigInteger> {
+public interface GrPostRepository extends JpaRepository<Post, BigInteger> {
 
     List<Post> findByWriter(String writer);
 
