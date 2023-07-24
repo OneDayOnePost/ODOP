@@ -10,7 +10,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
-    <link rel='stylesheet' th:href="@{/css/bootstrap.min.css.map}" />
 
     <link rel='stylesheet' th:href="@{/css/header.css}" />
 
@@ -21,6 +20,9 @@
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
 
+    <!-- Simple-DataTable용 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
+
     <style>
         body {
             min-height: 100vh;
@@ -30,35 +32,43 @@
         }
 
         #wrapper {
-            margin-top: 90px;
+            margin-top: 50px;
         }
 
         .link-container {
             display: flex;
             align-items: center;
             padding: 10px;
+            justify-content: center;
+            white-space: nowrap;
         }
 
         .selectcheck-container {
             width: 90%;
             margin: 0 auto;
             margin-top: 20px;
+            margin-bottom: 5px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px;
+            padding-left: 10px;
+            padding-right: 10px;
         }
 
         /* 테이블 상단 */
-        a {
+        .link-container a {
             text-decoration: none;
             color: #000;
             font-weight: bold;
             font-size: 25px;
-            margin-right: 15px;
+            white-space: nowrap;
         }
 
-        a:hover {
+        .link-container a:not(:last-child) {
+            margin-right: 65px;
+        }
+
+        .link-container a:hover {
             color: #B6C6D3;
         }
 
@@ -84,55 +94,32 @@
         }
 
         /* 테이블 */
-        #reporttable {
-            margin-top: 5px;
-        }
-
-        #reporttable table {
+        #postreporttable {
             width: 90%;
             margin: 0 auto;
         }
 
-        #reporttable table thead tr {
-            border-top: 2px solid #3A5485;
-            border-bottom: 2px solid #3A5485;
-            height: 70px;
+        .datatable-container {
+            margin-top: 5px;
         }
 
-        #reporttable table tbody {
-            border-bottom: 2px solid #3A5485;
-        }
-
-        #reporttable table tbody tr td {
-            height: 90px;
-        }
-
-        #reporttable table tbody tr:not(:last-child) td {
-            border-bottom: 1px solid #60829D;
-        }
-
-        /* 마지막 열을 제외한 나머지 열들에 border-right 추가 */
-        #reporttable table tbody tr td:not(:last-child) {
-            border-right: 1px solid #60829D;
-        }
-
-        #reporttable table thead tr th:not(:last-child) {
-            border-right: 1px solid #60829D;
+        #postreporttable table thead tr th {
+            text-align: center;
         }
 
         /* 각 열의 너비 지정 */
-        #reporttable table th:nth-child(1),
-        #reporttable table td:nth-child(1) {
+        #postreporttable table th:nth-child(1),
+        #postreporttable table td:nth-child(1) {
             width: 30%;
         }
 
-        #reporttable table th:nth-child(2),
-        #reporttable table td:nth-child(2) {
+        #postreporttable table th:nth-child(2),
+        #postreporttable table td:nth-child(2) {
             width: 40%;
         }
 
-        #reporttable table th:nth-child(3),
-        #reporttable table td:nth-child(3) {
+        #postreporttable table th:nth-child(3),
+        #postreporttable table td:nth-child(3) {
             width: 30%;
         }
     </style>
@@ -182,29 +169,23 @@
                         </div>
                     </div>
 
-                    <div th:if="${#strings.equals(param.type, 'post')}">
-                        <div id="reporttable">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>게시글 번호</th>
-                                        <th>작성자</th>
-                                        <th>신고 횟수</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr th:each="post : ${plist}">
-                                        <td th:text="${post.no}"></td>
-                                        <td th:text="${post.email}"></td>
-                                        <td th:text="${post.reportcount}"></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div>
-                            여기는 페이지네이션 자리!
-                        </div>
+                    <div id="postreporttable" th:if="${#strings.equals(param.type, 'post')}">
+                        <table id="reporttable1">
+                            <thead>
+                                <tr>
+                                    <th>게시글 번호</th>
+                                    <th>작성자</th>
+                                    <th>신고 횟수</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="post : ${plist}">
+                                    <td th:text="${post.no}"></td>
+                                    <td th:text="${post.email}"></td>
+                                    <td th:text="${post.reportcount}"></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                     
                     <div th:if="${#strings.equals(param.type, 'reply')}">
@@ -326,6 +307,32 @@
                 document.getElementById("memberlist").style.borderBottom = "3px solid #6F8DBF";
                 document.getElementById("memberlist").style.paddingBottom = "5px";
             }
+        });
+    </script>
+
+    <!-- Simple DataTable용 JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
+    <script th:inline="javascript" type="text/javascript">
+        $(document).ready(function() {
+            new simpleDatatables.DataTable("#reporttable1", {
+                searchable: true,
+                fixedHeight: true,
+            });
+        });
+    </script>
+
+    <!-- reportcount 값(신고 횟수 값)이 2 이상인 경우 배경색 변경 -->
+    <script th:inline="javascript" type="text/javascript">
+        $(document).ready(function() {
+            // td:eq(2) : 각 행의 세 번째 열을 선택하는 것
+            $('#postreporttable table tbody tr').each(function() {
+                var reportcount = parseInt($(this).find('td:eq(2)').text());
+                // console.log(reportcount);
+
+                if (reportcount >= 2) {
+                    $(this).css('color', '#FF0000');
+                }
+            });
         });
     </script>
 </body>

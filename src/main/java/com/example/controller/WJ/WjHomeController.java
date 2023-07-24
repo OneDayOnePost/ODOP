@@ -31,8 +31,8 @@ public class WjHomeController {
             model.addAttribute("user", user);
 
             if (type.equals("post")) {
-                // List<ReportListDTO> postreportlist= rService.selectPostList();
-                // model.addAttribute("plist", postreportlist);
+                List<ReportListDTO> postreportlist= rService.selectPostList();
+                model.addAttribute("plist", postreportlist);
             }
 
             return "/WJ/WjAdminHome";
