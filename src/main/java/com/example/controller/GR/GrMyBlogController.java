@@ -17,9 +17,8 @@ import com.example.dto.MemberDTO;
 import com.example.dto.PostDTO;
 import com.example.entity.Post;
 import com.example.entity.PostTag;
-import com.example.entity.GR.postall;
 import com.example.mapper.GR.GrMyblogMapper;
-import com.example.repository.GR.PostRepository;
+import com.example.repository.GR.GrPostRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +31,7 @@ public class GrMyBlogController {
 
     // test용
     final GrMyblogMapper gMapper;
-    final PostRepository postRepository;
+    final GrPostRepository postRepository;
 
     @GetMapping(value = "/myblog.do")
     public String myblogGET(Model model) { // @AuthenticationPrincipal User user
@@ -57,21 +56,21 @@ public class GrMyBlogController {
             }
 
             // 포스트 목록 불러오기
-            List<postall> plist = gMapper.selectpostAll("test1@naver.com");
+            // List<postall> plist = gMapper.selectpostAll("test1@naver.com");
 
             List<Post> list = postRepository.findByWriter("test1@naver.com");
 
             log.info("list => {}", list.toString());
 
-            log.info("postall => {}", plist.toString());
+            // log.info("postall => {}", plist.toString());
 
             // 태그 불러오기
-            for (int i = 0; i < plist.size(); i++) {
-                List<Map<String, Integer>> tlist = gMapper.selectposttag("test1@naver.com", plist.get(i).getNo());
-                log.info("rkrkrk=>{}", tlist.toString());
-                log.info(plist.get(i).getNo().toString());
-                model.addAttribute("tlist", tlist);
-            }
+            // for (int i = 0; i < plist.size(); i++) {
+                // List<Map<String, Integer>> tlist = gMapper.selectposttag("test1@naver.com", plist.get(i).getNo());
+                // log.info("rkrkrk=>{}", tlist.toString());
+                // log.info(plist.get(i).getNo().toString());
+                // model.addAttribute("tlist", tlist);
+            // }
 
             // 댓글 갯수
             // PostDTO post = new PostDTO();
@@ -82,7 +81,6 @@ public class GrMyBlogController {
             model.addAttribute("follower", follower);
             model.addAttribute("pclist", pclist);
             model.addAttribute("formattedpostcount", formattedpostcount);
-            model.addAttribute("plist", plist);
             model.addAttribute("list", list);
 
             return "/GR/myblog";

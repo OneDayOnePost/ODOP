@@ -62,7 +62,7 @@ public class Post {
   private BigInteger state;
 
   // 권한(C:멤버 / A:관리자)
-  private String role;
+  // private String role;
 
   // 카테고리
   @ManyToOne(fetch = FetchType.LAZY)
