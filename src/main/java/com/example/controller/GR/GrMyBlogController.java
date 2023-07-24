@@ -19,7 +19,7 @@ import com.example.entity.Post;
 import com.example.entity.PostTag;
 import com.example.entity.GR.postall;
 import com.example.mapper.GR.GrMyblogMapper;
-import com.example.repository.GR.PostRepository;
+import com.example.repository.GR.GrPostRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ public class GrMyBlogController {
 
     // test용
     final GrMyblogMapper gMapper;
-    final PostRepository postRepository;
+    final GrPostRepository postRepository;
 
     @GetMapping(value = "/myblog.do")
     public String myblogGET(Model model) { // @AuthenticationPrincipal User user
