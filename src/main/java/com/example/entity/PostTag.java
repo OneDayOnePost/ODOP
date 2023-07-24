@@ -2,6 +2,7 @@ package com.example.entity;
 
 import java.math.BigInteger;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -31,6 +32,6 @@ public class PostTag {
 
   // 게시글
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "postno", referencedColumnName = "no")
+  @JoinColumn(name = "POSTNO", referencedColumnName = "NO")
   private Post post;
 }

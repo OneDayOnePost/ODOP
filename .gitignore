@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### 구글 oauth 클라이언트 ###
+application-oauth.properties

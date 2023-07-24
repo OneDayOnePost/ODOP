@@ -17,12 +17,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
 import lombok.ToString;
+
 
 // 게시글
 @Data
@@ -42,12 +44,16 @@ public class Post {
   // 제목
   private String title;
 
-  // 내용
+  // 내용 (html)
   @Lob
   private String content;
 
+  // 내용 (markdown)
+  @Lob
+  private String markdown;
+
   // 조회수
-  private BigInteger hit;
+  private BigInteger hit = new BigInteger("1");
 
   // 작성일
   @CreationTimestamp
@@ -59,10 +65,7 @@ public class Post {
   private BigInteger secret;
 
   // 상태(0:신고X / 1:신고O)
-  private BigInteger state;
-
-  // 권한(C:멤버 / A:관리자)
-  private String role;
+  private BigInteger state = new BigInteger("0");
 
   // 카테고리
   @ManyToOne(fetch = FetchType.LAZY)
@@ -93,4 +96,13 @@ public class Post {
   @ToString.Exclude
   @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
   private List<Dope> dopeList = new ArrayList<>();
+
+  // 해시태그 리스트를 저장할 임시 변수
+  @Transient
+  private List<String> tagList = new ArrayList<>();
+
+  // 댓글수를 저장할 임시 변수
+  @Transient
+  private int replyCount;
+
 }

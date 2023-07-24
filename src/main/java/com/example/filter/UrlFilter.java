@@ -35,7 +35,7 @@ public class UrlFilter extends OncePerRequestFilter {
             log.info("{}, {}, {}", contextPath, path, query);
 
             // url에 login, logout이 포함되지 않는 경우
-            if (!path.contains("login") && !path.contains("logout")  ) { 
+            if (!path.contains("login") && !path.contains("logout") && !path.contains("join") && !path.contains("image")) { 
                 HttpSession httpSession = request.getSession();
 
                 if (query == null) {

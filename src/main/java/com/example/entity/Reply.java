@@ -19,7 +19,11 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 import lombok.ToString;
@@ -62,19 +66,22 @@ public class Reply {
   private BigInteger secret;
 
   // 상태(0:신고X / 1:신고O)
-  private BigInteger state;
+  private BigInteger state = new BigInteger("0");
 
   // 깊이(댓글 : 0, 답글 : 1)
-  private BigInteger repdepth;
+  private BigInteger repdepth = new BigInteger("0");
 
   // 순서(부모 댓글 : 0)
-  private BigInteger reporder;
+  private BigInteger reporder = new BigInteger("0");
 
   // 댓글 그룹(부모 댓글 번호)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_REPLY_NO")
+  @Generated(GenerationTime.INSERT)
   private BigInteger repgroup;
 
   // 게시글
   @ManyToOne(fetch = FetchType.LAZY)
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   @JoinColumn(name = "postno", referencedColumnName = "no")
   private Post post;
 
