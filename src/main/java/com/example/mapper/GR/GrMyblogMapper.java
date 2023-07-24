@@ -12,7 +12,6 @@ import com.example.dto.CateDTO;
 import com.example.dto.MemberDTO;
 import com.example.dto.PostDTO;
 import com.example.entity.Post;
-import com.example.entity.GR.postall;
 
 @Mapper
 public interface GrMyblogMapper {
@@ -41,10 +40,6 @@ public interface GrMyblogMapper {
     // post전체 조회
     // @Select({ " SELECT * FROM POST WHERE WRITER = #{email} " })
     // public List<PostDTO> selectpostAll(String email);
-    @Select({ "SELECT NO, WRITER, TITLE, CONTENT, HIT, REGDATE, CATENO, SECRET, TAGNO, POSTNO, TAG FROM ",
-            " ( SELECT *, ROW_NUMBER() OVER (PARTITION BY NO ORDER BY REGDATE DESC) AS rn FROM postall WHERE WRITER = #{email}) AS sub",
-            " WHERE rn = 1" })
-    public List<postall> selectpostAll(String email);
 
     // post태그 조회
     @Select({ "SELECT * FROM postall WHERE WRITER=#{email} AND NO=#{postno}" })
