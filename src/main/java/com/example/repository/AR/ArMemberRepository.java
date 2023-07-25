@@ -11,4 +11,7 @@ public interface ArMemberRepository extends JpaRepository<Member, String> {
     //이메일 중복 여부
     int countByEmail(String email);
 
+    //닉네임 중복 여부
+    int countByNickname(String nickname);
+
 }

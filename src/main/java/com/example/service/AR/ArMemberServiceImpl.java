@@ -38,5 +38,19 @@ public class ArMemberServiceImpl implements ArMemberService {
         }
     }
 
+    //닉네임 중복 확인
+    @Override
+    public int selectMemberNicknameCheck(String nickname) {
+        try {
+            return mRepository.countByNickname(nickname);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+
+    
+
     
 }

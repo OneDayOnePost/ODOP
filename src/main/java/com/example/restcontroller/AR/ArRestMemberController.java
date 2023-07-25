@@ -54,6 +54,27 @@ public class ArRestMemberController {
         return retMap;
     }
 
+
+    //닉네임 중복 확인
+    // 127.0.0.1:5059/odop/api/nickcheck.do?nickname=닉네임
+    @GetMapping(value="/nickcheck.do")
+    public Map<String, Object> nickcheckGET(@RequestParam(name="nickname") String nickname){
+        Map<String, Object> retMap = new HashMap<>();
+
+        try{
+            retMap.put("status",200);
+            retMap.put("ret",mService.selectMemberNicknameCheck(nickname));
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            retMap.put("status", -1);
+            retMap.put("error", e.getMessage());
+        }
+        return retMap;
+    }
+
+
+
     // // 소셜 로그인 (카카오)
     // // view에서 받은 이메일이 기존 테이블에 있으면(ret=1) 회원가입 필요 X
     // //                                      없으면(ret=0) 회원가입 필요 O

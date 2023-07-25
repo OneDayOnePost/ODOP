@@ -14,4 +14,7 @@ public interface ArMemberService {
     //이메일 중복확인
     public int selectMemberEmailCheck(@Param("email") String email);
 
+    //닉네임 중복확인
+    public int selectMemberNicknameCheck(@Param("nickname") String nickname);
+
 }

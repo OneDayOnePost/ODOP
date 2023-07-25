@@ -130,6 +130,7 @@
                                                 </select>
                                                 <input name="email" id="email" type="hidden">
                                                 <input type="button" id="emailchk" value="중복 확인" onclick="ajaxEmCheck(email)" ></input>
+                                                <input type="text" id="emjoongbokchk" name="emjoongbokchk" ></input>
                                             </div>
                                         </td>
                                        
@@ -160,23 +161,23 @@
                                 </tr>
                                 <tr class="tableline">
                                     <th>이름</th>
-                                    <td><input type="name" id="name" name="name" style="padding: 0.5% 5% 0.5% 5%" ></td>
+                                    <td><input type="text" id="name" name="name" style="padding: 0.5% 5% 0.5% 5%" ></td>
                                     <td></td>
                                 </tr>
                                 <tr class="tableline">
                                     <th>닉네임</th>
-                                    <td><input type="nickname" id="nickname" name="nickname"  style="padding: 0.5% 5% 0.5% 5%">
+                                    <td><input type="text" id="nickname" name="nickname"  style="padding: 0.5% 5% 0.5% 5%">
                                         <input type="button" id="nickchk" value="중복 확인" onclick="ajaxNickCheck(nickname)" ></input></td>
                                     
                                 </tr>
                                 <tr class="tableline">
                                     <th>전화 번호</th>
-                                    <td><input type="phone" id="phone" name="phone" style="padding: 0.5% 5% 0.5% 5%" placeholder="010 - 0000 - 0000" ></td>
+                                    <td><input type="text" id="phone" name="phone" style="padding: 0.5% 5% 0.5% 5%" placeholder="010 - 0000 - 0000" ></td>
                                     <td></td>
                                 </tr>
                                 <tr class="tableline">
                                     <th>MBTI</th>
-                                    <td><select name="selectmbti" id="selectmbti" onChange="selectMbti(this)" style="padding: 1% 5% 1% 5%">
+                                    <td><select name="selectmbti" id="selectmbti" onChange="selectMbti(this.value)" style="padding: 1% 5% 1% 5%">
                                         <option value="" selected>선택하세요</option>
                                         <option value="ENFP">ENFP</option>
                                         <option value="ENTP">ENTP</option>
@@ -194,8 +195,15 @@
                                         <option value="INTJ">INTJ</option>
                                         <option value="ISFJ">ISFJ</option>
                                         <option value="ISTJ">ISTJ</option>
-                                    </select></td>
+                                    </select>
+                                    <input name="mbti" id="mbti" type="hidden">    
+                                </td>
                                     <td></td>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th><input type="button" id="joinbutton" value="회원 가입" onclick="joinAction()" ></input>
+                                    <t<input type="button" id="cancelbutton" value="취소" onclick="joinCancelAction()" ></input></th>
                                 </tr>
                             </table>
                         </div>
@@ -269,7 +277,7 @@
         //이메일 합치기 (email1 + email2)
         $('input[name=email]').attr("value", `${email1.val()}@${email2.val()}`);
 
-        console.log($('input[name=email]').val());
+        // console.log($('input[name=email]').val());
         }
 
         // 주소 직접 입력 시(oninput) 호출되는 함수 
@@ -299,7 +307,7 @@
                 const headers = {"Content-Type":"application/json"};
                 const {data} = await axios.get(url, {headers});
 
-                console.log(data.ret);
+                // console.log(data.ret);
 
 
                 if (data.ret === 1) {
@@ -313,6 +321,7 @@
                     emcheck = 1;
                     alert('사용 가능한 이메일입니다.');
                     document.getElementById("pw").focus();
+
                 }
             }
             else {
@@ -356,7 +365,8 @@
                 const headers = {"Content-Type":"application/json"};
                 const {data} = await axios.get(url,{headers});
 
-                console.log(data.ret);
+                // console.log(data.ret);
+
 
                 if(data.ret === 1){
                     //사용 불가
@@ -369,6 +379,7 @@
                     nickcheck = 1;
                     alert('사용 가능한 닉네임 입니다');
                     document.getElementById("phone").focus();
+
                 }
                
             }
@@ -377,6 +388,81 @@
                 e.focus();
             }
         }
+
+
+    //-----------------------------------------------------------------
+    
+
+
+    //mbti selectBox 값 받아오기
+    var selectMbti = function(value){
+        // console.log("mbti :" + value);
+        $('input[name=mbti]').val(value);
+    }
+    
+    //-----------------------------------------------------------------
+    
+    //중복확인 안했을 때 유효성 검사
+    
+
+
+
+    //-----------------------------------------------------------------
+
+    //유효성 검사
+    function joinAction(){
+        const email = document.getElementById("email");
+        const pw = document.getElementById("pw");
+        const pwcheck = document.getElementById("pwcheck");
+        const name = document.getElementById("name");
+        const nickname = document.getElementById("nickname");
+        const phone = document.getElementById("phone");
+        const mbti = document.getElementById("mbti");
+
+
+         // 1. 모든 항목이 입력되어 있어야함
+         if (email.value.length <= 0) {
+                alert('이메일을 입력하세요');
+                email.focus();
+                return false; // 함수종료, 전송하지 않음
+            }
+        if(pw.value.length <=0){
+            alert('비밀번호를 입력하세요');
+            pw.focus();
+            return false;
+        }
+        if(pwcheck.value.length <=0){
+            alert('비밀번호 확인을 입력하세요');
+            pwcheck.focus();
+            return false;
+        }
+        if(name.value.length <=0){
+            alert('이름을 입력하세요');
+            name.focus();
+            return false;
+        }
+        if(nickname.value.length <=0){
+            alert('닉네임을 입력하세요');
+            nickname.focus();
+            return false;
+        }
+        if(phone.value.length <=0){
+            alert('전화번호를 입력하세요');
+            phone.focus();
+            return false;
+        }
+        if(mbti.value.length <=0){
+            alert('mbti를 입력하세요');
+            mbti.focus();
+            return false;
+        }
+
+            
+
+
+    }
+
+
 
 
     </script>
