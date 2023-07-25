@@ -88,6 +88,20 @@
 	        padding-top: 30px;
             padding-bottom: 30px;
         }
+        
+        .password{
+            display: flex;
+            align-content: center;
+            align-items: center;
+        }
+
+        .passwordbox{
+            padding-left: 40px;
+        }
+        
+        #confirmMsg{
+            padding-top: 10px;
+        }
 
     </style>
 </head>
@@ -139,25 +153,28 @@
                                 <tr class="tableline">
                                     <th>비밀번호</th>
                                     <td>
-                                        <div class="password">
-                                            <p>
-                                                <div class="pw1" >
-                                                    <label>비밀번호</label>
-                                                    <input type="password" id="pw" name="pw"  style="padding: 0.5% 5% 0.5% 5%" autoComplete="off" />
-                                                </div>
-                                            </p>
-                                            <p>
-                                                <div class="pw2">
-                                                    <label>비밀번호 확인</label>
-                                                    <input type="password" id="pwcheck"  style="padding: 0.5% 5% 0.5% 5%" name="pwcheck" autoComplete="off" onkeyup="pwConfirm()" />
-                                                </div>
-                                            </p>
+                                        <div class="passwordbox">
+                                            <div class="password">
+                                                <table style="width: 60%;">
+                                                    <tr>
+                                                        <th style="padding-right: 41px;">비밀번호</th>
+                                                        <td><input type="password" id="pw" name="pw"  style="padding: 0.5% 5% 0.5% 5%" autoComplete="off" /> </td>
+                                                        
+                                                    </tr>
+                                                </table>
+                                                <p id="confirmMsg"></p>
+                                            </div>
+                                                <table style="width: 60%;">
+                                                    <tr>
+                                                        <th>비밀번호 확인</th>
+                                                        <td><input type="password" id="pwcheck"  style="padding: 0.5% 5% 0.5% 5%" name="pwcheck" autoComplete="off" onkeyup="pwConfirm()" /></td>
+                                                    </tr>
+                                                </table>
+                                            <!-- <p id="confirmMsg"></p> -->
                                         </div>
                                     </td>
-                                    <td>
-                                        <p></p>
-                                        <p id ="confirmMsg"></p>
-                                    </td>
+                                    <td><p id="confirmMsg"></p></td>
+                                    
                                 </tr>
                                 <tr class="tableline">
                                     <th>이름</th>
@@ -321,7 +338,8 @@
                     emcheck = 1;
                     alert('사용 가능한 이메일입니다.');
                     document.getElementById("pw").focus();
-
+                    $('input[name=emjoongbokchk]').attr('value', 'y');
+                    console.log($('input[name=emjoongbokchk]').val());
                 }
             }
             else {
@@ -340,15 +358,17 @@
 		    var correctColor = "#1D3563";	//맞았을 때 출력되는 색깔
 		    var wrongColor ="#ff0000";	//틀렸을 때 출력되는 색깔
 
-
-            if(password.value == pwcheck.value){
+            if(pw.value.length > 0 ){
+                if(password.value == pwcheck.value){
                 confirmMsg.style.color = correctColor;
                 confirmMsg.innerHTML = "비밀번호가 일치합니다";
+                }
+                else{
+                    confirmMsg.style.color = wrongColor;
+                    confirmMsg.innerHTML = "비밀번호를 확인해주세요";
+                }
             }
-            else{
-                confirmMsg.style.color = wrongColor;
-                confirmMsg.innerHTML = "비밀번호를 확인해주세요";
-            }
+           
 
         }
 
@@ -379,7 +399,6 @@
                     nickcheck = 1;
                     alert('사용 가능한 닉네임 입니다');
                     document.getElementById("phone").focus();
-
                 }
                
             }
@@ -402,9 +421,14 @@
     
     //-----------------------------------------------------------------
     
-    //중복확인 안했을 때 유효성 검사
-    
-
+    //중복확인 안했을 때 유효성 검사 (emjoongbokchk = y , 중복 확인 o)
+    // var emjoongbokchk = $('input[name=emjoongbokchk]').val();
+    // console.log(emjoongbokchk);
+    // function emjoongbokCheck(){
+    //     if(emjoongbokchk ==''){
+    //         alert('이메일 중복 확인을 해주세요');
+    //     }
+    // }
 
 
     //-----------------------------------------------------------------
