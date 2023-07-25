@@ -47,6 +47,8 @@ public class GrMyBlogController {
 
             log.info("listlist=>{}", pclist.toString());
 
+          
+
             // 포스트 총 갯수 세기
             int postallcount = gMapper.countpostall("test1@naver.com");
             // 포스트 갯수가 한자리일 경우 앞에 0붙이기
@@ -90,5 +92,11 @@ public class GrMyBlogController {
             e.printStackTrace();
             return "/home";
         }
+    }
+
+    @GetMapping(value = "/headertest.do")
+    public String headertestGET(Model model){
+
+        return "/GR/grheader";
     }
 }
