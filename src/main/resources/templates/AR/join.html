@@ -89,7 +89,7 @@
             padding-bottom: 30px;
         }
         
-        .password{
+        .pwbox{
             display: flex;
             align-content: center;
             align-items: center;
@@ -144,7 +144,7 @@
                                                 </select>
                                                 <input name="email" id="email" type="hidden">
                                                 <input type="button" id="emailchk" value="중복 확인" onclick="ajaxEmCheck(email)" ></input>
-                                                <input type="text" id="emjoongbokchk" name="emjoongbokchk" ></input>
+                                                <input type="hidden" id="emjoongbokchk" name="emjoongbokchk" ></input>
                                             </div>
                                         </td>
                                        
@@ -154,11 +154,11 @@
                                     <th>비밀번호</th>
                                     <td>
                                         <div class="passwordbox">
-                                            <div class="password">
+                                            <div class="pwbox">
                                                 <table style="width: 60%;">
                                                     <tr>
                                                         <th style="padding-right: 41px;">비밀번호</th>
-                                                        <td><input type="password" id="pw" name="pw"  style="padding: 0.5% 5% 0.5% 5%" autoComplete="off" /> </td>
+                                                        <td><input type="password" id="password" name="password"  style="padding: 0.5% 5% 0.5% 5%" autoComplete="off" /> </td>
                                                         
                                                     </tr>
                                                 </table>
@@ -184,7 +184,9 @@
                                 <tr class="tableline">
                                     <th>닉네임</th>
                                     <td><input type="text" id="nickname" name="nickname"  style="padding: 0.5% 5% 0.5% 5%">
-                                        <input type="button" id="nickchk" value="중복 확인" onclick="ajaxNickCheck(nickname)" ></input></td>
+                                        <input type="button" id="nickchk" value="중복 확인" onclick="ajaxNickCheck(nickname)" ></input>
+                                        <input type="hidden" id="nickjoongbokchk" name="nickjoongbokchk" ></input>
+                                    </td>
                                     
                                 </tr>
                                 <tr class="tableline">
@@ -337,9 +339,9 @@
                     // 사용 가능
                     emcheck = 1;
                     alert('사용 가능한 이메일입니다.');
-                    document.getElementById("pw").focus();
+                    document.getElementById("password").focus();
                     $('input[name=emjoongbokchk]').attr('value', 'y'); //중복확인 여부
-                    console.log($('input[name=emjoongbokchk]').val());
+                    // console.log($('input[name=emjoongbokchk]').val());
                 }
             }
             else {
@@ -352,13 +354,13 @@
 
         //비밀번호 일치 확인
         function pwConfirm(){
-            var password = document.getElementById("pw");
-            var passwordcheck = document.getElementById("pwcheck");
-            var confirmMsg = document.getElementById('confirmMsg');	//확인 메세지
-		    var correctColor = "#1D3563";	//맞았을 때 출력되는 색깔
-		    var wrongColor ="#ff0000";	//틀렸을 때 출력되는 색깔
+            const password = document.getElementById("password");
+            const passwordcheck = document.getElementById("pwcheck");
+            const confirmMsg = document.getElementById('confirmMsg');	//확인 메세지
+		    const correctColor = "#1D3563";	//맞았을 때 출력되는 색깔
+		    const wrongColor ="#ff0000";	//틀렸을 때 출력되는 색깔
 
-            if(pw.value.length > 0 ){
+            if(password.value.length > 0 ){
                 if(password.value == passwordcheck.value){
                 confirmMsg.style.color = correctColor;
                 confirmMsg.innerHTML = "비밀번호가 일치합니다";
@@ -399,6 +401,8 @@
                     nickcheck = 1;
                     alert('사용 가능한 닉네임 입니다');
                     document.getElementById("phone").focus();
+                    $('input[name=nickjoongbokchk]').attr('value', 'y'); //중복확인 여부
+                    console.log($('input[name=nickjoongbokchk]').val());
                 }
                
             }
@@ -426,7 +430,7 @@
     //유효성 검사
     function joinAction(){
         const email = document.getElementById("email");
-        const pw = document.getElementById("pw");
+        const pw = document.getElementById("password");
         const pwcheck = document.getElementById("pwcheck");
         const name = document.getElementById("name");
         const nickname = document.getElementById("nickname");
@@ -434,6 +438,7 @@
         const mbti = document.getElementById("mbti");
         //중복확인 안했을 때 유효성 검사 (emjoongbokchk = y , 중복 확인 o)
         const emjoongbokchk = $('input[name=emjoongbokchk]').val();
+        const nickjoongbokchk = $('input[name=nickjoongbokchk]').val();
 
         console.log(pw.value);
         console.log(pwcheck.value);
@@ -476,6 +481,10 @@
         }
         if(emjoongbokchk ==''){
             alert('이메일 중복 확인을 해주세요');
+            return false;
+        }
+        if(nickjoongbokchk ==''){
+            alert('닉네임 중복 확인을 해주세요');
             return false;
         }
 
