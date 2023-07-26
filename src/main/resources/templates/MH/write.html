@@ -147,8 +147,7 @@
             </div>
         </div>
         <div class="mt-4 d-flex justify-content-center align-items-center">
-            <button class="write_button me-2" type="button"
-                onclick="writeAction()">등록</button>
+            <button class="write_button me-2" type="button" onclick="writeAction()">등록</button>
             <button class="write_button" type="button">취소</button>
         </div>
     </div>
@@ -160,6 +159,7 @@
     <script th:src="@{/js/axios.min.js}"></script>
     <!--TOAST UI Editor JS-->
     <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+    <script src="https://uicdn.toast.com/editor/latest/i18n/ko-kr.js"></script>
     <!--Tagify JS-->
     <script src="https://unpkg.com/@yaireo/tagify"></script>
     <script>
@@ -172,6 +172,23 @@
             previewStyle: 'vertical',
             height: '500px',
             initialValue: 'markdown',
+            language: "ko-KR",
+            hooks: {
+                'addImageBlobHook': async function (blob, callback) {
+
+                    // 이미지 추가시 수행할 작업 코드를 작성
+
+                    const formData = new FormData();
+                    formData.append("image", blob);
+
+                    const url = contextPath + '/api/post/image/upload.json';
+                    const headers = { "Content-Type": "multipart/form-data" };
+
+                    const { data } = await axios.post(url, formData, { headers });
+
+                    console.log(data.status);
+                }
+            }
         });
 
         // tagify 생성
