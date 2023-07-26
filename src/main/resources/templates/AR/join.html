@@ -220,7 +220,7 @@
                                 <tr>
                                     <th></th>
                                     <th><input type="button" id="joinbutton" value="회원 가입" onclick="joinAction()" ></input>
-                                    <t<input type="button" id="cancelbutton" value="취소" onclick="joinCancelAction()" ></input></th>
+                                        <input type="button" id="cancelbutton" value="취소" onclick="joinCancelAction()" ></input></th>
                                 </tr>
                             </table>
                         </div>
@@ -353,13 +353,13 @@
         //비밀번호 일치 확인
         function pwConfirm(){
             var password = document.getElementById("pw");
-            var pwcheck = document.getElementById("pwcheck");
+            var passwordcheck = document.getElementById("pwcheck");
             var confirmMsg = document.getElementById('confirmMsg');	//확인 메세지
 		    var correctColor = "#1D3563";	//맞았을 때 출력되는 색깔
 		    var wrongColor ="#ff0000";	//틀렸을 때 출력되는 색깔
 
             if(pw.value.length > 0 ){
-                if(password.value == pwcheck.value){
+                if(password.value == passwordcheck.value){
                 confirmMsg.style.color = correctColor;
                 confirmMsg.innerHTML = "비밀번호가 일치합니다";
                 }
@@ -435,6 +435,8 @@
         //중복확인 안했을 때 유효성 검사 (emjoongbokchk = y , 중복 확인 o)
         const emjoongbokchk = $('input[name=emjoongbokchk]').val();
 
+        console.log(pw.value);
+        console.log(pwcheck.value);
         // 1. 모든 항목이 입력되어 있어야함
         if (email.value.length <= 0) {
                 alert('이메일을 입력하세요');
