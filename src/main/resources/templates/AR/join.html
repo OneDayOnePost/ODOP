@@ -338,7 +338,7 @@
                     emcheck = 1;
                     alert('사용 가능한 이메일입니다.');
                     document.getElementById("pw").focus();
-                    $('input[name=emjoongbokchk]').attr('value', 'y');
+                    $('input[name=emjoongbokchk]').attr('value', 'y'); //중복확인 여부
                     console.log($('input[name=emjoongbokchk]').val());
                 }
             }
@@ -419,16 +419,6 @@
         $('input[name=mbti]').val(value);
     }
     
-    //-----------------------------------------------------------------
-    
-    //중복확인 안했을 때 유효성 검사 (emjoongbokchk = y , 중복 확인 o)
-    // var emjoongbokchk = $('input[name=emjoongbokchk]').val();
-    // console.log(emjoongbokchk);
-    // function emjoongbokCheck(){
-    //     if(emjoongbokchk ==''){
-    //         alert('이메일 중복 확인을 해주세요');
-    //     }
-    // }
 
 
     //-----------------------------------------------------------------
@@ -442,10 +432,11 @@
         const nickname = document.getElementById("nickname");
         const phone = document.getElementById("phone");
         const mbti = document.getElementById("mbti");
+        //중복확인 안했을 때 유효성 검사 (emjoongbokchk = y , 중복 확인 o)
+        const emjoongbokchk = $('input[name=emjoongbokchk]').val();
 
-
-         // 1. 모든 항목이 입력되어 있어야함
-         if (email.value.length <= 0) {
+        // 1. 모든 항목이 입력되어 있어야함
+        if (email.value.length <= 0) {
                 alert('이메일을 입력하세요');
                 email.focus();
                 return false; // 함수종료, 전송하지 않음
@@ -460,6 +451,7 @@
             pwcheck.focus();
             return false;
         }
+
         if(name.value.length <=0){
             alert('이름을 입력하세요');
             name.focus();
@@ -480,8 +472,14 @@
             mbti.focus();
             return false;
         }
+        if(emjoongbokchk ==''){
+            alert('이메일 중복 확인을 해주세요');
+            return false;
+        }
 
-            
+        // 전송하기
+        document.getElementById("form").submit();
+        alert('회원가입되었습니다.');
 
 
     }

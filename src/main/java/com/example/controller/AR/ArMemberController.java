@@ -57,6 +57,7 @@ public class ArMemberController {
 
 
             member.setPassword(bcpe.encode(member.getPassword()));
+            log.info("MemberController2 => {} ", member.toString());
             Member ret = mService.insertMember(member);
             if(ret != null){
                 return "redirect:/login.do";
