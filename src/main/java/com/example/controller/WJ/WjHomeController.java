@@ -26,13 +26,22 @@ public class WjHomeController {
     @GetMapping(value = "/adminhome.do")
     public String homeGET(Model model,
                           @AuthenticationPrincipal User user,
-                          @RequestParam(name = "type", required = false, defaultValue = "post") String type) {
+                          @RequestParam(name = "type", required = false, defaultValue = "post") String type,
+                          @RequestParam(name = "menu", required = false, defaultValue = "wait") String menu) {
         try {
             model.addAttribute("user", user);
 
             if (type.equals("post")) {
-                // List<ReportListDTO> postreportlist= rService.selectPostList();
-                // model.addAttribute("plist", postreportlist);
+                List<ReportListDTO> postreportlist= rService.selectPostListWait();
+
+                if (menu.equals("all")) {
+                    postreportlist = rService.selectPostListAll();
+                }
+                else if (menu.equals("delete")) {
+                    postreportlist = rService.selectPostListAll();
+                }
+
+                model.addAttribute("plist", postreportlist);
             }
 
             return "/WJ/WjAdminHome";

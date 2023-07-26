@@ -13,17 +13,31 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WjReportServiceImpl implements WjReportService {
     final WjReportMapper rMapper;
-
-    // 게시글 신고 목록
+    
+    // 게시글
+    // 1. 전체 신고 목록
     @Override
-    public List<ReportListDTO> selectPostList() {
+    public List<ReportListDTO> selectPostListAll() {
         try {
-            return rMapper.selectPostList();
+            return rMapper.selectPostListAll();
         }
         catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
-    
+
+    // 2. 승인 대기
+    @Override
+    public List<ReportListDTO> selectPostListWait() {
+        try {
+            return rMapper.selectPostListWait();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+ 
+    // 3. 삭제 완료
 }

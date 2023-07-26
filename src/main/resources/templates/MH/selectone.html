@@ -57,7 +57,13 @@
             width: 125px;
             height: 40px;
             border-radius: 17px;
-            background: #D9D9D9;
+            border: 1px solid #3A5485;
+            color: #FFFFFF;
+            background-color: #3A5485;
+        }
+
+        #reply_input_button:hover {
+            background-color: #1D3563;
         }
 
         .reply_output_content {
@@ -66,7 +72,7 @@
             background: #EFEFEF;
         }
 
-        .reply_output_content > .reply_read {
+        .reply_output_content>.reply_read {
 
             width: 100%;
             background: #EFEFEF;
@@ -76,8 +82,9 @@
             resize: none;
 
         }
-        .reply_output_content > .reply_modify {
-            
+
+        .reply_output_content>.reply_modify {
+
             display: block;
             width: 100%;
             border: none;
@@ -89,6 +96,40 @@
         .reply_output_button {
             border: none;
             background-color: white;
+        }
+
+        .reply_modify_content {
+            width: 100%;
+            border: 1px solid #D9D9D9;
+            outline-color: #FE6B8B;
+            resize: none;
+        }
+
+        .reply_modify_button {
+            width: auto;
+            height: 30px;
+            border-radius: 17px;
+            border: 1px solid #3A5485;
+            font-size: 14px;
+        }
+
+        .reply_modify_button:nth-child(1) {
+            color: #FFFFFF;
+            width: 100px;
+            background-color: #3A5485;
+        }
+
+        .reply_modify_button:nth-child(1):hover {
+            background-color: #1D3563;
+        }
+
+        .reply_modify_button:nth-child(2) {
+            width: 60px;
+            background-color: #FFFFFF;
+        }
+
+        .reply_modify_button:nth-child(2):hover {
+            background-color: #DFECF6;
         }
     </style>
 </head>
@@ -106,7 +147,8 @@
                 </div>
                 <div class="ms-auto d-flex">
                     <div class="me-3"><i class="bi bi-eye me-2"></i><span th:text="${post.hit}"></span></div>
-                    <div class="me-3"><i class="bi bi-chat-dots me-2"></i><span th:text="${post.replyCount}"></span></div>
+                    <div class="me-3"><i class="bi bi-chat-dots me-2"></i><span th:text="${post.replyCount}"></span>
+                    </div>
                     <div class="me-3"><i class="bi bi-heart me-2"></i>좋아요</div>
                 </div>
             </div>
@@ -247,7 +289,7 @@
             if (data.status === 200) {
 
                 // 댓글 영역 초기화
-                // $('.reply_output').empty();
+                $('.reply_output').empty();
 
                 data.list.forEach((obj, index) => {
 
@@ -378,6 +420,7 @@
             var reply_output_content = $(`#reply_box${no}`).find(".reply_output_content");
             var reply_text = reply_output_content.find("textarea").val();
 
+            reply_output_content.css("background-color", "white");
             reply_output_content.empty();
 
             /* 첫 번째 div */
@@ -403,11 +446,59 @@
             var div2 = document.createElement('div');
             div2.className = "reply_modify my-2";
 
-            var textarea = document.createElement('textarea');
-            textarea.className = "reply_modify";
-            textarea.textContent = reply_text;
+            var div2_textarea = document.createElement('textarea');
+            div2_textarea.className = "reply_modify_content";
+            div2_textarea.textContent = reply_text;
+            div2_textarea.onfocus = function (e) {
+                // console.log(e.target.value);
+                e.target.setSelectionRange(e.target.value.length, e.target.value.length);
+            };
 
-            
+            var div2_1 = document.createElement('div');
+            div2_1.className = "d-flex justify-content-end mt-2";
+
+            var div2_1_button1 = document.createElement('button');
+            div2_1_button1.className = "reply_modify_button me-2";
+            div2_1_button1.textContent = "댓글 수정";
+            div2_1_button1.addEventListener('click', () => replyUpdateAction(no));
+
+            var div2_1_button2 = document.createElement('button');
+            div2_1_button2.className = "reply_modify_button";
+            div2_1_button2.textContent = "취소";
+            div2_1_button2.addEventListener('click', () => {
+
+                // 1. 내용 초기화 & 배경 색상 변경
+                reply_output_content.empty();
+                reply_output_content.css("background-color", "#EFEFEF");
+
+                // 2. 기존 형식으로 태그 재생성
+                var div3_1 = document.createElement('div');
+                div3_1.className = "pt-4 ps-4 pb-2";
+                div3_1.style = "font-size: 15px; font-weight: 600;";
+                div3_1.textContent = "댓글 내용"
+
+                var div3_textarea = document.createElement('textarea');
+                div3_textarea.className = "reply_read p-4";
+                div3_textarea.textContent = reply_text;
+                div3_textarea.readOnly = true;
+
+                // 3. 태그 삽입
+                reply_output_content.append(div3_1);
+                reply_output_content.append(div3_textarea);
+
+            });
+
+            div2_1.append(div2_1_button1);
+            div2_1.append(div2_1_button2);
+            div2.append(div2_textarea);
+            div2.append(div2_1);
+
+            /* ******* */
+
+            reply_output_content.append(div1);
+            reply_output_content.append(div2);
+
+            div2_textarea.focus();
 
             // <div class="form-check d-flex justify-content-end">
             //     <input class="form-check-input me-2" type="checkbox" id="secret_check">
@@ -443,7 +534,7 @@
 
                 const { data } = await axios.put(url, body, { headers });
 
-                console.log(data);
+                // console.log(data);
 
                 if (data.status === 200) {
                     selectAction();
@@ -451,6 +542,46 @@
             }
 
         }
+
+        /* 댓글 수정 */
+        async function replyUpdateAction(no) {
+
+            // console.log(no);
+
+            var reply_output_content = $(`#reply_box${no}`).find(".reply_output_content");
+
+            var secret = 0;
+
+            if (reply_output_content.find(".secret_check").is(":checked")) {
+                secret = 1;
+            }
+
+            // console.log(secret);
+
+            var reply_modify_content = reply_output_content.find(".reply_modify_content");
+
+            // console.log(reply_modify_content.val());
+
+            if (reply_modify_content.val().length < 1) {
+                alert("댓글 내용을 입력하세요");
+                return false;
+            }
+
+            const url = contextPath + '/api/reply/update.json';
+            const headers = { "Content-Type": "application/json" };
+            const body = { no: no, secret: secret, content: reply_modify_content.val() };
+
+            const { data } = await axios.put(url, body, { headers });
+
+            // console.log(data);
+
+            if (data.status === 200) {
+                selectAction();
+            }
+
+        }
+
+
 
     </script>
 </body>
