@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.entity.Image;
 import com.example.entity.Post;
+import com.example.service.MH.ImageService;
 import com.example.service.MH.PostInsertService;
 import com.example.service.MH.PostManageService;
 
@@ -33,6 +34,7 @@ public class RestPostController {
     
     final private PostInsertService pService;
     final private PostManageService postManageService;
+    final private ImageService imageService;
 
     @PostMapping(value = "/write.json")
     public Map<String, Object> writePOST(@RequestBody Post obj) {
@@ -86,6 +88,14 @@ public class RestPostController {
         image.setFilename(multipartFile.getOriginalFilename());
         image.setFilesize(BigInteger.valueOf(multipartFile.getSize()));
         image.setFiletype(multipartFile.getContentType());
+
+        int ret = imageService.insertPostImageOne(image);
+
+        retMap.put("status", -1);
+        
+        if(ret == 1) {
+            retMap.put("status", 200);
+        }
 
         return retMap;
 
