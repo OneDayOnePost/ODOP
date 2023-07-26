@@ -18,5 +18,8 @@ public interface ReplyService {
 
     // 3. 댓글 삭제
     public int deleteReplyOne(Reply obj);
+
+    // 4. 댓글 수정
+    public int updateReplyOne(Reply obj);
     
 }

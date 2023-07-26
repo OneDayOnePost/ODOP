@@ -77,10 +77,10 @@ public class Post {
   @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
   private List<PostTag> postTagList = new ArrayList<>();
 
-  // 이미지
+  // 게시글-이미지 연결
   @ToString.Exclude
   @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
-  private List<Image> imageList = new ArrayList<>();
+  private List<PostImage> postImageList = new ArrayList<>();
 
   // 댓글
   @ToString.Exclude
@@ -107,5 +107,7 @@ public class Post {
   public List<Reply> getReplyList() {
       return this.replyList;
   }
+
+  
 
 }

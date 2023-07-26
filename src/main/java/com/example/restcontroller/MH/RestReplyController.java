@@ -90,5 +90,22 @@ public class RestReplyController {
         return retMap;
 
     }
+
+    @PutMapping(value = "/update.json")
+    public Map<String, Object> updatePUT(@RequestBody Reply obj) {
+
+        Map<String, Object> retMap = new HashMap<>();
+
+        retMap.put("status", -1);
+
+        int ret = replyService.updateReplyOne(obj);
+
+        if(ret == 1) {
+            retMap.put("status", 200);
+        }
+
+        return retMap;
+
+    }
     
 }

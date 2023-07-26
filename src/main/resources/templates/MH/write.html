@@ -68,7 +68,46 @@
             height: 40px;
             border-radius: 20.5px;
             border: 1px solid #3A5485;
+        }
+
+        .write_button:nth-child(1) {
+            color: white;
+            background-color: #3A5485;
+        }
+
+        .write_button:nth-child(1):hover {
+            color: #FFFFFF;
+            background-color: #1D3563;
+        }
+
+        .write_button:nth-child(2) {
             background: #FFF;
+        }
+
+        .write_button:nth-child(2):hover {
+            background-color: #B6C6D3;
+        }
+
+        .vertical {
+            display: inline-block;
+            align-self: stretch;
+            width: 3px;
+            min-height: 1em;
+            background-color: #3A5485;
+        }
+
+        #removeAllTags {
+            border-radius: 20.5px;
+            border: 1px solid #3A5485;
+            background: #FFF;
+            width: 80px;
+            height: 30px;
+            font-size: 12px;
+        }
+
+        #removeAllTags:hover {
+            background-color: #3A5485;
+            color: white;
         }
     </style>
 </head>
@@ -98,14 +137,17 @@
         </div>
         <div id="write_hashtag" class="mt-4">
             <!-- <span style="font-size: 25px; font-weight: 400;">해시태그</span> -->
-            <span>해시태그는 최대 5개까지 등록 가능합니다</span>
+            <div class="hstack">
+                <div class="vertical me-2"></div>
+                <div class="me-2">해시태그는 최대 5개까지 등록 가능합니다</div>
+                <button id="removeAllTags" type="button" onclick="removeAllTags()">전체 삭제</button>
+            </div>
             <div id="write_tagbox" class="mt-3">
                 <input id="tagify" placeholder="해시태그를 입력하세요">
             </div>
         </div>
         <div class="mt-4 d-flex justify-content-center align-items-center">
-            <button class="write_button text-white me-2" style="background-color: #3A5485" type="button"
-                onclick="writeAction()">등록</button>
+            <button class="write_button me-2" type="button" onclick="writeAction()">등록</button>
             <button class="write_button" type="button">취소</button>
         </div>
     </div>
@@ -117,6 +159,7 @@
     <script th:src="@{/js/axios.min.js}"></script>
     <!--TOAST UI Editor JS-->
     <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+    <script src="https://uicdn.toast.com/editor/latest/i18n/ko-kr.js"></script>
     <!--Tagify JS-->
     <script src="https://unpkg.com/@yaireo/tagify"></script>
     <script>
@@ -129,13 +172,35 @@
             previewStyle: 'vertical',
             height: '500px',
             initialValue: 'markdown',
+            language: "ko-KR",
+            hooks: {
+                'addImageBlobHook': async function (blob, callback) {
+
+                    // 이미지 추가시 수행할 작업 코드를 작성
+
+                    const formData = new FormData();
+                    formData.append("image", blob);
+
+                    const url = contextPath + '/api/post/image/upload.json';
+                    const headers = { "Content-Type": "multipart/form-data" };
+
+                    const { data } = await axios.post(url, formData, { headers });
+
+                    console.log(data.status);
+                }
+            }
         });
 
         // tagify 생성
         var input_tag = document.querySelector('#tagify');
         var tagify = new Tagify(input_tag, {
-            maxTags : 5
+            maxTags: 5
         });
+
+        // 입력된 해시태그 전체 삭제
+        function removeAllTags() {
+            tagify.removeAllTags();
+        }
 
         /* 글 작성 */
         async function writeAction() {
@@ -182,12 +247,12 @@
 
             var tagify_list = tagify.value;
 
-            tagify_list.forEach(function(item) {
+            tagify_list.forEach(function (item) {
 
                 // console.log(item.value);
 
                 tag_list.push(item.value);
-                
+
             })
 
             // console.log(tag_list);
@@ -195,13 +260,15 @@
             // 3. 전송
 
             const url = contextPath + '/api/post/write.json';
-            const headers = { "Content-Type" : "application/json" };
-            const body = { title: title.value, content: content_html, markdown: content_markdown, cate: {no: cate.value}, 
-                        secret: secret, tagList: tag_list }; // 로그인 email 추가
+            const headers = { "Content-Type": "application/json" };
+            const body = {
+                title: title.value, content: content_html, markdown: content_markdown, cate: { no: cate.value },
+                secret: secret, tagList: tag_list
+            }; // 로그인 email 추가
 
             const { data } = await axios.post(url, body, { headers });
 
-            if(data.status === 200) {
+            if (data.status === 200) {
                 window.location.href = contextPath + "/"; // 어디로 이동?
             }
 

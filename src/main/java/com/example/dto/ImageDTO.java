@@ -21,9 +21,6 @@ public class ImageDTO {
 
   private String filetype;
 
-  // 게시글 번호(시퀀스)
-  private BigInteger postno;
-
   // 대표이미지(0:X / 1:O)
   private BigInteger chk;
 }

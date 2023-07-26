@@ -1,15 +1,16 @@
 package com.example.entity;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -41,8 +42,8 @@ public class Image {
   // 대표이미지(0:X / 1:O)
   private BigInteger chk;
 
-  // 게시글
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "postno", referencedColumnName = "no")
-  private Post post;
+  // 게시글-이미지 연결
+  @OneToMany(mappedBy = "image", fetch = FetchType.LAZY)
+  private List<PostImage> postImageList = new ArrayList<>();
+
 }
