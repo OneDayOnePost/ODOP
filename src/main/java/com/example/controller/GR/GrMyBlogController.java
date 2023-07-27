@@ -38,8 +38,8 @@ public class GrMyBlogController {
     final GrPostRepository postRepository;
 
     // 이미지 전송용
-    @Autowired ResourceLoader resourceLoader; // resources 폴더의 파일을 읽기 위한 객체 생성
-    @Value("${default.image}") String DEFAULTIMAGE;
+    // @Autowired ResourceLoader resourceLoader; // resources 폴더의 파일을 읽기 위한 객체 생성
+    // @Value("${default.image}") String DEFAULTIMAGE;
 
     @GetMapping(value = "/myblog.do")
     public String myblogGET(Model model) { // @AuthenticationPrincipal User user
@@ -100,23 +100,23 @@ public class GrMyBlogController {
     // -----------------------------------------------------------------------------------
     // 프로필 이미지 url 생성용 => 닉네임을 보내면 프로필 이미지 반환
     // 127.0.0.1:5059/odop/grimage.do?nickname=?
-     @GetMapping(value = "/seimage")
-    public ResponseEntity<byte[]> image ( @RequestParam(name = "itemno", defaultValue = "0" ) BigDecimal itemno) throws IOException {
-        // 메뉴 번호를 입력해서 메뉴 하나 가져오기 (메뉴에 이미지 정보가 있으니까)
-        ItemImage obj = piService.selectItemImageOne(itemno);
+    //  @GetMapping(value = "/grimage")
+    // public ResponseEntity<byte[]> image ( @RequestParam(name = "itemno", defaultValue = "0" ) BigDecimal itemno) throws IOException {
+    //     // 메뉴 번호를 입력해서 메뉴 하나 가져오기 (메뉴에 이미지 정보가 있으니까)
+    //     ItemImage obj = piService.selectItemImageOne(itemno);
 
-        HttpHeaders headers = new HttpHeaders(); // import org.springframework.http.HttpHeaders;
-        if(obj != null){ // 이미지가 존재하는지 확인
-            if(obj.getFilesize().longValue() > 0){
-                headers.setContentType( MediaType.parseMediaType(obj.getFiletype()) );
-                return new ResponseEntity<>( obj.getFiledata(), headers, HttpStatus.OK );
-                //  == 1) ResponseEntity<byte[]> response = new ResponseEntity<>( obj.getFiledata(), headers, HttpStatus.OK );
-                // 2) return response;
-            }
-        }
-        // 이미지가 없을 경우
-        InputStream is = resourceLoader.getResource(DEFAULTIMAGE).getInputStream(); // exception 발생 => throws IOException 처리
-        headers.setContentType(MediaType.IMAGE_JPEG);
-        return new ResponseEntity<>( is.readAllBytes(), headers, HttpStatus.OK );
-    }
+    //     HttpHeaders headers = new HttpHeaders(); // import org.springframework.http.HttpHeaders;
+    //     if(obj != null){ // 이미지가 존재하는지 확인
+    //         if(obj.getFilesize().longValue() > 0){
+    //             headers.setContentType( MediaType.parseMediaType(obj.getFiletype()) );
+    //             return new ResponseEntity<>( obj.getFiledata(), headers, HttpStatus.OK );
+    //             //  == 1) ResponseEntity<byte[]> response = new ResponseEntity<>( obj.getFiledata(), headers, HttpStatus.OK );
+    //             // 2) return response;
+    //         }
+    //     }
+    //     // 이미지가 없을 경우
+    //     InputStream is = resourceLoader.getResource(DEFAULTIMAGE).getInputStream(); // exception 발생 => throws IOException 처리
+    //     headers.setContentType(MediaType.IMAGE_JPEG);
+    //     return new ResponseEntity<>( is.readAllBytes(), headers, HttpStatus.OK );
+    // }
 }
