@@ -30,7 +30,7 @@ public interface GrMyblogMapper {
 
     // category 게시글 카운트하기
     @Select({
-            " SELECT category AS category, count(cateno) AS count FROM (SELECT c.CATEGORY, p.* FROM cate c LEFT JOIN POST p ON c.NO = p.CATENO AND p.writer = #{email}) GROUP BY category " })
+            " SELECT cateno AS cateno, category AS category, count(cateno) AS count FROM (SELECT c.CATEGORY, p.* FROM cate c LEFT JOIN POST p ON c.NO = p.CATENO AND p.writer = #{email}) GROUP BY category " })
     public List<Map<String, Integer>> selectpostcatecount(String email);
 
     // post 갯수 세기

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,113 +8,213 @@
     <title>헤더</title>
     <!-- Bootstrap용 css CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp"
+        crossorigin="anonymous">
+    <!--Bootstrap 용 Icon CDN-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 
-    <th:block th:fragment="headerCSS">
-        <style>
-        @import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
-        * {
-            font-family: 'NanumSquare';
-        }
-        
-        .header1{
-            padding: 0;
-        }
-
-        body{
-            margin: 0;
-        }
-
-        .menu-bar{
-            height: 60px;
-        }
-
-        .logo{
-            display: inline-block;
-        }
-
-        .logo img{
-            padding-left: 32px;
-            padding-bottom: 16px;
-        }
-
-        .menu-item{
-            display: inline-block;
-            padding-top: 25px;
-            padding-left: 65px;
-            font-weight: bold;
-        }
-
-        .menu-item a{
-            text-decoration: none;
-            color: #000;
-            font-size: 18px;
-        }
-
-
-
-        .button {
-            float: right;
-            display: inline-block;
-            padding-right: 24px;
-            padding-top: 20px;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .button button {
-            border: none;
-            background-color: transparent;
-            margin: 0;
-            padding: 0;
-            font-family: inherit;
-            color: inherit;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .banner{
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: cover;
-            height: 130px;
+    <style>
+        /* 헤더 */
+        .header {
+            width: 100%;
+            height: 70px;
+            background-color: #B6C6D3;
             display: flex;
-            text-align: center;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
         }
 
-        .banner a{ 
-            padding-left: 330px;
-            margin-top: 42px;
+        /* 햄버거 */
+        .hamburger {
+            cursor: pointer; 
+        }
+
+        .hamburger-line {
+            /* 햄버거 아이콘의 각 라인 스타일링 */
+            width: 30px;
+            height: 4px;
+            background-color: #182339;
+            margin: 6px 0;
+        }
+
+        /* 서브 메뉴 스타일 */
+        .sub-menu {
+            display: none; /* 시작할 때는 서브 메뉴를 숨김 */
+            position: absolute;
+            background-color: #B6C6D3;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .sub-menu.show {
+            display: block; /* show 클래스가 추가되면 서브 메뉴 표시 */
+        }
+
+        .sub-menu ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .sub-menu li {
+            margin: 5px 0;
+        }
+
+        .sub-menu a {
             text-decoration: none;
-            font-size: 30px;
-            font-weight: bold;
-            display: inline-block;
+            color: #182339;
         }
-        
-        </style>
-    </th:block>
+
+        /* 마이페이지 서브메뉴 */
+        #myPageMenu{
+            width: 150px;
+            height: 120px;
+            border-radius: 0;
+            text-align: center;
+            align-items: center;
+            right: 20px;
+            top: 70px;
+        }
+
+        /* 로고랑 아이콘 */
+
+        .logoandicons{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo_box {
+            flex: 1; /* 로고 박스가 남은 공간을 모두 차지하도록 설정 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto; /* 로고 박스를 가운데로 정렬시키는 부분입니다. */
+        }
+
+        /* 로고 이미지 */
+        .logo img {
+            width: 100px;
+        }
+
+        /* 헤더 오른쪽 구역 */
+        /* 아이콘들을 가로 방향으로 배치하는 스타일 */
+        .header-icons {
+            display: flex;
+            align-items: center;
+            margin-right: 25px;
+        }
+
+        .header-icons > div {
+            margin-left: 15px; /* 각 아이콘 사이의 간격 조정 */
+        }
+
+        /* 아이콘 크기 조정 예시 (실제 아이콘에 맞게 조정해야 합니다) */
+        .notification-icon i,
+        .my-page-icon i {
+            font-size: 23px;
+            color: #182339;
+            cursor: pointer;
+        }
+
+        .new-post input{
+            width: 130px;
+            height: 30px;
+            border-radius: 13px;
+            background-color: #3A5485;
+            border : none;
+            color: white;
+            font-weight: bold;
+        }
+
+        .login-btn input{
+            width: 110px;
+            height: 35px;
+            border-radius: 13px;
+            background-color: #3A5485;
+            border: none;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
 </head>
+
 <body>
+    <header class="header">
+        <!-- 햄버거 버튼 -->
+        <div class="hamburger" id="hamburgerBtn">
+            <div class="hamburger-line"></div>
+            <div class="hamburger-line"></div>
+            <div class="hamburger-line"></div>
+        </div>
 
+        <div class="logoandicons">
 
-<th:block th:fragment="headerHTML">
-    <div class="headerAll">
-        
-        <header class="container-fluid header1" >
- 
-            
-            
-        
-        </header>
+            <!-- 로고 이미지 -->
+            <div class="logo_box">
+                <div class="logo">
+                    <a th:href="@{/home.do}"><img th:src="@{/images/gr/odoplogo(2).png}" alt="로고 이미지" ></a>
+                </div>
+            </div>
 
-    
-    </div>
+            <!-- 헤더 오른쪽 아이콘들 -->
+            <div class="header-icons">
+                <div class="new-post">
+                    <input type="button" value="새 글 작성">
+                </div>
+                <div class="notification-icon">
+                    <i class="bi bi-bell"></i>
+                </div>
+                <div class="my-page-icon" id="myPageIcon">
+                    <i class="bi bi-person-circle"></i>
+                </div>
+                <!-- 로그인 안됐을 시 활성화 되는 버튼
+                <div class="login-btn">
+                    <input type="button" value="로그인">
+                </div> -->
+            </div>
+        </div>
+    </header>
 
-    <!-- script 넣는 자리-->
+    <!-- 햄버거 서브 메뉴 -->
+    <nav class="sub-menu" id="subMenu">
+        <!-- 서브 메뉴 항목들 -->
+        <ul>
+            <li><a href="#">메뉴1</a></li>
+            <li><a href="#">메뉴2</a></li>
+            <li><a href="#">메뉴3</a></li>
+        </ul>
+    </nav>
+
+    <!-- 마이페이지 메뉴 -->
+    <nav class="sub-menu" id="myPageMenu">
+        <!-- 마이페이지 메뉴 항목들 -->
+        <ul>
+            <li><a href="#">My Blog</a></li>
+            <li><a href="#">로그아웃</a></li>
+        </ul>
+    </nav>
+
     <script th:inline="javascript" type="text/javascript">
+        // 햄버거 버튼과 서브 메뉴 요소를 가져옴
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const subMenu = document.getElementById('subMenu');
 
+        // 햄버거 버튼 클릭 시 서브 메뉴 표시/숨김 처리
+        hamburgerBtn.addEventListener('click', () => {
+            subMenu.classList.toggle('show');
+        });
+
+        // 마이페이지 아이콘 클릭 시 마이페이지 메뉴 토글 처리
+        const myPageIcon = document.getElementById('myPageIcon');
+        const myPageMenu = document.getElementById('myPageMenu');
+
+        myPageIcon.addEventListener('click', () => {
+            myPageMenu.classList.toggle('show');
+        });
     </script>
-
-</th:block>
 </body>
+
 </html>
