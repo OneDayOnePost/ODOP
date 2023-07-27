@@ -352,7 +352,8 @@
                                         </div>
                                     </div>
                                     <div class="cate" th:each="obj:${pclist}">
-                                        <div class="cate_1" th:text="${obj.CATEGORY}"></div>
+                                        <!-- <div class="cate_1"><a th:text="${obj.CATEGORY}" th:href="@{/myblog.do(cateno=${obj.CATENO})}"></a></div> -->
+                                        <div class="cate_1"><a th:text="${obj.CATEGORY}"></a></div>
                                         <div class="cate_num" th:text="${obj.COUNT}"></div>
                                     </div>
                                     
@@ -374,7 +375,6 @@
                                             <p th:text="${obj.title}"></p>
                                         </div>
                                         <div class="post_content">
-                                            <!-- <p th:text="${obj.content}"></p> -->
                                             <span th:text="${T(org.jsoup.Jsoup).parse(obj.content).text()}"></span>
                                         </div>
                                         <div class="post_tag" th:each="temp : ${obj.postTagList}">
@@ -385,8 +385,8 @@
                                                 <p th:text="${obj.regdate}"></p>
                                             </div>
                                             <div class="post_infoinfo" name="countreply">
-                                                <i class="bi bi-chat-dots me-2"></i><span style="font-weight: bold;">댓글&nbsp;</span><span th:text="${obj.replyList.size()}"></span>
-                                                &nbsp;&nbsp;<i class="bi bi-heart me-2"></i><span style="font-weight: bold;">좋아요&nbsp;</span><span th:text="${obj.dopeList.size()}"></span>
+                                                <i class="bi bi-chat-dots me-2"></i><span>댓글&nbsp;</span><span style="font-weight: bold;" th:text="${obj.replyList.size()}"></span>
+                                                &nbsp;&nbsp;<i class="bi bi-heart me-2"></i><span>좋아요&nbsp;</span><span style="font-weight: bold;" th:text="${obj.dopeList.size()}"></span>
                                             </div>
                                         </div>
                                         <div class="line"></div>
@@ -437,6 +437,8 @@
           },
         },
       });
+
+
 
 
     </script>

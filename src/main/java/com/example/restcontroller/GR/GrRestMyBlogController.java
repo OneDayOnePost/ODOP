@@ -1,5 +1,6 @@
 package com.example.restcontroller.GR;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,9 @@ public class GrRestMyBlogController {
     // @GetMapping(value = "/myblog.json")
     // public Map<String, Integer> myblogGET() {
 
+    //     Map<String, Integer> retMap = new HashMap<>();
+
+    //     return retMap;
     // }
 
 }
