@@ -34,3 +34,6 @@ build/
 
 ### 구글 oauth 클라이언트 ###
 application-oauth.properties
+
+### AWS S3 엑세스 키 ###
+application-aws.properties
