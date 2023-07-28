@@ -106,6 +106,9 @@ public class Post {
   // 댓글수를 저장할 임시 변수
   @Transient
   private int replyCount;
+  public List<Reply> getReplyList() {
+      return this.replyList;
+  }
 
   // AWS S3 리스트를 저장할 임시 변수
   @Transient
