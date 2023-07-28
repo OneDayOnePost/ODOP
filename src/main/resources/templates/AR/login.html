@@ -12,7 +12,7 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel='stylesheet' th:href="@{/css/bootstrap.min.css.map}" />
 
-    <link rel='stylesheet' th:href="@{/css/header.css}" /> 
+    <!-- <link rel='stylesheet' th:href="@{/css/header.css}" />  -->
     <!--Bootstrap 용 Icon CDN-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <!--font awesome 용-->
@@ -21,13 +21,11 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"
         integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
 
-    <!-- Link Swiper's CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
 
     <style>
         @import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
 
-        body {
+        body{
             
             /* font-family: 'nanumsquare','MinSans-Regular', sans-serif; */
             font-family: 'NanumSquare';
@@ -40,6 +38,7 @@
 
         #wrapper{
             padding-top: 100px;
+            padding-bottom: 100px;
             width: 100%;
         }
 
@@ -70,6 +69,14 @@
 
         #box_row2 {
             padding-bottom: 50px;
+            padding-left: 500px;
+        }
+
+        #joinus{
+            display: flex;
+            justify-content: space-around;
+            padding-top: 50px;
+
         }
 
         .login_input {
@@ -88,7 +95,8 @@
 
         #login_button {
             width: 212px;
-            height: 70px;
+            height: 75px;
+            border-radius: 6px;
             border: solid;
             background: #1D3563;
             color: #FFF;
@@ -126,123 +134,178 @@
             height: 2px;
             background: #213251;
         }
+        html,body {
+        position: relative;
+        height: 100%;
+        }
+
+        #loginpart{
+            display: flex;
+            align-items: center;
+            padding-left: 273px;
+        }
+        #buttonbox{
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            align-items: center;
+            padding-top: 10px;
+        }
+
+        #findbox{
+            display: flex;
+            padding-left: 60px;
+            padding-top: 12px;
+        }
+
+        .a {
+            /* position: absolute; */
+            top: 0px;
+            left: 0px;
+            padding: 8px;
+            cursor: pointer;
+            -webkit-transition: 0.3s;
+            transition: 0.3s;
+            background-color: #B6C6D3;
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            flex: 1;
+            text-align: center;
+        }
+
+        .logo1 {
+            color: #3A5485;
+            font-size: 24px;
+            font-weight: bold;
+            margin-left: 8vh;
+        }
+
+        .logo2 {
+            color: #3A5485;
+            font-size: 14px;
+            margin-left: 8vh;
+        }
+
+        .login {
+            text-align: right;
+            margin-right: 6vh;
+        }
+
+        .login input {
+            height: 2rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            font-size: 1rem;
+            border-radius: 1rem;
+            border: none;
+            outline: none;
+            font-weight: bold;
+            word-break: keep-all;
+            background: #3A5485;
+            color: white;
+            transition: all 0.125s ease-in 0s;
+            cursor: pointer;
+        }
+
     </style>
 </head>
 
 <body>
-
-    <div class="swiper">
-        <div class="swiper-wrapper">
-
-            <div th:replace="~{fragments/aside :: aside}"></div>
-
-            <div class="swiper-slide content">
-                
-                <div class="menu-button">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-
-                <div th:replace="~{fragments/header :: header}"> </div>
-                
-                <div id="wrapper" class="container">
-                    <h3 id="logintitle">LOGIN</h3>
-                    <div id="homeline"></div>
-                    <div id="login_box" class="container">
-                        <div id="box_row1" class="row">
-                            <div class="col-7 d-flex justify-content-end">
-                                <div>
-                                    <div class="mb-3 d-flex">
-                                        <span class="login_span me-auto pe-4 align-items-center">이메일</span>
-                                        <input class="login_input" type="text" id="email" name="email">
-                                    </div>
-                                    <div class="d-flex">
-                                        <span class="login_span me-auto pe-4">비밀번호</span>
-                                        <input class="login_input" type="password" maxlength="16" id="password" name="password">
-                                    </div>
-                                </div>
+    <div id="wrapper" class="container">
+        <h3 id="logintitle">LOGIN</h3>
+        <div id="homeline"></div>
+        <div id="login_box" class="container">
+            <div id="box_row1" class="row">
+                <form th:action="@{/loginaction.do}" method="post" id="form">
+                    <div id="loginpart">
+                        <div id="inputpart">
+                            <div>
+                                <span class="login_span">이메일</span>
+                                <input class="login_input" type="text" id="email" name="email" style="margin-left: 45px;">
                             </div>
-                            <div class="col-5">
-                                <div class="d-flex align-items-center">
-                                    <input type="button" id="login_button" value="로그인" onclick="loginAction()"></input>
-                                </div>
-                                <div class="d-flex pt-2">
-                                    <a href="#" class="nav-link"><span>아이디 찾기</span></a>
-                                    <span class="vr mx-2"></span>
-                                    <a href="#" class="nav-link"><span>비밀번호 찾기</span></a>
-                                </div>
+                            <div style="padding-top: 25px;">
+                                <span class="login_span">비밀번호</span>
+                                <input class="login_input" type="password" maxlength="16" id="password" name="password" style="margin-left: 26px;">
                             </div>
                         </div>
-                        <div id="box_row2" class="row">
-                            <div class="d-flex justify-content-center">
-                                <img onclick="naver_login()" class="login_social me-2" th:src="@{/images/logo_naver.png}"
-                                    style="width: 50px; height: 50px;">
-                                <img class="login_social me-2" th:src="@{/images/logo_kakao.png}"
-                                    style="width: 50px; height: 50px;">
-                                <img class="login_social me-2" th:src="@{/images/logo_google.png}"
-                                    style="width: 50px; height: 50px; border: lightgray 1px solid;">
-                                <!-- <img class="login_social me-2" th:src="@{/images/logo_apple.png}"
-                                    style="width: 50px; height: 50px; border: lightgray 1px solid;"> -->
+                        <div id="buttonbox">
+                            <div style="padding-left: 60px;">
+                                <input type="button" id="login_button" value="로그인" onclick="loginAction()"></input>
                             </div>
-                        </div>
-            
-            
-            
-                    </div>
-                    <div class="row d-flex justify-content-center mt-5">
-                        <div class="col-5 d-flex justify-content-center">
-                            <span id="join_guide">아직도 회원이 아니신가요?</span>
-                        </div>
-                        <div class="col-5 d-flex justify-content-center">
-                            <button id="join_button" onclick="location.href='join.do'">이메일로 가입하기</button>
+                            <div id="findbox">
+                                <a href="#" class="nav-link"><span>아이디 찾기</span></a>
+                                <span class="vr" style="margin-left: 15px; margin-right: 15px;"></span>
+                                <a href="#" class="nav-link"><span>비밀번호 찾기</span></a>
+                            </div>
                         </div>
                     </div>
-            
+                </form>
+            </div>
+            <div id="box_row2" class="row">
+                <div>
+                    <img onclick="naver_login()" class="login_social" th:src="@{/images/logo_naver.png}"
+                        style="width: 50px; height: 50px; margin-left: 20px;">
+                    <img class="login_social" th:src="@{/images/logo_kakao.png}"
+                        style="width: 50px; height: 50px; margin-left: 20px;">
+                    <img class="login_social" th:src="@{/images/logo_google.png}"
+                        style="width: 50px; height: 50px; margin-left: 20px; border: lightgray 1px solid;">
                 </div>
             </div>
-            
+
+
+
         </div>
-        
+        <div id="joinus">
+            <div>
+                <span id="join_guide">아직도 회원이 아니신가요?</span>
+            </div>
+            <div>
+                <button id="join_button" onclick="location.href='join.do'">이메일로 가입하기</button>
+            </div>
+        </div>
+
     </div>
+
 
 
     
 
-     <!-- Swiper JS -->
-     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 
-     <!-- Initialize Swiper -->
-     <script>
-       var menuButton = document.querySelector('.menu-button');
-       var openMenu = function () {
-         swiper.slidePrev();
-       };
-       var swiper = new Swiper('.swiper', {
-         slidesPerView: 'auto',
-         initialSlide: 1,
-         resistanceRatio: 0,
-         slideToClickedSlide: true,
-         on: {
-           slideChangeTransitionStart: function () {
-             var slider = this;
-             if (slider.activeIndex === 0) {
-               menuButton.classList.add('cross');
-               // required because of slideToClickedSlide
-               menuButton.removeEventListener('click', openMenu, true);
-             } else {
-               menuButton.classList.remove('cross');
-             }
-           },
-           slideChangeTransitionEnd: function () {
-             var slider = this;
-             if (slider.activeIndex === 1) {
-               menuButton.addEventListener('click', openMenu, true);
-             }
-           },
-         },
-       });
-     </script>
- </body>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.5/axios.min.js"></script>
+    <script th:inline="javascript" type="text/javascript">
+        function loginAction(){
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            let reg = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/;
+
+            if(email.length <= 0){
+                
+                alert('이메일을 입력해주세요');
+                email.focus();
+                return false;
+            }
+            if(password.length <= 0){
+                alert('비밀번호를 입력해주세요');
+                password.focus();
+                return false;
+            }
+            if(false === reg.test(email)){
+                alert('이메일 형식을 확인해주세요');
+                email.focus();
+                return false;
+            }
+
+            //전송하기
+            document.getElementById("form").submit();
+
+        }
+    </script>
+</body>
 
 </html>

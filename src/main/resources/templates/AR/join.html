@@ -416,6 +416,7 @@
                const url = [[@{/api/emailcheck.do}]] + `?email=${email.value}`;
                 const headers = {"Content-Type":"application/json"};
                 const {data} = await axios.get(url, {headers});
+                
 
                 // console.log(data.ret);
 
@@ -504,6 +505,8 @@
                     nickcheck = 0;
                     alert('사용 불가능한 닉네임 입니다.');
                     e.value='';
+                    console.log(data.ret.value);
+                    return data.ret;
                 }
                 else if(data.ret === 0){
                     //사용 가능

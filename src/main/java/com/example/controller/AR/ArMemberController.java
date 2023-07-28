@@ -1,6 +1,8 @@
 package com.example.controller.AR;
 
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,7 +53,7 @@ public class ArMemberController {
     }
 
     @PostMapping(value = "/join.do")
-    public String joinPOST(@ModelAttribute Member member){
+    public String joinPOST(@ModelAttribute Member member, HttpSession httpSession){
         try {
             log.info("MemberController => {} ", member.toString());
 
@@ -59,11 +61,18 @@ public class ArMemberController {
             member.setPassword(bcpe.encode(member.getPassword()));
             log.info("MemberController2 => {} ", member.toString());
             Member ret = mService.insertMember(member);
+            
             if(ret != null){
-                return "redirect:/login.do";
+                httpSession.setAttribute("alertTitle", "회원 가입");                
+                httpSession.setAttribute("alertMessage", "가입 성공하였습니다 :)");
+                httpSession.setAttribute("alertUrl", "/login.do");
+                return "redirect:/alert.do";    
             }
             else{
-                return "redirect:/join.do";
+                httpSession.setAttribute("alertTitle", "회원 가입");                
+                httpSession.setAttribute("alertMessage", "가입 실패하였습니다 :(");
+                httpSession.setAttribute("alertUrl", "/join.do");
+                return "redirect:/alert.do";
             }
         }
         catch (Exception e){

@@ -17,4 +17,7 @@ public interface ArMemberService {
     //닉네임 중복확인
     public int selectMemberNicknameCheck(@Param("nickname") String nickname);
 
+    //로그인
+    public Member selectUserByEmail(String email);
+
 }

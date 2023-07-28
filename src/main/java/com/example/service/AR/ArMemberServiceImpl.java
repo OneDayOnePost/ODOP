@@ -49,6 +49,15 @@ public class ArMemberServiceImpl implements ArMemberService {
         }
     }
 
+    @Override
+    public Member selectUserByEmail(String email) {
+        try {
+            return mRepository.selectUserByEmail(email);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }    }
+
 
     
 
