@@ -12,76 +12,50 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel='stylesheet' th:href="@{/css/bootstrap.min.css.map}" />
 
-    <link rel='stylesheet' th:href="@{/css/header.css}" />
+    <!--Bootstrap 용 Icon CDN-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 
+    <!-- header css -->
+    <link rel='stylesheet' th:href="@{/css/grheader.css}" />
+    <!-- footer css -->
+    <th:block th:replace="~{/fragments/footer :: footerCSS}"></th:block>
+    
     <!--jQuery 추가-->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"
         integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
 
-    <!-- Link Swiper's CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+        
+    <style>
+      /* 바디영역 수정하지 말아주세요 헤더 메뉴가 사라져요ㅠㅠ */
+      body {
+        min-height:100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+    </style>
+
+
 </head>
 
 <body>
 
+  <!-- header -->   
+  <div th:replace="~{GR/grheader :: header}"> </div>
+   
+  <!-- 본문 영역 -->              
+  <div id="wrapper" class="container" style="max-width: 1210px; margin-top: 30px; margin-bottom: 300px;">
+    <h1>본문본문</h1>
+  </div>
 
-    <!-- Swiper -->
-    <div class="swiper">
-        <div class="swiper-wrapper">
+  <!-- footer -->
+  <th:block th:replace="~{/fragments/footer :: footerHTML}"></th:block>
 
-            <div th:replace="~{fragments/aside :: aside}"></div>
+  <script th:inline="javascript" type="text/javascript">
+     
 
-            <div class="swiper-slide content">
-                
-                <div class="menu-button">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-
-                <div th:replace="~{fragments/header :: header}"> </div>
-                
-                <h1>본문</h1>
-            </div>
-            
-        </div>
-        
-    </div>
-
-    <!-- Swiper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
-
-    <!-- Initialize Swiper -->
-    <script>
-      var menuButton = document.querySelector('.menu-button');
-      var openMenu = function () {
-        swiper.slidePrev();
-      };
-      var swiper = new Swiper('.swiper', {
-        slidesPerView: 'auto',
-        initialSlide: 1,
-        resistanceRatio: 0,
-        slideToClickedSlide: true,
-        on: {
-          slideChangeTransitionStart: function () {
-            var slider = this;
-            if (slider.activeIndex === 0) {
-              menuButton.classList.add('cross');
-              // required because of slideToClickedSlide
-              menuButton.removeEventListener('click', openMenu, true);
-            } else {
-              menuButton.classList.remove('cross');
-            }
-          },
-          slideChangeTransitionEnd: function () {
-            var slider = this;
-            if (slider.activeIndex === 1) {
-              menuButton.addEventListener('click', openMenu, true);
-            }
-          },
-        },
-      });
-    </script>
+  </script>
 </body>
 
 </html>

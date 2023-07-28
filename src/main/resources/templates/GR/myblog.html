@@ -15,7 +15,10 @@
     <!--Bootstrap 용 Icon CDN-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 
-    <!-- <link rel='stylesheet' th:href="@{/css/header.css}" /> -->
+    <!-- header css -->
+    <link rel='stylesheet' th:href="@{/css/grheader.css}" />
+    <!-- footer css -->
+    <th:block th:replace="~{/fragments/footer :: footerCSS}"></th:block>
 
     <!--jQuery 추가-->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"
@@ -187,7 +190,7 @@
         }
 
         .post_box{
-            padding-left: 30px;
+            padding-left: 50px;
             padding-top: 10px;
             display: flex;
             flex-direction: column;
@@ -271,7 +274,7 @@
             width: 150px;
         }
 
-        .line{
+        .post_line{
             width: 100%;
             height: 1px;
             background-color: #e5e5e5;
@@ -292,154 +295,108 @@
 
 <body>
 
-
-    <!-- Swiper -->
-    <div class="swiper">
-        <div class="swiper-wrapper">
-
-            <!-- <div th:replace="~{fragments/aside :: aside}"></div> -->
-
-            <div class="swiper-slide content">
+    <!-- header -->   
+ 
+    <div th:replace="~{GR/grheader :: header}"> </div>
+   
                 
-                <div class="menu-button">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
+    <div id="wrapper" class="container" style="max-width: 1210px; margin-top: 30px; margin-bottom: 300px;">
+        <div class="blogname d-flex justify-content-center">
+            <h3 th:text="${user.blogname}"></h3>
+        </div>
 
-                <!-- <div th:replace="~{fragments/header :: header}"> </div> -->
-                
-                <div id="wrapper" class="container">
-                  <div class="blogname d-flex justify-content-center">
-                      <h3 th:text="${user.blogname}"></h3>
-                  </div>
-          
-                    <div id="blog_box" class="container">
-                        <div id="left-area">
-                            <div class="blog-profile">
-                                <div class="myimg">
-                                    <img th:src="@{/images/logo_kakao.png}" width="100px" height="100px">
-                                </div>
-                                <div class="myinfo_box">
-                                    <div class="myinfo">
-                                        <p th:text="${user.nickname}"></p>
-                                        <div class="myinfo_follow">
-                                            <div class="myfollowing">
-                                                <div class="follow_number" th:text="${following}"></div>
-                                                <div class="follow_word">
-                                                    팔로잉
-                                                </div>
-                                            </div>
-                                            <div class="myfollower">
-                                                <div class="follow_number" th:text="${follower}"></div>
-                                                <div class="follow_word">
-                                                    팔로우
-                                                </div>
-                                            </div>
+            <div id="blog_box" class="container">
+                <div id="left-area">
+                    <div class="blog-profile">
+                        <div class="myimg">
+                            <img th:src="@{/images/logo_kakao.png}" width="100px" height="100px">
+                        </div>
+                        <div class="myinfo_box">
+                            <div class="myinfo">
+                                <p th:text="${user.nickname}"></p>
+                                <div class="myinfo_follow">
+                                    <div class="myfollowing">
+                                        <div class="follow_number" th:text="${following}"></div>
+                                        <div class="follow_word">
+                                            팔로잉
                                         </div>
                                     </div>
-                                    <div class="my_btn">
-                                        <input type="button" value="내 정보 수정">
-                                    </div>
-                                    <div class="introduce">
-                                        <p th:text="${user.introduce}"></p>
-                                    </div>
-                                </div>
-                                <div class="my_category">
-                                    <div class="cate_name_box">
-                                        <div class="cate_name">
-                                            <p>카테고리</p>
+                                    <div class="myfollower">
+                                        <div class="follow_number" th:text="${follower}"></div>
+                                        <div class="follow_word">
+                                            팔로우
                                         </div>
                                     </div>
-                                    <div class="cate" th:each="obj:${pclist}">
-                                        <!-- <div class="cate_1"><a th:text="${obj.CATEGORY}" th:href="@{/myblog.do(cateno=${obj.CATENO})}"></a></div> -->
-                                        <div class="cate_1"><a th:text="${obj.CATEGORY}"></a></div>
-                                        <div class="cate_num" th:text="${obj.COUNT}"></div>
-                                    </div>
-                                    
                                 </div>
                             </div>
+                            <div class="my_btn">
+                                <input type="button" value="내 정보 수정">
+                            </div>
+                            <div class="introduce">
+                                <p th:text="${user.introduce}"></p>
+                            </div>
                         </div>
-                        
-                        <div id="right-area" class="side-width side-width-1">
-                            <div class="post_box">
-                                <div class="post">
-                                    <p>post&nbsp;&nbsp;</p><p th:text="${formattedpostcount}"></p>
+                        <div class="my_category">
+                            <div class="cate_name_box">
+                                <div class="cate_name">
+                                    <p>카테고리</p>
                                 </div>
-                                <div class="mypost">
-                                    <div class="post_img">
-                                        <img th:src="@{/images/gr/123123.jpg}" width="780px" height="300px">
-                                    </div>
-                                    <div class="post_info" th:each="obj:${list}">
-                                        <div class="post_title">
-                                            <p th:text="${obj.title}"></p>
-                                        </div>
-                                        <div class="post_content">
-                                            <span th:text="${T(org.jsoup.Jsoup).parse(obj.content).text()}"></span>
-                                        </div>
-                                        <div class="post_tag" th:each="temp : ${obj.postTagList}">
-                                            <input type="button" th:value="'# ' + ${temp.tag}">
-                                        </div>
-                                        <div class="post_lastline">
-                                            <div class="post_date">
-                                                <p th:text="${obj.regdate}"></p>
-                                            </div>
-                                            <div class="post_infoinfo" name="countreply">
-                                                <i class="bi bi-chat-dots me-2"></i><span>댓글&nbsp;</span><span style="font-weight: bold;" th:text="${obj.replyList.size()}"></span>
-                                                &nbsp;&nbsp;<i class="bi bi-heart me-2"></i><span>좋아요&nbsp;</span><span style="font-weight: bold;" th:text="${obj.dopeList.size()}"></span>
-                                            </div>
-                                        </div>
-                                        <div class="line"></div>
-                                    </div>
-                                </div>
-                                
+                            </div>
+                            <div class="cate" th:each="obj:${pclist}">
+                                <!-- <div class="cate_1"><a th:text="${obj.CATEGORY}" th:href="@{/myblog.do(cateno=${obj.CATENO})}"></a></div> -->
+                                <div class="cate_1"><a th:text="${obj.CATEGORY}"></a></div>
+                                <div class="cate_num" th:text="${obj.COUNT}"></div>
                             </div>
                             
                         </div>
                     </div>
-              </div>
+                </div>
+                
+                <div id="right-area" class="side-width side-width-1">
+                    <div class="post_box">
+                        <div class="post">
+                            <p>post&nbsp;&nbsp;</p><p th:text="${formattedpostcount}"></p>
+                        </div>
+                        <div class="mypost">
+                            <div class="post_img">
+                                <img th:src="@{/images/gr/123123.jpg}" width="780px" height="300px">
+                            </div>
+                            <div class="post_info" th:each="obj:${list}">
+                                <div class="post_title">
+                                    <p th:text="${obj.title}"></p>
+                                </div>
+                                <div class="post_content">
+                                    <span th:text="${T(org.jsoup.Jsoup).parse(obj.content).text()}"></span>
+                                </div>
+                                <div class="post_tag" th:each="temp : ${obj.postTagList}">
+                                    <input type="button" th:value="'# ' + ${temp.tag}">
+                                </div>
+                                <div class="post_lastline">
+                                    <div class="post_date">
+                                        <p th:text="${obj.regdate}"></p>
+                                    </div>
+                                    <div class="post_infoinfo" name="countreply">
+                                        <i class="bi bi-chat-dots me-2"></i><span>댓글&nbsp;</span><span style="font-weight: bold;" th:text="${obj.replyList.size()}"></span>
+                                        &nbsp;&nbsp;<i class="bi bi-heart me-2"></i><span>좋아요&nbsp;</span><span style="font-weight: bold;" th:text="${obj.dopeList.size()}"></span>
+                                    </div>
+                                </div>
+                                <div class="post_line"></div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
             </div>
-            
-        </div>
-        
     </div>
 
-    <!-- Swiper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 
-    <!-- Initialize Swiper -->
+    <!-- footer -->
+    <th:block th:replace="~{/fragments/footer :: footerHTML}"></th:block>
+
+
     <script th:inline="javascript" type="text/javascript">
-      var menuButton = document.querySelector('.menu-button');
-      var openMenu = function () {
-        swiper.slidePrev();
-      };
-      var swiper = new Swiper('.swiper', {
-        slidesPerView: 'auto',
-        initialSlide: 1,
-        resistanceRatio: 0,
-        slideToClickedSlide: true,
-        on: {
-          slideChangeTransitionStart: function () {
-            var slider = this;
-            if (slider.activeIndex === 0) {
-              menuButton.classList.add('cross');
-              // required because of slideToClickedSlide
-              menuButton.removeEventListener('click', openMenu, true);
-            } else {
-              menuButton.classList.remove('cross');
-            }
-          },
-          slideChangeTransitionEnd: function () {
-            var slider = this;
-            if (slider.activeIndex === 1) {
-              menuButton.addEventListener('click', openMenu, true);
-            }
-          },
-        },
-      });
-
-
-
+     
 
     </script>
 </body>
