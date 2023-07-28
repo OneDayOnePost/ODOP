@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>로그인</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <!--1. BootStrap용 CSS CDM 추가-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link rel='stylesheet' th:href="@{/css/bootstrap.min.css.map}" />
+
+    <!-- <link rel='stylesheet' th:href="@{/css/header.css}" />  -->
+    <!--Bootstrap 용 Icon CDN-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <!--font awesome 용-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!--jQuery 추가-->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+
+
+    <style>
+        @import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
+
+        body{
+            
+            /* font-family: 'nanumsquare','MinSans-Regular', sans-serif; */
+            font-family: 'NanumSquare';
+            font-size: 15px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #wrapper{
+            padding-top: 100px;
+            padding-bottom: 100px;
+            width: 100%;
+        }
+
+        #logintitle{
+            float: left;
+        }
+
+        
+
+        #homeline {
+            padding-bottom: 27px;
+            border-top: 2.4px solid #A2B2CD;
+            /* margin-left: 5px;
+            margin-right: 5px; */
+            margin-top: 41px;
+            margin-bottom: 30px;
+
+        }
+
+        #login_box {
+            border: 1.5px solid #bbc0ca;
+            background: rgba(254, 254, 254, 0.65);
+        }
+
+        #box_row1 {
+            padding: 120px 0px 50px 0px;
+        }
+
+        #box_row2 {
+            padding-bottom: 50px;
+            padding-left: 500px;
+        }
+
+        #joinus{
+            display: flex;
+            justify-content: space-around;
+            padding-top: 50px;
+
+        }
+
+        .login_input {
+            border: none;
+            background: #EFEFEF;
+            width: 330px;
+            height: 40px;
+            border-radius: 5px;
+        }
+
+        .login_span {
+            font-weight: 400;
+            font-size: 20px;
+            line-height: 40px;
+        }
+
+        #login_button {
+            width: 212px;
+            height: 75px;
+            border-radius: 6px;
+            border: solid;
+            background: #1D3563;
+            color: #FFF;
+            font-size: 20px;
+            
+        }
+
+        #join_button {
+            border: 1.5px solid #A2B2CD;
+            background: rgba(254, 254, 254, 0.65);
+            font-size: 20px;
+            width: 450px;
+            height: 60px;
+        }
+
+        #join_guide {
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 800;
+            line-height: 60px;
+        }
+
+        .login_social {
+            border-radius: 100%;
+            width: 80px;
+            height: 80px;
+        }
+
+        .login_social:hover {
+            cursor: pointer;
+        }
+
+        #divider {
+            border: 0;
+            height: 2px;
+            background: #213251;
+        }
+        html,body {
+        position: relative;
+        height: 100%;
+        }
+
+        #loginpart{
+            display: flex;
+            align-items: center;
+            padding-left: 273px;
+        }
+        #buttonbox{
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            align-items: center;
+            padding-top: 10px;
+        }
+
+        #findbox{
+            display: flex;
+            padding-left: 60px;
+            padding-top: 12px;
+        }
+
+        .a {
+            /* position: absolute; */
+            top: 0px;
+            left: 0px;
+            padding: 8px;
+            cursor: pointer;
+            -webkit-transition: 0.3s;
+            transition: 0.3s;
+            background-color: #B6C6D3;
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            flex: 1;
+            text-align: center;
+        }
+
+        .logo1 {
+            color: #3A5485;
+            font-size: 24px;
+            font-weight: bold;
+            margin-left: 8vh;
+        }
+
+        .logo2 {
+            color: #3A5485;
+            font-size: 14px;
+            margin-left: 8vh;
+        }
+
+        .login {
+            text-align: right;
+            margin-right: 6vh;
+        }
+
+        .login input {
+            height: 2rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            font-size: 1rem;
+            border-radius: 1rem;
+            border: none;
+            outline: none;
+            font-weight: bold;
+            word-break: keep-all;
+            background: #3A5485;
+            color: white;
+            transition: all 0.125s ease-in 0s;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="wrapper" class="container">
+        <h3 id="logintitle">LOGIN</h3>
+        <div id="homeline"></div>
+        <div id="login_box" class="container">
+            <div id="box_row1" class="row">
+                <form th:action="@{/loginaction.do}" method="post" id="form">
+                    <div id="loginpart">
+                        <div id="inputpart">
+                            <div>
+                                <span class="login_span">이메일</span>
+                                <input class="login_input" type="text" id="email" name="email" style="margin-left: 45px;">
+                            </div>
+                            <div style="padding-top: 25px;">
+                                <span class="login_span">비밀번호</span>
+                                <input class="login_input" type="password" maxlength="16" id="password" name="password" style="margin-left: 26px;">
+                            </div>
+                        </div>
+                        <div id="buttonbox">
+                            <div style="padding-left: 60px;">
+                                <input type="button" id="login_button" value="로그인" onclick="loginAction()"></input>
+                            </div>
+                            <div id="findbox">
+                                <a href="#" class="nav-link"><span>아이디 찾기</span></a>
+                                <span class="vr" style="margin-left: 15px; margin-right: 15px;"></span>
+                                <a href="#" class="nav-link"><span>비밀번호 찾기</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div id="box_row2" class="row">
+                <div>
+                    <img onclick="naver_login()" class="login_social" th:src="@{/images/logo_naver.png}"
+                        style="width: 50px; height: 50px; margin-left: 20px;">
+                    <img class="login_social" th:src="@{/images/logo_kakao.png}"
+                        style="width: 50px; height: 50px; margin-left: 20px;">
+                    <img class="login_social" th:src="@{/images/logo_google.png}"
+                        style="width: 50px; height: 50px; margin-left: 20px; border: lightgray 1px solid;">
+                </div>
+            </div>
+
+
+
+        </div>
+        <div id="joinus">
+            <div>
+                <span id="join_guide">아직도 회원이 아니신가요?</span>
+            </div>
+            <div>
+                <button id="join_button" onclick="location.href='join.do'">이메일로 가입하기</button>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.5/axios.min.js"></script>
+    <script th:inline="javascript" type="text/javascript">
+        function loginAction(){
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            let reg = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/;
+
+            if(email.length <= 0){
+                
+                alert('이메일을 입력해주세요');
+                email.focus();
+                return false;
+            }
+            if(password.length <= 0){
+                alert('비밀번호를 입력해주세요');
+                password.focus();
+                return false;
+            }
+            if(false === reg.test(email)){
+                alert('이메일 형식을 확인해주세요');
+                email.focus();
+                return false;
+            }
+
+            //전송하기
+            document.getElementById("form").submit();
+
+        }
+    </script>
+</body>
+
+</html>
