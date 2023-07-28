@@ -124,7 +124,7 @@ public class MhHomeController {
     @GetMapping(value = "/mhselect.do")
     public String selectGET(Model model) {
 
-        BigInteger postno = new BigInteger("40");
+        BigInteger postno = new BigInteger("44");
 
         Post post = postSelectService.selectPostOne(postno);
 

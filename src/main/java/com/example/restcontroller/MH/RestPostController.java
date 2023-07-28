@@ -3,9 +3,9 @@ package com.example.restcontroller.MH;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-
-import javax.mail.Multipart;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.entity.Image;
 import com.example.entity.Post;
+import com.example.service.MH.AwsS3Service;
 import com.example.service.MH.ImageService;
 import com.example.service.MH.PostInsertService;
 import com.example.service.MH.PostManageService;
@@ -35,6 +36,7 @@ public class RestPostController {
     final private PostInsertService pService;
     final private PostManageService postManageService;
     final private ImageService imageService;
+    final private AwsS3Service awsS3Service;
 
     @PostMapping(value = "/write.json")
     public Map<String, Object> writePOST(@RequestBody Post obj) {
@@ -42,6 +44,29 @@ public class RestPostController {
         Map<String, Object> retMap = new HashMap<>();
 
         // log.info(format, obj.toString());
+        log.info(format, obj.getImageList());
+        // log.info(format, obj.getContent());
+
+        // 이미지 리스트와 본문 내용 비교 -> img src 경로 값이 없을 경우, 삭제!
+
+        List<Image> imageList = obj.getImageList();
+
+        for(Iterator<Image> iterator = imageList.iterator(); iterator.hasNext();) {
+
+            Image image = iterator.next();
+
+            String imgpath = image.getImgpath();
+
+            if(!obj.getContent().contains(imgpath)) {
+                
+                awsS3Service.delete(image.getImgkey());
+                iterator.remove();
+
+            }
+
+        }
+
+        log.info(format, obj.getImageList());
 
         obj.setWriter("test1@gmail.com"); // 로그인 상태에서 받아올 작성자 이메일 정보
 

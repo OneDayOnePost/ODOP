@@ -81,4 +81,11 @@ public class AwsS3Service {
         amazonS3.deleteObject(bucketName, awsS3.getKey());
     }
 
+    public void delete(String imgkey) {
+        if (!amazonS3.doesObjectExist(bucketName, imgkey)) {
+            throw new AmazonS3Exception("Object " +imgkey+ " does not exist!");
+        }
+        amazonS3.deleteObject(bucketName, imgkey);
+    }
+
 }
