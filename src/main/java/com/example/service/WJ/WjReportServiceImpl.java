@@ -1,10 +1,13 @@
 package com.example.service.WJ;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.dto.PostDTO;
 import com.example.dto.ReportListDTO;
+import com.example.dto.ReportOneDTO;
 import com.example.mapper.WJ.WjReportMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -40,4 +43,40 @@ public class WjReportServiceImpl implements WjReportService {
     }
  
     // 3. 삭제 완료
+    @Override
+    public List<ReportListDTO> selectPostListDelete() {
+        try {
+            return rMapper.selectPostListDelete();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // ------------------------------------------------------------------------
+
+    // 게시글 1개 조회
+    @Override
+    public PostDTO selectPostOne(BigInteger no) {
+        try {
+            return rMapper.selectPostOne(no);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // 게시글 신고 1개 상세 조회
+    @Override
+    public List<ReportOneDTO> selectPostReportOne(BigInteger postno) {
+        try {
+            return rMapper.selectPostReportOne(postno);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

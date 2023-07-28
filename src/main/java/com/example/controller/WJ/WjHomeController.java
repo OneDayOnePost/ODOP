@@ -1,5 +1,6 @@
 package com.example.controller.WJ;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -38,7 +39,7 @@ public class WjHomeController {
                     postreportlist = rService.selectPostListAll();
                 }
                 else if (menu.equals("delete")) {
-                    postreportlist = rService.selectPostListAll();
+                    postreportlist = rService.selectPostListDelete();
                 }
 
                 model.addAttribute("plist", postreportlist);
@@ -51,4 +52,25 @@ public class WjHomeController {
             return "redirect:/home.do";
         }
     }
+
+    // --------------------------------------------------------------------------------
+
+    // 신고된 게시글 상세 조회
+    @GetMapping(value = "/postreport.do")
+    public String postreportGET(Model model,
+                                @AuthenticationPrincipal User user,
+                                @RequestParam(name = "no", required = false, defaultValue = "wait") BigInteger no) {
+        try {
+            model.addAttribute("user", user);
+            model.addAttribute("pone", rService.selectPostOne(no));
+            model.addAttribute("prone", rService.selectPostReportOne(no));
+
+            return "/WJ/WjPostReportDetail";
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/home.do";
+        }
+    }
+
 }

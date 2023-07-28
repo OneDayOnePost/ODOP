@@ -38,7 +38,7 @@ public class WjRestHomeController {
     //         else if (menu.equals("delete")) {
     //             // 삭제 완료
     //             retMap.put("status", 200);
-    //             retMap.put("ret", rService.selectPostListAll());
+    //             retMap.put("ret", rService.selectPostListDelete());
     //         }
     //     }
     //     catch (Exception e) {
