@@ -3,8 +3,10 @@ package com.example.service.WJ;
 import java.math.BigInteger;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Service;
 
 import com.example.dto.PostDTO;
@@ -30,4 +32,10 @@ public interface WjReportService {
 
     // 게시글 신고 1개 상세 조회
     public List<ReportOneDTO> selectPostReportOne(@Param("postno") BigInteger postno);
+
+    // 게시글 신고 삭제 승인
+    public int postDeleteOk(@Param("postno") BigInteger postno);
+
+    // 게시글 신고 삭제 거절
+    public int postDeleteNo(@Param("postno") BigInteger postno);
 }

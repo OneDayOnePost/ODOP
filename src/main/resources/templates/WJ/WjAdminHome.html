@@ -280,9 +280,13 @@
             $("#reporttable1 tbody tr").on("click", function() {
                 // 선택한 행에서 글번호 가져오기
                 const postno = $(this).find("td:first-child").text();
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const typeParam = urlParams.get('type');
+                const menuParam = urlParams.get('menu');
                 
                 // 글번호에 맞는 상세 페이지로 이동
-                window.location.href = [[@{/postreport.do}]] + '?no=' + postno;
+                window.location.href = [[@{/postreport.do}]] + `?type=${typeParam}&menu=${menuParam}&no=${postno}`;
             });
         });
     </script>
