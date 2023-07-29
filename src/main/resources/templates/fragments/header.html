@@ -1,22 +1,217 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Page Title</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <script src='main.js'></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>헤더</title>
+    <!-- Bootstrap용 css CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp"
+        crossorigin="anonymous">
+    <!--Bootstrap 용 Icon CDN-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    
+
+
 </head>
+
 <body>
-    <div class="a" th:fragment="header">
-        <div class="logo">
-            <span class="logo1">ODOP</span><br>
-            <span class="logo2">ONE DAY ONE POST</span>
-        </div>
-        <div class="login">
-            <button>로그인</button>
-        </div>
+
+    <div class="a sticky-top" th:fragment="header">
+        <header class="header">
+            <!-- 햄버거 버튼 -->
+            <div class="hamburger hamburger-icon" id="hamburgerBtn">
+                <i class="bi bi-list"></i>
+            </div>
+
+            <!-- 엑스자 버튼 (초기에는 표시되지 않음) -->
+            <div class="hamburger close-icon hide" id="closeBtn">
+                <i class="bi bi-x"></i>
+            </div>
+
+
+            <div class="logoandicons">
+
+                <!-- 로고 이미지 -->
+                <div class="logo_box">
+                    <div class="logo">
+                        <a th:href="@{/home.do}"><img th:src="@{/images/gr/odoplogo(2).png}" alt="로고 이미지" style="margin-left: 145px;"></a>
+                    </div>
+                </div>
+
+                <!-- 헤더 오른쪽 아이콘들 -->
+                <div class="header-icons">
+                    <div class="new-post">
+                        <a th:href="@{/mhwrite.do}"><input type="button" value="새 글 작성"></a>
+                    </div>
+                    <div class="notification-icon">
+                        <i class="bi bi-bell"></i>
+                    </div>
+                    <div class="my-page-icon" id="myPageIcon">
+                        <i class="bi bi-person-circle"></i>
+                    </div>
+                    <!-- 로그인 안됐을 시 활성화 되는 버튼
+                    <div class="login-btn">
+                        <input type="button" value="로그인">
+                    </div> -->
+                </div>
+            </div>
+        </header>
+
+        <!-- 햄버거 서브 메뉴 -->
+        <nav class="sub-menu" id="subMenu">
+            <!-- 서브 메뉴 항목들 -->
+            <ul>
+                <!-- <li><a href="#">메뉴1</a></li>
+                <li><a href="#">메뉴2</a></li>
+                <li><a href="#">메뉴3</a></li> -->
+                <div class="col">
+                    <div class="col2">
+                        <i class="bi bi-caret-down-fill"></i>
+                    <div class="title_detail">CATEGORY </div>
+                    </div>
+                    <div class="line"></div>
+                    <div class="category">
+                    <table>
+                        <tr>
+                        <td><input type="checkbox"></td>
+                        <td>여기는</td>
+                        </tr>
+                        <tr>
+                        <td><input type="checkbox"></td>
+                        <td>DB에서</td>
+                        </tr>
+                        <tr>
+                        <td><input type="checkbox"></td>
+                        <td>카테고리</td>
+                        </tr>
+                        <tr>
+                        <td><input type="checkbox"></td>
+                        <td>불러와서</td>
+                        </tr>
+                        <tr>
+                        <td><input type="checkbox"></td>
+                        <td>넣는걸로</td>
+                        </tr>
+                        <tr>
+                        <td><input type="checkbox"></td>
+                        <td>합쉬다~</td>
+                        </tr>
+                    </table>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="col2_m">
+                        <i class="bi bi-caret-down-fill"></i>
+                    <div class="title_detail_m">MBTI </div>
+                    </div>
+                    <div class="line"></div>
+                    <div class="select_mbti">
+                    <table>
+                        <tr>
+                        <td><input type="checkbox"></td>
+                        <td>ENFP</td>
+                        <td><input type="checkbox"></td>
+                        <td>ENFJ</td>
+                        </tr>
+                        <tr>
+                        <td><input type="checkbox"></td>
+                        <td>ENTP</td>
+                        <td><input type="checkbox"></td>
+                        <td>ENTJ</td>
+                        </tr>
+                        <tr>
+                        <td><input type="checkbox"></td>
+                        <td>ESTP</td>
+                        <td><input type="checkbox"></td>
+                        <td>ESTJ</td>
+                        </tr>
+                        <tr>
+                        <td><input type="checkbox"></td>
+                        <td>ESFP</td>
+                        <td><input type="checkbox"></td>
+                        <td>ESFJ</td>
+                        </tr>
+                        <tr>
+                        <td><input type="checkbox"></td>
+                        <td>INFP</td>
+                        <td><input type="checkbox"></td>
+                        <td>INFJ</td>
+                        </tr>
+                        <tr>
+                        <td><input type="checkbox"></td>
+                        <td>INTP</td>
+                        <td><input type="checkbox"></td>
+                        <td>INTJ</td>
+                        </tr>
+                        <tr>
+                        <td><input type="checkbox"></td>
+                        <td>ISTP</td>
+                        <td><input type="checkbox"></td>
+                        <td>ISTJ</td>
+                        </tr>
+                        <tr>
+                        <td><input type="checkbox"></td>
+                        <td>ISFP</td>
+                        <td><input type="checkbox"></td>
+                        <td>ISFJ</td>
+                        </tr>
+                    </table>
+                    </div>
+                </div>
+
+                <div class="search">
+                    <input type="button" value="조 회">
+                </div>
+
+            </ul>
+        </nav>
+
+        <!-- 프로필 눌렀을 때 나오는 메뉴 -->
+        <nav class="sub-menu" id="myPageMenu">
+            <ul>
+                <li><a th:href="@{/myblog.do}">My Blog</a></li>
+                <hr style="border: solid 0.5px #3A5485; margin-top:15px; margin-bottom: 15px;">
+                <li><a href="#">로그아웃</a></li>
+            </ul>
+        </nav>
+
+        <script th:inline="javascript" type="text/javascript">
+            // 햄버거 버튼과 서브 메뉴 요소를 가져옴
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const closeBtn = document.getElementById('closeBtn');
+            const subMenu = document.getElementById('subMenu');
+
+            // 햄버거 버튼 클릭 시 서브 메뉴 표시/숨김 처리
+            hamburgerBtn.addEventListener('click', () => {
+                subMenu.classList.toggle('show');
+
+                // 아이콘 변경
+                hamburgerBtn.classList.toggle('hide');
+                closeBtn.classList.toggle('hide');
+            });
+
+            closeBtn.addEventListener('click', () =>{
+                subMenu.classList.toggle('show');
+
+                hamburgerBtn.classList.toggle('hide');
+                closeBtn.classList.toggle('hide');
+            });
+
+            // 마이페이지 아이콘 클릭 시 마이페이지 메뉴 토글 처리
+            const myPageIcon = document.getElementById('myPageIcon');
+            const myPageMenu = document.getElementById('myPageMenu');
+
+            myPageIcon.addEventListener('click', () => {
+                myPageMenu.classList.toggle('show');
+            });
+        </script>
     </div>
+
+
 </body>
+
 </html>

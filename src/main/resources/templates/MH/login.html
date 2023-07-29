@@ -16,11 +16,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
-    <!-- Link Swiper's CSS -->
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" /> -->
-    <link th:href="@{/css/swiper@10_swiper-bundle.css}" rel="stylesheet">
-    <link th:href="@{/css/grheader.css}" rel="stylesheet">
-    <!-- <th:block th:replace="~{/fragments/header :: headerCSS}"></th:block> -->
+    <!--CSS-->
+    <link th:href="@{/css/header.css}" rel="stylesheet">
     <style>
         #main {
             min-height: 100vh;
@@ -101,7 +98,7 @@
 
 <body>
     <!--header 영역-->
-    <div th:replace="~{GR/grheader :: header}"></div>
+    <div th:replace="~{fragments/header :: header}"></div>
 
     <!--main 영역-->
     <div id="main">
