@@ -180,6 +180,13 @@
         #scrollup:hover {
             cursor: pointer;
         }
+
+        /* --------------------------------------------------------------------------- */
+
+        #body_content a {
+            text-decoration: none;
+            color: #000;
+        }
     </style>
 
 </head>
@@ -203,8 +210,8 @@
 
                 <div style="display: flex;" id="body_content">
                     <!-- 이전글 -->
-                    <div id="prevdiv" th:if="${prev > 0}" style="position: fixed; left: 0; height: 100%; width: 100px;">
-                        <button id="prev" onclick="prevpost()">&lang;</button> <!-- &lang; : 왼쪽 화살표 -->
+                    <div id="prevdiv" th:if="${prev > 0}">
+                        <a th:href="@{/postreport.do(type=${type}, menu=${menu}, no=${prev})}">&lang;</a>
                     </div>
 
                     <div th:each="post : ${pone}" id="wrapper" class="container">
@@ -214,10 +221,22 @@
                             <p th:text="${post.title}" style="font-size: 30px;">게시글 제목</p>
                         </div>
 
-                        <div id="post_namedate">
-                            <p th:text="${post.writer}" style="font-weight: bold; margin-bottom: 0; margin-right: 15px;">작성자 닉네임</p>
-                            <p th:text="${#dates.format(post.regdate, 'yyyy년 MM월 dd일 hh시 mm분')}" style="margin-bottom: 0;">작성일</p>
-                            <p><i class="bi bi-list"></i>목록으로</p>
+                        <div id="post_namedate" style="display: flex; align-items: center;">
+                            <div style="flex-grow: 1;">
+                                <p style="display: flex; align-items: center; margin-bottom: 0px;">
+                                    <span th:text="${post.writer}" style="font-weight: bold; margin-bottom: 0; margin-right: 15px;">
+                                        작성자 닉네임
+                                    </span>
+                                    <span th:text="${#dates.format(post.regdate, 'yyyy년 MM월 dd일 hh시 mm분')}" style="margin-bottom: 0;">
+                                        작성일
+                                    </span>
+                                </p>
+                            </div>
+                            <div style="text-align: right; margin-top: 3px;">
+                                <p style="margin-bottom: 0; display: flex; align-items: center;">
+                                    <a th:href="@{/adminhome.do(type=${type}, menu=${menu})}"><i class="bi bi-list"></i>목록</a>
+                                </p>
+                            </div>
                         </div>
 
                         <hr />
@@ -252,8 +271,8 @@
                     </div> 
     
                     <!-- 다음글 -->
-                    <div id="nextdiv" th:if="${next > 0}" style="position: fixed; right: 0; height: 100%; width: 100px;">
-                        <button id="next" onclick="nextpost()">&rang;</button> <!-- &rang; : 오른쪽 화살표 -->
+                    <div id="nextdiv" th:if="${next > 0}">
+                        <a th:href="@{/postreport.do(type=${type}, menu=${menu}, no=${next})}">&rang;</a>
                     </div>
                 </div>
                 
@@ -388,18 +407,6 @@
                     // 주소 이동
                 }
             }
-        }
-
-        // 이전글
-        function prevpost() {
-            const prev = [[${prev}]];
-            location.href = [[@{/postreport.do(type=post, menu=wait)}]] + '&no=' + prev;
-        }
-
-        // 다음글
-        function nextpost() {
-            const next = [[${next}]];
-            location.href = [[@{/postreport.do(type=post, menu=wait)}]] + '&no=' + next;
         }
     </script>
 </body>
