@@ -157,6 +157,20 @@ public class MhHomeController {
         return "/MH/update";
     }
 
+    @GetMapping(value = "/imgtest.do")
+    public String imgtestGET() {
+
+        return "/MH/imgtest";
+    }
+
+    @GetMapping(value = "/loginv2.do")
+    public String loginv2GET() {
+
+        return "/MH/loginv2";
+    }
+
+
+
     // 구글 로그인창 호출
     // @GetMapping(value = "/getGoogleAuthUrl")
     // public @ResponseBody String getGoogleAuthUrl(HttpServletRequest request) throws Exception {
