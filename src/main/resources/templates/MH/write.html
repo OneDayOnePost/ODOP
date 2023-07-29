@@ -166,6 +166,11 @@
 
         const contextPath = $('#contextPathHolder').attr('data-contextPath');
 
+        const user_email = "test1@gmail.com";
+
+        // 이미지 추가 시, 반환된 data 값을 저장할 배열 객체 생성
+        var images = new Array();
+
         // TOAST editor 생성
         const editor = new toastui.Editor({
             el: document.querySelector('#editor'),
@@ -176,17 +181,30 @@
             hooks: {
                 'addImageBlobHook': async function (blob, callback) {
 
-                    // 이미지 추가시 수행할 작업 코드를 작성
+                    // 이미지 추가 시, 수행할 작업 코드를 작성
 
                     const formData = new FormData();
-                    formData.append("image", blob);
+                    formData.append("file", blob);
 
-                    const url = contextPath + '/api/post/image/upload.json';
+                    const url = contextPath + '/api/s3/upload';
                     const headers = { "Content-Type": "multipart/form-data" };
 
-                    const { data } = await axios.post(url, formData, { headers });
+                    await axios.post(url, formData, { headers })
+                        .then(response => {
+                            // console.log(response.data);
+                            callback(response.data.path, blob.name);
+                            images.push({
+                                imgkey: response.data.key,
+                                imgpath: response.data.path,
+                                email: user_email
+                            });
+                        })
+                        .catch(error => {
+                            // 에러 발생 시
+                            console.log("error");
+                        })
 
-                    console.log(data.status);
+                    
                 }
             }
         });
@@ -259,17 +277,19 @@
 
             // 3. 전송
 
+            console.log(images);
+
             const url = contextPath + '/api/post/write.json';
             const headers = { "Content-Type": "application/json" };
             const body = {
                 title: title.value, content: content_html, markdown: content_markdown, cate: { no: cate.value },
-                secret: secret, tagList: tag_list
+                secret: secret, tagList: tag_list, imageList: images
             }; // 로그인 email 추가
 
             const { data } = await axios.post(url, body, { headers });
 
             if (data.status === 200) {
-                window.location.href = contextPath + "/"; // 어디로 이동?
+                // window.location.href = contextPath + "/";
             }
 
 

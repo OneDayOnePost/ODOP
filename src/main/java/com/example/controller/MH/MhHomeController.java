@@ -124,7 +124,7 @@ public class MhHomeController {
     @GetMapping(value = "/mhselect.do")
     public String selectGET(Model model) {
 
-        BigInteger postno = new BigInteger("37");
+        BigInteger postno = new BigInteger("44");
 
         Post post = postSelectService.selectPostOne(postno);
 
@@ -136,7 +136,7 @@ public class MhHomeController {
     @GetMapping(value = "/mhupdate.do")
     public String updateGET(Model model) {
 
-        BigInteger postno = new BigInteger("37");
+        BigInteger postno = new BigInteger("40");
 
         List<Cate> catelist = pService.selectCateList();
         Post post = postSelectService.selectPostOne(postno);

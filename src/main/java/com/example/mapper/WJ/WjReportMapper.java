@@ -3,9 +3,11 @@ package com.example.mapper.WJ;
 import java.math.BigInteger;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.example.dto.ReportOneDTO;
 import com.example.dto.PostDTO;
@@ -29,8 +31,9 @@ public interface WjReportMapper {
 
     // --------------------------------------------------------------------
 
+    // 게시글 - 상세 조회
     // 게시글 1개 조회
-    @Select({" SELECT writer, title, content, regdate, state FROM post WHERE no=#{no} "})
+    @Select({" SELECT no, writer, title, content, regdate, state FROM post WHERE no=#{no} "})
     public PostDTO selectPostOne(@Param("no") BigInteger no);
 
     // 게시글 신고 1개 상세 조회
@@ -40,4 +43,12 @@ public interface WjReportMapper {
              " ON pr2.NO = prp.reasonno AND prp.postno = #{postno}) " +
              " GROUP BY reason ORDER BY NO ASC "})
     public List<ReportOneDTO> selectPostReportOne(@Param("postno") BigInteger postno);
+
+    // 게시글 신고 삭제 승인
+    @Update({" UPDATE post SET state = 1 WHERE no = #{postno} "})
+    public int postDeleteOk(@Param("postno") BigInteger postno);
+
+    // 게시글 신고 삭제 거절
+    @Delete({" DELETE FROM post_report WHERE postno = #{postno} "})
+    public int postDeleteNo(@Param("postno") BigInteger postno);
 }

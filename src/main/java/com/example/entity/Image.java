@@ -39,8 +39,17 @@ public class Image {
 
   private String filetype;
 
+  // 이미지 key
+  private String imgkey;
+
+  // 이미지 path
+  private String imgpath;
+
   // 대표이미지(0:X / 1:O)
-  private BigInteger chk;
+  private BigInteger chk = new BigInteger("0");
+
+  // 등록자 이메일
+  private String email;
 
   // 게시글-이미지 연결
   @OneToMany(mappedBy = "image", fetch = FetchType.LAZY)

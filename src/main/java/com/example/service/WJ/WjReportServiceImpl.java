@@ -3,6 +3,8 @@ package com.example.service.WJ;
 import java.math.BigInteger;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import com.example.dto.PostDTO;
@@ -77,6 +79,30 @@ public class WjReportServiceImpl implements WjReportService {
         catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    // 게시글 신고 삭제 승인
+    @Override
+    public int postDeleteOk(BigInteger postno) {
+        try {
+            return rMapper.postDeleteOk(postno);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    // 게시글 신고 삭제 거절
+    @Override
+    public int postDeleteNo(BigInteger postno) {
+        try {
+            return rMapper.postDeleteNo(postno);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return -1;
         }
     }
 }

@@ -22,6 +22,8 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.example.dto.AwsS3DTO;
+
 import lombok.Data;
 import lombok.ToString;
 
@@ -107,6 +109,10 @@ public class Post {
   public List<Reply> getReplyList() {
       return this.replyList;
   }
+
+  // AWS S3 리스트를 저장할 임시 변수
+  @Transient
+  private List<Image> imageList = new ArrayList<>();
 
   
 
