@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.example.entity.Member;
-import com.example.repository.MH.MemberRepository;
+import com.example.repository.MH.MhMemberRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 public class SecurityServiceImpl implements UserDetailsService {
 
     final String format = "SecurityServiceImpl => {}";
-    final private MemberRepository mRepository;
+    final private MhMemberRepository mRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
