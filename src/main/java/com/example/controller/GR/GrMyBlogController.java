@@ -119,4 +119,22 @@ public class GrMyBlogController {
     //     headers.setContentType(MediaType.IMAGE_JPEG);
     //     return new ResponseEntity<>( is.readAllBytes(), headers, HttpStatus.OK );
     // }
+
+    // -----------------------------------------------------------------------------------
+
+    //  마이페이지
+    @GetMapping(value="/mypage.do")
+    public String mypageGET(Model model){
+        try{
+            MemberDTO user = gMapper.selectMemberOne("test1@gmail.com");
+
+            model.addAttribute("user", user);
+            return "/GR/mypage";
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return "/myblog";
+        }
+    }
+    
 }

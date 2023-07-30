@@ -1,286 +1,299 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
-    <title>ODOP</title>
-    <!--1. BootStrap용 CSS CDM 추가-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
-    <link rel='stylesheet' th:href="@{/css/bootstrap.min.css.map}" />
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+  <title>ODOP</title>
+  <!--Bootstrap 용 CSS-->
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+  <!--Bootstrap 용 Icon CDN-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+  <!--font awesome 용-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!--google fonts-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+  <!--CSS-->
+  <link th:href="@{/css/header.css}" rel="stylesheet">
+  <link th:href="@{/css/footer.css}" rel="stylesheet">
+  <!--thymeleaf contextpath-->
+  <link id="contextPathHolder" th:data-contextPath="${#httpServletRequest.getContextPath()}" />
+  <style>
 
-    <!--Bootstrap 용 Icon CDN-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    /* 여기 지정된 부분은 모든 html 파일에 공통적으로 넣어줍니다. */
+    html,
+    body {
+      height: 100%;
+    }
 
-    <!-- header css -->
-    <link rel='stylesheet' th:href="@{/css/grheader.css}" />
-    <!-- footer css -->
-    <th:block th:replace="~{/fragments/footer :: footerCSS}"></th:block>
+    #body-wrapper {
+      position: relative;
+      min-height: 100vh;
+      padding-bottom: 230px;
+    }
 
-    <!--jQuery 추가-->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
-        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    footer {
+      height: 230px;
+      position: relative;
+      transform: translateY(-100%);
+    }
+    
+    
+    /* 본문 내용 */
+    .container{
+        max-width: 1210px;
+    }
 
-    <!-- Link Swiper's CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
-    <style>
-        body {
-            min-height:100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    .blogname h3{
+        font-size: 22px;
+        padding-top: 90px;
+        padding-bottom: 33px;
+    }
 
-        .blogname h3{
-            font-size: 22px;
-            padding-top: 90px;
-            padding-bottom: 33px;
-        }
+    #blog_box {
+        /* border: 1.5px solid #A2B2CD; */
+        background: rgba(254, 254, 254, 0.65);
+        display: flex;
+    }
 
-        #blog_box {
-            /* border: 1.5px solid #A2B2CD; */
-            background: rgba(254, 254, 254, 0.65);
-            display: flex;
-        }
+    #left-area{
+        /* border: 1.5px solid #A2B2CD; */
+        /* position: absolute; */
+        width: 300px;
+        left: 312px;
+    }
 
-        #left-area{
-            /* border: 1.5px solid #A2B2CD; */
-            /* position: absolute; */
-            width: 300px;
-            left: 312px;
-        }
+    .myimg{
+        float: left;
+        padding-left: 15px;
+        padding-top: 23px;
+    }
 
-        .myimg{
-            float: left;
-            padding-left: 15px;
-            padding-top: 23px;
-        }
+    .myinfo{
+        padding-top: 29px;
 
-        .myinfo{
-            padding-top: 29px;
+        display: flex;
+        flex-direction: column;
+    }
 
-            display: flex;
-            flex-direction: column;
-        }
+    .myinfo p{
+        margin-bottom: 5px;
+        float: left;
+        margin-right: 80px;
+        padding-left: 30px;
+    }
 
-        .myinfo p{
-            margin-bottom: 5px;
-            float: left;
-            margin-right: 80px;
-            padding-left: 30px;
-        }
+    .myinfo_follow{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
 
-        .myinfo_follow{
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
+    }
 
-        }
+    .myinfo_follow .follow_number{
+        font-size: 25px;
+    }
 
-        .myinfo_follow .follow_number{
-            font-size: 25px;
-        }
+    .myinfo_follow .follow_word{
+        font-size: 15px;
+        color: #5C5960;
+    }
 
-        .myinfo_follow .follow_word{
-            font-size: 15px;
-            color: #5C5960;
-        }
+    .myinfo_follow::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 1px;
+        background-color: #e5e5e5;
+        transform: translateX(-50%);
+    }
+    
+    .myfollowing,
+    .myfollower{
+        flex-basis: 50%;
+    }
 
-        .myinfo_follow::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 50%;
-            width: 1px;
-            background-color: #e5e5e5;
-            transform: translateX(-50%);
-        }
+    .myfollowing div,
+    .myfollower div{
+        text-align: center;
+    }
+
+    .my_btn input{
+        /* padding-top: 55px; */
+        width: 300px;
+        height: 40px;
+        border-radius: 15px;
+        margin-top: 22px;
+        background-color: #3A5485;
+        border : none;
+
+        color: white;
+        font-weight: bold;
+    }
+
+    .introduce{
+        padding-top: 20px;
+        padding-left: 20px;
+        float: left;
+    }
+
+    .my_category{
+        clear: both;
+        float: left;
+        padding-left: 20px;
+        padding-top: 25px;
+    }
+
+    .cate_name_box{
+        font-weight: bold;
+        border-bottom: 2px solid #e5e5e5;
+        padding-bottom: 5px;
+        width: 260px;
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .cate_name{
+        padding-left: 15px;
+    }
+    .cate_name p{
+        margin-bottom: -3px;
+    }
+
+    .cate{
+        padding-top: 15px;
+        padding-left: 20px;
+        padding-right: 20px;
+        display: flex;
+        align-items: flex-start;
+        font-size: 14px;
+    }
+
+    .cate_1{
+        margin-right: auto;
+    }
+
+    .cate_num{
+        margin-left: auto;
+    }
+
+
+    #right-area{
+        flex: 1;
+        /* background-color: #EFEFEF; */
+    }
+
+    #right-area p{
+        float: left;
+    }
+
+    .post{
+        padding-left: 53px;
+    }
+
+    .post_img{
+        float: right;
+    }
+
+    .post_box{
+        padding-left: 50px;
+        padding-top: 10px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mypost{
+        padding-bottom: 50px;
+        width: 820px;
+    }
+
+
+    .post_info{
+        width: 820px;
+        /* background-color: #DFECF6; */
+        padding-left: 50px;
+        padding-top: 22px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+
+    .post_title{
+        padding-left: 10px;
+        font-weight: bold;
         
-        .myfollowing,
-        .myfollower{
-            flex-basis: 50%;
-        }
+    }
 
-        .myfollowing div,
-        .myfollower div{
-            text-align: center;
-        }
+    .post_info p{
+        text-align: left;
+        width: 695px;
+        margin: 0;
+    }
 
-        .my_btn input{
-            /* padding-top: 55px; */
-            width: 300px;
-            height: 40px;
-            border-radius: 15px;
-            margin-top: 22px;
-            background-color: #3A5485;
-            border : none;
+    .post_content{
+        width: 815px;
+        padding-left: 15px;
+        padding-top: 5px;
+        text-align: left;
+        font-size: 14px;
+    }
 
-            color: white;
-            font-weight: bold;
-        }
+    .post_tag{
+        padding-top: 15px;
+        display: flex;
+        margin-right: 5px;
+    }
 
-        .introduce{
-            padding-top: 20px;
-            padding-left: 20px;
-            float: left;
-        }
+    .post_tag input{
+        border-radius: 50px;
+        border: none;
+        background-color: #D9D9D9;
+        font-size: 13px;
+        width: 100px;
+        height: 25px;
+        display: inline-block;
 
-        .my_category{
-            clear: both;
-            float: left;
-            padding-left: 20px;
-            padding-top: 25px;
-        }
+    }
 
-        .cate_name_box{
-            font-weight: bold;
-            border-bottom: 2px solid #e5e5e5;
-            padding-bottom: 5px;
-            width: 260px;
-            display: flex;
-            align-items: flex-start;
-        }
+    .post_lastline{
+        padding-top: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 780px;
+    }
 
-        .cate_name{
-            padding-left: 15px;
-        }
-        .cate_name p{
-            margin-bottom: -3px;
-        }
+    .post_date{
+        /* order: 1; */
+        flex: 1;
+        font-size: 13px;
+        color: #5C5960;
+        width: 630px;
+    }
 
-        .cate{
-            padding-top: 15px;
-            padding-left: 20px;
-            padding-right: 20px;
-            display: flex;
-            align-items: flex-start;
-            font-size: 14px;
-        }
+    .post_infoinfo{
+        /* order: 2; */
+        flex : 1;
+        font-size: 13px;
+        width: 150px;
+    }
 
-        .cate_1{
-            margin-right: auto;
-        }
-
-        .cate_num{
-            margin-left: auto;
-        }
-
-
-        #right-area{
-            flex: 1;
-            /* background-color: #EFEFEF; */
-        }
-
-        #right-area p{
-            float: left;
-        }
-
-        .post{
-            padding-left: 53px;
-        }
-
-        .post_img{
-            float: right;
-        }
-
-        .post_box{
-            padding-left: 50px;
-            padding-top: 10px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .mypost{
-            padding-bottom: 50px;
-            width: 820px;
-        }
-
-
-        .post_info{
-            width: 820px;
-            /* background-color: #DFECF6; */
-            padding-left: 50px;
-            padding-top: 22px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: flex-start;
-            flex-direction: row;
-            justify-content: flex-start;
-        }
-
-        .post_title{
-            padding-left: 10px;
-            font-weight: bold;
-            
-        }
-
-        .post_info p{
-            text-align: left;
-            width: 695px;
-            margin: 0;
-        }
-
-        .post_content{
-            width: 815px;
-            padding-left: 15px;
-            padding-top: 5px;
-            text-align: left;
-            font-size: 14px;
-        }
-
-        .post_tag{
-            padding-top: 15px;
-            display: flex;
-            margin-right: 5px;
-        }
-
-        .post_tag input{
-            border-radius: 50px;
-            border: none;
-            background-color: #D9D9D9;
-            font-size: 13px;
-            width: 100px;
-            height: 25px;
-            display: inline-block;
-
-        }
-
-        .post_lastline{
-            padding-top: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            width: 780px;
-        }
-
-        .post_date{
-            /* order: 1; */
-            flex: 1;
-            font-size: 13px;
-            color: #5C5960;
-            width: 630px;
-        }
-
-        .post_infoinfo{
-            /* order: 2; */
-            flex : 1;
-            font-size: 13px;
-            width: 150px;
-        }
-
-        .post_line{
-            width: 100%;
-            height: 1px;
-            background-color: #e5e5e5;
-            margin-top: 30px;
-        }
-        
+    .post_line{
+        width: 100%;
+        height: 1px;
+        background-color: #e5e5e5;
+        margin-top: 30px;
+    }
+    
 
 
 
@@ -288,19 +301,23 @@
 
 
 
-    </style>
+    
+
+  </style>
 
 
 </head>
 
 <body>
 
-    <!-- header -->   
- 
-    <div th:replace="~{GR/grheader :: header}"> </div>
-   
-                
-    <div id="wrapper" class="container" style="max-width: 1210px; margin-top: 30px; margin-bottom: 300px;">
+  <!--wrapper 영역-->
+  <div id="body-wrapper">
+
+    <!-- header 영역 -->
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <!-- 본문 영역 -->
+    <div id="wrapper" class="container">
         <div class="blogname d-flex justify-content-center">
             <h3 th:text="${user.blogname}"></h3>
         </div>
@@ -330,7 +347,7 @@
                                 </div>
                             </div>
                             <div class="my_btn">
-                                <input type="button" value="내 정보 수정">
+                                <a th:href="@{/mypage.do}"><input type="button" value="내 정보 수정"></a>
                             </div>
                             <div class="introduce">
                                 <p th:text="${user.introduce}"></p>
@@ -390,15 +407,15 @@
             </div>
     </div>
 
+  </div>
 
-    <!-- footer -->
-    <th:block th:replace="~{/fragments/footer :: footerHTML}"></th:block>
+  <!-- footer 영역 -->
+  <th:block th:replace="~{/fragments/footer :: footerHTML}"></th:block>
 
 
-    <script th:inline="javascript" type="text/javascript">
-     
+  <script th:inline="javascript" type="text/javascript">
 
-    </script>
+  </script>
 </body>
 
 </html>
