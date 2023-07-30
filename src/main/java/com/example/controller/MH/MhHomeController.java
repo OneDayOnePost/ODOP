@@ -19,9 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.example.entity.Cate;
 import com.example.entity.Member;
 import com.example.entity.Post;
-import com.example.entity.PostTag;
 import com.example.entity.PostTagProjection;
-import com.example.repository.MH.MemberRepository;
+import com.example.repository.MH.MhMemberRepository;
 import com.example.service.MH.PostInsertService;
 import com.example.service.MH.PostSelectService;
 
@@ -35,9 +34,11 @@ public class MhHomeController {
 
     final String format = "MhHomeController => {}";
 
-    final private MemberRepository mRepository;
+    final private MhMemberRepository mRepository;
     final private PostInsertService pService;
     final private PostSelectService postSelectService;
+
+    
 
     BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();
 
@@ -158,7 +159,13 @@ public class MhHomeController {
     }
 
     @GetMapping(value = "/imgtest.do")
-    public String imgtestGET() {
+    public String imgtestGET(Model model) {
+
+        String email = "test1@gmail.com";
+
+        Member member = mRepository.findById(email).orElse(null);
+
+        model.addAttribute("member", member);
 
         return "/MH/imgtest";
     }

@@ -65,6 +65,12 @@ public class Member {
   // 프로필 이미지타입
   private String filetype;
 
+  // 프로필 이미지 키
+  private String imgkey;
+
+  // 프로필 이미지 경로
+  private String imgpath;
+
   // 소개
   private String introduce;
 
