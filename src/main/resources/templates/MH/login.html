@@ -16,10 +16,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
-    <!-- Link Swiper's CSS -->
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" /> -->
-    <link th:href="@{/css/swiper@10_swiper-bundle.css}" rel="stylesheet">
-    <th:block th:replace="~{/fragments/header :: headerCSS}"></th:block>
+    <!--CSS-->
+    <link th:href="@{/css/header.css}" rel="stylesheet">
     <style>
         #main {
             min-height: 100vh;
@@ -56,9 +54,10 @@
         }
 
         #login_button {
-            width: 180px;
+            width: 208px;
             height: 70px;
-            border-radius: 5px;
+            border-radius: 2px;
+            border: solid 0px;
             background: #1D3563;
             color: #FFF;
             font-size: 20px;
@@ -98,9 +97,70 @@
 </head>
 
 <body>
+    <!--header 영역-->
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <!--main 영역-->
+    <div id="main">
+        <div id="wrapper" class="container">
+
+            <h3>LOGIN</h3>
+            <hr id="divider" class="mb-5">
+            <div id="login_box" class="container">
+                <form id="login_form" th:action="@{/loginaction.do}" method="post">
+                    <div id="box_row1" class="row">
+                        <div class="col-7 d-flex justify-content-end me-2">
+                            <div>
+                                <div class="mb-4 d-flex">
+                                    <span class="login_span me-auto pe-4 align-items-center">이메일</span>
+                                    <input id="login_email" class="login_input" type="text" name="email">
+                                </div>
+                                <div class="d-flex">
+                                    <span class="login_span me-auto pe-4">비밀번호</span>
+                                    <input id="login_pw" class="login_input" type="password" name="password">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4 ms-4">
+                            <div class="d-flex align-items-center">
+                                <button id="login_button" type="button" onclick="loginAction()">로그인</button>
+                            </div>
+                            <div class="d-flex pt-2">
+                                <a href="#" class="nav-link"><span>아이디 찾기</span></a>
+                                <span class="vr mx-2"></span>
+                                <a href="#" class="nav-link"><span>비밀번호 찾기</span></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="box_row2" class="row">
+                        <div class="d-flex justify-content-center" style="padding-left: 100px;">
+                            <img onclick="naver_login()" class="login_social mx-3"
+                                th:src="@{/images/logo_naver.png}" style="width: 50px; height: 50px;">
+                            <img class="login_social mx-3" th:src="@{/images/logo_kakao.png}"
+                                style="width: 50px; height: 50px;">
+                            <img class="login_social mx-3" th:src="@{/images/logo_google.png}"
+                                style="width: 50px; height: 50px; border: lightgray 1px solid;">
+                            <!-- <img class="login_social mx-3" th:src="@{/images/logo_apple.png}"
+                                style="width: 50px; height: 50px; border: lightgray 1px solid;"> -->
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="row d-flex justify-content-center mt-5">
+                <div class="col-5 d-flex justify-content-center">
+                    <span id="join_guide">아직도 회원이 아니신가요?</span>
+                </div>
+                <div class="col-5 d-flex justify-content-center">
+                    <button id="join_button">이메일로 가입하기</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 
     <!-- Swiper -->
-    <div class="swiper">
+    <!-- <div class="swiper">
         <div class="swiper-wrapper">
 
             <div th:replace="~{fragments/aside :: aside}"></div>
@@ -115,68 +175,13 @@
 
                 <div th:replace="~{MH/Mhheader :: header}"> </div>
 
-                <div id="main">
-                    <div id="wrapper" class="container">
-
-                        <h3>LOGIN</h3>
-                        <hr id="divider" class="mb-5">
-                        <div id="login_box" class="container">
-                            <form id="login_form" th:action="@{/loginaction.do}" method="post">
-                                <div id="box_row1" class="row">
-                                    <div class="col-7 d-flex justify-content-end">
-                                        <div>
-                                            <div class="mb-3 d-flex">
-                                                <span class="login_span me-auto pe-4 align-items-center">이메일</span>
-                                                <input id="login_email" class="login_input" type="text" name="email">
-                                            </div>
-                                            <div class="d-flex">
-                                                <span class="login_span me-auto pe-4">비밀번호</span>
-                                                <input id="login_pw" class="login_input" type="password" name="password">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-5">
-                                        <div class="d-flex align-items-center">
-                                            <button id="login_button" type="button" onclick="loginAction()">로그인</button>
-                                        </div>
-                                        <div class="d-flex pt-2">
-                                            <a href="#" class="nav-link"><span>아이디 찾기</span></a>
-                                            <span class="vr mx-2"></span>
-                                            <a href="#" class="nav-link"><span>비밀번호 찾기</span></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="box_row2" class="row">
-                                    <div class="d-flex justify-content-center">
-                                        <img onclick="naver_login()" class="login_social me-2"
-                                            th:src="@{/images/logo_naver.png}" style="width: 50px; height: 50px;">
-                                        <img class="login_social me-2" th:src="@{/images/logo_kakao.png}"
-                                            style="width: 50px; height: 50px;">
-                                        <img class="login_social me-2" th:src="@{/images/logo_google.png}"
-                                            style="width: 50px; height: 50px; border: lightgray 1px solid;">
-                                        <img class="login_social me-2" th:src="@{/images/logo_apple.png}"
-                                            style="width: 50px; height: 50px; border: lightgray 1px solid;">
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="row d-flex justify-content-center mt-5">
-                            <div class="col-5 d-flex justify-content-center">
-                                <span id="join_guide">아직도 회원이 아니신가요?</span>
-                            </div>
-                            <div class="col-5 d-flex justify-content-center">
-                                <button id="join_button">이메일로 가입하기</button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
+                
 
             </div>
 
         </div>
 
-    </div>
+    </div> -->
 
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>

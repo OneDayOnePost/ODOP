@@ -16,9 +16,29 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+    <!--CSS-->
+    <link th:href="@{/css/header.css}" rel="stylesheet">
+    <link th:href="@{/css/footer.css}" rel="stylesheet">
     <!--thymeleaf contextpath-->
     <link id="contextPathHolder" th:data-contextPath="${#httpServletRequest.getContextPath()}" />
     <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        #body-wrapper {
+            position: relative;
+            min-height: 100vh;
+            padding-bottom: 230px;
+        }
+
+        footer {
+            height: 230px;
+            position: relative;
+            transform: translateY(-100%);
+        }
+
         .select_button {
             width: 120px;
             height: 50px;
@@ -135,97 +155,106 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="p-3">
-            <div>
-                <h3 th:text="${post.title}"></h3>
-            </div>
-            <div class="d-flex">
+    <div id="body-wrapper">
+        <!--header 영역-->
+        <div th:replace="~{fragments/header :: header}"></div>
+
+        <!--main 영역-->
+        <div class="container">
+            <div class="p-3">
+                <div>
+                    <h3 th:text="${post.title}"></h3>
+                </div>
                 <div class="d-flex">
-                    <div class="me-3" th:text="${post.writer}"></div>
-                    <div th:text="${#dates.format(post.regdate, 'yyyy년 MM월 dd일 hh:mm')}">작성 날짜</div>
-                </div>
-                <div class="ms-auto d-flex">
-                    <div class="me-3"><i class="bi bi-eye me-2"></i><span th:text="${post.hit}"></span></div>
-                    <div class="me-3"><i class="bi bi-chat-dots me-2"></i><span th:text="${post.replyCount}"></span>
+                    <div class="d-flex">
+                        <div class="me-3" th:text="${post.writer}"></div>
+                        <div th:text="${#dates.format(post.regdate, 'yyyy년 MM월 dd일 hh:mm')}">작성 날짜</div>
                     </div>
-                    <div class="me-3"><i class="bi bi-heart me-2"></i>좋아요</div>
-                </div>
-            </div>
-        </div>
-
-        <hr class="divider mb-5">
-
-        <!--본문 영역-->
-        <div class="p-3" th:utext="${post.content}"></div>
-
-        <!--태그 영역-->
-        <div class="mb-4 p-3 text-center">
-            <th:block th:each="temp : ${post.postTagList}">
-                <button class="select_tag" th:text="|#${temp.tag}|"></button>
-            </th:block>
-        </div>
-
-        <div class="d-flex justify-content-center align-items-center mb-5">
-            <button class="select_button me-3" type="button"><i class="bi bi-heart me-2"></i>좋아요</button>
-            <button class="select_button" type="button"><i class="bi bi-megaphone me-2"></i>신고</button>
-        </div>
-
-        <hr class="divider">
-
-        <!--댓글 영역-->
-        <div class="p-3">
-            <div th:text="|${post.replyCount}개의 댓글|"></div>
-
-            <!--댓글 입력-->
-            <div class="form-check d-flex justify-content-end">
-                <input class="form-check-input me-2" type="checkbox" id="secret_check">
-                <label class="form-check-label" for="secret_check">
-                    비밀 댓글
-                </label>
-            </div>
-            <div id="reply_input" class="my-2">
-                <textarea id="reply_content" rows="5"></textarea>
-                <div class="d-flex justify-content-end mt-2">
-                    <button id="reply_input_button" onclick="writeAction()">댓글 작성</button>
+                    <div class="ms-auto d-flex">
+                        <div class="me-3"><i class="bi bi-eye me-2"></i><span th:text="${post.hit}"></span></div>
+                        <div class="me-3"><i class="bi bi-chat-dots me-2"></i><span th:text="${post.replyCount}"></span>
+                        </div>
+                        <div class="me-3"><i class="bi bi-heart me-2"></i>좋아요</div>
+                    </div>
                 </div>
             </div>
 
-            <!--댓글 조회-->
-            <div class="reply_output">
-                <!--동적 생성-->
-                <!-- <div class="reply_box mb-3">
-                    <div class="d-flex mb-2">
-                        <div class="me-2">
-                            <img class="d-block img-thumbnail w-100" th:src="@{/images/default_thumbnail.png}" style="width: 73px; height: 73px;">
-                        </div>
-                        <div class="d-flex flex-column">
-                            <div>닉네임</div>
-                            <div>날짜</div>
-                        </div>
-                        <div class="d-flex flex-column ms-auto mt-auto">
-                            <div class="d-flex justify-content-end">
-                                <button class="reply_output_button me-1">수정</button>
-                                <span class="vr"></span>
-                                <button class="reply_output_button mx-1">삭제</button>
-                                <span class="vr"></span>
-                                <button class="reply_output_button ms-1">신고</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    
-                    <div class="reply_output_content">
-                        <div class="pt-4 px-4" style="font-size: 18px; font-weight: 600;">댓글 내용</div>
-                        <div class="p-4" readonly>댓글 내용입력합니다.</div>
-                        <button class="mx-4">답글</button>
-                    </div>
-                    
-                </div> -->
-            </div>
-        </div>
+            <hr class="divider mb-5">
 
+            <!--본문 영역-->
+            <div class="p-3" th:utext="${post.content}"></div>
+
+            <!--태그 영역-->
+            <div class="mb-4 p-3 text-center">
+                <th:block th:each="temp : ${post.postTagList}">
+                    <button class="select_tag" th:text="|#${temp.tag}|"></button>
+                </th:block>
+            </div>
+
+            <div class="d-flex justify-content-center align-items-center mb-5">
+                <button class="select_button me-3" type="button"><i class="bi bi-heart me-2"></i>좋아요</button>
+                <button class="select_button" type="button"><i class="bi bi-megaphone me-2"></i>신고</button>
+            </div>
+
+            <hr class="divider">
+
+            <!--댓글 영역-->
+            <div class="p-3">
+                <div th:text="|${post.replyCount}개의 댓글|"></div>
+
+                <!--댓글 입력-->
+                <div class="form-check d-flex justify-content-end">
+                    <input class="form-check-input me-2" type="checkbox" id="secret_check">
+                    <label class="form-check-label" for="secret_check">
+                        비밀 댓글
+                    </label>
+                </div>
+                <div id="reply_input" class="my-2">
+                    <textarea id="reply_content" rows="5"></textarea>
+                    <div class="d-flex justify-content-end mt-2">
+                        <button id="reply_input_button" onclick="writeAction()">댓글 작성</button>
+                    </div>
+                </div>
+
+                <!--댓글 조회-->
+                <div class="reply_output">
+                    <!--동적 생성-->
+                    <!-- <div class="reply_box mb-3">
+                                <div class="d-flex mb-2">
+                                    <div class="me-2">
+                                        <img class="d-block img-thumbnail w-100" th:src="@{/images/default_thumbnail.png}" style="width: 73px; height: 73px;">
+                                    </div>
+                                    <div class="d-flex flex-column">
+                                        <div>닉네임</div>
+                                        <div>날짜</div>
+                                    </div>
+                                    <div class="d-flex flex-column ms-auto mt-auto">
+                                        <div class="d-flex justify-content-end">
+                                            <button class="reply_output_button me-1">수정</button>
+                                            <span class="vr"></span>
+                                            <button class="reply_output_button mx-1">삭제</button>
+                                            <span class="vr"></span>
+                                            <button class="reply_output_button ms-1">신고</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                
+                                <div class="reply_output_content">
+                                    <div class="pt-4 px-4" style="font-size: 18px; font-weight: 600;">댓글 내용</div>
+                                    <div class="p-4" readonly>댓글 내용입력합니다.</div>
+                                    <button class="mx-4">답글</button>
+                                </div>
+                                
+                            </div> -->
+                </div>
+            </div>
+
+        </div>
     </div>
+
+    <!--footer 영역-->
+    <th:block th:replace="~{/fragments/footer :: footerHTML}"></th:block>
 
     <!--jQuery-->
     <script th:src="@{/js/jquery-3.6.4.min.js}"></script>
