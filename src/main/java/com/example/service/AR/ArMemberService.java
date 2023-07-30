@@ -1,8 +1,11 @@
 package com.example.service.AR;
 
+
+
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
+import com.example.dto.MemberDTO;
 import com.example.entity.Member;
 
 @Service
@@ -17,7 +20,9 @@ public interface ArMemberService {
     //닉네임 중복확인
     public int selectMemberNicknameCheck(@Param("nickname") String nickname);
 
-    //로그인
-    public Member selectUserByEmail(String email);
+    //로그인 관련
+    public MemberDTO findByEmail(@Param("email") String email);
+
+    
 
 }

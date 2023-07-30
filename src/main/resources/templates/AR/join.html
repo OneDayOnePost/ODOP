@@ -503,10 +503,9 @@
                 if(data.ret === 1){
                     //사용 불가
                     nickcheck = 0;
-                    alert('사용 불가능한 닉네임 입니다.');
+                    
                     e.value='';
                     console.log(data.ret.value);
-                    return data.ret;
                 }
                 else if(data.ret === 0){
                     //사용 가능
@@ -515,6 +514,7 @@
                     document.getElementById("phone").focus();
                     $('input[name=nickjoongbokchk]').attr('value', 'y'); //중복확인 여부
                     console.log($('input[name=nickjoongbokchk]').val());
+
                 }
                
             }

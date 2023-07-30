@@ -1,5 +1,6 @@
 package com.example.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,20 +12,25 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.stereotype.Component;
 
 import com.example.handler.CustomLogoutSuccessHandler;
 import com.example.handler.CustomLoginFailHandler;
 import com.example.service.SecurityServiceImpl;
+import com.example.service.AR.ArMemberService;
 
 import lombok.RequiredArgsConstructor;
 
 @Configuration // 환경설정파일 -> 서버가 구동되기 전에 호출됨
 @EnableWebSecurity // 시큐리티를 사용
+@Component // 빈으로 등록
 @RequiredArgsConstructor
 public class SecurityConfig {
 
     final private SecurityServiceImpl userLoginService;
-    final private AuthenticationFailureHandler customLoginFailHandler = new CustomLoginFailHandler();
+    final private ArMemberService mService;
+    private final AuthenticationFailureHandler customLoginFailHandler; // 핸들러 필드는 이렇게 선언하고, 생성자에서 주입하도록 수정
+
 
     @Bean // 객체를 생성(자동으로 호출됨)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

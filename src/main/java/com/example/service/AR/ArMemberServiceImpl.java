@@ -1,7 +1,11 @@
 package com.example.service.AR;
 
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
+import com.example.dto.MemberDTO;
 import com.example.entity.Member;
 import com.example.repository.AR.ArMemberRepository;
 
@@ -50,16 +54,15 @@ public class ArMemberServiceImpl implements ArMemberService {
     }
 
     @Override
-    public Member selectUserByEmail(String email) {
+    public MemberDTO findByEmail(String email) {
         try {
-            return mRepository.selectUserByEmail(email);
+            return mRepository.findByEmail(email);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        }    }
+        }
+    }
 
 
-    
 
-    
 }

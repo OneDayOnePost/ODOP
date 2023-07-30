@@ -27,7 +27,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 		"com.example.controller.SG", "com.example.controller.WJ",
 		"com.example.restcontroller.AR", "com.example.restcontroller.GR", "com.example.restcontroller.MH",
 		"com.example.restcontroller.SG", "com.example.restcontroller.WJ",
-		"com.example.config", "com.example.filter"
+		"com.example.config", "com.example.filter","com.example.handler"
 })
 public class OdopApplication {
 

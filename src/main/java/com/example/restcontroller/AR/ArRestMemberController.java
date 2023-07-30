@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -56,18 +58,17 @@ public class ArRestMemberController {
     }
 
 
+
     //닉네임 중복 확인
     // 127.0.0.1:5059/odop/api/nickcheck.do?nickname=닉네임
     @GetMapping(value="/nickcheck.do")
-    public Map<String, Object> nickcheckGET(@RequestParam(name="nickname") String nickname, HttpSession httpSession){
+    public Map<String, Object> nickcheckGET(@RequestParam(name="nickname") String nickname){
         Map<String, Object> retMap = new HashMap<>();
 
         try{
             retMap.put("status",200);
             retMap.put("ret",mService.selectMemberNicknameCheck(nickname));
-            httpSession.setAttribute("alertTitle", "닉네임 중복 확인");
-            httpSession.setAttribute("alertMessage", "사용 가능한 닉네임 입니다.");
-            httpSession.setAttribute("alertUrl", "/alert.do");
+
         }
         catch(Exception e){
             e.printStackTrace();
@@ -76,6 +77,7 @@ public class ArRestMemberController {
         }
         return retMap;
     }
+
 
 
 
