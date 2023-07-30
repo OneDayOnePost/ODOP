@@ -81,7 +81,18 @@
             color: #B6C6D3;
         }
 
-        #reasonlist{
+        #preasonlist{
+            border: 2px solid #3A5485;
+            width: 200px;
+            height: 30px;
+            padding-left: 10px;
+            border-radius: 10px;
+            float: left;
+            margin-left: 10px;
+            margin-top: 14px;
+        }
+
+        #rreasonlist{
             border: 2px solid #3A5485;
             width: 200px;
             height: 30px;
@@ -117,7 +128,7 @@
 
         /* --------------------------------------------------------------------- */
 
-        /* 테이블 */
+        /* 게시글 테이블 */
         #postreporttable {
             width: 90%;
             margin: 0 auto;
@@ -152,6 +163,44 @@
             background-color: #DFECF6;
             cursor: pointer;
         }
+
+        /* --------------------------------------------------------------------- */
+
+        /* 댓글 테이블 */
+        #replyreporttable {
+            width: 90%;
+            margin: 0 auto;
+            margin-top: 10px;
+        }
+
+        #replyreporttable #rrtable thead tr th {
+            text-align: center;
+        }
+
+        /* 각 열의 너비 지정 */
+        #replyreporttable #rrtable thead tr th:nth-child(1),
+        #replyreporttable #rrtable tbody tr td:nth-child(1) {
+            width: 30%;
+            text-align: center;
+        }
+
+        #replyreporttable #rrtable thead tr th:nth-child(2),
+        #replyreporttable #rrtable tbody tr td:nth-child(2) {
+            width: 40%;
+            text-align: center;
+        }
+
+        #replyreporttable #rrtable thead tr th:nth-child(3),
+        #replyreporttable #rrtable tbody tr td:nth-child(3) {
+            width: 30%;
+            text-align: center;
+        }
+
+        /* hover시 행 전체 색 변경 */
+        #replyreporttable #rrtable tbody tr:hover {
+            background-color: #DFECF6;
+            cursor: pointer;
+        }
     </style>
 
 </head>
@@ -159,12 +208,11 @@
 <body>
     <!--wrapper 영역-->
     <div id="body-wrapper">
-
         <!-- header 영역 -->
         <div th:replace="~{fragments/header :: header}"></div>
 
         <!-- 본문 영역 -->
-        <div id="wrapper" class="container">
+        <div id="wrapper" class="container" style="margin-top: 40px; margin-bottom: 30px;">
             <div class="link-container">
                 <div>
                     <a th:href="@{/adminhome.do(type=post, menu=wait)}" id="postreport">게시글 신고</a>
@@ -174,7 +222,7 @@
             </div>
     
             <div id="postreporttable" th:if="${#strings.equals(param.type, 'post')}">
-                <select name="" id="reasonlist" onchange="selectPostMenu()">
+                <select name="" id="preasonlist" onchange="selectPostMenu()">
                     <option value="all">전체 신고 목록</option>
                     <option value="wait">승인 대기</option>
                     <option value="delete">삭제 완료</option>
@@ -198,10 +246,29 @@
                 </table>
             </div>
             
-            <div th:if="${#strings.equals(param.type, 'reply')}">
-                <div id="reporttable">
-                    
-                </div>
+            <div id="replyreporttable" th:if="${#strings.equals(param.type, 'reply')}">
+                <select name="" id="rreasonlist" onchange="selectReplyMenu()">
+                    <option value="all">전체 신고 목록</option>
+                    <option value="wait">승인 대기</option>
+                    <option value="delete">삭제 완료</option>
+                </select>
+
+                <table id="rrtable">
+                    <thead>
+                        <tr>
+                            <th>댓글 번호</th>
+                            <th>작성자</th>
+                            <th>신고 횟수</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="reply : ${rlist}">
+                            <td th:text="${reply.no}"></td>
+                            <td th:text="${reply.email}"></td>
+                            <td th:text="${reply.reportcount}"></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
     
             <div th:if="${#strings.equals(param.type, 'memberlist')}">
@@ -229,10 +296,42 @@
                 window.location.replace(changeUrl);
             }
             else if (typeParam === 'post') {
+                new simpleDatatables.DataTable("#prtable", {
+                    searchable: true,
+                    fixedHeight: true,
+                    paging: true,
+                    perPage: 5
+                });
+
+                // 테이블의 각 행을 클릭할 때 이벤트 핸들러 등록
+                $("#prtable tbody tr").on("click", function() {
+                    // 선택한 행에서 글번호 가져오기
+                    const postno = $(this).find("td:first-child").text();
+                    
+                    // 글번호에 맞는 상세 페이지로 이동
+                    window.location.href = [[@{/postreport.do}]] + `?type=${typeParam}&menu=${menuParam}&no=${postno}`;
+                });
+
                 document.getElementById("postreport").style.borderBottom = "3px solid #6F8DBF";
                 document.getElementById("postreport").style.paddingBottom = "5px";
             }
             else if (typeParam === 'reply') {
+                new simpleDatatables.DataTable("#rrtable", {
+                    searchable: true,
+                    fixedHeight: true,
+                    paging: true,
+                    perPage: 5
+                });
+
+                // 테이블의 각 행을 클릭할 때 이벤트 핸들러 등록
+                $("#rrtable tbody tr").on("click", function() {
+                    // 선택한 행에서 글번호 가져오기
+                    const replyno = $(this).find("td:first-child").text();
+                    
+                    // 글번호에 맞는 상세 페이지로 이동
+                    window.location.href = [[@{/replyreport.do}]] + `?type=${typeParam}&menu=${menuParam}&no=${replyno}`;
+                });
+
                 document.getElementById("replyreport").style.borderBottom = "3px solid #6F8DBF";
                 document.getElementById("replyreport").style.paddingBottom = "5px";
             }
@@ -243,38 +342,15 @@
 
             // URL의 menu 파라미터 값에 따라 셀렉트 박스 선택
             if (menuParam) {
-                $("#reasonlist").val(menuParam);
+                $("#preasonlist").val(menuParam);
+                $("#rreasonlist").val(menuParam);
             }
         });
     </script>
 
     <script th:inline="javascript" type="text/javascript">
-        $(document).ready(function() {
-            new simpleDatatables.DataTable("#prtable", {
-                searchable: true,
-                fixedHeight: true,
-                paging: true,
-                perPage: 7
-            });
-
-            // 테이블의 각 행을 클릭할 때 이벤트 핸들러 등록
-            $("#prtable tbody tr").on("click", function() {
-                // 선택한 행에서 글번호 가져오기
-                const postno = $(this).find("td:first-child").text();
-
-                const urlParams = new URLSearchParams(window.location.search);
-                const typeParam = urlParams.get('type');
-                const menuParam = urlParams.get('menu');
-                
-                // 글번호에 맞는 상세 페이지로 이동
-                window.location.href = [[@{/postreport.do}]] + `?type=${typeParam}&menu=${menuParam}&no=${postno}`;
-            });
-        });
-    </script>
-
-    <script th:inline="javascript" type="text/javascript">
         function selectPostMenu() {
-            const menu = $("#reasonlist option:selected").val();
+            const menu = $("#preasonlist option:selected").val();
 
             if (menu === 'all') {
                 window.location.href = [[@{/adminhome.do(type='post', menu='all')}]];
@@ -284,6 +360,22 @@
             }
             else if (menu === 'delete') {
                 window.location.href = [[@{/adminhome.do(type='post', menu='delete')}]];
+            }
+        }
+    </script>
+
+    <script th:inline="javascript" type="text/javascript">
+        function selectReplyMenu() {
+            const menu = $("#rreasonlist option:selected").val();
+
+            if (menu === 'all') {
+                window.location.href = [[@{/adminhome.do(type='reply', menu='all')}]];
+            }
+            else if (menu === 'wait') {
+                window.location.href = [[@{/adminhome.do(type='reply', menu='wait')}]];
+            }
+            else if (menu === 'delete') {
+                window.location.href = [[@{/adminhome.do(type='reply', menu='delete')}]];
             }
         }
     </script>
