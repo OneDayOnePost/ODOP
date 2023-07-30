@@ -84,9 +84,9 @@ public class WjReportServiceImpl implements WjReportService {
 
     // 게시글 신고 삭제 승인
     @Override
-    public int postDeleteOk(BigInteger postno) {
+    public int postDelete(BigInteger postno) {
         try {
-            return rMapper.postDeleteOk(postno);
+            return rMapper.postDelete(postno);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -96,13 +96,52 @@ public class WjReportServiceImpl implements WjReportService {
 
     // 게시글 신고 삭제 거절
     @Override
-    public int postDeleteNo(BigInteger postno) {
+    public int reportDelete(BigInteger postno) {
         try {
-            return rMapper.postDeleteNo(postno);
+            return rMapper.reportDelete(postno);
         }
         catch (Exception e) {
             e.printStackTrace();
             return -1;
+        }
+    }
+
+    // --------------------------------------------------------------------
+
+    // 댓글
+    // 1. 전체 신고 목록
+    @Override
+    public List<ReportListDTO> selectReplyListAll() {
+        try {
+            return rMapper.selectReplyListAll();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    // 2. 승인 대기
+    @Override
+    public List<ReportListDTO> selectReplyListWait() {
+        try {
+            return rMapper.selectReplyListWait();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    // 3. 삭제 완료
+    @Override
+    public List<ReportListDTO> selectReplyListDelete() {
+        try {
+            return rMapper.selectReplyListDelete();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

@@ -46,6 +46,18 @@ public class WjHomeController {
 
                 model.addAttribute("plist", postreportlist);
             }
+            else if (type.equals("reply")) {
+                List<ReportListDTO> replyreportlist = rService.selectReplyListWait();
+
+                if (menu.equals("all")) {
+                    replyreportlist = rService.selectReplyListAll();
+                }
+                else if (menu.equals("delete")) {
+                    replyreportlist = rService.selectReplyListDelete();
+                }
+
+                model.addAttribute("rlist", replyreportlist);
+            }
 
             return "/WJ/WjAdminHome";
         } 

@@ -34,8 +34,20 @@ public interface WjReportService {
     public List<ReportOneDTO> selectPostReportOne(@Param("postno") BigInteger postno);
 
     // 게시글 신고 삭제 승인
-    public int postDeleteOk(@Param("postno") BigInteger postno);
+    public int postDelete(@Param("postno") BigInteger postno);
 
     // 게시글 신고 삭제 거절
-    public int postDeleteNo(@Param("postno") BigInteger postno);
+    public int reportDelete(@Param("postno") BigInteger postno);
+
+    // --------------------------------------------------------------------
+
+    // 댓글
+    // 1. 전체 신고 목록
+    public List<ReportListDTO> selectReplyListAll();
+
+    // 2. 승인 대기
+    public List<ReportListDTO> selectReplyListWait();
+
+    // 3. 삭제 완료
+    public List<ReportListDTO> selectReplyListDelete();
 }

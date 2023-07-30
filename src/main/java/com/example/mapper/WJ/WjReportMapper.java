@@ -17,7 +17,7 @@ import com.example.dto.ReportListDTO;
 public interface WjReportMapper {
     // 게시글
     // 1. 전체 신고 목록
-    @Select({" SELECT pr.postno AS no, p.writer AS email, COUNT(*) AS reportcount FROM POST_REPORT pr LEFT JOIN post p ON pr.POSTNO = p.NO GROUP BY pr.POSTNO ORDER BY no DESC"})
+    @Select({" SELECT pr.postno AS no, p.writer AS email, COUNT(*) AS reportcount FROM POST_REPORT pr LEFT JOIN post p ON pr.POSTNO = p.NO GROUP BY pr.POSTNO ORDER BY no DESC "})
     public List<ReportListDTO> selectPostListAll();
 
     // 2. 승인 대기
@@ -46,9 +46,25 @@ public interface WjReportMapper {
 
     // 게시글 신고 삭제 승인
     @Update({" UPDATE post SET state = 1 WHERE no = #{postno} "})
-    public int postDeleteOk(@Param("postno") BigInteger postno);
+    public int postDelete(@Param("postno") BigInteger postno);
 
     // 게시글 신고 삭제 거절
     @Delete({" DELETE FROM post_report WHERE postno = #{postno} "})
-    public int postDeleteNo(@Param("postno") BigInteger postno);
+    public int reportDelete(@Param("postno") BigInteger postno);
+
+    // --------------------------------------------------------------------
+
+    // 댓글
+    // 1. 전체 신고 목록
+    @Select({" SELECT rr.REPLYNO AS no, r.writer AS email, COUNT(*) AS reportcount FROM REPLY_REPORT rr LEFT JOIN reply r ON rr.REPLYNO = r.NO GROUP BY rr.REPLYNO ORDER BY no DESC "})
+    public List<ReportListDTO> selectReplyListAll();
+
+    // 2. 승인 대기
+    // 숫자 2 나중에 변경 해야함 10으로!!!!!
+    @Select({" SELECT * FROM (SELECT rr.replyno AS no, r.writer AS email, COUNT(*) AS reportcount FROM REPLY_REPORT rr LEFT JOIN REPLY r ON rr.replyno = r.NO WHERE r.state = 0 GROUP BY rr.replyno) WHERE reportcount >= 2 ORDER BY reportcount DESC, no DESC "})
+    public List<ReportListDTO> selectReplyListWait();
+
+    // 3. 삭제 완료
+    @Select({" SELECT rr.REPLYNO AS no, r.writer AS email, COUNT(*) AS reportcount FROM REPLY_REPORT rr LEFT JOIN REPLY r ON rr.REPLYNO = r.NO WHERE r.state = 1 GROUP BY rr.REPLYNO ORDER BY no DESC "})
+    public List<ReportListDTO> selectReplyListDelete();
 }
