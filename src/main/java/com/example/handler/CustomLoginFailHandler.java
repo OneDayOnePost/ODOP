@@ -14,6 +14,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
@@ -45,33 +46,27 @@ public class CustomLoginFailHandler implements AuthenticationFailureHandler {
         log.info(email.toString());
         MemberDTO member = mService.findByEmail(request.getParameter("email").toString());
 
-        
-        if (password.isEmpty()) {
+
+
+        if (email.isEmpty()) {
+        // 이메일을 입력하지 않은 경우
+        errorMessage = "이메일을 입력해주세요 ";
+        }
+        else if (password.isEmpty()) {
             // 비밀번호를 입력하지 않은 경우
             errorMessage = "비밀번호를 입력해주세요 ";
         } 
-        if (member == null) {
-        // DB에 해당 이메일이 없는 경우
-        errorMessage = "이메일을 확인해주세요";
-            if (email.isEmpty()) {
-            // 이메일을 입력하지 않은 경우
-            errorMessage = "이메일을 입력해주세요 ";
-            }
-            else if (!isValidEmailFormat(email)) {
-                // 이메일 형식이 올바르지 않은 경우
-            errorMessage = "이메일 형식을 확인해주세요 ";
-            }
-             // DB에서 가져온 비밀번호와 입력된 비밀번호를 비교합니다.
-            if (!isPasswordMatch(member.getPassword(), password)) { //이부분에서 패스워드 .. 못불러와 ..힝
-                // 비밀번호가 일치하지 않는 경우
-                errorMessage = "비밀번호를 확인해주세요 ";
-            } else {
-                // 그 외의 로그인 실패 경우
-                errorMessage = "알 수 없는 오류입니다. 잠시 후 시도해주세요";
-            }
-        } 
-       
+        else if (!isValidEmailFormat(email)) {
+        // 이메일 형식이 올바르지 않은 경우
+        errorMessage = "이메일 형식을 확인해주세요 ";
+        }
+        else if (member== null ) {
+            // 이부분 email/password 나눠서 주고싶은데 제능력부족으로 .. 
+            //그냥 db에 없는 계정이면 다 막습니다...
+            errorMessage = "존재하지 않는 계정입니다";
 
+        }
+        
         HttpSession httpSession = request.getSession();
         httpSession.setAttribute("alertTitle", "로그인 실패");
         httpSession.setAttribute("alertMessage", errorMessage);
@@ -88,13 +83,9 @@ public class CustomLoginFailHandler implements AuthenticationFailureHandler {
     return email.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}");
     }
 
-    private boolean isPasswordMatch(String dbPassword, String password) {
-    // DB에서 가져온 비밀번호와 입력된 비밀번호를 비교하는 로직을 구현합니다.
-    // 예: BCrypt 등을 사용하여 비밀번호를 비교할 수 있습니다.
-    // 비밀번호가 일치하는 경우 true를 반환하고, 그렇지 않은 경우 false를 반환합니다.
-    return dbPassword.equals(password);
-    }
 
 
 }
+
+
 
