@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>이미지 업로드 테스트</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <!--Bootstrap 용 CSS-->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <!--Bootstrap 용 Icon CDN-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <!--font awesome 용-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!--google fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+    <!--thymeleaf contextpath-->
+    <link id="contextPathHolder" th:data-contextPath="${#httpServletRequest.getContextPath()}" />
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- 프로필 이미지 등록 -->
+        <img th:src="@{/images/default_thumbnail.png}" id="profile_img" style="width: 150px; height: 150px; border-radius: 50%;">
+        <input type="file" id="profile_input" style="display: none;" onchange="uploadImage()">
+        <label for="profile_input" style="color: blue; cursor: pointer;">이미지 업로드</label>
+        <input type="button" id="profile_remove" style="display: none;" onclick="removeImage()">
+        <label for="profile_remove" style="color: red;cursor: pointer">이미지 제거</label>
+
+        <button type="button" onclick="saveProfile()">프로필 저장</button>
+
+        <br>
+        <hr>
+        <br>
+
+        <!-- 프로필 이미지 출력 -->
+
+        <h3 th:text="|${member.email}의 프로필 이미지|"></h3>
+        <img th:src="${member.imgpath}" th:key="${member.imgkey}">
+        
+    </div>
+
+    <!--jQuery-->
+    <script th:src="@{/js/jquery-3.6.4.min.js}"></script>
+    <!--axios library-->
+    <script th:src="@{/js/axios.min.js}"></script>
+    <script>
+
+        const contextPath = $('#contextPathHolder').attr('data-contextPath');
+
+        const user_email = "test2@naver.com";
+
+        var aws_key = "";
+        var aws_path = "";
+
+        function uploadImage() {
+
+            const key = document.querySelector("#profile_remove").getAttribute("key");
+
+            // console.log(key);
+
+            // if(key !== null) {
+            //     await removeImage();
+            // }
+
+            const profile_input = document.querySelector("#profile_input");
+
+            // console.log(profile_img.files[0]);
+
+            const formData = new FormData();
+            formData.append("file", profile_input.files[0]);
+
+            // console.log(formData);
+
+            const url = contextPath + '/api/s3/upload';
+            const headers = { "Content-Type": "multipart/form-data" };
+
+            axios.post(url, formData, { headers })
+                .then(response => {
+
+                    console.log(response.data);
+
+                    document.querySelector("#profile_img").setAttribute("src", response.data.path);
+                    document.querySelector("#profile_remove").setAttribute("key", response.data.key);
+
+                    aws_path = response.data.path;
+                    aws_key = response.data.key;
+
+                })
+                .catch(error => {
+                    // 에러 발생 시
+                    console.log("error");
+                })
+        }
+
+        function removeImage() {
+
+            const key = document.querySelector("#profile_remove").getAttribute("key");
+
+            if(key === null) {
+                console.log(1);
+                return false;
+            }
+
+            const url = contextPath + '/api/s3/remove';
+            const headers = { "Content-Type": "application/json" };
+
+            axios.delete(url, { data : {key: aws_key, path: aws_path}}, { headers })
+                .then(response => {
+
+                    console.log(response);
+
+                    if(Number(response.status) === 200) {
+                        document.querySelector("#profile_img").setAttribute("src", contextPath + "/images/default_thumbnail.png");
+                        aws_key = "";
+                        aws_path = "";
+                    }
+
+                })
+                .catch(error => {
+                    // 에러 발생 시
+                    console.log("error");
+                })
+
+        }
+
+        function saveProfile() {
+
+            const url = contextPath + '/api/member/update.json';
+            const headers = { "Content-Type": "application/json" };
+            const body = {email : user_email, imgkey : aws_key, imgpath : aws_path};
+
+            axios.put(url, body, { headers })
+                .then(response => { 
+                    console.log(response.data);
+                });
+
+        }
+    </script>
+</body>
+
+</html>

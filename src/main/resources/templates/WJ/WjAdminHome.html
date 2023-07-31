@@ -1,39 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
     <title>ODOP</title>
-    <!--1. BootStrap용 CSS CDM 추가-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    
+    <!--Bootstrap 용 CSS-->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 
-    <link rel='stylesheet' th:href="@{/css/header.css}" />
+    <!--Bootstrap 용 Icon CDN-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 
+    <!--font awesome 용-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!--google fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+
+    <!--CSS-->
+    <link th:href="@{/css/header.css}" rel="stylesheet">
+    <link th:href="@{/css/footer.css}" rel="stylesheet">
+
+    <!--thymeleaf contextpath-->
+    <link id="contextPathHolder" th:data-contextPath="${#httpServletRequest.getContextPath()}" />
+    
+    <!-- Simple-DataTable용 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
+    
     <!--jQuery 추가-->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"
         integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
 
-    <!-- Link Swiper's CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
-
-    <!-- Simple-DataTable용 CSS CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
-
     <style>
+        /* 여기 지정된 부분은 모든 html 파일에 공통적으로 넣어줍니다. */
+        html,
         body {
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            height: 100%;
         }
 
-        #wrapper {
-            margin-top: 50px;
+        #body-wrapper {
+            position: relative;
+            min-height: 100vh;
+            padding-bottom: 230px;
         }
+
+        footer {
+            height: 230px;
+            position: relative;
+            transform: translateY(-100%);
+        }
+
+        /* --------------------------------------------------------------------- */
 
         .link-container {
             display: flex;
@@ -60,7 +81,18 @@
             color: #B6C6D3;
         }
 
-        #reasonlist{
+        #preasonlist{
+            border: 2px solid #3A5485;
+            width: 200px;
+            height: 30px;
+            padding-left: 10px;
+            border-radius: 10px;
+            float: left;
+            margin-left: 10px;
+            margin-top: 14px;
+        }
+
+        #rreasonlist{
             border: 2px solid #3A5485;
             width: 200px;
             height: 30px;
@@ -71,6 +103,9 @@
             margin-top: 14px;
         }
         
+        /* --------------------------------------------------------------------- */
+        
+        /* simple datatable */
         .datatable-dropdown {
             display: none;
         }
@@ -91,39 +126,78 @@
             border-radius: 10px;
         }
 
-        /* 테이블 */
+        /* --------------------------------------------------------------------- */
+
+        /* 게시글 테이블 */
         #postreporttable {
             width: 90%;
             margin: 0 auto;
             margin-top: 10px;
         }
 
-        .datatable-container {
-            margin-top: 5px;
-        }
-
-        #postreporttable table thead tr th {
+        #postreporttable #prtable thead tr th {
             text-align: center;
         }
 
         /* 각 열의 너비 지정 */
-        #postreporttable table th:nth-child(1),
-        #postreporttable table td:nth-child(1) {
+        #postreporttable #prtable thead tr th:nth-child(1),
+        #postreporttable #prtable tbody tr td:nth-child(1) {
             width: 30%;
+            text-align: center;
         }
 
-        #postreporttable table th:nth-child(2),
-        #postreporttable table td:nth-child(2) {
+        #postreporttable #prtable thead tr th:nth-child(2),
+        #postreporttable #prtable tbody tr td:nth-child(2) {
             width: 40%;
+            text-align: center;
         }
 
-        #postreporttable table th:nth-child(3),
-        #postreporttable table td:nth-child(3) {
+        #postreporttable #prtable thead tr th:nth-child(3),
+        #postreporttable #prtable tbody tr td:nth-child(3) {
             width: 30%;
+            text-align: center;
         }
 
         /* hover시 행 전체 색 변경 */
-        #postreporttable table tbody tr:hover {
+        #postreporttable #prtable tbody tr:hover {
+            background-color: #DFECF6;
+            cursor: pointer;
+        }
+
+        /* --------------------------------------------------------------------- */
+
+        /* 댓글 테이블 */
+        #replyreporttable {
+            width: 90%;
+            margin: 0 auto;
+            margin-top: 10px;
+        }
+
+        #replyreporttable #rrtable thead tr th {
+            text-align: center;
+        }
+
+        /* 각 열의 너비 지정 */
+        #replyreporttable #rrtable thead tr th:nth-child(1),
+        #replyreporttable #rrtable tbody tr td:nth-child(1) {
+            width: 30%;
+            text-align: center;
+        }
+
+        #replyreporttable #rrtable thead tr th:nth-child(2),
+        #replyreporttable #rrtable tbody tr td:nth-child(2) {
+            width: 40%;
+            text-align: center;
+        }
+
+        #replyreporttable #rrtable thead tr th:nth-child(3),
+        #replyreporttable #rrtable tbody tr td:nth-child(3) {
+            width: 30%;
+            text-align: center;
+        }
+
+        /* hover시 행 전체 색 변경 */
+        #replyreporttable #rrtable tbody tr:hover {
             background-color: #DFECF6;
             cursor: pointer;
         }
@@ -132,108 +206,84 @@
 </head>
 
 <body>
-    <!-- Swiper -->
-    <div class="swiper">
-        <div class="swiper-wrapper">
+    <!--wrapper 영역-->
+    <div id="body-wrapper">
+        <!-- header 영역 -->
+        <div th:replace="~{fragments/header :: header}"></div>
 
-            <div th:replace="~{fragments/aside :: aside}"></div>
-
-            <div class="swiper-slide content">
-
-                <div class="menu-button">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
+        <!-- 본문 영역 -->
+        <div id="wrapper" class="container" style="margin-top: 40px; margin-bottom: 30px;">
+            <div class="link-container">
+                <div>
+                    <a th:href="@{/adminhome.do(type=post, menu=wait)}" id="postreport">게시글 신고</a>
+                    <a th:href="@{/adminhome.do(type=reply)}" id="replyreport">댓글 신고</a>
+                    <a th:href="@{/adminhome.do(type=memberlist)}" id="memberlist">회원목록</a>
                 </div>
-
-                <div th:replace="~{fragments/header :: header}"> </div>
-
-                <div id="wrapper" class="container">
-                    <div class="link-container">
-                        <div>
-                            <a th:href="@{/adminhome.do(type=post, menu=wait)}" id="postreport">게시글 신고</a>
-                            <a th:href="@{/adminhome.do(type=reply)}" id="replyreport">댓글 신고</a>
-                            <a th:href="@{/adminhome.do(type=memberlist)}" id="memberlist">회원목록</a>
-                        </div>
-                    </div>
-
-                    <div id="postreporttable" th:if="${#strings.equals(param.type, 'post')}">
-                        <select name="" id="reasonlist" onchange="selectPostMenu()">
-                            <option value="all">전체 신고 목록</option>
-                            <option value="wait">승인 대기</option>
-                            <option value="delete">삭제 완료</option>
-                        </select>
-                        
-                        <table id="reporttable1">
-                            <thead>
-                                <tr>
-                                    <th>게시글 번호</th>
-                                    <th>작성자</th>
-                                    <th>신고 횟수</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr th:each="post : ${plist}">
-                                    <td th:text="${post.no}"></td>
-                                    <td th:text="${post.email}"></td>
-                                    <td th:text="${post.reportcount}"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <div th:if="${#strings.equals(param.type, 'reply')}">
-                        <div id="reporttable">
-                            
-                        </div>
-                    </div>
-
-                    <div th:if="${#strings.equals(param.type, 'memberlist')}">
-
-                    </div>
-                </div> 
             </div>
+    
+            <div id="postreporttable" th:if="${#strings.equals(param.type, 'post')}">
+                <select name="" id="preasonlist" onchange="selectPostMenu()">
+                    <option value="all">전체 신고 목록</option>
+                    <option value="wait">승인 대기</option>
+                    <option value="delete">삭제 완료</option>
+                </select>
+                
+                <table id="prtable">
+                    <thead>
+                        <tr>
+                            <th>게시글 번호</th>
+                            <th>작성자</th>
+                            <th>신고 횟수</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="post : ${plist}">
+                            <td th:text="${post.no}"></td>
+                            <td th:text="${post.email}"></td>
+                            <td th:text="${post.reportcount}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div id="replyreporttable" th:if="${#strings.equals(param.type, 'reply')}">
+                <select name="" id="rreasonlist" onchange="selectReplyMenu()">
+                    <option value="all">전체 신고 목록</option>
+                    <option value="wait">승인 대기</option>
+                    <option value="delete">삭제 완료</option>
+                </select>
 
+                <table id="rrtable">
+                    <thead>
+                        <tr>
+                            <th>댓글 번호</th>
+                            <th>작성자</th>
+                            <th>신고 횟수</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="reply : ${rlist}">
+                            <td th:text="${reply.no}"></td>
+                            <td th:text="${reply.email}"></td>
+                            <td th:text="${reply.reportcount}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+    
+            <div th:if="${#strings.equals(param.type, 'memberlist')}">
+    
+            </div>
         </div>
-
     </div>
 
+    <!-- footer -->
+    <th:block th:replace="~{/fragments/footer :: footerHTML}"></th:block>
+
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-
-    <!-- Swiper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
-
-    <!-- Initialize Swiper -->
-    <script>
-        var menuButton = document.querySelector('.menu-button');
-        var openMenu = function () {
-            swiper.slidePrev();
-        };
-        var swiper = new Swiper('.swiper', {
-            slidesPerView: 'auto',
-            initialSlide: 1,
-            resistanceRatio: 0,
-            slideToClickedSlide: true,
-            on: {
-                slideChangeTransitionStart: function () {
-                    var slider = this;
-                    if (slider.activeIndex === 0) {
-                        menuButton.classList.add('cross');
-                        // required because of slideToClickedSlide
-                        menuButton.removeEventListener('click', openMenu, true);
-                    } else {
-                        menuButton.classList.remove('cross');
-                    }
-                },
-                slideChangeTransitionEnd: function () {
-                    var slider = this;
-                    if (slider.activeIndex === 1) {
-                        menuButton.addEventListener('click', openMenu, true);
-                    }
-                },
-            },
-        });
-    </script>
+    
+    <!-- Simple DataTable용 JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
 
     <script th:inline="javascript" type="text/javascript">
         $(document).ready(function() {
@@ -246,10 +296,42 @@
                 window.location.replace(changeUrl);
             }
             else if (typeParam === 'post') {
+                new simpleDatatables.DataTable("#prtable", {
+                    searchable: true,
+                    fixedHeight: true,
+                    paging: true,
+                    perPage: 5
+                });
+
+                // 테이블의 각 행을 클릭할 때 이벤트 핸들러 등록
+                $("#prtable tbody tr").on("click", function() {
+                    // 선택한 행에서 글번호 가져오기
+                    const postno = $(this).find("td:first-child").text();
+                    
+                    // 글번호에 맞는 상세 페이지로 이동
+                    window.location.href = [[@{/postreport.do}]] + `?type=${typeParam}&menu=${menuParam}&no=${postno}`;
+                });
+
                 document.getElementById("postreport").style.borderBottom = "3px solid #6F8DBF";
                 document.getElementById("postreport").style.paddingBottom = "5px";
             }
             else if (typeParam === 'reply') {
+                new simpleDatatables.DataTable("#rrtable", {
+                    searchable: true,
+                    fixedHeight: true,
+                    paging: true,
+                    perPage: 5
+                });
+
+                // 테이블의 각 행을 클릭할 때 이벤트 핸들러 등록
+                $("#rrtable tbody tr").on("click", function() {
+                    // 선택한 행에서 글번호 가져오기
+                    const replyno = $(this).find("td:first-child").text();
+                    
+                    // 글번호에 맞는 상세 페이지로 이동
+                    window.location.href = [[@{/replyreport.do}]] + `?type=${typeParam}&menu=${menuParam}&no=${replyno}`;
+                });
+
                 document.getElementById("replyreport").style.borderBottom = "3px solid #6F8DBF";
                 document.getElementById("replyreport").style.paddingBottom = "5px";
             }
@@ -260,40 +342,15 @@
 
             // URL의 menu 파라미터 값에 따라 셀렉트 박스 선택
             if (menuParam) {
-                $("#reasonlist").val(menuParam);
+                $("#preasonlist").val(menuParam);
+                $("#rreasonlist").val(menuParam);
             }
-        });
-    </script>
-
-    <!-- Simple DataTable용 JS CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
-    <script th:inline="javascript" type="text/javascript">
-        $(document).ready(function() {
-            new simpleDatatables.DataTable("#reporttable1", {
-                searchable: true,
-                fixedHeight: true,
-                paging: true,
-                perPage: 5
-            });
-
-            // 테이블의 각 행을 클릭할 때 이벤트 핸들러 등록
-            $("#reporttable1 tbody tr").on("click", function() {
-                // 선택한 행에서 글번호 가져오기
-                const postno = $(this).find("td:first-child").text();
-
-                const urlParams = new URLSearchParams(window.location.search);
-                const typeParam = urlParams.get('type');
-                const menuParam = urlParams.get('menu');
-                
-                // 글번호에 맞는 상세 페이지로 이동
-                window.location.href = [[@{/postreport.do}]] + `?type=${typeParam}&menu=${menuParam}&no=${postno}`;
-            });
         });
     </script>
 
     <script th:inline="javascript" type="text/javascript">
         function selectPostMenu() {
-            const menu = $("#reasonlist option:selected").val();
+            const menu = $("#preasonlist option:selected").val();
 
             if (menu === 'all') {
                 window.location.href = [[@{/adminhome.do(type='post', menu='all')}]];
@@ -303,6 +360,22 @@
             }
             else if (menu === 'delete') {
                 window.location.href = [[@{/adminhome.do(type='post', menu='delete')}]];
+            }
+        }
+    </script>
+
+    <script th:inline="javascript" type="text/javascript">
+        function selectReplyMenu() {
+            const menu = $("#rreasonlist option:selected").val();
+
+            if (menu === 'all') {
+                window.location.href = [[@{/adminhome.do(type='reply', menu='all')}]];
+            }
+            else if (menu === 'wait') {
+                window.location.href = [[@{/adminhome.do(type='reply', menu='wait')}]];
+            }
+            else if (menu === 'delete') {
+                window.location.href = [[@{/adminhome.do(type='reply', menu='delete')}]];
             }
         }
     </script>

@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+  <title>ODOP</title>
+  <!--Bootstrap 용 CSS-->
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+  <!--Bootstrap 용 Icon CDN-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+  <!--font awesome 용-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!--google fonts-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+  <!--CSS-->
+  <link th:href="@{/css/header.css}" rel="stylesheet">
+  <link th:href="@{/css/footer.css}" rel="stylesheet">
+  <!--thymeleaf contextpath-->
+  <link id="contextPathHolder" th:data-contextPath="${#httpServletRequest.getContextPath()}" />
+  <style>
+
+    /* 여기 지정된 부분은 모든 html 파일에 공통적으로 넣어줍니다. */
+    html,
+    body {
+      height: 100%;
+    }
+
+    #body-wrapper {
+      position: relative;
+      min-height: 100vh;
+      padding-bottom: 230px;
+    }
+
+    footer {
+      height: 230px;
+      position: relative;
+      transform: translateY(-100%);
+    }
+
+    /* 본문 내용 */
+    /* .container{
+        max-width: 1210px;
+    } */
+
+    #myblog-update-box{
+        width: 1100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #myblog-update{
+        width: 900px;
+        height: 300px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-left: 10px;
+    }
+
+    #myblog-update hr{
+        height:230px;
+        width:2px;
+        border-width:0;
+        color:#000;
+        background-color:#000;
+    }
+
+    /* 왼쪽 영역 */
+    #left-area{
+        flex: 1; /* 왼쪽 영역은 저체 공간의 1/3을 차지 */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .blog-profile input{
+        width: 170px;
+        height: 40px;
+        border-radius: 15px;
+        margin-top: 22px;
+        background-color: #3A5485;
+        border : none;
+
+        color: white;
+        font-weight: bold;
+    }
+
+    .text-button{
+        display: inline-block;
+        font-size: 14px;
+        color: #ababab;
+        cursor: pointer;
+        text-decoration: none;
+        padding-top: 5px;
+    }
+
+
+    /* 오른쪽 영역 */
+    #right-area{
+        flex: 2;
+    }
+
+    .myinfo_box{
+        padding-left: 50px;
+        padding-right: 40px;
+    }
+
+    .myinfo_box input{
+        width: 100px;
+        height: 35px;
+        border-radius: 9px;
+        margin-top: 10px;
+        background-color: #3A5485;
+        border : none;
+        float: right;
+        color: white;
+        font-weight: bold;
+    }
+
+    .myinfo{
+        height: 45px;
+        border: 1.5px solid #969696;
+        border-radius: 9px;
+    }
+
+    .myinfo p{
+        padding-left: 15px;
+        padding-top: 7px;
+    }
+
+    .introduce{
+        height: 130px;
+        border: 1.5px solid #969696;
+        margin-top: 15px;
+        border-radius: 9px;
+    }
+
+    .introduce p{
+        padding-left: 15px;
+        padding-top: 10px;
+    }
+
+    /* 회원정보 수정 */
+
+    #mypage{
+        width: 1100px;
+        margin-top: 60px;
+    }
+
+    #jointitle{
+        float: left;
+        font-size: 20px;
+        padding-left: 10px;
+    }
+
+    #homeline {
+        border-top: 2.4px solid #A2B2CD;
+        margin-top: 15px;
+    }
+
+    #emailchk, #nickchk , #joinbutton, #dropaccount{
+        width: 120px;
+        height: 40px;
+        border: solid;
+        border-radius: 15px;
+        background: #3A5485;
+        color: #FFF;
+        font-size: 18px;
+    }
+
+    #cancelbutton{
+        width: 120px;
+        height: 40px;
+        border: solid;
+        border-radius: 15px;
+        background: #9ea5b2;
+        color: #FFF;
+        font-size: 18px;
+        margin-right: 90px;
+    }
+
+    #emailchk{
+        margin-left: 15px;
+    }
+
+    .pw1{
+        padding-left: 38px;
+    }
+    
+    .joinbox{
+        padding-bottom: 100px;
+    }
+
+    .jointable{
+        width: 100%;
+        height: 550px;          
+    }
+
+    .tableline{
+        border-bottom: 1.5px solid #9ea5b2  ;
+    }
+
+    .jointable th{
+        padding-left: 90px;
+    }
+
+    .jointable th, td{
+        padding-top: 30px;
+        padding-bottom: 30px;
+    }
+    
+    .pwbox{
+        display: flex;
+        align-content: center;
+        align-items: center;
+    }
+
+    .passwordbox{
+        padding-left: 40px;
+    }
+    
+    #confirmMsg{
+        /* padding-top: 10px; */
+        padding-left: 30px;
+    }
+
+    #name, #phone , #selectmbti{
+        justify-content: space-between;
+        display: flex;
+        align-content: flex-end;
+        flex-direction: row;
+        margin-left: 90px;
+    }
+
+    #name, #nickname, #phone, #selectmbti{
+        width: 440px;
+    }
+
+    #password, #pwcheck{
+        width: 100%;
+    }
+
+    .email{
+        display: flex;
+        align-content: flex-end;
+        flex-direction: row;
+        margin-left: 90px;
+        align-items: center;
+    }
+
+    #nickbox{
+        display: flex;
+        align-content: flex-end;
+        flex-direction: row;
+        margin-left: 90px;
+        align-items: center;
+    }
+
+    #nickchk{
+        margin-left: 20px;
+    }
+
+
+    input{
+        border: none;
+        background: #EFEFEF;
+        /* width: 440px; */
+        height: 40px;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    select{
+        border: none;
+        background: #EFEFEF;
+        /* width: 330px; */
+        height: 40px;
+        border-radius: 5px;
+
+    }
+
+
+  </style>
+
+
+</head>
+
+<body>
+
+  <!--wrapper 영역-->
+  <div id="body-wrapper">
+
+    <!-- header 영역 -->
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <!-- 본문 영역 -->
+    <div id="wrapper" class="container" style="padding-top: 150px;">
+        <div id="myblog-update-box">
+            <div id="myblog-update">
+                <div id="left-area">
+                    <div class="blog-profile">
+                        <div class="myimg">
+                            <img th:src="@{/images/logo_kakao.png}" width="170px" height="170px">
+                        </div>
+                        <input type="button" value="이미지 업로드">
+                        <br/>
+                        <div class="d-flex justify-content-center">
+                            <span class="text-button">이미지 제거</span>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div id="right-area">
+                    <div class="myinfo_box">
+                        <div class="myinfo">
+                            <p th:text="${user.nickname}"></p>
+                        </div>
+                        <div class="introduce">
+                            <p th:text="${user.introduce}"></p>
+                        </div>
+                        <input type="button" value="수 정">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="mypage">
+            <h3 id="jointitle">회원정보수정</h3>
+            <br/>
+            <div id="homeline"></div>
+            <div class="joinbox">
+                <table class="jointable">
+                    <tr class="tableline">
+                        <th>이메일</th>
+                        <td class="email-box" >
+                            <div class="email">
+                                <p>이메일 불러오기</p>
+                            </div>
+                        </td>
+                    
+                    </tr>
+                
+                    <tr class="tableline">
+                        <th>이름</th>
+                        <td>
+                            <div style="display: flex;">
+                                <input type="text" id="name" name="name" maxlength="10" style="padding: 0.5% 3% 0.5% 0%;" >
+                                <p style="padding-top: 10px; padding-left: 30px;">10자 이내로 입력해주세요</p>
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr class="tableline">
+                        <th>닉네임</th>
+                        <td>
+                            <div id="nickbox">
+                                <input type="text" id="nickname" name="nickname" maxlength="10"  style="padding: 0.5% 3% 0.5% 0%;">
+                                <input type="button" id="nickchk" value="중복 확인" onclick="ajaxNickCheck(nickname)" ></input>
+                                <input type="hidden" id="nickjoongbokchk" name="nickjoongbokchk" ></input>
+                                <p style="padding-top: 10px; padding-left: 30px;">10자 이내로 입력해주세요</p>
+                            </div>
+                        </td>
+                        <td></td>
+
+                        
+                    </tr>
+                    <tr class="tableline">
+                        <th>전화 번호</th>
+                        <td><input type="text" id="phone" name="phone" maxlength="13" style="padding: 0.5% 5% 0.5% 5%" placeholder="010 - 0000 - 0000" ></td>
+                        <td></td>
+                    </tr>
+                    <tr class="tableline">
+                        <th>비밀번호</th>
+                        <td>
+                            <div class="passwordbox">
+                                <div class="pwbox">
+                                    <table style="width: 60%;" >
+                                        <tr>
+                                            <th style="padding-right: 41px;">비밀번호</th>
+                                            <td><input type="password" id="password" name="password" maxlength="16" style="padding: 0.5% 5% 0.5% 5%" autoComplete="off" /> </td>
+                                            
+                                        </tr>
+                                    </table>
+                                    <p id="confirmMsg"></p>
+                                </div>
+                                    <table style="width: 60%;">
+                                        <tr>
+                                            <th>비밀번호 확인</th>
+                                            <td><input type="password" id="pwcheck"  style="padding: 0.5% 5% 0.5% 5%" name="pwcheck" autoComplete="off" onkeyup="pwConfirm()" /></td>
+                                        </tr>
+                                    </table>
+                                <!-- <p id="confirmMsg"></p> -->
+                            </div>
+                        </td>
+                        <td><p id="confirmMsg"></p></td>
+                        
+                    </tr>
+                    <tr class="tableline">
+                        <th>MBTI</th>
+                        <td><select name="selectmbti" id="selectmbti" onChange="selectMbti(this.value)" style="padding: 0% 5% 0% 5%; text-align: center;">
+                            <option value="" selected>선택하세요</option>
+                            <option value="ENFP">ENFP</option>
+                            <option value="ENTP">ENTP</option>
+                            <option value="ESFP">ESFP</option>
+                            <option value="ESTP">ESTP</option>
+                            <option value="ENFJ">ENFJ</option>
+                            <option value="ENTJ">ENTJ</option>
+                            <option value="ESFJ">ESFJ</option>
+                            <option value="ESTJ">ESTJ</option>
+                            <option value="INFP">INFP</option>
+                            <option value="INTP">INTP</option>
+                            <option value="ISFP">ISFP</option>
+                            <option value="ISTP">ISTP</option>
+                            <option value="INFJ">INFJ</option>
+                            <option value="INTJ">INTJ</option>
+                            <option value="ISFJ">ISFJ</option>
+                            <option value="ISTJ">ISTJ</option>
+                        </select>
+                        <input name="mbti" id="mbti" type="hidden">    
+                    </td>
+                    <td></td>
+                    </tr>
+                    <tr class="tableline">
+                        <th>회원탈퇴</th>
+                        <td style="padding-left: 90px;">
+                            <input type="button" id="dropaccount" value="회원탈퇴" ></input>     
+                        </td>
+                    <td></td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th>
+                            <input type="button" id="joinbutton" value="수 정" ></input>
+                            <a th:href="@{/myblog.do}"><input type="button" id="cancelbutton" value="취 소" ></a>
+                        </th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+  </div>
+
+  <!-- footer 영역 -->
+  <th:block th:replace="~{/fragments/footer :: footerHTML}"></th:block>
+
+
+  <script th:inline="javascript" type="text/javascript">
+
+  </script>
+</body>
+
+</html>

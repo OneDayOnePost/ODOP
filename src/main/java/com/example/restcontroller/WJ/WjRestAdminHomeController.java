@@ -26,12 +26,12 @@ public class WjRestAdminHomeController {
 
     // 신고된 게시글 상세 페이지
     // (1) 삭제 승인
-    @PutMapping(value = "/postdeleteok.json")
-    public Map<String, Object> postdeleteokPUT(@RequestBody PostDTO post) {
+    @PutMapping(value = "/postdelete.json")
+    public Map<String, Object> postdeletePUT(@RequestBody PostDTO post) {
         Map<String, Object> retMap = new HashMap<>();
 
         try {
-            int ret = rService.postDeleteOk(post.getNo());
+            int ret = rService.postDelete(post.getNo());
 
             if  (ret == 1) {
                 retMap.put("status", 200);
@@ -50,15 +50,15 @@ public class WjRestAdminHomeController {
     }
 
     // (2) 삭제 거절 -> post_report 테이블에서 해당 게시글 삭제
-    @DeleteMapping(value = "/postdeleteno.json")
-    public Map<String, Object> postdeletenoDELETE(@RequestParam(name = "no") String no) {
+    @DeleteMapping(value = "/reportdelete.json")
+    public Map<String, Object> reportdeleteDELETE(@RequestParam(name = "no") String no) {
         Map<String, Object> retMap = new HashMap<>();
 
         try {
             BigInteger postno = new BigInteger(no);
-            int ret = rService.postDeleteNo(postno);
+            int ret = rService.reportDelete(postno);
 
-            if  (ret == 1) {
+            if  (ret >= 1) {
                 retMap.put("status", 200);
             }
             else {
