@@ -72,6 +72,11 @@
         padding-top: 23px;
     }
 
+    .myimg img{
+      border-radius: 50%; /* 50%로 설정하여 원 모양으로 잘려짐 */
+      overflow: hidden; /* 넘치는 부분은 숨기도록 설정 */
+    }
+
     .myinfo{
         padding-top: 29px;
 
@@ -139,8 +144,7 @@
     }
 
     .introduce{
-        padding-top: 20px;
-        padding-left: 20px;
+        padding: 25px 20px 30px 20px;
         float: left;
     }
 
@@ -326,7 +330,7 @@
                 <div id="left-area">
                     <div class="blog-profile">
                         <div class="myimg">
-                            <img th:src="@{/images/logo_kakao.png}" width="100px" height="100px">
+                            <img th:src="${user.imgpath}" th:key="${user.imgkey}" width="100px" height="100px" onerror="this.src='images/default_thumbnail.png'">
                         </div>
                         <div class="myinfo_box">
                             <div class="myinfo">
