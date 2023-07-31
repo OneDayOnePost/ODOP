@@ -19,29 +19,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class GrRestCategoryController {
 
-    final private GrMemberRepository gRepository;
     
-    @PutMapping(value="/mypage.json")
-    public Map<String, Object> mypagePUT(@RequestBody Member obj)  {
-        
-        Map<String, Object> retMap = new HashMap<>();
-
-        try {
-            Member member = gRepository.findById(obj.getEmail()).orElse(null);
-
-            member.setImgkey(obj.getImgkey());
-            member.setImgpath(obj.getImgpath());
-
-            gRepository.save(member);
-            
-            retMap.put("status", 200);
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            retMap.put("status", -1);
-        }
-
-        return retMap;
-    }
     
 }
