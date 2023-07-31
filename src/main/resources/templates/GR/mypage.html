@@ -210,7 +210,12 @@
         padding-left: 90px;
     }
 
-    .jointable th, td{
+    .jointable th{
+        padding-top: 30px;
+        padding-bottom: 30px;
+    }
+
+    .jointable td{
         padding-top: 30px;
         padding-bottom: 30px;
     }
@@ -267,7 +272,7 @@
     }
 
 
-    input{
+    .jointable input{
         border: none;
         background: #EFEFEF;
         /* width: 440px; */
@@ -321,7 +326,7 @@
                 <div id="right-area">
                     <div class="myinfo_box">
                         <div class="myinfo">
-                            <p th:text="${user.nickname}"></p>
+                            <p th:text="${user.blogname}"></p>
                         </div>
                         <div class="introduce">
                             <p th:text="${user.introduce}"></p>
