@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import com.example.dto.PostDTO;
+import com.example.dto.ReplyDTO;
 import com.example.dto.ReportListDTO;
 import com.example.dto.ReportOneDTO;
 import com.example.mapper.WJ.WjReportMapper;
@@ -58,6 +59,7 @@ public class WjReportServiceImpl implements WjReportService {
 
     // ------------------------------------------------------------------------
 
+    // 게시글 - 상세 조회
     // 게시글 1개 조회
     @Override
     public PostDTO selectPostOne(BigInteger no) {
@@ -96,9 +98,21 @@ public class WjReportServiceImpl implements WjReportService {
 
     // 게시글 신고 삭제 거절
     @Override
-    public int reportDelete(BigInteger postno) {
+    public int postReportDelete(BigInteger postno) {
         try {
-            return rMapper.reportDelete(postno);
+            return rMapper.postReportDelete(postno);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    // 게시글 삭제 취소
+    @Override
+    public int postDeleteCancel(BigInteger postno) {
+        try {
+            return rMapper.postDeleteCancel(postno);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -142,6 +156,69 @@ public class WjReportServiceImpl implements WjReportService {
         catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    // ------------------------------------------------------------------------
+
+    // 댓글 - 상세 조회
+    // 댓글 1개 조회
+    @Override
+    public ReplyDTO selectReplyOne(BigInteger no) {
+        try {
+            return rMapper.selectReplyOne(no);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // 댓글 신고 1개 상세 조회
+    @Override
+    public List<ReportOneDTO> selectReplyReportOne(BigInteger replyno) {
+        try {
+            return rMapper.selectReplyReportOne(replyno);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // 댓글 신고 삭제 승인
+    @Override
+    public int replyDelete(BigInteger replyno) {
+        try {
+            return rMapper.replyDelete(replyno);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    // 댓글 신고 삭제 거절
+    @Override
+    public int replyReportDelete(BigInteger replyno) {
+        try {
+            return rMapper.replyReportDelete(replyno);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    // 댓글 삭제 취소
+    @Override
+    public int replyDeleteCancel(BigInteger replyno) {
+        try {
+            return rMapper.replyDeleteCancel(replyno);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return -1;
         }
     }
 }

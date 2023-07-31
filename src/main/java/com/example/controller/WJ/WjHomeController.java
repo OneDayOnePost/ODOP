@@ -140,4 +140,77 @@ public class WjHomeController {
         }
     }
 
+    // --------------------------------------------------------------------------------
+
+    // 신고된 댓글 상세 조회
+    @GetMapping(value = "/replyreport.do")
+    public String replyreportGET(Model model,
+                                @AuthenticationPrincipal User user,
+                                @RequestParam(name = "type", required = true) String type,
+                                @RequestParam(name = "menu", required = true) String menu,
+                                @RequestParam(name = "no", required = true) BigInteger no) {
+        try {
+            model.addAttribute("user", user);
+
+            model.addAttribute("type", type);
+            model.addAttribute("menu", menu);
+            
+            // 댓글 정보
+            model.addAttribute("rone", rService.selectReplyOne(no));
+            // 댓글 신고 정보
+            model.addAttribute("rrone", rService.selectReplyReportOne(no));
+
+            // -------------------------------------------------------------------------
+            // 댓글 신고 횟수 합계
+            BigInteger sum = BigInteger.ZERO;
+            List<ReportOneDTO> reportList = rService.selectReplyReportOne(no);
+            for (ReportOneDTO reportOne : reportList) {
+                sum = sum.add(reportOne.getReportcount());
+            }
+
+            model.addAttribute("reportcountsum", sum);
+
+            // -------------------------------------------------------------------------
+            // 이전글, 다음글
+            List<ReportListDTO> replyreportlist = new ArrayList<>();
+            if (menu.equals("all")) {
+                replyreportlist = rService.selectReplyListAll();
+            } else if (menu.equals("wait")) {
+                replyreportlist = rService.selectReplyListWait();
+            } else if (menu.equals("delete")) {
+                replyreportlist = rService.selectReplyListDelete();
+            }
+
+            int currentIndex = -1;
+            for (int i = 0; i < replyreportlist.size(); i++) {
+                ReportListDTO replyreport = replyreportlist.get(i);
+                if (replyreport.getNo().equals(no)) {
+                    currentIndex = i;
+                    break;
+                }
+            }
+
+            // 현재 게시물 번호의 인덱스를 찾았으면, 이전글과 다음글을 리스트에서 찾아냄
+            BigInteger prev = BigInteger.ZERO; // 이전글 
+            BigInteger next = BigInteger.ZERO; // 다음글
+            if (currentIndex >= 0) {
+                if (currentIndex > 0) {
+                    next = replyreportlist.get(currentIndex - 1).getNo();
+                }
+                if (currentIndex < replyreportlist.size() - 1) {
+                    prev = replyreportlist.get(currentIndex + 1).getNo();
+                }
+            }
+
+            model.addAttribute("prev", prev);
+            model.addAttribute("next", next);
+
+            return "/WJ/WjReplyReportDetail";
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/home.do";
+        }
+    }
+
 }

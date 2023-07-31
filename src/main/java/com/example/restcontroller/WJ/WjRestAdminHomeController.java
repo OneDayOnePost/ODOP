@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.PostDTO;
+import com.example.dto.ReplyDTO;
 import com.example.service.WJ.WjReportService;
 
 import lombok.RequiredArgsConstructor;
@@ -50,15 +51,115 @@ public class WjRestAdminHomeController {
     }
 
     // (2) 삭제 거절 -> post_report 테이블에서 해당 게시글 삭제
-    @DeleteMapping(value = "/reportdelete.json")
-    public Map<String, Object> reportdeleteDELETE(@RequestParam(name = "no") String no) {
+    @DeleteMapping(value = "/postreportdelete.json")
+    public Map<String, Object> postreportdeleteDELETE(@RequestParam(name = "no") String no) {
         Map<String, Object> retMap = new HashMap<>();
 
         try {
             BigInteger postno = new BigInteger(no);
-            int ret = rService.reportDelete(postno);
+            int ret = rService.postReportDelete(postno);
 
             if  (ret >= 1) {
+                retMap.put("status", 200);
+            }
+            else {
+                retMap.put("status", 0);
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            retMap.put("status", -1);
+            retMap.put("error", e.getMessage());
+        }
+
+        return retMap;
+    }
+
+    // (3) 삭제 취소
+    @PutMapping(value = "/postdeletecancel.json")
+    public Map<String, Object> postdeletecancelPUT(@RequestBody PostDTO post) {
+        Map<String, Object> retMap = new HashMap<>();
+
+        try {
+            int ret = rService.postDeleteCancel(post.getNo());
+
+            if  (ret == 1) {
+                retMap.put("status", 200);
+            }
+            else {
+                retMap.put("status", 0);
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            retMap.put("status", -1);
+            retMap.put("error", e.getMessage());
+        }
+
+        return retMap;
+    }
+
+    // --------------------------------------------------------------------
+
+    // 신고된 댓글 상세 페이지
+    // (1) 삭제 승인
+    @PutMapping(value = "/replydelete.json")
+    public Map<String, Object> replydeletePUT(@RequestBody ReplyDTO reply ) {
+        Map<String, Object> retMap = new HashMap<>();
+
+        try {
+            int ret = rService.replyDelete(reply.getNo());
+
+            if  (ret == 1) {
+                retMap.put("status", 200);
+            }
+            else {
+                retMap.put("status", 0);
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            retMap.put("status", -1);
+            retMap.put("error", e.getMessage());
+        }
+
+        return retMap;
+    }
+
+    // (2) 삭제 거절 -> reply_report 테이블에서 해당 게시글 삭제
+    @DeleteMapping(value = "/replyreportdelete.json")
+    public Map<String, Object> replyreportdeleteDELETE(@RequestParam(name = "no") String no) {
+        Map<String, Object> retMap = new HashMap<>();
+
+        try {
+            BigInteger replyno = new BigInteger(no);
+            int ret = rService.replyReportDelete(replyno);
+
+            if  (ret >= 1) {
+                retMap.put("status", 200);
+            }
+            else {
+                retMap.put("status", 0);
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            retMap.put("status", -1);
+            retMap.put("error", e.getMessage());
+        }
+
+        return retMap;
+    }
+
+    // (3) 삭제 취소
+    @PutMapping(value = "/replydeletecancel.json")
+    public Map<String, Object> replydeletecancelPUT(@RequestBody ReplyDTO reply ) {
+        Map<String, Object> retMap = new HashMap<>();
+
+        try {
+            int ret = rService.replyDeleteCancel(reply.getNo());
+
+            if  (ret == 1) {
                 retMap.put("status", 200);
             }
             else {

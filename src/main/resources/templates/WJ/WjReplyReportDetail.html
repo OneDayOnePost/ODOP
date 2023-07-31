@@ -81,24 +81,24 @@
 
         /* --------------------------------------------------------------------------- */
 
-        #post_list a:hover i,
-        #post_list a:hover span {
+        #reply_list a:hover i,
+        #reply_list a:hover span {
             text-decoration: underline;
         }
 
-        #post_list a {
+        #reply_list a {
             text-decoration: none; 
             color: black; 
             display: inline-block; 
             vertical-align: middle;
         }
 
-        #post_list a i {
+        #reply_list a i {
             font-size: 21px; 
             vertical-align: middle;
         }
 
-        #post_list a span {
+        #reply_list a span {
             color: black; 
             display: inline-block; 
             line-height: 20px; 
@@ -107,23 +107,16 @@
 
         /* --------------------------------------------------------------------------- */
 
-        /* 게시글 제목 */
-        #post_title {
-            text-align: left;
-        }
-
-        /* --------------------------------------------------------------------------- */
-
         /* 작성자 닉네임 & 작성일 */
-        #post_namedate {
+        #reply_namedate {
             display: flex;
             margin-bottom: 20px;
         }
 
         /* --------------------------------------------------------------------------- */
 
-        /* 게시글 내용 */
-        #post_content {
+        /* 댓글 내용 */
+        #reply_content {
             text-align: left;
             margin-top: 20px;
             margin-bottom: 20px;
@@ -134,59 +127,59 @@
         /* --------------------------------------------------------------------------- */
 
         /* 신고 사유 & 횟수 */
-        #post_reporttable {
+        #reply_reporttable {
             display: flex;
             justify-content: center;
             margin-top: 20px;
         }
 
-        #post_reporttable table {
+        #reply_reporttable table {
             width: 60%;
             margin: 0 auto;
             background-color: #DFECF6;
         }
 
-        #post_reporttable table thead tr th,
-        #post_reporttable table tbody tr td {
+        #reply_reporttable table thead tr th,
+        #reply_reporttable table tbody tr td {
             text-align: center;
         }
 
         /* 각 열의 너비 지정 */
-        #post_reporttable table th:nth-child(1),
-        #post_reporttable table td:nth-child(1) {
+        #reply_reporttable table th:nth-child(1),
+        #reply_reporttable table td:nth-child(1) {
             width: 70%;
         }
 
-        #post_reporttable table th:nth-child(2),
-        #post_reporttable table td:nth-child(2) {
+        #reply_reporttable table th:nth-child(2),
+        #reply_reporttable table td:nth-child(2) {
             width: 30%;
         }
 
         /* 마지막 열을 제외한 나머지 열에 border-right 추가 */
-        #post_reporttable table tbody tr td:not(:last-child) {
+        #reply_reporttable table tbody tr td:not(:last-child) {
             border-right: 1px solid #909090;
         }
 
-        #post_reporttable table thead tr th:not(:last-child) {
+        #reply_reporttable table thead tr th:not(:last-child) {
             border-right: 1px solid #909090;
         }
 
         /* 마지막 행을 제외한 나머지 행에 border-bottom 추가 */
-        #post_reporttable table tbody tr:not(:last-child) td {
+        #reply_reporttable table tbody tr:not(:last-child) td {
             border-bottom: 1px solid #909090;
         }
 
-        #post_reporttable table thead tr {
+        #reply_reporttable table thead tr {
             border-bottom: 1px solid #909090;
         }
 
-        #post_reporttable table tbody tr:last-child td {
+        #reply_reporttable table tbody tr:last-child td {
             font-weight: bold;
         }
 
         /* 테이블 행 높이 변경 */
-        #post_reporttable table thead tr,
-        #post_reporttable table tbody tr {
+        #reply_reporttable table thead tr,
+        #reply_reporttable table tbody tr {
             height: 37px;
         }
 
@@ -202,7 +195,7 @@
             height: 40px;
         }
 
-        #delete_post {
+        #delete_reply {
             border-radius: 30px;
             background-color: #6F8DBF;
             color: #ffffff;
@@ -263,15 +256,15 @@
         <div id="wrapper" class="container" style="display: flex; justify-content: center; align-items: center; margin-top: 40px; margin-bottom: 30px;">
             <!-- 이전글 -->
             <div id="prevdiv" th:if="${prev > 0}">
-                <a th:href="@{/postreport.do(type=${type}, menu=${menu}, no=${prev})}" id="prev">
+                <a th:href="@{/replyreport.do(type=${type}, menu=${menu}, no=${prev})}" id="prev">
                     <i class="bi bi-chevron-compact-left" style="font-size: 80px; color: #90909055; font-weight: 100; border: none;"></i>
                 </a>
             </div>
     
-            <div th:each="post : ${pone}" id="body_content" style="width: 90%;">
-                <input type="text" th:value="${post.no}" id="post_no" hidden />
+            <div th:each="reply : ${rone}" id="body_content" style="width: 90%;">
+                <input type="text" th:value="${reply.no}" id="reply_no" hidden />
     
-                <div id="post_list" style="text-align: right;">
+                <div id="reply_list" style="text-align: right;">
                     <a th:href="@{/adminhome.do(type=${type}, menu=${menu})}">
                         <i class="bi bi-list"></i>
 
@@ -280,27 +273,23 @@
                         <span th:if="${menu} eq 'delete'">삭제 완료</span>
                     </a>
                 </div>
-
-                <div id="post_title" style="display: flex; justify-content: center;">
-                    <p th:text="${post.title}" style="font-size: 30px; margin-bottom: 0px; width: 96%;"></p>
-                </div>
     
-                <div id="post_namedate" style="display: flex; align-items: center; margin-top: 8px; margin-bottom: 0px; justify-content: center;">
+                <div id="reply_namedate" style="display: flex; align-items: center; margin-top: 8px; margin-bottom: 0px; justify-content: center;">
                     <div style="width: 96%;">
-                        <span th:text="${post.writer}" style="font-weight: bold; margin-bottom: 0; margin-left: 5px; margin-right: 15px; font-size: 18px;"></span>
-                        <span th:text="${#dates.format(post.regdate, 'yyyy년 MM월 dd일 hh시 mm분')}" style="margin-bottom: 0;"></span>
+                        <span th:text="${reply.writer}" style="font-weight: bold; margin-bottom: 0; margin-left: 5px; margin-right: 15px; font-size: 18px;"></span>
+                        <span th:text="${#dates.format(reply.regdate, 'yyyy년 MM월 dd일 hh시 mm분')}" style="margin-bottom: 0;"></span>
                     </div>
                 </div>
     
                 <hr />
     
-                <div id="post_content">
-                    <div th:utext="${post.content}" style="width: 95%;"></div>
+                <div id="reply_content">
+                    <div th:utext="${reply.content}" style="width: 95%;"></div>
                 </div>
     
                 <hr />
     
-                <div id="post_reporttable">
+                <div id="reply_reporttable">
                     <table>
                         <thead>
                             <tr>
@@ -309,9 +298,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="prone : ${prone}">
-                                <td th:text="${prone.reason}"></td>
-                                <td th:text="${prone.reportcount}"></td>
+                            <tr th:each="rrone : ${rrone}">
+                                <td th:text="${rrone.reason}"></td>
+                                <td th:text="${rrone.reportcount}"></td>
                             </tr>
                             <tr>
                                 <td>합계</td>
@@ -321,19 +310,19 @@
                     </table>
                 </div>
     
-                <div th:if="${post.state == 0 && reportcountsum > 1}" style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
+                <div th:if="${reply.state == 0 && reportcountsum > 1}" style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
                     <button type="button" id="delete_report" data-bs-toggle="modal" data-bs-target="#reportmodal_confirm" style="margin-right: 20px;">거절</button>
-                    <button type="button" id="delete_post" data-bs-toggle="modal" data-bs-target="#postmodal_confirm">승인</button>
+                    <button type="button" id="delete_reply" data-bs-toggle="modal" data-bs-target="#replymodal_confirm">승인</button>
                 </div>
 
-                <div th:if="${post.state == 1}" style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
+                <div th:if="${reply.state == 1}" style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
                     <button type="button" id="cancel_delete" data-bs-toggle="modal" data-bs-target="#cancelmodal_confirm">삭제 취소</button>
                 </div>
             </div>
     
             <!-- 다음글 -->
             <div id="nextdiv" th:if="${next > 0}">
-                <a th:href="@{/postreport.do(type=${type}, menu=${menu}, no=${next})}" id="next">
+                <a th:href="@{/replyreport.do(type=${type}, menu=${menu}, no=${next})}" id="next">
                     <i class="bi bi-chevron-compact-right" style="font-size: 80px; color: #90909055; font-weight: 100; border: none;"></i>
                 </a>
             </div>
@@ -356,14 +345,14 @@
     <th:block th:replace="~{/fragments/footer :: footerHTML}"></th:block>
 
     <!-- 신고 승인 버튼 - confirm 창  -->
-    <div class="modal fade" id="postmodal_confirm" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="replymodal_confirm" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body">
-                    <p style="text-align: center; font-size: 20px; margin-top: 25px; margin-bottom: 25px;">신고된 게시글을 삭제하시겠습니까?</p>
+                    <p style="text-align: center; font-size: 20px; margin-top: 25px; margin-bottom: 25px;">신고된 댓글을 삭제하시겠습니까?</p>
 
                     <div style="display: flex; justify-content: center;">
-                        <button type="button" class="btn" onclick="deletePost()" 
+                        <button type="button" class="btn" onclick="deleteReply()" 
                             style="background-color: #6F8DBF; color: white; margin-right: 10px; width: 80px; border-radius: 20px;">확인</button>
                         <button type="button" class="btn" data-bs-dismiss="modal" 
                             style="background-color: #949494; color: white; margin-left: 10px; width: 80px; border-radius: 20px;">취소</button>
@@ -373,14 +362,14 @@
         </div>
     </div>
     <!-- 신고 승인 버튼 - 승인 후 alert 창  -->
-    <div class="modal fade" id="postmodal_alert" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal fade" id="replymodal_alert" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body">
                     <p style="text-align: center; font-size: 20px; margin-top: 25px; margin-bottom: 25px;">삭제 완료되었습니다.</p>
 
                     <div style="display: flex; justify-content: center;">
-                        <button type="button" class="btn" onclick="deletePostOk()" 
+                        <button type="button" class="btn" onclick="deleteReplyOk()" 
                             style="background-color: #949494; color: white; width: 80px; border-radius: 20px;">확인</button>
                     </div>
                 </div>
@@ -426,7 +415,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body">
-                    <p style="text-align: center; font-size: 20px; margin-top: 25px; margin-bottom: 25px;">게시글 삭제를 취소하시겠습니까?</p>
+                    <p style="text-align: center; font-size: 20px; margin-top: 25px; margin-bottom: 25px;">댓글 삭제를 취소하시겠습니까?</p>
 
                     <div style="display: flex; justify-content: center;">
                         <button type="button" class="btn" onclick="cancelDelete()" 
@@ -473,7 +462,7 @@
 
         // Down(↓) 버튼을 클릭하면 페이지가 신고사유&횟수 테이블로 스크롤
         scrolldown.addEventListener("click", function () {
-            const reporttable = document.getElementById("post_reporttable");
+            const reporttable = document.getElementById("reply_reporttable");
             const reporttablePosition = reporttable.offsetTop;
 
             window.scrollTo({ top: reporttablePosition, behavior: "smooth" });
@@ -500,36 +489,36 @@
     <script th:inline="javascript" type="text/javascript">
         // 신고 승인 버튼
         // (1) confirm
-        async function deletePost() {
-            const postno = document.getElementById('post_no').value;
+        async function deleteReply() {
+            const replyno = document.getElementById('reply_no').value;
 
             // rest api 호출
-            const url = [[@{/api/postdelete.json}]];
+            const url = [[@{/api/replydelete.json}]];
             const headers = {"Content-Type":"application/json"};
-            const body = {no:postno};
+            const body = {no:replyno};
             const { data } = await axios.put(url, body, { headers });
 
             // console.log(data);
 
             if (data.status === 200) {
                 // 승인 confirm 모달창 닫기
-                const postmodal_confirm = new bootstrap.Modal(document.getElementById('postmodal_confirm'));
-                postmodal_confirm.hide();
+                const replymodal_confirm = new bootstrap.Modal(document.getElementById('replymodal_confirm'));
+                replymodal_confirm.hide();
 
                 // 승인 alert 모달창 열기
-                const postmodal_alert = new bootstrap.Modal(document.getElementById('postmodal_alert'));
-                postmodal_alert.show();
+                const replymodal_alert = new bootstrap.Modal(document.getElementById('replymodal_alert'));
+                replymodal_alert.show();
             }
         }
         // (2) alert
-        function deletePostOk() {
+        function deleteReplyOk() {
             // 승인 alert 모달창 닫기
-            const postmodal_alert = new bootstrap.Modal(document.getElementById('postmodal_alert'));
-            postmodal_alert.hide();
+            const replymodal_alert = new bootstrap.Modal(document.getElementById('replymodal_alert'));
+            replymodal_alert.hide();
 
-            const postno = document.getElementById('post_no').value;
-            // 주소 이동 (게시글 - 삭제 완료 페이지 - 해당 게시글 번호)
-            window.location.href = [[@{/postreport.do(type='post', menu='delete')}]] + '&no=' + postno;
+            const replyno = document.getElementById('reply_no').value;
+            // 주소 이동 (댓글 - 삭제 완료 페이지 - 해당 댓글 번호)
+            window.location.href = [[@{/replyreport.do(type='reply', menu='delete')}]] + '&no=' + replyno;
         }
 
         // --------------------------------------------------------------------------------------------------------------
@@ -537,10 +526,10 @@
         // 신고 거절 버튼
         // (1) confirm 
         async function deleteReport() {
-            const postno = document.getElementById('post_no').value;
+            const replyno = document.getElementById('reply_no').value;
 
             // rest api 호출
-            const url = [[@{/api/postreportdelete.json}]] + '?no=' + postno;
+            const url = [[@{/api/replyreportdelete.json}]] + '?no=' + replyno;
             const headers = {"Content-Type":"application/json"};
             const { data } = await axios.delete(url, { headers });
 
@@ -562,8 +551,8 @@
             const reportmodal_alert = new bootstrap.Modal(document.getElementById('reportmodal_alert'));
             reportmodal_alert.hide();
 
-            // 주소 이동 (게시글 - 승인 대기 페이지)
-            window.location.href = [[@{/adminhome.do(type='post', menu='wait')}]];
+            // 주소 이동 (댓글 - 승인 대기 페이지)
+            window.location.href = [[@{/adminhome.do(type='reply', menu='wait')}]];
         }
 
         // --------------------------------------------------------------------------------------------------------------
@@ -571,12 +560,12 @@
         // 삭제 취소 버튼
         // (1) confirm 
         async function cancelDelete() {
-            const postno = document.getElementById('post_no').value;
+            const replyno = document.getElementById('reply_no').value;
 
             // rest api 호출
-            const url = [[@{/api/postdeletecancel.json}]];
+            const url = [[@{/api/replydeletecancel.json}]];
             const headers = {"Content-Type":"application/json"};
-            const body = {no:postno};
+            const body = {no:replyno};
             const { data } = await axios.put(url, body, { headers });
 
             // console.log(data);
@@ -597,10 +586,10 @@
             const cancelmodal_alert = new bootstrap.Modal(document.getElementById('cancelmodal_alert'));
             cancelmodal_alert.hide();
 
-            const postno = document.getElementById('post_no').value;
+            const replyno = document.getElementById('reply_no').value;
 
-            // 주소 이동 (게시글 - 승인 대기 페이지 - 해당 게시글 번호)
-            window.location.href = [[@{/postreport.do(type='post', menu='wait')}]] + '&no=' + postno;
+            // 주소 이동 (댓글 - 승인 대기 페이지 - 해당 댓글 번호)
+            window.location.href = [[@{/replyreport.do(type='reply', menu='wait')}]] + '&no=' + replyno;
         }
     </script>
 </body>
