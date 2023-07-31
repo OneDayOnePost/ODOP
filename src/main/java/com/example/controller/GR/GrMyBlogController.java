@@ -20,9 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.dto.MemberDTO;
+import com.example.entity.Member;
 import com.example.entity.Post;
 import com.example.mapper.GR.GrMyblogMapper;
+import com.example.repository.GR.GrMemberRepository;
 import com.example.repository.GR.GrPostRepository;
+import com.example.repository.MH.MhMemberRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,15 +39,12 @@ public class GrMyBlogController {
     // test용
     final GrMyblogMapper gMapper;
     final GrPostRepository postRepository;
-
-    // 이미지 전송용
-    // @Autowired ResourceLoader resourceLoader; // resources 폴더의 파일을 읽기 위한 객체 생성
-    // @Value("${default.image}") String DEFAULTIMAGE;
+    final private GrMemberRepository gRepository;
 
     @GetMapping(value = "/myblog.do")
     public String myblogGET(Model model) { // @AuthenticationPrincipal User user
         try {
-            MemberDTO user = gMapper.selectMemberOne("test1@gmail.com");
+            Member user = gRepository.findById("test1@gmail.com").orElse(null);
             int following = gMapper.countfollowing("test1@gmail.com");
             int follower = gMapper.countfollower("test1@gmail.com");
 
@@ -52,10 +52,8 @@ public class GrMyBlogController {
 
             // 카테고리별 게시글 갯수
             List<Map<String, Integer>> pclist = gMapper.selectpostcatecount("test1@gmail.com");
+            // log.info("listlist=>{}", pclist.toString());
 
-            log.info("listlist=>{}", pclist.toString());
-
-          
 
             // 포스트 총 갯수 세기
             int postallcount = gMapper.countpostall("test1@gmail.com");
@@ -68,10 +66,6 @@ public class GrMyBlogController {
             // 포스트 목록 불러오기 
             List<Post> list = postRepository.findByWriter("test1@gmail.com");
             log.info("list => {}", list.toString());
-
-
-
-       
 
             model.addAttribute("user", user);
             model.addAttribute("following", following);
@@ -98,35 +92,12 @@ public class GrMyBlogController {
     }
 
     // -----------------------------------------------------------------------------------
-    // 프로필 이미지 url 생성용 => 닉네임을 보내면 프로필 이미지 반환
-    // 127.0.0.1:5059/odop/grimage.do?nickname=?
-    //  @GetMapping(value = "/grimage")
-    // public ResponseEntity<byte[]> image ( @RequestParam(name = "itemno", defaultValue = "0" ) BigDecimal itemno) throws IOException {
-    //     // 메뉴 번호를 입력해서 메뉴 하나 가져오기 (메뉴에 이미지 정보가 있으니까)
-    //     ItemImage obj = piService.selectItemImageOne(itemno);
-
-    //     HttpHeaders headers = new HttpHeaders(); // import org.springframework.http.HttpHeaders;
-    //     if(obj != null){ // 이미지가 존재하는지 확인
-    //         if(obj.getFilesize().longValue() > 0){
-    //             headers.setContentType( MediaType.parseMediaType(obj.getFiletype()) );
-    //             return new ResponseEntity<>( obj.getFiledata(), headers, HttpStatus.OK );
-    //             //  == 1) ResponseEntity<byte[]> response = new ResponseEntity<>( obj.getFiledata(), headers, HttpStatus.OK );
-    //             // 2) return response;
-    //         }
-    //     }
-    //     // 이미지가 없을 경우
-    //     InputStream is = resourceLoader.getResource(DEFAULTIMAGE).getInputStream(); // exception 발생 => throws IOException 처리
-    //     headers.setContentType(MediaType.IMAGE_JPEG);
-    //     return new ResponseEntity<>( is.readAllBytes(), headers, HttpStatus.OK );
-    // }
-
-    // -----------------------------------------------------------------------------------
 
     //  마이페이지
     @GetMapping(value="/mypage.do")
     public String mypageGET(Model model){
         try{
-            MemberDTO user = gMapper.selectMemberOne("test1@gmail.com");
+            Member user = gRepository.findById("test1@gmail.com").orElse(null);
 
             model.addAttribute("user", user);
             return "/GR/mypage";
