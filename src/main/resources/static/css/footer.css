@@ -31,7 +31,10 @@ footer .title_detail {
     border-top: 1.5px solid #d4d4d4;
     border-bottom: 1.5px solid #d4d4d4;
     background-color: rgb(236, 236, 236);
+    padding-left: 162px;
 }
+
+
 
 #footer1 p {
     display: inline-block;
@@ -70,7 +73,7 @@ footer ul {
 }
 
 .footer-width {
-    width: 1120px;
+    /* width: 100%; */
     max-width: none !important;
 }
 

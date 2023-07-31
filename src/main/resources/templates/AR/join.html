@@ -2,46 +2,45 @@
 <html lang="ko">
 
 <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>회원가입</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <!--1. BootStrap용 CSS CDM 추가-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
-    <link rel='stylesheet' th:href="@{/css/bootstrap.min.css.map}" />
-
-
-    <!--Bootstrap 용 Icon CDN-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-    <!--font awesome 용-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <!--jQuery 추가-->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
-        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
-
-    <!-- Link Swiper's CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
-    <style>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+  <title>ODOP 회원가입</title>
+  <!--Bootstrap 용 CSS-->
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+  <!--Bootstrap 용 Icon CDN-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+  <!--font awesome 용-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!--google fonts-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+  <!--CSS-->
+  <link th:href="@{/css/header.css}" rel="stylesheet">
+  <link th:href="@{/css/footer.css}" rel="stylesheet">
+  <!--thymeleaf contextpath-->
+  <link id="contextPathHolder" th:data-contextPath="${#httpServletRequest.getContextPath()}" />
+  <style>
         @import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
 
         body {
-            
+            width: 100%;
             /* font-family: 'nanumsquare','MinSans-Regular', sans-serif; */
             font-family: 'NanumSquare';
             font-size: 15px;
             min-height: 100vh;
-            display: flex;
+            /* display: flex; */
             justify-content: center;
             align-items: center;
+            overflow-x: hidden;
         }
 
+       
         #wrapper{
-            padding-top: 100px; 
-            /* 헤더없어서 해놓은 값임!! */
+            padding-top: 100px;
+            width: 80%;
         }
-
         #jointitle{
             float: left;
         }
@@ -182,7 +181,15 @@
 </head>
 
 <body>
-    <div id="wrapper" class="container">
+
+    <!--wrapper 영역-->
+    <div id="body-wrapper">
+  
+      <!-- header 영역 -->
+      <div th:replace="~{fragments/header :: header}"></div>
+  
+      <!-- 본문 영역 -->
+      <div id="wrapper" class="container">
         <h3 id="jointitle">회원가입</h3>
         <div id="homeline"></div>
         <form th:action="@{/join.do}" method="post" id="form">
@@ -231,7 +238,6 @@
                                             <td><input type="password" id="pwcheck"  style="padding: 0.5% 5% 0.5% 5%" name="pwcheck" autoComplete="off" onkeyup="pwConfirm()" /></td>
                                         </tr>
                                     </table>
-                                <!-- <p id="confirmMsg"></p> -->
                             </div>
                         </td>
                         <td><p id="confirmMsg"></p></td>
@@ -305,10 +311,11 @@
         
 
     </div>
- 
 
+</div>
 
-    
+<!-- footer 영역 -->
+<th:block th:replace="~{/fragments/footer :: footerHTML}"></th:block>
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"></script>
