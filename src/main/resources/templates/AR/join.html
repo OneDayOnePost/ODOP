@@ -21,6 +21,10 @@
   <link th:href="@{/css/footer.css}" rel="stylesheet">
   <!--thymeleaf contextpath-->
   <link id="contextPathHolder" th:data-contextPath="${#httpServletRequest.getContextPath()}" />
+  <!--jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+  integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+
   <style>
         @import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
 
@@ -99,7 +103,8 @@
             border-bottom: 1.5px solid #9ea5b2  ;
         }
 
-        .jointable th, td{
+        .jointable th,
+        .jointable td{
 	        padding-top: 30px;
             padding-bottom: 30px;
         }
@@ -156,7 +161,7 @@
         }
 
 
-        input{
+        .jointable input{
             border: none;
             background: #EFEFEF;
             /* width: 440px; */
@@ -299,7 +304,7 @@
                     </tr>
                     <tr>
                         <th></th>
-                        <th style="padding-left: 450px;">
+                        <th style="padding-left: 400px;">
                             <input type="button" id="joinbutton" value="회원 가입" onclick="joinAction()" ></input>
                             <input type="button" id="cancelbutton" value="취소"  onclick="location.href='login.do'" ></input>
                             <!-- 우선은 취소버튼 클릭 시 로그인 창으로 감 (회의 후 로그인 창 / 메인 창 결정) -->
