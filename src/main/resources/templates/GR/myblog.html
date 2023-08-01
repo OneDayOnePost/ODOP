@@ -180,6 +180,25 @@
         font-size: 14px;
     }
 
+    .cate a{
+        text-decoration: none;
+    }
+
+    .cate_all{
+        padding-top: 15px;
+        padding-left: 20px;
+        padding-right: 20px;
+        display: flex;
+        align-items: flex-start;
+        font-size: 14px;
+    }
+
+    .cate_all a{
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+    }
+
     .cate_1{
         margin-right: auto;
     }
@@ -363,10 +382,12 @@
                                     <p>카테고리</p>
                                 </div>
                             </div>
+                            <div class="cate_all"><a th:href="@{/myblog.do}">전체보기</a></div>
                             <div class="cate" th:each="obj:${pclist}">
-                                <!-- <div class="cate_1"><a th:text="${obj.CATEGORY}" th:href="@{/myblog.do(cateno=${obj.CATENO})}"></a></div> -->
-                                <div class="cate_1"><a th:text="${obj.CATEGORY}"></a></div>
-                                <div class="cate_num" th:text="${obj.COUNT}"></div>
+                                <!-- <div class="cate_1"><a th:text="${obj.CATEGORY}" th:data-category-id="${obj.no}"></a></div> -->
+                                <a href=# onclick="loadPostsByCategory(this.getAttribute('data-category-id')); return false;" th:text="${obj.CATEGORY}" th:data-category-id="${obj.NO}"></a>
+                                <!-- <a href="#" onclick="loadPostsByCategory(/*[[${obj.NO}]]*/); return false;" th:text="${obj.CATEGORY}"></a> -->
+                                <div class="cate_num" th:text="${obj.PNOCOUNT}"></div>
                             </div>
                             
                         </div>
@@ -383,6 +404,7 @@
                                 <img th:src="@{/images/gr/123123.jpg}" width="780px" height="300px">
                             </div>
                             <div class="post_info" th:each="obj:${list}">
+                                
                                 <div class="post_title">
                                     <p th:text="${obj.title}"></p>
                                 </div>
@@ -418,6 +440,14 @@
 
 
   <script th:inline="javascript" type="text/javascript">
+
+    // 카테고리별 조회하기
+    function loadPostsByCategory(categoryId) {
+        // 클릭한 카테고리의 번호를 categoryId 변수로 받아온다.
+        var newUrl = "/myblog.do" + "?categoryId=" + categoryId; // 카테고리 번호를 추가하여 새로운 URL 생성
+        window.location.href = newUrl; // 새로운 URL로 페이지 이동
+        console.log(categoryId);
+    }
 
   </script>
 </body>

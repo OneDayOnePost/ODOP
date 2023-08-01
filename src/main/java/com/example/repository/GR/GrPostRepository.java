@@ -12,5 +12,7 @@ import com.example.entity.Post;
 public interface GrPostRepository extends JpaRepository<Post, BigInteger> {
 
     List<Post> findByWriter(String writer);
+    // 카테고리 별 조회
+    List<Post> findByWriterAndCateNo(String writer, BigInteger cateno);
 
 }
