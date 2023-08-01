@@ -37,7 +37,7 @@ public class MemberDTO {
   private String introduce;
   // 블로그명
   private String blogname;
-  // 탈퇴유무(-1:강제탈퇴 / 0:탈퇴O / 1:탈퇴X)
+  // 탈퇴유무(-1:강제탈퇴 / 0:탈퇴X / 1:탈퇴O)
   private BigInteger quitchk;
   // C:고객 / A:관리자
   private String role;

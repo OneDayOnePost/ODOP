@@ -37,7 +37,7 @@ public class ReplyDTO {
   // 비밀댓글 여부(0: 비밀글 X / 1: 비밀글 O)
   private BigInteger secret;
 
-  // 상태(0:신고X / 1:신고O)
+  // 상태(-1: 관리자 삭제 / 0:삭제X / 1: 작성자 삭제)
   private BigInteger state;
 
   // 깊이(댓글 : 0, 답글 : 1)

@@ -9,10 +9,12 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Service;
 
+import com.example.dto.MemberDTO;
 import com.example.dto.PostDTO;
 import com.example.dto.ReplyDTO;
 import com.example.dto.ReportListDTO;
 import com.example.dto.ReportOneDTO;
+import com.example.entity.Member;
 
 @Service
 public interface WjReportService {
@@ -73,4 +75,31 @@ public interface WjReportService {
 
     // 댓글 삭제 취소
     public int replyDeleteCancel(@Param("replyno") BigInteger replyno);
+
+    // --------------------------------------------------------------------
+    
+    // 회원
+    // 1. 전체 회원 목록
+    public List<MemberDTO> selectMemberListAll();
+
+    // 2. 일반 회원 목록(G, 0), 블랙리스트 회원 목록 (B, -1), 탈퇴한 회원 목록 (L, 1) 
+    public List<MemberDTO> selectMemberListGBL(@Param("quitchk") BigInteger quitchk);
+
+    // --------------------------------------------------------------------
+
+    // 회원 - 상세 조회
+    // 회원 1명 조회
+    public Member selectMemberOne(@Param("email") String email);
+
+    // 작성한 게시글 수 (삭제 유무 관련없이 모든 게시글 수)
+    public int selectPostCount(@Param("email") String email);
+
+    // 신고되어 삭제된 게시글 수
+    public int selectPostReportDeleteCount(@Param("email") String email);
+
+    // 작성한 댓글 수 (삭제 유무 관련없이 모든 댓글 수)
+    public int selectReplyCount(@Param("email") String email);
+
+    // 신고되어 삭제된 댓글 수
+    public int selectReplyReportDeleteCount(@Param("email") String email);
 }

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <title>ODOP</title>
+
+    <!--Bootstrap 용 CSS-->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+
+    <!--Bootstrap 용 Icon CDN-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+
+    <!--font awesome 용-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!--google fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+
+    <!--CSS-->
+    <link th:href="@{/css/header.css}" rel="stylesheet">
+    <link th:href="@{/css/footer.css}" rel="stylesheet">
+
+    <!--thymeleaf contextpath-->
+    <link id="contextPathHolder" th:data-contextPath="${#httpServletRequest.getContextPath()}" />
+    
+    <!--jQuery 추가-->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            overflow-x:hidden;
+        }
+
+        #body-wrapper {
+            position: relative;
+            min-height: 100vh;
+            padding-bottom: 230px;
+        }
+
+        footer {
+            height: 230px;
+            position: relative;
+            transform: translateY(-100%);
+        }
+
+        /* --------------------------------------------------------------------------- */
+
+        #member_list a:hover i,
+        #member_list a:hover span {
+            text-decoration: underline;
+        }
+
+        #member_list a {
+            text-decoration: none; 
+            color: black; 
+            display: inline-block; 
+            vertical-align: middle;
+        }
+
+        #member_list a i {
+            font-size: 21px; 
+            vertical-align: middle;
+        }
+
+        #member_list a span {
+            color: black; 
+            display: inline-block; 
+            line-height: 20px; 
+            vertical-align: middle;
+        }
+
+        /* --------------------------------------------------------------------------- */
+
+        /* 정보 윗부분 (프로필사진, 블로그명, 블로그 소개) */
+        #member_info_top {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+        }
+
+        #info_top {
+            width: 85%;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 왼쪽 영역 */
+        #left-area {
+            width: 25%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 중간 영역 */
+        #middle-area {
+            width: 9%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #middle-area hr {
+            height: 75%;
+            width:2px;
+            border-width:0;
+            color:#000;
+            background-color:#000;
+        }
+
+        /* 오른쪽 영역 */
+        #right-area {
+            width: 63%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .blogname {
+            width: 100%;
+            height: 100%;
+            padding-left: 15px;
+            margin-top: 0px;
+            margin-bottom: 0px;
+            display: flex;
+            align-items: end;
+        }
+
+        .introduce {
+            width: 100%;
+            height: 100%;
+            padding-left: 15px;
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+
+        /* --------------------------------------------------------------------------- */
+
+        /* 정보 아래부분 (이메일, 이름, 연락처, 닉네임, MBTI, 가입일, 회원 상태) */
+        #member_info_bottom {
+            margin: 0 auto;
+            margin-top: 40px;
+            width: 70%;
+        }
+
+        #info {
+            float: left;
+            font-size: 23px;
+            padding-left: 10px;
+        }
+
+        #homeline {
+            border-top: 2.4px solid #A2B2CD;
+            margin-top: 15px;
+        }
+
+        .info_table{
+            width: 100%;        
+        }
+
+        .tableline{
+            border-bottom: 1.5px solid #9ea5b2  ;
+        }
+
+        .info_table th{
+            padding-left: 120px;
+            padding-top: 30px;
+            padding-bottom: 30px;
+        }
+
+        .info_table td{
+            padding-top: 30px;
+            padding-bottom: 30px;
+        }
+
+        .table_left {
+            display: flex;
+            align-content: flex-end;
+            flex-direction: row;
+            margin-left: 90px;
+            align-items: center;
+        }
+
+        /* --------------------------------------------------------------------------- */
+
+        .scroll-buttons {
+            position: fixed;
+            bottom: 50px;
+            right: 50px;
+            display: flex;
+        }
+
+        .scroll-button {
+            font-size: 40px;
+            margin-left: 10px;
+            display: none;
+        }
+
+        #scrolldown {
+            display: none;
+        }
+
+        #scrollup {
+            display: none;
+        }
+
+        #scrolldown:hover,
+        #scrollup:hover {
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!--wrapper 영역-->
+    <div id="body-wrapper">
+        <!-- header 영역 -->
+        <div th:replace="~{fragments/header :: header}"></div>
+
+        <!-- 본문 영역 -->
+        <div id="wrapper" class="container" style="display: flex; justify-content: center; align-items: center; margin-top: 40px; margin-bottom: 30px;">
+            <div th:each="member : ${memberone}" id="body_content" style="width: 90%;">
+                <div id="member_list" style="text-align: right;">
+                    <a th:href="@{/adminhome.do(type=${type}, menu=${menu})}">
+                        <i class="bi bi-list"></i>
+
+                        <span th:if="${menu} eq 'all'">전체 회원 목록</span>
+                        <span th:if="${menu} eq 'general'">일반 회원</span>
+                        <span th:if="${menu} eq 'blacklist'">블랙리스트 회원</span>
+                        <span th:if="${menu} eq 'leave'">탈퇴한 회원</span>
+                    </a>
+                </div>
+
+                <div id="member_info_top">
+                    <div id="info_top">
+                        <div id="left-area">
+                            <img th:src="${member.imgpath}" th:key="${member.imgkey}" style="border-radius: 50%; width: 170px; height: 170px;">
+                        </div>
+        
+                        <div id="middle-area">
+                            <hr />
+                        </div>
+        
+                        <div id="right-area">
+                            <div style="width: 95%; height: 18%; display: flex; margin-bottom: 5px; align-items: end;">
+                                <p style="width: 16%; font-weight: bold; margin-bottom: 0px;">블로그명</p>
+                                <p class="blogname" th:text="${member.blogname}"></p>
+                            </div>
+
+                            <div style="width: 95%; height: 15%; display: flex; align-items: center;">
+                                <hr style="width: 100%; margin: 0; border-width: 2px; color: #000; background-color: #000;">
+                            </div>
+
+                            <div style="width: 95%; height: 36%; display: flex; margin-top: 5px;">
+                                <p style="width: 16%; font-weight: bold; margin-bottom: 0px;">소개</p>
+                                <p class="introduce" th:text="${member.introduce}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div id="member_info_bottom">
+                    <h3 id="info">회원 정보</h3>
+                    <br/>
+                    <div id="homeline"></div>
+                    <table class="info_table">
+                        <tr class="tableline">
+                            <th>이메일</th>
+                            <td th:text="${member.email}" class="table_left"></td>
+                        </tr>
+
+                        <tr class="tableline">
+                            <th>이름</th>
+                            <td th:text="${member.name}" class="table_left"></td>
+                        </tr>
+
+                        <tr class="tableline">
+                            <th>연락처</th>
+                            <td th:text="${member.phone}" class="table_left"></td>
+                        </tr>
+
+                        <tr class="tableline">
+                            <th>닉네임</th>
+                            <td th:text="${member.nickname}" class="table_left"></td>
+                        </tr>
+
+                        <tr class="tableline">
+                            <th>MBTI</th>
+                            <td th:text="${member.mbti}" class="table_left"></td>
+                        </tr>
+
+                        <tr class="tableline">
+                            <th>가입일</th>
+                            <td th:text="${#dates.format(member.regdate, 'yyyy년 MM월 dd일 hh시 mm분')}" class="table_left"></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="reporttable">
+                    작성한 게시글
+                    신고되어 삭제된 게시글
+                    작성한 댓글
+                    신고되어 삭제된 댓글
+
+                    블랙리스트 기준 : 신고된 게시글 + 댓글 >= 10? 20?
+
+                    블랙리스트 기준(sum>10 + quitchk=0)에 부합
+                    -> 등록 버튼 추가
+                    부합 X
+                    -> 취소 버튼 추가
+                </div>
+            </div>
+
+            <div class="scroll-buttons" style="z-index: 100;">
+                <!-- 신고사유&횟수 테이블로 가는 버튼 -->
+                <div id="scrolldown" class="scroll-button">
+                    <i class="bi bi-arrow-down-circle"></i>
+                </div>
+                
+                <!-- 화면 맨 위로 가는 버튼 -->
+                <div id="scrollup" class="scroll-button">
+                    <i class="bi bi-arrow-up-circle"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- footer 영역 -->
+    <th:block th:replace="~{/fragments/footer :: footerHTML}"></th:block>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.5/axios.min.js"></script>
+
+    <script>
+        const scrolldown = document.getElementById("scrolldown");
+        const scrollup = document.getElementById("scrollup");
+
+        // 스크롤바가 있는지 여부를 확인하는 함수
+        function hasScrollbar() {
+            return document.documentElement.scrollHeight > window.innerHeight;
+        }
+
+        // 스크롤바가 있을 경우 scrolldown 버튼을 보이도록 처리
+        if (hasScrollbar()) {
+            scrolldown.style.display = "block";
+        }
+
+        // Down(↓) 버튼을 클릭하면 페이지가 report 테이블로 스크롤
+        scrolldown.addEventListener("click", function () {
+            const reporttable = document.getElementById("reporttable");
+            const reporttablePosition = reporttable.offsetTop;
+
+            window.scrollTo({ top: reporttablePosition, behavior: "smooth" });
+        });
+
+        window.addEventListener("scroll", function () {
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > 0) {
+                scrolldown.style.display = "none";
+                scrollup.style.display = "block";
+            } else {
+                scrolldown.style.display = "block";
+                scrollup.style.display = "none";
+            }
+        });
+
+        // Top(↑) 버튼을 클릭하면 페이지가 맨 위로 스크롤
+        scrollup.addEventListener("click", function () {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+    </script>
+</body>
+
+</html>

@@ -7,10 +7,12 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
+import com.example.dto.MemberDTO;
 import com.example.dto.PostDTO;
 import com.example.dto.ReplyDTO;
 import com.example.dto.ReportListDTO;
 import com.example.dto.ReportOneDTO;
+import com.example.entity.Member;
 import com.example.mapper.WJ.WjReportMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -215,6 +217,96 @@ public class WjReportServiceImpl implements WjReportService {
     public int replyDeleteCancel(BigInteger replyno) {
         try {
             return rMapper.replyDeleteCancel(replyno);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    // --------------------------------------------------------------------
+    
+    // 회원
+    // 1. 전체 회원 목록
+    @Override
+    public List<MemberDTO> selectMemberListAll() {
+        try {
+            return rMapper.selectMemberListAll();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // 2. 일반 회원 목록(G, 0), 블랙리스트 회원 목록 (B, -1), 탈퇴한 회원 목록 (L, 1) 
+    @Override
+    public List<MemberDTO> selectMemberListGBL(BigInteger quitchk) {
+        try {
+            return rMapper.selectMemberListGBL(quitchk);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // --------------------------------------------------------------------
+
+    // 회원 - 상세 조회
+    // 회원 1명 조회
+    @Override
+    public Member selectMemberOne(String email) {
+        try {
+            return rMapper.selectMemberOne(email);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // 작성한 게시글 수 (삭제 유무 관련없이 모든 게시글 수)
+    @Override
+    public int selectPostCount(String email) {
+        try {
+            return rMapper.selectPostCount(email);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    // 신고되어 삭제된 게시글 수 
+    @Override
+    public int selectPostReportDeleteCount(String email) {
+        try {
+            return rMapper.selectPostReportDeleteCount(email);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    // 작성한 댓글 수 (삭제 유무 관련없이 모든 댓글 수)
+    @Override
+    public int selectReplyCount(String email) {
+        try {
+            return rMapper.selectReplyCount(email);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    // 신고되어 삭제된 댓글 수
+    @Override
+    public int selectReplyReportDeleteCount(String email) {
+        try {
+            return rMapper.selectReplyReportDeleteCount(email);
         }
         catch (Exception e) {
             e.printStackTrace();
