@@ -62,7 +62,7 @@ public class ArRestMemberController {
     //닉네임 중복 확인
     // 127.0.0.1:5059/odop/api/nickcheck.do?nickname=닉네임
     @GetMapping(value="/nickcheck.do")
-    public Map<String, Object> nickcheckGET(@RequestParam(name="nickname") String nickname, HttpSession httpSession){
+    public Map<String, Object> nickcheckGET(@RequestParam(name="nickname") String nickname){
         Map<String, Object> retMap = new HashMap<>();
         
                                                 
