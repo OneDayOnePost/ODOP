@@ -66,7 +66,7 @@ public class Post {
   // 비밀글 여부(0: 비밀글 X / 1: 비밀글 O)
   private BigInteger secret;
 
-  // 상태(0:신고X / 1:신고O)
+  // 상태(-1: 관리자 삭제 / 0:삭제X / 1: 작성자 삭제)
   private BigInteger state = new BigInteger("0");
 
   // 카테고리

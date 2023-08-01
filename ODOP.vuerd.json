@@ -3,9 +3,9 @@
     "version": "2.2.11",
     "width": 3500,
     "height": 3500,
-    "scrollTop": -416.13333777056755,
-    "scrollLeft": -669.1666408711022,
-    "zoomLevel": 0.9,
+    "scrollTop": -354.5333377705701,
+    "scrollLeft": -576.3666408711042,
+    "zoomLevel": 1,
     "show": {
       "tableComment": true,
       "columnComment": true,
@@ -347,7 +347,7 @@
           },
           {
             "name": "quitchk",
-            "comment": "탈퇴유무(-1:강제탈퇴 / 0:탈퇴O / 1:탈퇴X)",
+            "comment": "탈퇴유무(-1:강제탈퇴 / 0:탈퇴X / 1:탈퇴O",
             "dataType": "NUMBER",
             "default": "0",
             "option": {
@@ -396,7 +396,7 @@
           "active": false,
           "left": 736.6344,
           "top": 1712.4356,
-          "zIndex": 8,
+          "zIndex": 13,
           "widthName": 60,
           "widthComment": 60,
           "color": "#F44336"
@@ -594,7 +594,7 @@
           },
           {
             "name": "state",
-            "comment": "상태(0:신고X / 1:신고O)",
+            "comment": "상태(-1: 관리자 삭제 / 0:삭제X / 1: 작성자 삭제)",
             "dataType": "NUMBER",
             "default": "0",
             "option": {
@@ -640,10 +640,10 @@
           }
         ],
         "ui": {
-          "active": false,
+          "active": true,
           "left": 734.4781,
           "top": 404.1978,
-          "zIndex": 15,
+          "zIndex": 23,
           "widthName": 60,
           "widthComment": 60,
           "color": "#3F51B5"
@@ -884,7 +884,7 @@
           "active": false,
           "left": 1344.1858,
           "top": 47.2668,
-          "zIndex": 14,
+          "zIndex": 11,
           "widthName": 60,
           "widthComment": 60,
           "color": "#4CAF50"
@@ -1128,7 +1128,7 @@
           },
           {
             "name": "state",
-            "comment": "상태(0:신고X / 1:신고O)",
+            "comment": "상태(-1: 관리자 삭제 / 0:삭제X / 1: 작성자 삭제)",
             "dataType": "NUMBER",
             "default": "0",
             "option": {
@@ -1223,7 +1223,7 @@
           "active": false,
           "left": 741.0352,
           "top": 820.1005,
-          "zIndex": 12,
+          "zIndex": 21,
           "widthName": 60,
           "widthComment": 60,
           "color": "#FFC107"
@@ -1653,7 +1653,7 @@
           "active": false,
           "left": 54.639,
           "top": 1826.5506,
-          "zIndex": 9,
+          "zIndex": 8,
           "widthName": 60,
           "widthComment": 60,
           "color": "#FF5722"
@@ -1980,7 +1980,7 @@
           "active": false,
           "left": 1482.3338,
           "top": 1760.8845,
-          "zIndex": 10,
+          "zIndex": 9,
           "widthName": 60,
           "widthComment": 60,
           "color": "#9E9E9E"
@@ -2250,7 +2250,7 @@
           "active": false,
           "left": 742.1666,
           "top": 1263.667,
-          "zIndex": 13,
+          "zIndex": 14,
           "widthName": 60,
           "widthComment": 60,
           "color": "#CDDC39"
@@ -2336,7 +2336,7 @@
           "active": false,
           "left": 741.0184,
           "top": 87.8326,
-          "zIndex": 16,
+          "zIndex": 12,
           "widthName": 68.828125,
           "widthComment": 115.90234375,
           "color": "#DB3030"
@@ -2355,7 +2355,7 @@
           "active": false,
           "left": 294,
           "top": 1260,
-          "zIndex": 11,
+          "zIndex": 10,
           "width": 407,
           "height": 100
         },

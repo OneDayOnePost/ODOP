@@ -85,7 +85,7 @@
             color: #B6C6D3;
         }
 
-        #preasonlist{
+        #preasonlist {
             border: 2px solid #3A5485;
             width: 200px;
             height: 30px;
@@ -96,7 +96,18 @@
             margin-top: 14px;
         }
 
-        #rreasonlist{
+        #rreasonlist {
+            border: 2px solid #3A5485;
+            width: 200px;
+            height: 30px;
+            padding-left: 10px;
+            border-radius: 10px;
+            float: left;
+            margin-left: 10px;
+            margin-top: 14px;
+        }
+
+        #memberlistmenu {
             border: 2px solid #3A5485;
             width: 200px;
             height: 30px;
@@ -140,10 +151,6 @@
             height: 351px;
         }
 
-        #postreporttable #prtable thead tr th {
-            text-align: center;
-        }
-
         /* 각 열의 너비 지정 */
         #postreporttable #prtable thead tr th:nth-child(1),
         #postreporttable #prtable tbody tr td:nth-child(1) {
@@ -179,10 +186,6 @@
             height: 351px;
         }
 
-        #replyreporttable #rrtable thead tr th {
-            text-align: center;
-        }
-
         /* 각 열의 너비 지정 */
         #replyreporttable #rrtable thead tr th:nth-child(1),
         #replyreporttable #rrtable tbody tr td:nth-child(1) {
@@ -207,6 +210,41 @@
             background-color: #DFECF6;
             cursor: pointer;
         }
+
+        /* --------------------------------------------------------------------- */
+
+        /* 회원목록 테이블 */
+        #memberlisttable {
+            width: 90%;
+            margin: 0 auto;
+            margin-top: 15px;
+            height: 351px;
+        }
+
+        #memberlisttable #mltable thead tr th,
+        #memberlisttable #mltable tbody tr td {
+            text-align: center;
+        }
+
+        /* hover시 행 전체 색 변경 */
+        #memberlisttable #mltable tbody tr:hover {
+            background-color: #DFECF6;
+            cursor: pointer;
+        }
+
+        .red-text {
+            font-weight: bold;
+            color: #FF5555;
+        }
+
+        .blue-text {
+            color: #6F8DBF;
+            font-weight: bold;
+        }
+
+        .gray-text {
+            color: #909090;
+        }
     </style>
 
 </head>
@@ -223,7 +261,7 @@
                 <div>
                     <a th:href="@{/adminhome.do(type=post, menu=wait)}" id="postreport"><i class="bi bi-pencil-square" style="padding-right: 7px; font-size: 24px;"></i>게시글 신고</a>
                     <a th:href="@{/adminhome.do(type=reply, menu=wait)}" id="replyreport"><i class="bi bi-chat-dots" style="padding-right: 7px; font-size: 24px;"></i>댓글 신고</a>
-                    <a th:href="@{/adminhome.do(type=memberlist)}" id="memberlist"><i class="bi bi-person" style="padding-right: 7px; font-size: 27px;"></i>회원목록</a>
+                    <a th:href="@{/adminhome.do(type=memberlist, menu=all)}" id="memberlist"><i class="bi bi-person" style="padding-right: 7px; font-size: 27px;"></i>회원목록</a>
                 </div>
             </div>
     
@@ -277,8 +315,63 @@
                 </table>
             </div>
     
-            <div th:if="${#strings.equals(param.type, 'memberlist')}">
-    
+            <div id="memberlisttable" th:if="${#strings.equals(param.type, 'memberlist')}">
+                <select name="" id="memberlistmenu" onchange="selectMemberlistMenu()">
+                    <option value="all">전체 회원 목록</option>
+                    <option value="0">일반 회원</option>
+                    <option value="-1">블랙리스트 회원</option>
+                    <option value="1">탈퇴한 회원</option>
+                </select>
+
+                <!-- 전체 회원 목록 -->
+                <div th:if="${#strings.equals(param.menu, 'all')}">
+                    <table id="mltable">
+                        <thead>
+                            <tr>
+                                <th>이메일</th>
+                                <th>이름</th>
+                                <th>연락처</th>
+                                <th>닉네임</th>
+                                <th>회원 상태</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="member : ${mlist}">
+                                <td th:text="${member.email}"></td>
+                                <td th:text="${member.name}"></td>
+                                <td th:text="${member.phone}"></td>
+                                <td th:text="${member.nickname}"></td>
+                                <td>
+                                    <!-- 조건부 표현식 사용 -> -1, 0, 1에 따라 다른 값을 출력 -->
+                                    <span th:text="${member.quitchk == -1 ? '블랙리스트' : (member.quitchk == 0 ? '일반' : '탈퇴')}"
+                                          th:classappend="${member.quitchk == -1 ? 'red-text' : (member.quitchk == 0 ? 'blue-text' : (member.quitchk == 1 ? 'gray-text' : ''))}"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- 일반 회원 or 블랙리스트 회원 or 탈퇴한 회원 -->
+                <div th:if="${#strings.equals(param.menu, 'general') || #strings.equals(param.menu, 'blacklist') || #strings.equals(param.menu, 'leave')}">
+                    <table id="mltable">
+                        <thead>
+                            <tr>
+                                <th>이메일</th>
+                                <th>이름</th>
+                                <th>연락처</th>
+                                <th>닉네임</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="member : ${mlist}">
+                                <td th:text="${member.email}"></td>
+                                <td th:text="${member.name}"></td>
+                                <td th:text="${member.phone}"></td>
+                                <td th:text="${member.nickname}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -362,15 +455,44 @@
                 document.getElementById("replyreport").style.paddingBottom = "5px";
             }
             else if (typeParam === 'memberlist') {
+                // URL의 menu 파라미터 값에 따라 셀렉트 박스 선택
+                if (menuParam === 'all') {
+                    $("#memberlistmenu").val(menuParam);
+                }
+                else if (menuParam === 'general') {
+                    $("#memberlistmenu").val(0);
+                }
+                else if (menuParam === 'blacklist') {
+                    $("#memberlistmenu").val(-1);
+                }
+                else if (menuParam === 'leave') {
+                    $("#memberlistmenu").val(1);
+                }
+
+                new simpleDatatables.DataTable("#mltable", {
+                    searchable: true,
+                    fixedHeight: true,
+                    paging: true,
+                    perPage: 5
+                });
+
+                // 테이블의 각 행을 클릭할 때 이벤트 핸들러 등록
+                $("#mltable tbody tr").on("click", function() {
+                    // 선택한 행에서 이메일 가져오기
+                    const email = $(this).find("td:first-child").text();
+
+                    // 이메일이 없을 경우 이벤트를 작동하지 않도록 처리
+                    if (email === 'No entries found') {
+                        return; // 이벤트 핸들러 실행 중지
+                    }
+                    
+                    // 이메일에 맞는 상세 페이지로 이동
+                    window.location.href = [[@{/memberlist.do}]] + `?type=${typeParam}&menu=${menuParam}&email=${email}`;
+                });
+
                 document.getElementById("memberlist").style.borderBottom = "3px solid #6F8DBF";
                 document.getElementById("memberlist").style.paddingBottom = "5px";
             }
-
-            // // URL의 menu 파라미터 값에 따라 셀렉트 박스 선택
-            // if (menuParam) {
-            //     $("#preasonlist").val(menuParam);
-            //     // $("#rreasonlist").val(menuParam);
-            // }
         });
     </script>
 
@@ -402,6 +524,25 @@
             }
             else if (menu === 'delete') {
                 window.location.href = [[@{/adminhome.do(type='reply', menu='delete')}]];
+            }
+        }
+    </script>
+
+    <script th:inline="javascript" type="text/javascript">
+        function selectMemberlistMenu() {
+            const menu = $("#memberlistmenu option:selected").val();
+
+            if (menu === 'all') {
+                window.location.href = [[@{/adminhome.do(type='memberlist', menu='all')}]];
+            }
+            else if (menu === '0') {
+                window.location.href = [[@{/adminhome.do(type='memberlist', menu='general')}]];
+            }
+            else if (menu === '-1') {
+                window.location.href = [[@{/adminhome.do(type='memberlist', menu='blacklist')}]];
+            }
+            else if (menu === '1') {
+                window.location.href = [[@{/adminhome.do(type='memberlist', menu='leave')}]];
             }
         }
     </script>
