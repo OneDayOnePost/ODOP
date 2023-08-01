@@ -42,6 +42,10 @@
             height: 100%;
         }
 
+        body {
+            overflow-x:hidden;
+        }
+
         #body-wrapper {
             position: relative;
             min-height: 100vh;
@@ -132,7 +136,8 @@
         #postreporttable {
             width: 90%;
             margin: 0 auto;
-            margin-top: 10px;
+            margin-top: 15px;
+            height: 351px;
         }
 
         #postreporttable #prtable thead tr th {
@@ -170,7 +175,8 @@
         #replyreporttable {
             width: 90%;
             margin: 0 auto;
-            margin-top: 10px;
+            margin-top: 15px;
+            height: 351px;
         }
 
         #replyreporttable #rrtable thead tr th {
@@ -215,9 +221,9 @@
         <div id="wrapper" class="container" style="margin-top: 40px; margin-bottom: 30px;">
             <div class="link-container">
                 <div>
-                    <a th:href="@{/adminhome.do(type=post, menu=wait)}" id="postreport">게시글 신고</a>
-                    <a th:href="@{/adminhome.do(type=reply)}" id="replyreport">댓글 신고</a>
-                    <a th:href="@{/adminhome.do(type=memberlist)}" id="memberlist">회원목록</a>
+                    <a th:href="@{/adminhome.do(type=post, menu=wait)}" id="postreport"><i class="bi bi-pencil-square" style="padding-right: 7px; font-size: 24px;"></i>게시글 신고</a>
+                    <a th:href="@{/adminhome.do(type=reply, menu=wait)}" id="replyreport"><i class="bi bi-chat-dots" style="padding-right: 7px; font-size: 24px;"></i>댓글 신고</a>
+                    <a th:href="@{/adminhome.do(type=memberlist)}" id="memberlist"><i class="bi bi-person" style="padding-right: 7px; font-size: 27px;"></i>회원목록</a>
                 </div>
             </div>
     
@@ -296,6 +302,11 @@
                 window.location.replace(changeUrl);
             }
             else if (typeParam === 'post') {
+                // URL의 menu 파라미터 값에 따라 셀렉트 박스 선택
+                if (menuParam) {
+                    $("#preasonlist").val(menuParam);
+                }
+
                 new simpleDatatables.DataTable("#prtable", {
                     searchable: true,
                     fixedHeight: true,
@@ -307,6 +318,11 @@
                 $("#prtable tbody tr").on("click", function() {
                     // 선택한 행에서 글번호 가져오기
                     const postno = $(this).find("td:first-child").text();
+
+                    // 글번호가 없을 경우 이벤트를 작동하지 않도록 처리
+                    if (postno === 'No entries found') {
+                        return; // 이벤트 핸들러 실행 중지
+                    }
                     
                     // 글번호에 맞는 상세 페이지로 이동
                     window.location.href = [[@{/postreport.do}]] + `?type=${typeParam}&menu=${menuParam}&no=${postno}`;
@@ -316,6 +332,11 @@
                 document.getElementById("postreport").style.paddingBottom = "5px";
             }
             else if (typeParam === 'reply') {
+                // URL의 menu 파라미터 값에 따라 셀렉트 박스 선택
+                if (menuParam) {
+                    $("#rreasonlist").val(menuParam);
+                }
+
                 new simpleDatatables.DataTable("#rrtable", {
                     searchable: true,
                     fixedHeight: true,
@@ -325,10 +346,15 @@
 
                 // 테이블의 각 행을 클릭할 때 이벤트 핸들러 등록
                 $("#rrtable tbody tr").on("click", function() {
-                    // 선택한 행에서 글번호 가져오기
+                    // 선택한 행에서 댓글번호 가져오기
                     const replyno = $(this).find("td:first-child").text();
+
+                    // 댓글번호가 없을 경우 이벤트를 작동하지 않도록 처리
+                    if (replyno === 'No entries found') {
+                        return; // 이벤트 핸들러 실행 중지
+                    }
                     
-                    // 글번호에 맞는 상세 페이지로 이동
+                    // 댓글번호에 맞는 상세 페이지로 이동
                     window.location.href = [[@{/replyreport.do}]] + `?type=${typeParam}&menu=${menuParam}&no=${replyno}`;
                 });
 
@@ -340,11 +366,11 @@
                 document.getElementById("memberlist").style.paddingBottom = "5px";
             }
 
-            // URL의 menu 파라미터 값에 따라 셀렉트 박스 선택
-            if (menuParam) {
-                $("#preasonlist").val(menuParam);
-                $("#rreasonlist").val(menuParam);
-            }
+            // // URL의 menu 파라미터 값에 따라 셀렉트 박스 선택
+            // if (menuParam) {
+            //     $("#preasonlist").val(menuParam);
+            //     // $("#rreasonlist").val(menuParam);
+            // }
         });
     </script>
 

@@ -51,6 +51,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        margin: 0 auto;
     }
 
     #myblog-update{
@@ -79,7 +80,7 @@
         flex-direction: column;
     }
 
-    .blog-profile input{
+    .blog-profile .blogbutton{
         width: 170px;
         height: 40px;
         border-radius: 15px;
@@ -100,6 +101,11 @@
         padding-top: 5px;
     }
 
+    .myimg img{
+      border-radius: 50%; /* 50%로 설정하여 원 모양으로 잘려짐 */
+      overflow: hidden; /* 넘치는 부분은 숨기도록 설정 */
+    }
+
 
     /* 오른쪽 영역 */
     #right-area{
@@ -111,7 +117,7 @@
         padding-right: 40px;
     }
 
-    .myinfo_box input{
+    .myinfo_box .blogbutton{
         width: 100px;
         height: 35px;
         border-radius: 9px;
@@ -124,32 +130,32 @@
     }
 
     .myinfo{
+        width: 502px;
         height: 45px;
         border: 1.5px solid #969696;
         border-radius: 9px;
-    }
-
-    .myinfo p{
         padding-left: 15px;
-        padding-top: 7px;
     }
 
     .introduce{
+        /* 기존 스타일 */
+        width: 502px;
         height: 130px;
         border: 1.5px solid #969696;
         margin-top: 15px;
         border-radius: 9px;
+        /* 수정된 부분 */
+        padding: 10px 15px;
+        text-align: left;
     }
 
-    .introduce p{
-        padding-left: 15px;
-        padding-top: 10px;
-    }
 
     /* 회원정보 수정 */
 
     #mypage{
         width: 1100px;
+        margin: 0 auto;
+
         margin-top: 60px;
     }
 
@@ -164,7 +170,7 @@
         margin-top: 15px;
     }
 
-    #emailchk, #nickchk , #joinbutton, #dropaccount{
+    #emailchk, #nickchk, #dropaccount, #button1{
         width: 120px;
         height: 40px;
         border: solid;
@@ -172,6 +178,17 @@
         background: #3A5485;
         color: #FFF;
         font-size: 18px;
+    }
+
+    #joinbutton{
+        width: 120px;
+        height: 40px;
+        border: solid;
+        border-radius: 15px;
+        background: #3A5485;
+        color: #FFF;
+        font-size: 18px;
+        margin: 0 15px;
     }
 
     #cancelbutton{
@@ -183,6 +200,7 @@
         color: #FFF;
         font-size: 18px;
         margin-right: 90px;
+        margin: 0 15px;
     }
 
     #emailchk{
@@ -210,24 +228,68 @@
         padding-left: 90px;
     }
 
-    .jointable th, td{
+    .jointable th{
+        padding-top: 30px;
+        padding-bottom: 30px;
+    }
+
+    .jointable td{
         padding-top: 30px;
         padding-bottom: 30px;
     }
     
-    .pwbox{
-        display: flex;
-        align-content: center;
-        align-items: center;
+    /* 비밀번호 변경 창 */
+    .changepassword .pw1{
+        padding-bottom: 13px;
+        vertical-align: middle;
     }
 
-    .passwordbox{
-        padding-left: 40px;
+    .changepassword input[type="password"]{
+        height: 40px;
+        width: 360px;
+        margin-right: 5px;
+        line-height: 38px;
+        padding-left: 20px;
+        background-color: #f2f2f2;
+        border: 1px solid #efefef;
+        font-size: 14px;
     }
-    
-    #confirmMsg{
-        /* padding-top: 10px; */
-        padding-left: 30px;
+
+    .changepassword .pw1{
+        display: inline-block;
+        width: 800px;
+    }
+
+    .changepassword label{
+        display: inline-block;
+        width: 124px;
+        color: #666;
+        line-height: 40px;
+        float: left;
+        margin-right: 50px;
+        
+    }
+
+    .changepassword .pwcheck{
+        width: 200px;
+        font-size: 14px;
+        vertical-align: middle;
+        float: right;
+    }
+
+    .changepassword .btn-password{
+        min-width: 120px;
+        height: 39px;
+        font-size: 14px;
+        line-height: 38px;
+        background-color: #000;
+        color: #fff;
+        display: inline-block;
+        padding: 0 20px;
+        text-align: center;
+        border: 1px solid #333;
+        border-radius: 0;
+        vertical-align: middle;
     }
 
     #name, #phone , #selectmbti{
@@ -267,7 +329,7 @@
     }
 
 
-    input{
+    .jointable input{
         border: none;
         background: #EFEFEF;
         /* width: 440px; */
@@ -283,6 +345,11 @@
         height: 40px;
         border-radius: 5px;
 
+    }
+
+    /* 수정,취소버튼 영역 */
+    .total_btn{
+        padding: 20px;
     }
 
 
@@ -306,9 +373,10 @@
                 <div id="left-area">
                     <div class="blog-profile">
                         <div class="myimg">
-                            <img th:src="@{/images/logo_kakao.png}" width="170px" height="170px">
+                            <img th:src="${user.imgpath}" th:key="${user.imgkey}" width="170px" height="170px" onerror="this.src='images/default_thumbnail.png'">
                         </div>
-                        <input type="button" value="이미지 업로드">
+                        <input type="file" id="imageUpload" style="display: none;">
+                        <input class="blogbutton" type="button" value="이미지 업로드" onclick="openImageUpload()">
                         <br/>
                         <div class="d-flex justify-content-center">
                             <span class="text-button">이미지 제거</span>
@@ -320,13 +388,13 @@
 
                 <div id="right-area">
                     <div class="myinfo_box">
-                        <div class="myinfo">
-                            <p th:text="${user.nickname}"></p>
+                        <div>
+                            <input class="myinfo" type="text" name="name" th:value="${user.blogname}">
                         </div>
-                        <div class="introduce">
-                            <p th:text="${user.introduce}"></p>
+                        <div class="introduce-box">
+                            <textarea class="introduce" id="introduce" name="introduce" th:text="${user.introduce}"></textarea>
                         </div>
-                        <input type="button" value="수 정">
+                        <input class="blogbutton" type="button" value="수 정">
                     </div>
                 </div>
             </div>
@@ -341,7 +409,7 @@
                     <tr class="tableline">
                         <th>이메일</th>
                         <td class="email-box" >
-                            <div class="email">
+                            <div class="email" style="padding-top: 17px;">
                                 <p>이메일 불러오기</p>
                             </div>
                         </td>
@@ -379,25 +447,22 @@
                     </tr>
                     <tr class="tableline">
                         <th>비밀번호</th>
-                        <td>
-                            <div class="passwordbox">
-                                <div class="pwbox">
-                                    <table style="width: 60%;" >
-                                        <tr>
-                                            <th style="padding-right: 41px;">비밀번호</th>
-                                            <td><input type="password" id="password" name="password" maxlength="16" style="padding: 0.5% 5% 0.5% 5%" autoComplete="off" /> </td>
-                                            
-                                        </tr>
-                                    </table>
-                                    <p id="confirmMsg"></p>
-                                </div>
-                                    <table style="width: 60%;">
-                                        <tr>
-                                            <th>비밀번호 확인</th>
-                                            <td><input type="password" id="pwcheck"  style="padding: 0.5% 5% 0.5% 5%" name="pwcheck" autoComplete="off" onkeyup="pwConfirm()" /></td>
-                                        </tr>
-                                    </table>
-                                <!-- <p id="confirmMsg"></p> -->
+                        <td style="padding-left: 60px;">
+                            <div class="changepassword">
+                                <p>
+                                    <div class="pw1" >
+                                        <label>새 비밀번호</label>
+                                        <input type="password" id="pw" name="pw" >
+                                        <label id="pwcheck" name="pwcheck" class="pwcheck"></label>
+                                    </div>
+                                </p>
+                                <p>
+                                    <div class="pw2" style="padding-left: 38px;">
+                                        <label>새 비밀번호 확인</label>
+                                        <input type="password" id="pwConfirm" name="pwConfirm" >
+                                        <button class="btn-password" id="button1" type="button" name="button1"  >변경</button>
+                                    </div>
+                                </p>
                             </div>
                         </td>
                         <td><p id="confirmMsg"></p></td>
@@ -435,14 +500,11 @@
                         </td>
                     <td></td>
                     </tr>
-                    <tr>
-                        <th></th>
-                        <th>
-                            <input type="button" id="joinbutton" value="수 정" ></input>
-                            <a th:href="@{/myblog.do}"><input type="button" id="cancelbutton" value="취 소" ></a>
-                        </th>
-                    </tr>
                 </table>
+                <div class="total_btn d-flex justify-content-center">
+                    <input type="button" id="joinbutton" value="수 정" ></input>
+                    <a th:href="@{/myblog.do}"><input type="button" id="cancelbutton" value="취 소" ></a>
+                </div>
             </div>
         </div>
     </div>
@@ -453,9 +515,39 @@
   <th:block th:replace="~{/fragments/footer :: footerHTML}"></th:block>
 
 
-  <script th:inline="javascript" type="text/javascript">
+    <!--jQuery-->
+    <script th:src="@{/js/jquery-3.6.4.min.js}"></script>
+    <!--axios library-->
+    <script th:src="@{/js/axios.min.js}"></script>
+    <script th:inline="javascript" type="text/javascript">
 
-  </script>
+        // 프로필 이미지 업로드 용
+
+        const contextPath = $('#contextPathHolder').attr('data-contextPath');
+
+        const user_email = "test2@naver.com";
+
+        var aws_key = "";
+        var aws_path = "";
+
+        function openImageUpload(){
+            
+        }
+
+        // function saveProfile() {
+
+        //     const url = contextPath + '/api/member/update.json';
+        //     const headers = { "Content-Type": "application/json" };
+        //     const body = {email : user_email, imgkey : aws_key, imgpath : aws_path};
+
+        //     axios.put(url, body, { headers })
+        //         .then(response => { 
+        //             console.log(response.data);
+        //         });
+
+        // }
+
+    a</script>
 </body>
 
 </html>
