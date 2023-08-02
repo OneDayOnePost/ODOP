@@ -69,7 +69,7 @@
         }
 
         #box_row1 {
-            padding: 120px 0px 50px 0px;
+            padding: 100px 0px 50px 0px;
         }
 
         #box_row2 {
@@ -84,15 +84,25 @@
 
         }
 
-        .login_input {
+        .name_input {
             border: none;
             background: #EFEFEF;
             width: 330px;
             height: 40px;
             border-radius: 5px;
+            text-align: center;
         }
 
-        .login_span {
+        .phone_input {
+            border: none;
+            background: #EFEFEF;
+            width: 330px;
+            height: 40px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .label_span {
             font-weight: 400;
             font-size: 20px;
             line-height: 40px;
@@ -109,30 +119,7 @@
 
         }
 
-        #join_button {
-            border: 1.5px solid #A2B2CD;
-            background: rgba(254, 254, 254, 0.65);
-            font-size: 20px;
-            width: 450px;
-            height: 60px;
-        }
 
-        #join_guide {
-            font-size: 20px;
-            font-style: normal;
-            font-weight: 800;
-            line-height: 60px;
-        }
-
-        .login_social {
-            border-radius: 100%;
-            width: 80px;
-            height: 80px;
-        }
-
-        .login_social:hover {
-            cursor: pointer;
-        }
 
         #divider {
             border: 0;
@@ -148,17 +135,20 @@
 
         #loginpart {
             display: flex;
-            align-items: center;
-            padding-left: 273px;
+            /* align-items: center; */
+            /* padding-left: 273px; */
+            flex-direction: column;
         }
 
         #buttonbox {
             display: flex;
-            flex-direction: column;
+            /* flex-direction: column; */
             flex-wrap: nowrap;
             align-items: center;
-            padding-top: 10px;
+            padding-top: 35px;
+            justify-content: center;
         }
+        
 
         #findbox {
             display: flex;
@@ -180,22 +170,13 @@
             align-items: center;
         }
 
-        .logo {
-            flex: 1;
-            text-align: center;
-        }
 
-        .logo1 {
-            color: #3A5485;
-            font-size: 24px;
-            font-weight: bold;
-            margin-left: 8vh;
-        }
-
-        .logo2 {
-            color: #3A5485;
-            font-size: 14px;
-            margin-left: 8vh;
+        #inputpart{
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            align-content: stretch;
+            align-items: center;
         }
 
         .login {
@@ -218,6 +199,30 @@
             transition: all 0.125s ease-in 0s;
             cursor: pointer;
         }
+
+        #findbutton {
+            width: 120px;
+            height: 50px;
+            border: solid;
+            border-radius: 50px;
+            background: #1D3563;
+            color: #FFF;
+            font-size: 18px;
+            margin-left: 20px;
+            
+        }
+
+        #cancelbutton {
+            width: 118px;
+            height: 48px;
+            border: solid;
+            border-radius: 50px;
+            background: #ffffff;
+            color: #9aa2c0;
+            font-size: 18px;
+            margin-left: 15px;
+            
+        }
     </style>
 </head>
 
@@ -231,59 +236,41 @@
 
         <!-- 본문 영역 -->
         <div id="wrapper" class="container">
-            <h3 id="logintitle">LOGIN</h3>
+            <h3 id="logintitle">아이디 찾기</h3>
             <div id="homeline"></div>
             <div id="login_box" class="container">
                 <div id="box_row1" class="row">
-                    <form th:action="@{/loginaction.do}" method="post" id="form">
+                    <form th:action="@{/findemail.do}" method="post" id="form">
                         <div id="loginpart">
                             <div id="inputpart">
                                 <div>
-                                    <span class="login_span">이메일</span>
-                                    <input class="login_input" type="text" id="email" name="email"
+                                    <span class="label_span">이름</span>
+                                    <input class="name_input" type="text" id="name" name="name"
                                         style="margin-left: 45px;">
                                 </div>
                                 <div style="padding-top: 25px;">
-                                    <span class="login_span">비밀번호</span>
-                                    <input class="login_input" type="password" maxlength="16" id="password"
-                                        name="password" style="margin-left: 26px;">
+                                    <span class="label_span">연락처</span>
+                                    <input class="phone_input" type="text" maxlength="13" id="phone"
+                                        name="phone" style="margin-left: 26px;" placeholder="000-0000-0000">
                                 </div>
                             </div>
                             <div id="buttonbox">
-                                <div style="padding-left: 60px;">
-                                    <input type="button" id="login_button" value="로그인" onclick="loginAction()"></input>
-                                </div>
-                                <div id="findbox">
-                                    <a th:href="@{/findemail.do}" class="nav-link"><span>아이디 찾기</span></a>
-                                    <span class="vr" style="margin-left: 15px; margin-right: 15px;"></span>
-                                    <a th:href="@{/findpw.do}" class="nav-link"><span>비밀번호 찾기</span></a>
-                                </div>
+                                <th style="padding-left: 400px;">
+                                    <input type="button" id="cancelbutton" value="취소"
+                                        onclick="location.href='login.do'"></input>
+                                    <input type="button" id="findbutton" value="찾기" onclick="findAction()"></input>
+
+                                </th>
                             </div>
                         </div>
                     </form>
                 </div>
-                <div id="box_row2" class="row">
-                    <div>
-                        <img onclick="naver_login()" class="login_social" th:src="@{/images/logo_naver.png}"
-                            style="width: 50px; height: 50px; margin-left: 20px;">
-                        <img class="login_social" th:src="@{/images/logo_kakao.png}"
-                            style="width: 50px; height: 50px; margin-left: 20px;">
-                        <img class="login_social" th:src="@{/images/logo_google.png}"
-                            style="width: 50px; height: 50px; margin-left: 20px; border: lightgray 1px solid;">
-                    </div>
-                </div>
+                
 
 
 
             </div>
-            <div id="joinus">
-                <div>
-                    <span id="join_guide">아직 회원이 아니신가요?</span>
-                </div>
-                <div>
-                    <button id="join_button" onclick="location.href='join.do'">이메일로 가입하기</button>
-                </div>
-            </div>
+           
 
         </div>
 
@@ -299,9 +286,62 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.5/axios.min.js"></script>
     <script th:inline="javascript" type="text/javascript">
-        function loginAction() {
-          
 
+         //전화번호 자동 하이픈 처리
+         var autoHypenPhone = function (str) {
+            str = str.replace(/[^0-9]/g, '');
+            var tmp = '';
+            if (str.length < 4) {
+                return str;
+            } else if (str.length < 7) {
+                tmp += str.substr(0, 3);
+                tmp += '-';
+                tmp += str.substr(3);
+                return tmp;
+            } else if (str.length < 11) {
+                tmp += str.substr(0, 3);
+                tmp += '-';
+                tmp += str.substr(3, 3);
+                tmp += '-';
+                tmp += str.substr(6);
+                return tmp;
+            } else {
+                tmp += str.substr(0, 3);
+                tmp += '-';
+                tmp += str.substr(3, 4);
+                tmp += '-';
+                tmp += str.substr(7);
+                return tmp;
+            }
+
+            return str;
+        }
+
+        const phone = document.getElementById('phone');
+
+        phone.onkeyup = function () {
+            console.log(this.value);
+            this.value = autoHypenPhone(this.value);
+        }
+
+
+
+
+        function findAction() {
+            const name = document.getElementById("name").value;
+            const phone = document.getElementById("phone").value;
+
+            if(name.length <= 0 ){
+                alert('이름을 입력해주세요');
+                name.focus;
+                return false;
+            }
+            if(phone.length <= 0){
+                alert('전화번호를 입력해주세요');
+                phone.focus;
+                return false;
+            }
+            
             //전송하기
             document.getElementById("form").submit();
 
