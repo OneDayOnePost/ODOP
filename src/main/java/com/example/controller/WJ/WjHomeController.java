@@ -4,6 +4,8 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.dto.MemberDTO;
 import com.example.dto.ReportListDTO;
 import com.example.dto.ReportOneDTO;
 import com.example.service.WJ.WjReportService;
@@ -57,6 +60,21 @@ public class WjHomeController {
                 }
 
                 model.addAttribute("rlist", replyreportlist);
+            }
+            else if (type.equals("memberlist")) {
+                List<MemberDTO> memberlist = rService.selectMemberListAll();
+
+                if (menu.equals("general")) {
+                    memberlist = rService.selectMemberListGBL(BigInteger.valueOf(0));
+                }
+                else if (menu.equals("blacklist")) {
+                    memberlist = rService.selectMemberListGBL(BigInteger.valueOf(-1));
+                }
+                else if (menu.equals("leave")) {
+                    memberlist = rService.selectMemberListGBL(BigInteger.valueOf(1));
+                }
+
+                model.addAttribute("mlist", memberlist);
             }
 
             return "/WJ/WjAdminHome";
@@ -206,6 +224,44 @@ public class WjHomeController {
             model.addAttribute("next", next);
 
             return "/WJ/WjReplyReportDetail";
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/home.do";
+        }
+    }
+
+    // --------------------------------------------------------------------------------
+
+    // 회원 상세 조회
+    @GetMapping(value = "/memberlist.do")
+    public String memberlistGET(Model model,
+                                @AuthenticationPrincipal User user,
+                                @RequestParam(name = "type", required = true) String type,
+                                @RequestParam(name = "menu", required = true) String menu,
+                                @RequestParam(name = "email", required = true) String email) {
+        try {
+            model.addAttribute("user", user);
+
+            model.addAttribute("type", type);
+            model.addAttribute("menu", menu);
+            
+            // 회원 1명 조회
+            model.addAttribute("memberone", rService.selectMemberOne(email));
+
+            // 작성한 게시글 수 (삭제 유무 관련없이 모든 게시글 수)
+            model.addAttribute("postcount", rService.selectPostCount(email));
+
+            // 신고되어 삭제된 게시글 수
+            model.addAttribute("postdeletecount", rService.selectPostReportDeleteCount(email));
+
+            // 작성한 댓글 수 (삭제 유무 관련없이 모든 댓글 수)
+            model.addAttribute("replycount", rService.selectReplyCount(email));
+
+            // 신고되어 삭제된 댓글 수
+            model.addAttribute("replydeletecount", rService.selectReplyReportDeleteCount(email));
+            
+            return "/WJ/WjMemberListDetail";
         }
         catch (Exception e) {
             e.printStackTrace();

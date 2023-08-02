@@ -223,7 +223,6 @@
 
         /* --------------------------------------------------------------------------- */
 
-        /* top 버튼 */
         .scroll-buttons {
             position: fixed;
             bottom: 50px;
@@ -326,7 +325,7 @@
                     <button type="button" id="delete_post" data-bs-toggle="modal" data-bs-target="#postmodal_confirm">승인</button>
                 </div>
 
-                <div th:if="${post.state == 1}" style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
+                <div th:if="${post.state == -1}" style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
                     <button type="button" id="cancel_delete" data-bs-toggle="modal" data-bs-target="#cancelmodal_confirm">삭제 취소</button>
                 </div>
             </div>
