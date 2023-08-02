@@ -154,7 +154,7 @@
         /* 각 열의 너비 지정 */
         #postreporttable #prtable thead tr th:nth-child(1),
         #postreporttable #prtable tbody tr td:nth-child(1) {
-            width: 30%;
+            width: 20%;
             text-align: center;
         }
 
@@ -166,7 +166,13 @@
 
         #postreporttable #prtable thead tr th:nth-child(3),
         #postreporttable #prtable tbody tr td:nth-child(3) {
-            width: 30%;
+            width: 20%;
+            text-align: center;
+        }
+
+        #postreporttable #prtable thead tr th:nth-child(4),
+        #postreporttable #prtable tbody tr td:nth-child(4) {
+            width: 20%;
             text-align: center;
         }
 
@@ -269,25 +275,55 @@
                 <select name="" id="preasonlist" onchange="selectPostMenu()">
                     <option value="all">전체 신고 목록</option>
                     <option value="wait">승인 대기</option>
-                    <option value="delete">삭제 완료</option>
+                    <option value="deletebyadmin">관리자 삭제</option>
+                    <option value="deletebywriter">작성자 삭제</option>
                 </select>
                 
-                <table id="prtable">
-                    <thead>
-                        <tr>
-                            <th>게시글 번호</th>
-                            <th>작성자</th>
-                            <th>신고 횟수</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="post : ${plist}">
-                            <td th:text="${post.no}"></td>
-                            <td th:text="${post.email}"></td>
-                            <td th:text="${post.reportcount}"></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <!-- 전체 신고 목록 -->
+                <div th:if="${#strings.equals(param.menu, 'all')}">
+                    <table id="prtable">
+                        <thead>
+                            <tr>
+                                <th>게시글 번호</th>
+                                <th>작성자</th>
+                                <th>신고 횟수</th>
+                                <th>상태</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="post : ${plist}">
+                                <td th:text="${post.no}"></td>
+                                <td th:text="${post.email}"></td>
+                                <td th:text="${post.reportcount}"></td>
+                                <td>
+                                    <!-- 조건부 표현식 사용 -> -1, 0, 1에 따라 다른 값을 출력 -->
+                                    <span th:text="${post.state == -1 ? '관리자 삭제' : (post.state == 0 ? '승인 대기' : '작성자 삭제')}"
+                                          th:classappend="${post.state == -1 ? 'red-text' : (post.state == 0 ? 'blue-text' : (post.state == 1 ? 'gray-text' : ''))}"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 승인대기 or 관리자 삭제 or 작성자 삭제 -->
+                <div th:if="${#strings.equals(param.menu, 'wait') || #strings.equals(param.menu, 'deletebyadmin') || #strings.equals(param.menu, 'deletebywriter')}">
+                    <table id="prtable">
+                        <thead>
+                            <tr>
+                                <th>게시글 번호</th>
+                                <th>작성자</th>
+                                <th>신고 횟수</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="post : ${plist}">
+                                <td th:text="${post.no}"></td>
+                                <td th:text="${post.email}"></td>
+                                <td th:text="${post.reportcount}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             
             <div id="replyreporttable" th:if="${#strings.equals(param.type, 'reply')}">
@@ -506,8 +542,11 @@
             else if (menu === 'wait') {
                 window.location.href = [[@{/adminhome.do(type='post', menu='wait')}]];
             }
-            else if (menu === 'delete') {
-                window.location.href = [[@{/adminhome.do(type='post', menu='delete')}]];
+            else if (menu === 'deletebyadmin') {
+                window.location.href = [[@{/adminhome.do(type='post', menu='deletebyadmin')}]];
+            }
+            else if (menu === 'deletebywriter') {
+                window.location.href = [[@{/adminhome.do(type='post', menu='deletebywriter')}]];
             }
         }
     </script>

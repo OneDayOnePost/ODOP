@@ -25,8 +25,11 @@ public interface WjReportService {
     // 2. 승인 대기
     public List<ReportListDTO> selectPostListWait();
 
-    // 3. 삭제 완료
-    public List<ReportListDTO> selectPostListDelete();
+    // 3. 관리자 삭제
+    public List<ReportListDTO> selectPostListDeleteByAdmin();
+
+    // 4. 작성자 삭제
+    public List<ReportListDTO> selectPostListDeleteByWriter();
 
     // ------------------------------------------------------------------------
 

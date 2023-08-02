@@ -20,7 +20,7 @@ import com.example.dto.ReportListDTO;
 public interface WjReportMapper {
     // 게시글
     // 1. 전체 신고 목록
-    @Select({" SELECT pr.postno AS no, p.writer AS email, COUNT(*) AS reportcount FROM POST_REPORT pr LEFT JOIN post p ON pr.POSTNO = p.NO WHERE p.state != 1 GROUP BY pr.POSTNO ORDER BY no DESC "})
+    @Select({" SELECT pr.postno AS no, p.writer AS email, COUNT(*) AS reportcount, p.state FROM POST_REPORT pr LEFT JOIN post p ON pr.POSTNO = p.NO GROUP BY pr.POSTNO ORDER BY no DESC "})
     public List<ReportListDTO> selectPostListAll();
 
     // 2. 승인 대기
@@ -28,9 +28,13 @@ public interface WjReportMapper {
     @Select({" SELECT * FROM (SELECT pr.postno AS no, p.writer AS email, COUNT(*) AS reportcount FROM POST_REPORT pr LEFT JOIN post p ON pr.POSTNO = p.NO WHERE p.state = 0 GROUP BY pr.POSTNO) WHERE reportcount >= 2 ORDER BY reportcount DESC, no DESC "})
     public List<ReportListDTO> selectPostListWait();
 
-    // 3. 삭제 완료
+    // 3. 관리자 삭제
     @Select({" SELECT pr.postno AS no, p.writer AS email, COUNT(*) AS reportcount FROM POST_REPORT pr LEFT JOIN post p ON pr.POSTNO = p.NO WHERE p.state = -1 GROUP BY pr.POSTNO ORDER BY no DESC "})
-    public List<ReportListDTO> selectPostListDelete();
+    public List<ReportListDTO> selectPostListDeleteByAdmin();
+
+    // 4. 작성자 삭제
+    @Select({" SELECT pr.postno AS no, p.writer AS email, COUNT(*) AS reportcount FROM POST_REPORT pr LEFT JOIN post p ON pr.POSTNO = p.NO WHERE p.state = 1 GROUP BY pr.POSTNO ORDER BY no DESC "})
+    public List<ReportListDTO> selectPostListDeleteByWriter();
 
     // --------------------------------------------------------------------
 
@@ -63,7 +67,7 @@ public interface WjReportMapper {
 
     // 댓글
     // 1. 전체 신고 목록
-    @Select({" SELECT rr.REPLYNO AS no, r.writer AS email, COUNT(*) AS reportcount FROM REPLY_REPORT rr LEFT JOIN reply r ON rr.REPLYNO = r.NO WHERE r.state != 1 GROUP BY rr.REPLYNO ORDER BY no DESC "})
+    @Select({" SELECT rr.REPLYNO AS no, r.writer AS email, COUNT(*) AS reportcount FROM REPLY_REPORT rr LEFT JOIN reply r ON rr.REPLYNO = r.NO GROUP BY rr.REPLYNO ORDER BY no DESC "})
     public List<ReportListDTO> selectReplyListAll();
 
     // 2. 승인 대기

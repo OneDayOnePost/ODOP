@@ -47,11 +47,23 @@ public class WjReportServiceImpl implements WjReportService {
         }
     }
  
-    // 3. 삭제 완료
+    // 3. 관리자 삭제
     @Override
-    public List<ReportListDTO> selectPostListDelete() {
+    public List<ReportListDTO> selectPostListDeleteByAdmin() {
         try {
-            return rMapper.selectPostListDelete();
+            return rMapper.selectPostListDeleteByAdmin();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // 4. 작성자 삭제
+    @Override
+    public List<ReportListDTO> selectPostListDeleteByWriter() {
+        try {
+            return rMapper.selectPostListDeleteByWriter();
         }
         catch (Exception e) {
             e.printStackTrace();

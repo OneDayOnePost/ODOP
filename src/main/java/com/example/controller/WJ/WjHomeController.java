@@ -43,8 +43,11 @@ public class WjHomeController {
                 if (menu.equals("all")) {
                     postreportlist = rService.selectPostListAll();
                 }
-                else if (menu.equals("delete")) {
-                    postreportlist = rService.selectPostListDelete();
+                else if (menu.equals("deletebyadmin")) {
+                    postreportlist = rService.selectPostListDeleteByAdmin();
+                }
+                else if (menu.equals("deletebywriter")) {
+                    postreportlist = rService.selectPostListDeleteByWriter();
                 }
 
                 model.addAttribute("plist", postreportlist);
@@ -122,8 +125,10 @@ public class WjHomeController {
                 postreportlist = rService.selectPostListAll();
             } else if (menu.equals("wait")) {
                 postreportlist = rService.selectPostListWait();
-            } else if (menu.equals("delete")) {
-                postreportlist = rService.selectPostListDelete();
+            } else if (menu.equals("deletebyadmin")) {
+                postreportlist = rService.selectPostListDeleteByAdmin();
+            } else if (menu.equals("deletebywriter")) {
+                postreportlist = rService.selectPostListDeleteByWriter();
             }
 
             int currentIndex = -1;
