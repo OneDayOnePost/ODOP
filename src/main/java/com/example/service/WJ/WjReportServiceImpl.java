@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import com.example.dto.MemberDTO;
+import com.example.dto.MemberListViewDTO;
 import com.example.dto.PostDTO;
 import com.example.dto.ReplyDTO;
 import com.example.dto.ReportListDTO;
@@ -64,6 +65,18 @@ public class WjReportServiceImpl implements WjReportService {
     public List<ReportListDTO> selectPostListDeleteByWriter() {
         try {
             return rMapper.selectPostListDeleteByWriter();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // 5. 기준 미달
+    @Override
+    public List<ReportListDTO> selectPostListUnderCount() {
+        try {
+            return rMapper.selectPostListUnderCount();
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -161,11 +174,35 @@ public class WjReportServiceImpl implements WjReportService {
         }
     }
     
-    // 3. 삭제 완료
+    // 3. 관리자 삭제
     @Override
-    public List<ReportListDTO> selectReplyListDelete() {
+    public List<ReportListDTO> selectReplyListDeleteByAdmin() {
         try {
-            return rMapper.selectReplyListDelete();
+            return rMapper.selectReplyListDeleteByAdmin();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // 4. 작성자 삭제
+    @Override
+    public List<ReportListDTO> selectReplyListDeleteByWriter() {
+        try {
+            return rMapper.selectReplyListDeleteByWriter();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // 5. 기준 미달
+    @Override
+    public List<ReportListDTO> selectReplyListUnderCount() {
+        try {
+            return rMapper.selectReplyListUnderCount();
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -241,7 +278,7 @@ public class WjReportServiceImpl implements WjReportService {
     // 회원
     // 1. 전체 회원 목록
     @Override
-    public List<MemberDTO> selectMemberListAll() {
+    public List<MemberListViewDTO> selectMemberListAll() {
         try {
             return rMapper.selectMemberListAll();
         }
@@ -251,11 +288,47 @@ public class WjReportServiceImpl implements WjReportService {
         }
     }
 
-    // 2. 일반 회원 목록(G, 0), 블랙리스트 회원 목록 (B, -1), 탈퇴한 회원 목록 (L, 1) 
+    // 2. 블랙리스트 대기 회원
     @Override
-    public List<MemberDTO> selectMemberListGBL(BigInteger quitchk) {
+    public List<MemberListViewDTO> selectMemberListGrayList() {
         try {
-            return rMapper.selectMemberListGBL(quitchk);
+            return rMapper.selectMemberListGrayList();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // 3. 일반 회원
+    @Override
+    public List<MemberListViewDTO> selectMemberListGeneral() {
+        try {
+            return rMapper.selectMemberListGeneral();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // 4. 블랙리스트 회원
+    @Override
+    public List<MemberListViewDTO> selectMemberListBlackList() {
+        try {
+            return rMapper.selectMemberListBlackList();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // 5. 탈퇴한 회원
+    @Override
+    public List<MemberListViewDTO> selectMemberListLeave() {
+        try {
+            return rMapper.selectMemberListLeave();
         }
         catch (Exception e) {
             e.printStackTrace();

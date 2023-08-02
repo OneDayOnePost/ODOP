@@ -145,34 +145,15 @@
 
         /* 게시글 테이블 */
         #postreporttable {
+            display: none;
             width: 90%;
             margin: 0 auto;
             margin-top: 15px;
             height: 351px;
         }
 
-        /* 각 열의 너비 지정 */
-        #postreporttable #prtable thead tr th:nth-child(1),
-        #postreporttable #prtable tbody tr td:nth-child(1) {
-            width: 20%;
-            text-align: center;
-        }
-
-        #postreporttable #prtable thead tr th:nth-child(2),
-        #postreporttable #prtable tbody tr td:nth-child(2) {
-            width: 40%;
-            text-align: center;
-        }
-
-        #postreporttable #prtable thead tr th:nth-child(3),
-        #postreporttable #prtable tbody tr td:nth-child(3) {
-            width: 20%;
-            text-align: center;
-        }
-
-        #postreporttable #prtable thead tr th:nth-child(4),
-        #postreporttable #prtable tbody tr td:nth-child(4) {
-            width: 20%;
+        #postreporttable #prtable thead tr th,
+        #postreporttable #prtable tbody tr td {
             text-align: center;
         }
 
@@ -186,28 +167,15 @@
 
         /* 댓글 테이블 */
         #replyreporttable {
+            display: none;
             width: 90%;
             margin: 0 auto;
             margin-top: 15px;
             height: 351px;
         }
 
-        /* 각 열의 너비 지정 */
-        #replyreporttable #rrtable thead tr th:nth-child(1),
-        #replyreporttable #rrtable tbody tr td:nth-child(1) {
-            width: 30%;
-            text-align: center;
-        }
-
-        #replyreporttable #rrtable thead tr th:nth-child(2),
-        #replyreporttable #rrtable tbody tr td:nth-child(2) {
-            width: 40%;
-            text-align: center;
-        }
-
-        #replyreporttable #rrtable thead tr th:nth-child(3),
-        #replyreporttable #rrtable tbody tr td:nth-child(3) {
-            width: 30%;
+        #replyreporttable #rrtable thead tr th,
+        #replyreporttable #rrtable tbody tr td {
             text-align: center;
         }
 
@@ -221,6 +189,7 @@
 
         /* 회원목록 테이블 */
         #memberlisttable {
+            display: none;
             width: 90%;
             margin: 0 auto;
             margin-top: 15px;
@@ -238,6 +207,8 @@
             cursor: pointer;
         }
 
+        /* --------------------------------------------------------------------- */
+
         .red-text {
             font-weight: bold;
             color: #FF5555;
@@ -250,6 +221,10 @@
 
         .gray-text {
             color: #909090;
+        }
+
+        .black-text {
+            color: #000;
         }
     </style>
 
@@ -265,16 +240,18 @@
         <div id="wrapper" class="container" style="margin-top: 40px; margin-bottom: 30px;">
             <div class="link-container">
                 <div>
-                    <a th:href="@{/adminhome.do(type=post, menu=wait)}" id="postreport"><i class="bi bi-pencil-square" style="padding-right: 7px; font-size: 24px;"></i>게시글 신고</a>
-                    <a th:href="@{/adminhome.do(type=reply, menu=wait)}" id="replyreport"><i class="bi bi-chat-dots" style="padding-right: 7px; font-size: 24px;"></i>댓글 신고</a>
-                    <a th:href="@{/adminhome.do(type=memberlist, menu=all)}" id="memberlist"><i class="bi bi-person" style="padding-right: 7px; font-size: 27px;"></i>회원목록</a>
+                    <a th:href="@{/adminhome.do(type=post, menu=all)}" id="postreport"><i class="bi bi-pencil-square" style="padding-right: 7px; font-size: 24px;"></i>게시글 신고</a>
+                    <a th:href="@{/adminhome.do(type=reply, menu=all)}" id="replyreport"><i class="bi bi-chat-dots" style="padding-right: 7px; font-size: 24px;"></i>댓글 신고</a>
+                    <a th:href="@{/adminhome.do(type=memberlist, menu=all)}" id="memberlist"><i class="bi bi-person" style="padding-right: 7px; font-size: 27px;"></i>회원 목록</a>
                 </div>
             </div>
     
+            <!-- 게시글 신고 -->
             <div id="postreporttable" th:if="${#strings.equals(param.type, 'post')}">
                 <select name="" id="preasonlist" onchange="selectPostMenu()">
                     <option value="all">전체 신고 목록</option>
                     <option value="wait">승인 대기</option>
+                    <option value="undercount">기준 미달</option>
                     <option value="deletebyadmin">관리자 삭제</option>
                     <option value="deletebywriter">작성자 삭제</option>
                 </select>
@@ -297,16 +274,16 @@
                                 <td th:text="${post.reportcount}"></td>
                                 <td>
                                     <!-- 조건부 표현식 사용 -> -1, 0, 1에 따라 다른 값을 출력 -->
-                                    <span th:text="${post.state == -1 ? '관리자 삭제' : (post.state == 0 ? '승인 대기' : '작성자 삭제')}"
-                                          th:classappend="${post.state == -1 ? 'red-text' : (post.state == 0 ? 'blue-text' : (post.state == 1 ? 'gray-text' : ''))}"></span>
+                                    <span th:text="${post.state == -1 ? '관리자 삭제' : (post.state == 0 ? (post.reportcount > 1 ? '승인 대기' : '기준 미달') : (post.state == 1 ? '작성자 삭제' : ''))}"
+                                          th:classappend="${post.state == -1 ? 'red-text' : (post.state == 0 ? (post.reportcount > 1 ? 'blue-text' : 'black-text') : (post.state == 1 ? 'gray-text' : ''))}"></span>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <!-- 승인대기 or 관리자 삭제 or 작성자 삭제 -->
-                <div th:if="${#strings.equals(param.menu, 'wait') || #strings.equals(param.menu, 'deletebyadmin') || #strings.equals(param.menu, 'deletebywriter')}">
+                <!-- 승인대기 or 관리자 삭제 or 작성자 삭제 or 기준미달 -->
+                <div th:if="${#strings.equals(param.menu, 'wait') || #strings.equals(param.menu, 'deletebyadmin') || #strings.equals(param.menu, 'deletebywriter') || #strings.equals(param.menu, 'undercount')}">
                     <table id="prtable">
                         <thead>
                             <tr>
@@ -326,37 +303,70 @@
                 </div>
             </div>
             
+            <!-- 댓글 신고 -->
             <div id="replyreporttable" th:if="${#strings.equals(param.type, 'reply')}">
                 <select name="" id="rreasonlist" onchange="selectReplyMenu()">
                     <option value="all">전체 신고 목록</option>
                     <option value="wait">승인 대기</option>
-                    <option value="delete">삭제 완료</option>
+                    <option value="undercount">기준 미달</option>
+                    <option value="deletebyadmin">관리자 삭제</option>
+                    <option value="deletebywriter">작성자 삭제</option>
                 </select>
 
-                <table id="rrtable">
-                    <thead>
-                        <tr>
-                            <th>댓글 번호</th>
-                            <th>작성자</th>
-                            <th>신고 횟수</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="reply : ${rlist}">
-                            <td th:text="${reply.no}"></td>
-                            <td th:text="${reply.email}"></td>
-                            <td th:text="${reply.reportcount}"></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <!-- 전체 신고 목록 -->
+                <div th:if="${#strings.equals(param.menu, 'all')}">
+                    <table id="rrtable">
+                        <thead>
+                            <tr>
+                                <th>댓글 번호</th>
+                                <th>작성자</th>
+                                <th>신고 횟수</th>
+                                <th>상태</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="reply : ${rlist}">
+                                <td th:text="${reply.no}"></td>
+                                <td th:text="${reply.email}"></td>
+                                <td th:text="${reply.reportcount}"></td>
+                                <td>
+                                    <span th:text="${reply.state == -1 ? '관리자 삭제' : (reply.state == 0 ? (reply.reportcount > 1 ? '승인 대기' : '기준 미달') : (reply.state == 1 ? '작성자 삭제' : ''))}"
+                                          th:classappend="${reply.state == -1 ? 'red-text' : (reply.state == 0 ? (reply.reportcount > 1 ? 'blue-text' : 'black-text') : (reply.state == 1 ? 'gray-text' : ''))}"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 승인대기 or 관리자 삭제 or 작성자 삭제 or 기준미달 -->
+                <div th:if="${#strings.equals(param.menu, 'wait') || #strings.equals(param.menu, 'deletebyadmin') || #strings.equals(param.menu, 'deletebywriter') || #strings.equals(param.menu, 'undercount')}">
+                    <table id="rrtable">
+                        <thead>
+                            <tr>
+                                <th>댓글 번호</th>
+                                <th>작성자</th>
+                                <th>신고 횟수</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="reply : ${rlist}">
+                                <td th:text="${reply.no}"></td>
+                                <td th:text="${reply.email}"></td>
+                                <td th:text="${reply.reportcount}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
     
+            <!-- 회원 목록 -->
             <div id="memberlisttable" th:if="${#strings.equals(param.type, 'memberlist')}">
                 <select name="" id="memberlistmenu" onchange="selectMemberlistMenu()">
                     <option value="all">전체 회원 목록</option>
-                    <option value="0">일반 회원</option>
-                    <option value="-1">블랙리스트 회원</option>
-                    <option value="1">탈퇴한 회원</option>
+                    <option value="graylist">블랙리스트 대기</option>
+                    <option value="general">일반 회원</option>
+                    <option value="blacklist">블랙리스트 회원</option>
+                    <option value="leave">탈퇴한 회원</option>
                 </select>
 
                 <!-- 전체 회원 목록 -->
@@ -368,7 +378,8 @@
                                 <th>이름</th>
                                 <th>연락처</th>
                                 <th>닉네임</th>
-                                <th>회원 상태</th>
+                                <th>관리자 삭제된 글 합계</th>
+                                <th>상태</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -377,18 +388,18 @@
                                 <td th:text="${member.name}"></td>
                                 <td th:text="${member.phone}"></td>
                                 <td th:text="${member.nickname}"></td>
+                                <td th:text="${member.totalreportcount}"></td>
                                 <td>
-                                    <!-- 조건부 표현식 사용 -> -1, 0, 1에 따라 다른 값을 출력 -->
-                                    <span th:text="${member.quitchk == -1 ? '블랙리스트' : (member.quitchk == 0 ? '일반' : '탈퇴')}"
-                                          th:classappend="${member.quitchk == -1 ? 'red-text' : (member.quitchk == 0 ? 'blue-text' : (member.quitchk == 1 ? 'gray-text' : ''))}"></span>
+                                    <span th:text="${member.quitchk == -1 ? '블랙리스트' : (member.quitchk == 0 ? (member.totalreportcount > 0 ? '블랙리스트 대기' : '일반 회원') : (member.quitchk == 1 ? '탈퇴' : ''))}"
+                                          th:classappend="${member.quitchk == -1 ? 'red-text' : (member.quitchk == 0 ? (member.totalreportcount > 0 ? 'blue-text' : 'black-text') : (member.quitchk == 1 ? 'gray-text' : ''))}"></span>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 
-                <!-- 일반 회원 or 블랙리스트 회원 or 탈퇴한 회원 -->
-                <div th:if="${#strings.equals(param.menu, 'general') || #strings.equals(param.menu, 'blacklist') || #strings.equals(param.menu, 'leave')}">
+                <!-- 블랙리스트 대기 or 일반 회원 or 블랙리스트 회원 or 탈퇴한 회원 -->
+                <div th:if="${#strings.equals(param.menu, 'graylist') || #strings.equals(param.menu, 'general') || #strings.equals(param.menu, 'blacklist') || #strings.equals(param.menu, 'leave')}">
                     <table id="mltable">
                         <thead>
                             <tr>
@@ -396,6 +407,7 @@
                                 <th>이름</th>
                                 <th>연락처</th>
                                 <th>닉네임</th>
+                                <th>관리자 삭제된 글 합계</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -404,6 +416,7 @@
                                 <td th:text="${member.name}"></td>
                                 <td th:text="${member.phone}"></td>
                                 <td th:text="${member.nickname}"></td>
+                                <td th:text="${member.totalreportcount}"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -421,7 +434,7 @@
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
 
     <script th:inline="javascript" type="text/javascript">
-        $(document).ready(function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const urlParams = new URLSearchParams(window.location.search);
             const typeParam = urlParams.get('type');
             const menuParam = urlParams.get('menu');
@@ -435,6 +448,9 @@
                 if (menuParam) {
                     $("#preasonlist").val(menuParam);
                 }
+
+                // 테이블 데이터가 준비되면 테이블 보이도록 스타일 수정
+                document.getElementById('postreporttable').style.display = 'block';
 
                 new simpleDatatables.DataTable("#prtable", {
                     searchable: true,
@@ -465,6 +481,8 @@
                 if (menuParam) {
                     $("#rreasonlist").val(menuParam);
                 }
+                
+                document.getElementById('replyreporttable').style.display = 'block';
 
                 new simpleDatatables.DataTable("#rrtable", {
                     searchable: true,
@@ -492,18 +510,11 @@
             }
             else if (typeParam === 'memberlist') {
                 // URL의 menu 파라미터 값에 따라 셀렉트 박스 선택
-                if (menuParam === 'all') {
+                if (menuParam) {
                     $("#memberlistmenu").val(menuParam);
                 }
-                else if (menuParam === 'general') {
-                    $("#memberlistmenu").val(0);
-                }
-                else if (menuParam === 'blacklist') {
-                    $("#memberlistmenu").val(-1);
-                }
-                else if (menuParam === 'leave') {
-                    $("#memberlistmenu").val(1);
-                }
+                
+                document.getElementById('memberlisttable').style.display = 'block';
 
                 new simpleDatatables.DataTable("#mltable", {
                     searchable: true,
@@ -548,6 +559,9 @@
             else if (menu === 'deletebywriter') {
                 window.location.href = [[@{/adminhome.do(type='post', menu='deletebywriter')}]];
             }
+            else if (menu === 'undercount') {
+                window.location.href = [[@{/adminhome.do(type='post', menu='undercount')}]];
+            }
         }
     </script>
 
@@ -561,8 +575,14 @@
             else if (menu === 'wait') {
                 window.location.href = [[@{/adminhome.do(type='reply', menu='wait')}]];
             }
-            else if (menu === 'delete') {
-                window.location.href = [[@{/adminhome.do(type='reply', menu='delete')}]];
+            else if (menu === 'deletebyadmin') {
+                window.location.href = [[@{/adminhome.do(type='reply', menu='deletebyadmin')}]];
+            }
+            else if (menu === 'deletebywriter') {
+                window.location.href = [[@{/adminhome.do(type='reply', menu='deletebywriter')}]];
+            }
+            else if (menu === 'undercount') {
+                window.location.href = [[@{/adminhome.do(type='reply', menu='undercount')}]];
             }
         }
     </script>
@@ -574,13 +594,16 @@
             if (menu === 'all') {
                 window.location.href = [[@{/adminhome.do(type='memberlist', menu='all')}]];
             }
-            else if (menu === '0') {
+            else if (menu === 'graylist') {
+                window.location.href = [[@{/adminhome.do(type='memberlist', menu='graylist')}]];
+            }
+            else if (menu === 'general') {
                 window.location.href = [[@{/adminhome.do(type='memberlist', menu='general')}]];
             }
-            else if (menu === '-1') {
+            else if (menu === 'blacklist') {
                 window.location.href = [[@{/adminhome.do(type='memberlist', menu='blacklist')}]];
             }
-            else if (menu === '1') {
+            else if (menu === 'leave') {
                 window.location.href = [[@{/adminhome.do(type='memberlist', menu='leave')}]];
             }
         }

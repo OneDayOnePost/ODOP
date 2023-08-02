@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.dto.MemberDTO;
+import com.example.dto.MemberListViewDTO;
 import com.example.dto.ReportListDTO;
 import com.example.dto.ReportOneDTO;
 import com.example.service.WJ.WjReportService;
@@ -33,15 +34,15 @@ public class WjHomeController {
     public String homeGET(Model model,
                           @AuthenticationPrincipal User user,
                           @RequestParam(name = "type", required = false, defaultValue = "post") String type,
-                          @RequestParam(name = "menu", required = false, defaultValue = "wait") String menu) {
+                          @RequestParam(name = "menu", required = false, defaultValue = "all") String menu) {
         try {
             model.addAttribute("user", user);
 
             if (type.equals("post")) {
-                List<ReportListDTO> postreportlist = rService.selectPostListWait();
+                List<ReportListDTO> postreportlist = rService.selectPostListAll();
 
-                if (menu.equals("all")) {
-                    postreportlist = rService.selectPostListAll();
+                if (menu.equals("wait")) {
+                    postreportlist = rService.selectPostListWait();
                 }
                 else if (menu.equals("deletebyadmin")) {
                     postreportlist = rService.selectPostListDeleteByAdmin();
@@ -49,32 +50,44 @@ public class WjHomeController {
                 else if (menu.equals("deletebywriter")) {
                     postreportlist = rService.selectPostListDeleteByWriter();
                 }
+                else if (menu.equals("undercount")) {
+                    postreportlist = rService.selectPostListUnderCount();
+                }
 
                 model.addAttribute("plist", postreportlist);
             }
             else if (type.equals("reply")) {
-                List<ReportListDTO> replyreportlist = rService.selectReplyListWait();
+                List<ReportListDTO> replyreportlist = rService.selectReplyListAll();
 
-                if (menu.equals("all")) {
-                    replyreportlist = rService.selectReplyListAll();
+                if (menu.equals("wait")) {
+                    replyreportlist = rService.selectReplyListWait();
                 }
-                else if (menu.equals("delete")) {
-                    replyreportlist = rService.selectReplyListDelete();
+                else if (menu.equals("deletebyadmin")) {
+                    replyreportlist = rService.selectReplyListDeleteByAdmin();
+                }
+                else if (menu.equals("deletebywriter")) {
+                    replyreportlist = rService.selectReplyListDeleteByWriter();
+                }
+                else if (menu.equals("undercount")) {
+                    replyreportlist = rService.selectReplyListUnderCount();
                 }
 
                 model.addAttribute("rlist", replyreportlist);
             }
             else if (type.equals("memberlist")) {
-                List<MemberDTO> memberlist = rService.selectMemberListAll();
+                List<MemberListViewDTO> memberlist = rService.selectMemberListAll();
 
-                if (menu.equals("general")) {
-                    memberlist = rService.selectMemberListGBL(BigInteger.valueOf(0));
+                if (menu.equals("graylist")) {
+                    memberlist = rService.selectMemberListGrayList();
+                }
+                else if (menu.equals("general")) {
+                    memberlist = rService.selectMemberListGeneral();
                 }
                 else if (menu.equals("blacklist")) {
-                    memberlist = rService.selectMemberListGBL(BigInteger.valueOf(-1));
+                    memberlist = rService.selectMemberListBlackList();
                 }
                 else if (menu.equals("leave")) {
-                    memberlist = rService.selectMemberListGBL(BigInteger.valueOf(1));
+                    memberlist = rService.selectMemberListLeave();
                 }
 
                 model.addAttribute("mlist", memberlist);
@@ -129,6 +142,8 @@ public class WjHomeController {
                 postreportlist = rService.selectPostListDeleteByAdmin();
             } else if (menu.equals("deletebywriter")) {
                 postreportlist = rService.selectPostListDeleteByWriter();
+            } else if (menu.equals("undercount")) {
+                postreportlist = rService.selectPostListUnderCount();
             }
 
             int currentIndex = -1;
@@ -200,8 +215,12 @@ public class WjHomeController {
                 replyreportlist = rService.selectReplyListAll();
             } else if (menu.equals("wait")) {
                 replyreportlist = rService.selectReplyListWait();
-            } else if (menu.equals("delete")) {
-                replyreportlist = rService.selectReplyListDelete();
+            } else if (menu.equals("deletebyadmin")) {
+                replyreportlist = rService.selectReplyListDeleteByAdmin();
+            } else if (menu.equals("deletebywriter")) {
+                replyreportlist = rService.selectReplyListDeleteByWriter();
+            } else if (menu.equals("undercount")) {
+                replyreportlist = rService.selectReplyListUnderCount();
             }
 
             int currentIndex = -1;

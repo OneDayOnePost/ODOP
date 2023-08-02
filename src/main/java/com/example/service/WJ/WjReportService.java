@@ -3,13 +3,11 @@ package com.example.service.WJ;
 import java.math.BigInteger;
 import java.util.List;
 
-import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Service;
 
 import com.example.dto.MemberDTO;
+import com.example.dto.MemberListViewDTO;
 import com.example.dto.PostDTO;
 import com.example.dto.ReplyDTO;
 import com.example.dto.ReportListDTO;
@@ -30,6 +28,9 @@ public interface WjReportService {
 
     // 4. 작성자 삭제
     public List<ReportListDTO> selectPostListDeleteByWriter();
+
+    // 5. 기준 미달
+    public List<ReportListDTO> selectPostListUnderCount();
 
     // ------------------------------------------------------------------------
 
@@ -58,8 +59,14 @@ public interface WjReportService {
     // 2. 승인 대기
     public List<ReportListDTO> selectReplyListWait();
 
-    // 3. 삭제 완료
-    public List<ReportListDTO> selectReplyListDelete();
+    // 3. 관리자 삭제
+    public List<ReportListDTO> selectReplyListDeleteByAdmin();
+
+    // 4. 작성자 삭제
+    public List<ReportListDTO> selectReplyListDeleteByWriter();
+
+    // 5. 기준 미달
+    public List<ReportListDTO> selectReplyListUnderCount();
 
     // --------------------------------------------------------------------
 
@@ -83,10 +90,19 @@ public interface WjReportService {
     
     // 회원
     // 1. 전체 회원 목록
-    public List<MemberDTO> selectMemberListAll();
+    public List<MemberListViewDTO> selectMemberListAll();
 
-    // 2. 일반 회원 목록(G, 0), 블랙리스트 회원 목록 (B, -1), 탈퇴한 회원 목록 (L, 1) 
-    public List<MemberDTO> selectMemberListGBL(@Param("quitchk") BigInteger quitchk);
+    // 2. 블랙리스트 대기 회원
+    public List<MemberListViewDTO> selectMemberListGrayList();
+
+    // 3. 일반 회원
+    public List<MemberListViewDTO> selectMemberListGeneral();
+
+    // 4. 블랙리스트 회원
+    public List<MemberListViewDTO> selectMemberListBlackList();
+
+    // 5. 탈퇴한 회원
+    public List<MemberListViewDTO> selectMemberListLeave();
 
     // --------------------------------------------------------------------
 
