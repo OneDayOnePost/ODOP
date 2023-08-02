@@ -33,13 +33,6 @@ public interface GrMyblogMapper {
             " SELECT c.NO, c.category, count(p.no) AS pnocount FROM cate c LEFT JOIN post p ON c.NO = p.CATENO AND p.WRITER = #{email} GROUP BY c.category ORDER BY NO ASC; " })
     public List<Map<String, Integer>> selectpostcatecount(String email);
 
-    // post 갯수 세기
-    @Select({ " SELECT COUNT(*) FROM POST WHERE WRITER = #{email} " })
-    public int countpostall(String email);
-
-    // post전체 조회
-    // @Select({ " SELECT * FROM POST WHERE WRITER = #{email} " })
-    // public List<PostDTO> selectpostAll(String email);
 
     // post태그 조회
     @Select({ "SELECT * FROM postall WHERE WRITER=#{email} AND NO=#{postno}" })
