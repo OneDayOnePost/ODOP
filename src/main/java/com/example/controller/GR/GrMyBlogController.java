@@ -87,59 +87,59 @@ public class GrMyBlogController {
     public String myblogGET(Model model,
         @RequestParam(name = "categoryId", required = false) Long categoryId) { // @AuthenticationPrincipal User user
             try {
+                
 
                 log.info("categoryId received: {}", categoryId);
-
                 if (categoryId != null) {
-                List<Post> list = postRepository.findByWriterAndCateNo("test@gmail.com", BigInteger.valueOf(categoryId));
-                model.addAttribute("list", list);
-                log.info("rkfka => {}", list.toString());
+                    log.info("categoryId: {}", categoryId); // categoryId 값 로그로 출력
+                    log.info("cate val => {}", BigInteger.valueOf(categoryId));
+                    List<Post> list = postRepository.findByWriterAndCateNo("test1@gmail.com", BigInteger.valueOf(categoryId));
+                    model.addAttribute("list", list);
+                    log.info("rkfka => {}", list.toString());
 
-            } else {
-                // 카테고리를 선택하지 않았을 때의 기본 동작
-                // 기본적으로 전체 포스트 목록을 보여주는 등의 처리를 추가할 수 있음
-                List<Post> list = postRepository.findByWriter("test1@gmail.com");
-                model.addAttribute("list", list);
-            }
-
-
-
-                Member user = gRepository.findById("test1@gmail.com").orElse(null);
-                int following = gMapper.countfollowing("test1@gmail.com");
-                int follower = gMapper.countfollower("test1@gmail.com");
-
-                log.info("user => {}", user.toString());
-
-                // 카테고리별 게시글 갯수
-                List<Map<String, Integer>> pclist = gMapper.selectpostcatecount("test1@gmail.com");
-                log.info("listlist=>{}", pclist.toString());
-
-
-                // 포스트 총 갯수 세기
-                int postallcount = gMapper.countpostall("test1@gmail.com");
-                // 포스트 갯수가 한자리일 경우 앞에 0붙이기
-                String formattedpostcount = String.valueOf(postallcount);
-                if (postallcount < 10) {
-                    formattedpostcount = "0" + formattedpostcount;
+                } else {
+                    // 카테고리를 선택하지 않았을 때의 기본 동작
+                    // 기본적으로 전체 포스트 목록을 보여주는 등의 처리를 추가할 수 있음
+                    List<Post> list = postRepository.findByWriter("test1@gmail.com");
+                    model.addAttribute("list", list);
+                    log.info("skdhkfk => {}", list.toString());
                 }
 
-                // 포스트 목록 불러오기 
-                // List<Post> list = postRepository.findByWriter("test1@gmail.com");
-                // log.info("list => {}", list.toString());
 
-                model.addAttribute("user", user);
-                model.addAttribute("following", following);
-                model.addAttribute("follower", follower);
-                model.addAttribute("pclist", pclist);
-                model.addAttribute("formattedpostcount", formattedpostcount);
-                // model.addAttribute("list", list);
 
-                return "/GR/myblog";
-            } catch (Exception e) {
-                e.printStackTrace();
-                return "/home";
+                    Member user = gRepository.findById("test1@gmail.com").orElse(null);
+                    int following = gMapper.countfollowing("test1@gmail.com");
+                    int follower = gMapper.countfollower("test1@gmail.com");
+
+                    log.info("user => {}", user.toString());
+
+                    // 카테고리별 게시글 갯수
+                    List<Map<String, Integer>> pclist = gMapper.selectpostcatecount("test1@gmail.com");
+                    log.info("listlist=>{}", pclist.toString());
+
+
+                    // 포스트 총 갯수 세기
+                    int postallcount = gMapper.countpostall("test1@gmail.com");
+                    // 포스트 갯수가 한자리일 경우 앞에 0붙이기
+                    String formattedpostcount = String.valueOf(postallcount);
+                    if (postallcount < 10) {
+                        formattedpostcount = "0" + formattedpostcount;
+                    }
+
+
+                    model.addAttribute("user", user);
+                    model.addAttribute("following", following);
+                    model.addAttribute("follower", follower);
+                    model.addAttribute("pclist", pclist);
+                    model.addAttribute("formattedpostcount", formattedpostcount);
+                    // model.addAttribute("list", list);
+
+                    return "/GR/myblog";
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return "/home";
+                }
             }
-        }
 
     
 
