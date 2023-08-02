@@ -1,18 +1,23 @@
 package com.example.restcontroller.WJ;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.dto.MemberListViewDTO;
 import com.example.dto.PostDTO;
 import com.example.dto.ReplyDTO;
+import com.example.dto.ReportListDTO;
 import com.example.service.WJ.WjReportService;
 
 import lombok.RequiredArgsConstructor;
@@ -24,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class WjRestAdminHomeController {
     final WjReportService rService;
-
+    
     // 신고된 게시글 상세 페이지
     // (1) 삭제 승인
     @PutMapping(value = "/postdelete.json")
@@ -34,14 +39,12 @@ public class WjRestAdminHomeController {
         try {
             int ret = rService.postDelete(post.getNo());
 
-            if  (ret == 1) {
+            if (ret == 1) {
                 retMap.put("status", 200);
-            }
-            else {
+            } else {
                 retMap.put("status", 0);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             retMap.put("status", -1);
             retMap.put("error", e.getMessage());
@@ -59,14 +62,12 @@ public class WjRestAdminHomeController {
             BigInteger postno = new BigInteger(no);
             int ret = rService.postReportDelete(postno);
 
-            if  (ret >= 1) {
+            if (ret >= 1) {
                 retMap.put("status", 200);
-            }
-            else {
+            } else {
                 retMap.put("status", 0);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             retMap.put("status", -1);
             retMap.put("error", e.getMessage());
@@ -83,14 +84,12 @@ public class WjRestAdminHomeController {
         try {
             int ret = rService.postDeleteCancel(post.getNo());
 
-            if  (ret == 1) {
+            if (ret == 1) {
                 retMap.put("status", 200);
-            }
-            else {
+            } else {
                 retMap.put("status", 0);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             retMap.put("status", -1);
             retMap.put("error", e.getMessage());
@@ -104,20 +103,18 @@ public class WjRestAdminHomeController {
     // 신고된 댓글 상세 페이지
     // (1) 삭제 승인
     @PutMapping(value = "/replydelete.json")
-    public Map<String, Object> replydeletePUT(@RequestBody ReplyDTO reply ) {
+    public Map<String, Object> replydeletePUT(@RequestBody ReplyDTO reply) {
         Map<String, Object> retMap = new HashMap<>();
 
         try {
             int ret = rService.replyDelete(reply.getNo());
 
-            if  (ret == 1) {
+            if (ret == 1) {
                 retMap.put("status", 200);
-            }
-            else {
+            } else {
                 retMap.put("status", 0);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             retMap.put("status", -1);
             retMap.put("error", e.getMessage());
@@ -135,14 +132,12 @@ public class WjRestAdminHomeController {
             BigInteger replyno = new BigInteger(no);
             int ret = rService.replyReportDelete(replyno);
 
-            if  (ret >= 1) {
+            if (ret >= 1) {
                 retMap.put("status", 200);
-            }
-            else {
+            } else {
                 retMap.put("status", 0);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             retMap.put("status", -1);
             retMap.put("error", e.getMessage());
@@ -153,20 +148,18 @@ public class WjRestAdminHomeController {
 
     // (3) 삭제 취소
     @PutMapping(value = "/replydeletecancel.json")
-    public Map<String, Object> replydeletecancelPUT(@RequestBody ReplyDTO reply ) {
+    public Map<String, Object> replydeletecancelPUT(@RequestBody ReplyDTO reply) {
         Map<String, Object> retMap = new HashMap<>();
 
         try {
             int ret = rService.replyDeleteCancel(reply.getNo());
 
-            if  (ret == 1) {
+            if (ret == 1) {
                 retMap.put("status", 200);
-            }
-            else {
+            } else {
                 retMap.put("status", 0);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             retMap.put("status", -1);
             retMap.put("error", e.getMessage());

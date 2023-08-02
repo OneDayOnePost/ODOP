@@ -276,7 +276,9 @@
 
                         <span th:if="${menu} eq 'all'">전체 신고 목록</span>
                         <span th:if="${menu} eq 'wait'">승인 대기</span>
-                        <span th:if="${menu} eq 'delete'">삭제 완료</span>
+                        <span th:if="${menu} eq 'deletebyadmin'">관리자 삭제</span>
+                        <span th:if="${menu} eq 'deletebywriter'">작성자 삭제</span>
+                        <span th:if="${menu} eq 'undercount'">기준 미달</span>
                     </a>
                 </div>
 
@@ -527,8 +529,13 @@
             postmodal_alert.hide();
 
             const postno = document.getElementById('post_no').value;
-            // 주소 이동 (게시글 - 삭제 완료 페이지 - 해당 게시글 번호)
-            window.location.href = [[@{/postreport.do(type='post', menu='delete')}]] + '&no=' + postno;
+            // 주소 이동
+            if ([[${menu}]] == 'all') { // 전체 신고 목록 -> 전체 신고 목록 - 해당 게시글 번호
+                window.location.href = [[@{/postreport.do(type='post', menu='all')}]] + '&no=' + postno;
+            }
+            else { // 관리자 삭제 페이지 - 해당 게시글 번호
+                window.location.href = [[@{/postreport.do(type='post', menu='deletebyadmin')}]] + '&no=' + postno;
+            }
         }
 
         // --------------------------------------------------------------------------------------------------------------
@@ -561,8 +568,13 @@
             const reportmodal_alert = new bootstrap.Modal(document.getElementById('reportmodal_alert'));
             reportmodal_alert.hide();
 
-            // 주소 이동 (게시글 - 승인 대기 페이지)
-            window.location.href = [[@{/adminhome.do(type='post', menu='wait')}]];
+            // 주소 이동 
+            if ([[${menu}]] == 'all') { // 전체 신고 목록 -> 전체 신고 목록
+                window.location.href = [[@{/adminhome.do(type='post', menu='all')}]];
+            }
+            else { // 승인 대기 페이지
+                window.location.href = [[@{/adminhome.do(type='post', menu='wait')}]];
+            }
         }
 
         // --------------------------------------------------------------------------------------------------------------
@@ -598,8 +610,13 @@
 
             const postno = document.getElementById('post_no').value;
 
-            // 주소 이동 (게시글 - 승인 대기 페이지 - 해당 게시글 번호)
-            window.location.href = [[@{/postreport.do(type='post', menu='wait')}]] + '&no=' + postno;
+            // 주소 이동
+            if ([[${menu}]] == 'all') { // 전체 신고 목록 -> 전체 신고 목록 - 해당 게시글 번호
+                window.location.href = [[@{/postreport.do(type='post', menu='all')}]] + '&no=' + postno;
+            }
+            else { // 승인 대기 페이지 - 해당 게시글 번호
+                window.location.href = [[@{/postreport.do(type='post', menu='wait')}]] + '&no=' + postno;
+            }
         }
     </script>
 </body>

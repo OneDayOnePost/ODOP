@@ -270,7 +270,9 @@
 
                         <span th:if="${menu} eq 'all'">전체 신고 목록</span>
                         <span th:if="${menu} eq 'wait'">승인 대기</span>
-                        <span th:if="${menu} eq 'delete'">삭제 완료</span>
+                        <span th:if="${menu} eq 'deletebyadmin'">관리자 삭제</span>
+                        <span th:if="${menu} eq 'deletebywriter'">작성자 삭제</span>
+                        <span th:if="${menu} eq 'undercount'">기준 미달</span>
                     </a>
                 </div>
     
@@ -517,8 +519,13 @@
             replymodal_alert.hide();
 
             const replyno = document.getElementById('reply_no').value;
-            // 주소 이동 (댓글 - 삭제 완료 페이지 - 해당 댓글 번호)
-            window.location.href = [[@{/replyreport.do(type='reply', menu='delete')}]] + '&no=' + replyno;
+            // 주소 이동 
+            if ([[${menu}]] == 'all') { // 전체 신고 목록 -> 전체 신고 목록 - 해당 댓글 번호
+                window.location.href = [[@{/replyreport.do(type='reply', menu='all')}]] + '&no=' + replyno;
+            }
+            else { // 관리자 삭제 페이지 - 해당 댓글 번호
+                window.location.href = [[@{/replyreport.do(type='reply', menu='deletebyadmin')}]] + '&no=' + replyno;
+            }
         }
 
         // --------------------------------------------------------------------------------------------------------------
@@ -551,8 +558,13 @@
             const reportmodal_alert = new bootstrap.Modal(document.getElementById('reportmodal_alert'));
             reportmodal_alert.hide();
 
-            // 주소 이동 (댓글 - 승인 대기 페이지)
-            window.location.href = [[@{/adminhome.do(type='reply', menu='wait')}]];
+            // 주소 이동 
+            if ([[${menu}]] == 'all') { // 전체 신고 목록 -> 전체 신고 목록
+                window.location.href = [[@{/adminhome.do(type='reply', menu='all')}]];
+            }
+            else { // 승인 대기 페이지
+                window.location.href = [[@{/adminhome.do(type='reply', menu='wait')}]];
+            }
         }
 
         // --------------------------------------------------------------------------------------------------------------
@@ -588,8 +600,13 @@
 
             const replyno = document.getElementById('reply_no').value;
 
-            // 주소 이동 (댓글 - 승인 대기 페이지 - 해당 댓글 번호)
-            window.location.href = [[@{/replyreport.do(type='reply', menu='wait')}]] + '&no=' + replyno;
+            // 주소 이동
+            if ([[${menu}]] == 'all') { // 전체 신고 목록 -> 전체 신고 목록 - 해당 댓글 번호
+                window.location.href = [[@{/replyreport.do(type='reply', menu='all')}]] + '&no=' + replyno;
+            }
+            else { // 승인 대기 페이지 - 해당 댓글 번호
+                window.location.href = [[@{/replyreport.do(type='reply', menu='wait')}]] + '&no=' + replyno;
+            }
         }
     </script>
 </body>
