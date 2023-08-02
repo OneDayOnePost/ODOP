@@ -32,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@Slf4j 
+@Slf4j
 @RequestMapping
 @RequiredArgsConstructor
 public class GrMyBlogController {
@@ -44,54 +44,55 @@ public class GrMyBlogController {
 
     // @GetMapping(value = "/myblog.do")
     // public String myblogGET(Model model) { // @AuthenticationPrincipal User user
-    //     try {
-    //         Member user = gRepository.findById("test1@gmail.com").orElse(null);
-    //         int following = gMapper.countfollowing("test1@gmail.com");
-    //         int follower = gMapper.countfollower("test1@gmail.com");
+    // try {
+    // Member user = gRepository.findById("test1@gmail.com").orElse(null);
+    // int following = gMapper.countfollowing("test1@gmail.com");
+    // int follower = gMapper.countfollower("test1@gmail.com");
 
-    //         log.info("user => {}", user.toString());
+    // log.info("user => {}", user.toString());
 
-    //         // 카테고리별 게시글 갯수
-    //         List<Map<String, Integer>> pclist = gMapper.selectpostcatecount("test1@gmail.com");
-    //         log.info("listlist=>{}", pclist.toString());
+    // // 카테고리별 게시글 갯수
+    // List<Map<String, Integer>> pclist =
+    // gMapper.selectpostcatecount("test1@gmail.com");
+    // log.info("listlist=>{}", pclist.toString());
 
-
-    //         // 포스트 총 갯수 세기
-    //         int postallcount = gMapper.countpostall("test1@gmail.com");
-    //         // 포스트 갯수가 한자리일 경우 앞에 0붙이기
-    //         String formattedpostcount = String.valueOf(postallcount);
-    //         if (postallcount < 10) {
-    //             formattedpostcount = "0" + formattedpostcount;
-    //         }
-
-    //         // 포스트 목록 불러오기 
-    //         List<Post> list = postRepository.findByWriter("test1@gmail.com");
-    //         log.info("list => {}", list.toString());
-
-    //         model.addAttribute("user", user);
-    //         model.addAttribute("following", following);
-    //         model.addAttribute("follower", follower);
-    //         model.addAttribute("pclist", pclist);
-    //         model.addAttribute("formattedpostcount", formattedpostcount);
-    //         model.addAttribute("list", list);
-
-    //         return "/GR/myblog";
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //         return "/home";
-    //     }
+    // // 포스트 총 갯수 세기
+    // int postallcount = gMapper.countpostall("test1@gmail.com");
+    // // 포스트 갯수가 한자리일 경우 앞에 0붙이기
+    // String formattedpostcount = String.valueOf(postallcount);
+    // if (postallcount < 10) {
+    // formattedpostcount = "0" + formattedpostcount;
     // }
 
+    // // 포스트 목록 불러오기
+    // List<Post> list = postRepository.findByWriter("test1@gmail.com");
+    // log.info("list => {}", list.toString());
+
+    // model.addAttribute("user", user);
+    // model.addAttribute("following", following);
+    // model.addAttribute("follower", follower);
+    // model.addAttribute("pclist", pclist);
+    // model.addAttribute("formattedpostcount", formattedpostcount);
+    // model.addAttribute("list", list);
+
+    // return "/GR/myblog";
+    // } catch (Exception e) {
+    // e.printStackTrace();
+    // return "/home";
+    // }
+    // }
 
     @GetMapping(value = "/myblog.do")
     public String myblogGET(Model model,
-        @RequestParam(name = "categoryId", required = false) Long categoryId) { // @AuthenticationPrincipal User user
-            try {
+            @RequestParam(name = "categoryId", required = false) Long categoryId) { // @AuthenticationPrincipal User
+                                                                                    // user
+        try {
 
-                log.info("categoryId received: {}", categoryId);
+            log.info("categoryId received: {}", categoryId);
 
-                if (categoryId != null) {
-                List<Post> list = postRepository.findByWriterAndCateNo("test@gmail.com", BigInteger.valueOf(categoryId));
+            if (categoryId != null) {
+                List<Post> list = postRepository.findByWriterAndCateNo("test@gmail.com",
+                        BigInteger.valueOf(categoryId));
                 model.addAttribute("list", list);
                 log.info("rkfka => {}", list.toString());
 
@@ -102,70 +103,64 @@ public class GrMyBlogController {
                 model.addAttribute("list", list);
             }
 
+            Member user = gRepository.findById("test1@gmail.com").orElse(null);
+            int following = gMapper.countfollowing("test1@gmail.com");
+            int follower = gMapper.countfollower("test1@gmail.com");
 
+            log.info("user => {}", user.toString());
 
-                Member user = gRepository.findById("test1@gmail.com").orElse(null);
-                int following = gMapper.countfollowing("test1@gmail.com");
-                int follower = gMapper.countfollower("test1@gmail.com");
+            // 카테고리별 게시글 갯수
+            List<Map<String, Integer>> pclist = gMapper.selectpostcatecount("test1@gmail.com");
+            log.info("listlist=>{}", pclist.toString());
 
-                log.info("user => {}", user.toString());
-
-                // 카테고리별 게시글 갯수
-                List<Map<String, Integer>> pclist = gMapper.selectpostcatecount("test1@gmail.com");
-                log.info("listlist=>{}", pclist.toString());
-
-
-                // 포스트 총 갯수 세기
-                int postallcount = gMapper.countpostall("test1@gmail.com");
-                // 포스트 갯수가 한자리일 경우 앞에 0붙이기
-                String formattedpostcount = String.valueOf(postallcount);
-                if (postallcount < 10) {
-                    formattedpostcount = "0" + formattedpostcount;
-                }
-
-                // 포스트 목록 불러오기 
-                // List<Post> list = postRepository.findByWriter("test1@gmail.com");
-                // log.info("list => {}", list.toString());
-
-                model.addAttribute("user", user);
-                model.addAttribute("following", following);
-                model.addAttribute("follower", follower);
-                model.addAttribute("pclist", pclist);
-                model.addAttribute("formattedpostcount", formattedpostcount);
-                // model.addAttribute("list", list);
-
-                return "/GR/myblog";
-            } catch (Exception e) {
-                e.printStackTrace();
-                return "/home";
+            // 포스트 총 갯수 세기
+            int postallcount = gMapper.countpostall("test1@gmail.com");
+            // 포스트 갯수가 한자리일 경우 앞에 0붙이기
+            String formattedpostcount = String.valueOf(postallcount);
+            if (postallcount < 10) {
+                formattedpostcount = "0" + formattedpostcount;
             }
-        }
 
-    
+            // 포스트 목록 불러오기
+            // List<Post> list = postRepository.findByWriter("test1@gmail.com");
+            // log.info("list => {}", list.toString());
+
+            model.addAttribute("user", user);
+            model.addAttribute("following", following);
+            model.addAttribute("follower", follower);
+            model.addAttribute("pclist", pclist);
+            model.addAttribute("formattedpostcount", formattedpostcount);
+            // model.addAttribute("list", list);
+
+            return "/GR/myblog";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "/home";
+        }
+    }
 
     // -----------------------------------------------------------------------------------
     // 헤더 테스트용
     @GetMapping(value = "/headertest.do")
-    public String headertestGET(Model model){
+    public String headertestGET(Model model) {
 
         return "/GR/grheader";
     }
 
     // -----------------------------------------------------------------------------------
 
-    //  마이페이지
-    @GetMapping(value="/mypage.do")
-    public String mypageGET(Model model){
-        try{
+    // 마이페이지
+    @GetMapping(value = "/mypage.do")
+    public String mypageGET(Model model) {
+        try {
             Member user = gRepository.findById("test1@gmail.com").orElse(null);
 
             model.addAttribute("user", user);
             return "/GR/mypage";
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "/myblog";
         }
     }
-    
+
 }

@@ -446,7 +446,7 @@
         // 클릭한 카테고리의 번호를 categoryId 변수로 받아온다.
         // const categoryId = event.target.getAttribute('data-category-id');
 
-        var newUrl = "/myblog.do" + "?categoryId=" + categoryId; // 카테고리 번호를 추가하여 새로운 URL 생성
+        var newUrl = [[@{/myblog.do}]] + "?categoryId=" + categoryId; // 카테고리 번호를 추가하여 새로운 URL 생성
         window.location.href = newUrl; // 새로운 URL로 페이지 이동
         console.log(categoryId);
     }
