@@ -220,10 +220,19 @@
 
     .post{
         padding-left: 53px;
+        margin-bottom: -45px;
     }
 
     .post_img{
         float: right;
+        position: relative;
+    }
+
+    .me-3{
+        position: absolute;
+        top: 13px;
+        right: 7px;
+        z-index: 1;
     }
 
     .post_box{
@@ -237,13 +246,13 @@
         padding-bottom: 50px;
         width: 820px;
     }
+    
 
 
     .post_info{
         width: 820px;
-        /* background-color: #DFECF6; */
         padding-left: 50px;
-        padding-top: 22px;
+        padding-top: 40px;
         display: flex;
         flex-wrap: wrap;
         align-items: flex-start;
@@ -254,7 +263,7 @@
     .post_title{
         padding-left: 10px;
         font-weight: bold;
-        
+        margin-top: 20px;
     }
 
     .post_info p{
@@ -267,8 +276,16 @@
         width: 815px;
         padding-left: 15px;
         padding-top: 5px;
+        padding-right: 15px;
         text-align: left;
         font-size: 14px;
+
+        /* 텍스트가 3줄을 넘어가면 말줄임표로 처리 */
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+
     }
 
     .post_tag{
@@ -341,7 +358,7 @@
     <div th:replace="~{fragments/header :: header}"></div>
 
     <!-- 본문 영역 -->
-    <div id="wrapper" class="container">
+    <div id="wrapper" class="container" style="margin-bottom: 200px;">
         <div class="blogname d-flex justify-content-center">
             <h3 th:text="${user.blogname}"></h3>
         </div>
@@ -385,9 +402,7 @@
                             </div>
                             <div class="cate_all"><a th:href="@{/myblog.do}">전체보기</a></div>
                             <div class="cate" th:each="obj:${pclist}">
-                                <!-- <div class="cate_1"><a th:text="${obj.CATEGORY}" th:data-category-id="${obj.no}"></a></div> -->
                                 <a href=# onclick="loadPostsByCategory(this.getAttribute('data-category-id')); return false;" th:text="${obj.CATEGORY}" th:data-category-id="${obj.NO}"></a>
-                                <!-- <a href="#" onclick="loadPostsByCategory(/*[[${obj.NO}]]*/); return false;" th:text="${obj.CATEGORY}"></a> -->
                                 <div class="cate_num" th:text="${obj.PNOCOUNT}"></div>
                             </div>
                             
@@ -401,11 +416,13 @@
                             <p>post&nbsp;&nbsp;</p><p th:text="${formattedpostcount}"></p>
                         </div>
                         <div class="mypost">
-                            <div class="post_img">
-                                <img th:src="@{/images/gr/123123.jpg}" width="780px" height="300px">
-                            </div>
                             <div class="post_info" th:each="obj:${list}">
-                                
+                                <div style="position: relative;">
+                                    <img th:src="@{/images/gr/123123.jpg}" width="780px" height="300px">
+                                    <div class="me-3" >
+                                        <i class="bi bi-eye me-2"></i><span th:text="${obj.hit}"></span>
+                                    </div>
+                                </div>
                                 <div class="post_title">
                                     <p th:text="${obj.title}"></p>
                                 </div>
@@ -452,6 +469,10 @@
         window.location.href = newUrl; // 새로운 URL로 페이지 이동
         console.log(newCategoryId);
     }
+
+
+
+
 
   </script>
 </body>
