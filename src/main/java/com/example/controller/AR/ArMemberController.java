@@ -85,6 +85,14 @@ public class ArMemberController {
 
 
 
+    //아이디 찾기----------------------------------------
+    @GetMapping(value = "/findemail.do")
+    public String findemailGET() {
+
+        return "/AR/findemail"; 
+
+    }
+
 
 }
 
