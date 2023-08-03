@@ -237,9 +237,9 @@
         <div id="wrapper" class="container" style="margin-top: 40px; margin-bottom: 30px;">
             <div class="link-container">
                 <div>
-                    <a th:href="@{/adminhome.do(type=post, menu=all)}" id="postreport"><i class="bi bi-pencil-square" style="padding-right: 7px; font-size: 24px;"></i>게시글 신고</a>
-                    <a th:href="@{/adminhome.do(type=reply, menu=all)}" id="replyreport"><i class="bi bi-chat-dots" style="padding-right: 7px; font-size: 24px;"></i>댓글 신고</a>
-                    <a th:href="@{/adminhome.do(type=memberlist, menu=all)}" id="memberlist"><i class="bi bi-person" style="padding-right: 7px; font-size: 27px;"></i>회원 목록</a>
+                    <a th:href="@{/adminhome.do(type=post)}" id="postreport"><i class="bi bi-pencil-square" style="padding-right: 7px; font-size: 24px;"></i>게시글 신고</a>
+                    <a th:href="@{/adminhome.do(type=reply)}" id="replyreport"><i class="bi bi-chat-dots" style="padding-right: 7px; font-size: 24px;"></i>댓글 신고</a>
+                    <a th:href="@{/adminhome.do(type=memberlist)}" id="memberlist"><i class="bi bi-person" style="padding-right: 7px; font-size: 27px;"></i>회원 목록</a>
                 </div>
             </div>
     
@@ -286,53 +286,92 @@
 
     // 서버에서 데이터를 가져와 테이블을 업데이트하는 함수
     function updateTable(data) {
+        const menu = $("#preasonlist option:selected").val();
+
         let tableHtml = '<table id="prtable">';
-        tableHtml += '<thead><tr>';
-        tableHtml += '<th>게시글 번호</th>';
-        tableHtml += '<th>작성자</th>';
-        tableHtml += '<th>신고 횟수</th>';
-        if (data[0]?.state !== undefined) {
-            tableHtml += '<th>상태</th>';
-        }
-        tableHtml += '</tr></thead>';
-        tableHtml += '<tbody>';
-        for (let post of data) {
-            tableHtml += '<tr>';
-            tableHtml += `<td>${post.no}</td>`;
-            tableHtml += `<td>${post.email}</td>`;
-            tableHtml += `<td>${post.reportcount}</td>`;
-            if (post.state !== undefined) {
-                let stateText = '';
-                let stateClass = '';
-                if (post.state === -1) {
-                    stateText = '관리자 삭제';
-                    stateClass = 'red-text';
-                } else if (post.state === 0) {
-                    stateText = post.reportcount > 1 ? '승인 대기' : '기준 미달';
-                    stateClass = post.reportcount > 1 ? 'blue-text' : 'black-text';
-                } else if (post.state === 1) {
-                    stateText = '작성자 삭제';
-                    stateClass = 'gray-text';
-                }
-                tableHtml += `<td><span class="${stateClass}">${stateText}</span></td>`;
+        if (menu === 'all') {
+
+            tableHtml += '<thead><tr>';
+            tableHtml += '<th>게시글 번호</th>';
+            tableHtml += '<th>작성자</th>';
+            tableHtml += '<th>신고 횟수</th>';
+            if (data[0]?.state !== undefined) {
+                tableHtml += '<th>상태</th>';
             }
-            tableHtml += '</tr>';
+            tableHtml += '</tr></thead>';
+            tableHtml += '<tbody>';
+            for (let post of data) {
+                tableHtml += '<tr>';
+                tableHtml += `<td>${post.no}</td>`;
+                tableHtml += `<td>${post.email}</td>`;
+                tableHtml += `<td>${post.reportcount}</td>`;
+                if (post.state !== undefined) {
+                    let stateText = '';
+                    let stateClass = '';
+                    if (post.state === -1) {
+                        stateText = '관리자 삭제';
+                        stateClass = 'red-text';
+                    } else if (post.state === 0) {
+                        stateText = post.reportcount > 1 ? '승인 대기' : '기준 미달';
+                        stateClass = post.reportcount > 1 ? 'blue-text' : 'black-text';
+                    } else if (post.state === 1) {
+                        stateText = '작성자 삭제';
+                        stateClass = 'gray-text';
+                    }
+                    tableHtml += `<td><span class="${stateClass}">${stateText}</span></td>`;
+                }
+                tableHtml += '</tr>';
+            }
+            tableHtml += '</tbody></table>';
         }
-        tableHtml += '</tbody></table>';
+        else {
+
+            
+                tableHtml += '<thead><tr>';
+                tableHtml += '<th>게시글 번호</th>';
+                tableHtml += '<th>작성자</th>';
+                tableHtml += '<th>신고 횟수</th>';
+                tableHtml += '</tr></thead>';
+                tableHtml += '<tbody>';
+                for (let post of data) {
+                    tableHtml += '<tr>';
+                    tableHtml += `<td>${post.no}</td>`;
+                    tableHtml += `<td>${post.email}</td>`;
+                    tableHtml += `<td>${post.reportcount}</td>`;
+                    tableHtml += '</tr>';
+                }
+                tableHtml += '</tbody></table>';
+        }
+
         $('#table-container').html(tableHtml);
 
         // 테이블이 업데이트되면 DataTable을 다시 초기화합니다.
         initializeDataTable();
 
-       
+       // 테이블의 각 행을 클릭할 때 이벤트 핸들러 등록
+       $("#prtable tbody tr").on("click", function() {
+            // 선택한 행에서 글번호 가져오기
+            const postno = $(this).find("td:first-child").text();
+
+            // 글번호가 없을 경우 이벤트를 작동하지 않도록 처리
+            if (postno === 'No entries found') {
+                return; // 이벤트 핸들러 실행 중지
+            }
+            
+            // 글번호에 맞는 상세 페이지로 이동
+            window.location.href = [[@{/postreport.do}]] + `?type=post&menu=` + menu + `&no=${postno}`;
+        });
+
+        document.getElementById("postreport").style.borderBottom = "3px solid #6F8DBF";
+        document.getElementById("postreport").style.paddingBottom = "5px";
     }
 
     // 서버로부터 데이터를 비동기적으로 가져오는 함수
     async function fetchData(menu) {
         // rest api 호출
         const url = [[@{/api/postreportlist.json(type=post)}]] + '&menu=' + menu;
-            const headers = {"Content-Type":"application/json"};
-            const { data } = await axios.get(url, { headers });
+        const headers = {"Content-Type":"application/json"};
+        const { data } = await axios.get(url, { headers });
 
         console.log(data);
 
@@ -342,21 +381,15 @@
     // 페이지 로드 시 초기 데이터 로딩
     document.addEventListener('DOMContentLoaded', function () {
         // 페이지 로드 시 기본적으로 post/all 데이터를 보여주도록 설정
-        // fetchData('all');
-        document.getElementById('preasonlist').value = [[${menu}]];
+        fetchData('all');
 
-        fetchData([[${menu}]]);
+            // 이벤트 핸들러 등록 (예시: select 박스 값 변경 시)
+            document.getElementById('preasonlist').addEventListener('change', function () {
+                const menu = this.value;
 
-        // 이벤트 핸들러 등록 (예시: select 박스 값 변경 시)
-        document.getElementById('preasonlist').addEventListener('change', function () {
-            const menu = this.value;
-
-            console.log(menu);
-
-            window.location.href = [[@{/adminhome.do}]] + `?type=post&menu=` + menu;
-            fetchData(menu);
+                fetchData(menu);
+            });
         });
-    });
 </script>
 
 </body>

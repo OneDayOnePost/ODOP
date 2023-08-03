@@ -150,19 +150,27 @@ public interface WjReportMapper {
     @Select(" SELECT * FROM MEMBER WHERE email = #{email} ")
     public Member selectMemberOne(@Param("email") String email);
 
-    // 작성한 게시글 수 (삭제 유무 관련없이 모든 게시글 수)
-    @Select(" SELECT count(no) AS postcount FROM post WHERE writer = #{email} ")
+    // 작성한 게시글 수 (게시글 state=0 & state=-1) -> 작성자 삭제된 글은 개수 제외
+    @Select(" SELECT count(no) AS postcount FROM post WHERE writer = #{email} AND state != 1 ")
     public int selectPostCount(@Param("email") String email);
 
     // 신고되어 삭제된 게시글 수 
-    @Select(" SELECT count(DISTINCT(pr.postno)) AS postreportcount FROM POST_REPORT pr, post p WHERE pr.postno = p.no AND p.writer = #{email} AND p.state = -1 ")
+    @Select(" SELECT count(no) AS postreportcount FROM post WHERE writer = #{email} AND state = -1 ")
     public int selectPostReportDeleteCount(@Param("email") String email);
 
-    // 작성한 댓글 수 (삭제 유무 관련없이 모든 댓글 수)
-    @Select(" SELECT count(no) AS replycount FROM reply WHERE writer = #{email} ")
+    // 작성한 댓글 수 (댓글 state=0 & state=-1) -> 작성자 삭제된 글은 개수 제외
+    @Select(" SELECT count(no) AS replycount FROM reply WHERE writer = #{email} AND state != 1 ")
     public int selectReplyCount(@Param("email") String email);
 
     // 신고되어 삭제된 댓글 수
-    @Select(" SELECT count(DISTINCT(rr.replyno)) AS replyreportcount FROM REPLY_REPORT rr, REPLY r WHERE rr.replyno = r.no AND r.writer = #{email} AND r.state = -1 ")
+    @Select(" SELECT count(no) AS replyreportcount FROM REPLY WHERE writer = #{email} AND state = -1 ")
     public int selectReplyReportDeleteCount(@Param("email") String email);
+
+    // 일반 회원(블랙리스트 대기 회원) -> 블랙리스트로 변경
+    @Update(" UPDATE member SET quitchk = -1 WHERE email = #{email} ")
+    public int updateToBlackList(@Param("email") String email);
+
+    // 블랙리스트 회원 -> 일반회원(블랙리스트 대기)으로 변경
+    @Update(" UPDATE member SET quitchk = 0 WHERE email = #{email} ")
+    public int updateToGrayList(@Param("email") String email);
 }

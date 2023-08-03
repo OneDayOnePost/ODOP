@@ -379,7 +379,7 @@
                                 <th>연락처</th>
                                 <th>닉네임</th>
                                 <th>관리자 삭제된 글 합계</th>
-                                <th>상태</th>
+                                <th>회원 등급</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -434,7 +434,7 @@
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
 
     <script th:inline="javascript" type="text/javascript">
-        document.addEventListener('DOMContentLoaded', function () {
+        window.addEventListener('load', function () {
             const urlParams = new URLSearchParams(window.location.search);
             const typeParam = urlParams.get('type');
             const menuParam = urlParams.get('menu');

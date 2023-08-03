@@ -274,7 +274,7 @@
                     <a th:href="@{/adminhome.do(type=${type}, menu=${menu})}">
                         <i class="bi bi-list"></i>
 
-                        <span th:if="${menu} eq 'all'">전체 신고 목록</span>
+                        <span th:if="${#strings.equals(param.menu, 'all')}">전체 신고 목록</span>
                         <span th:if="${menu} eq 'wait'">승인 대기</span>
                         <span th:if="${menu} eq 'deletebyadmin'">관리자 삭제</span>
                         <span th:if="${menu} eq 'deletebywriter'">작성자 삭제</span>

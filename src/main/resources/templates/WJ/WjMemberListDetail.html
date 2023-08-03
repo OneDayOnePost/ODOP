@@ -161,32 +161,35 @@
             width: 70%;
         }
 
-        #info {
+        .info {
             float: left;
-            font-size: 23px;
             padding-left: 10px;
         }
 
-        #homeline {
+        .homeline {
             border-top: 2.4px solid #A2B2CD;
             margin-top: 15px;
         }
 
-        .info_table{
+        .endline {
+            border-top: 2.4px solid #A2B2CD;
+        }
+
+        #info_table{
             width: 100%;        
         }
 
         .tableline{
-            border-bottom: 1.5px solid #9ea5b2  ;
+            border-bottom: 1.5px solid #9ea5b2;
         }
 
-        .info_table th{
+        #info_table th{
             padding-left: 120px;
             padding-top: 30px;
             padding-bottom: 30px;
         }
 
-        .info_table td{
+        #info_table td{
             padding-top: 30px;
             padding-bottom: 30px;
         }
@@ -197,6 +200,58 @@
             flex-direction: row;
             margin-left: 90px;
             align-items: center;
+        }
+
+        /* --------------------------------------------------------------------------- */
+
+        /* 신고 게시글&댓글 개수 테이블 */
+        #member_reporttable {
+            margin: 0 auto;
+            margin-top: 80px;
+            width: 70%;
+        }
+
+        #reporttable {
+            width: 100%;
+            text-align: center;
+        }
+
+        #reporttable thead tr th{
+            padding-top: 25px;
+            padding-bottom: 25px;
+            width: 25%;
+        }
+
+        #reporttable tbody tr td{
+            padding-top: 25px;
+            padding-bottom: 25px;
+            width: 25%;
+        }
+
+        .right_line {
+            border-right: 1.5px solid #9ea5b2;
+        }
+
+        /* --------------------------------------------------------------------------- */
+
+        /* 블랙리스트 등록 버튼 */
+        #update_to_blacklist {
+            border-radius: 30px;
+            background-color: #FF5555;
+            color: #ffffff;
+            border: none;
+            width: 150px;
+            height: 40px;
+        }
+
+        /* 블랙리스트 등록 취소 버튼 */
+        #update_to_graylist {
+            border-radius: 30px;
+            background-color: #FF5555;
+            color: #ffffff;
+            border: none;
+            width: 180px;
+            height: 40px;
         }
 
         /* --------------------------------------------------------------------------- */
@@ -281,13 +336,13 @@
                 </div>
         
                 <div id="member_info_bottom">
-                    <h3 id="info">회원 정보</h3>
+                    <h3 class="info">회원 정보</h3>
                     <br/>
-                    <div id="homeline"></div>
-                    <table class="info_table">
+                    <div class="homeline"></div>
+                    <table id="info_table">
                         <tr class="tableline">
                             <th>이메일</th>
-                            <td th:text="${member.email}" class="table_left"></td>
+                            <td th:text="${member.email}" class="table_left" id="email"></td>
                         </tr>
 
                         <tr class="tableline">
@@ -314,24 +369,55 @@
                             <th>가입일</th>
                             <td th:text="${#dates.format(member.regdate, 'yyyy년 MM월 dd일 hh시 mm분')}" class="table_left"></td>
                         </tr>
+
+                        <tr>
+                            <th>회원 등급</th>
+                            <td class="table_left">
+                                <span th:text="${member.quitchk == -1 ? '블랙리스트' : (member.quitchk == 0 ? (postdeletecount + replydeletecount > 0 ? '블랙리스트 대기' : '일반 회원') : (member.quitchk == 1 ? '탈퇴' : ''))}"></span>
+                            </td>
+                        </tr>
                     </table>
+                    <div class="endline"></div>
                 </div>
 
-                <div id="reporttable">
-                    작성한 게시글
-                    신고되어 삭제된 게시글
-                    작성한 댓글
-                    신고되어 삭제된 댓글
+                <div id="member_reporttable">
+                    <h3 class="info">게시글 및 댓글 정보</h3>
+                    <br/>
+                    <div class="homeline"></div>
+                    <table id="reporttable">
+                        <thead>
+                            <tr class="tableline">
+                                <th class="right_line">작성한 게시글</th>
+                                <th class="right_line">관리자 삭제된<br/>게시글</th>
+                                <th class="right_line">작성한 댓글</th>
+                                <th>관리자 삭제된<br/>댓글</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="tableline">
+                                <td th:text="${postcount}" class="right_line"></td>
+                                <td th:text="${postdeletecount}" class="right_line"></td>
+                                <td th:text="${replycount}" class="right_line"></td>
+                                <td th:text="${replydeletecount}"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="font-weight: bold;" class="right_line">관리자 삭제된<br/>게시글과 댓글 총합</td>
+                                <td colspan="2" th:text="${postdeletecount + replydeletecount}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="endline"></div>
+                </div>
 
-                    블랙리스트 기준 : 신고된 게시글 + 댓글 >= 10? 20?
+                <div th:if="${member.quitchk == 0 && (postdeletecount + replydeletecount) >= 1}" style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
+                    <button type="button" id="update_to_blacklist" data-bs-toggle="modal" data-bs-target="#blacklist_confirm">블랙리스트 등록</button>
+                </div>
 
-                    블랙리스트 기준(sum>10 + quitchk=0)에 부합
-                    -> 등록 버튼 추가
-                    부합 X
-                    -> 취소 버튼 추가
+                <div th:if="${member.quitchk == -1}" style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
+                    <button type="button" id="update_to_graylist" data-bs-toggle="modal" data-bs-target="#graylist_confirm">블랙리스트 등록 취소</button>
                 </div>
             </div>
-
+            
             <div class="scroll-buttons" style="z-index: 100;">
                 <!-- 신고 테이블로 가는 버튼 -->
                 <div id="scrolldown" class="scroll-button">
@@ -348,6 +434,72 @@
 
     <!-- footer 영역 -->
     <th:block th:replace="~{/fragments/footer :: footerHTML}"></th:block>
+
+    <!-- 블랙리스트 등록 버튼 - confirm 창  -->
+    <div class="modal fade" id="blacklist_confirm" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p style="text-align: center; font-size: 20px; margin-top: 25px; margin-bottom: 25px;">블랙리스트로 등록하시겠습니까?</p>
+
+                    <div style="display: flex; justify-content: center;">
+                        <button type="button" class="btn" onclick="updateBlacklist()" 
+                            style="background-color: #FF5555; color: white; margin-right: 10px; width: 80px; border-radius: 20px;">O</button>
+                        <button type="button" class="btn" data-bs-dismiss="modal" 
+                            style="background-color: #949494; color: white; margin-left: 10px; width: 80px; border-radius: 20px;">X</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 블랙리스트 등록 버튼 - 등록 후 alert 창  -->
+    <div class="modal fade" id="blacklist_alert" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p style="text-align: center; font-size: 20px; margin-top: 25px; margin-bottom: 25px;">등록되었습니다.</p>
+
+                    <div style="display: flex; justify-content: center;">
+                        <button type="button" class="btn" onclick="updateBlacklistOk()" 
+                            style="background-color: #949494; color: white; width: 80px; border-radius: 20px;">확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 블랙리스트 등록 취소 버튼 - confirm 창  -->
+    <div class="modal fade" id="graylist_confirm" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p style="text-align: center; font-size: 20px; margin-top: 25px; margin-bottom: 25px;">블랙리스트 등록을 취소하시겠습니까?</p>
+
+                    <div style="display: flex; justify-content: center;">
+                        <button type="button" class="btn" onclick="updateGraylist()" 
+                            style="background-color: #FF5555; color: white; margin-right: 10px; width: 80px; border-radius: 20px;">O</button>
+                        <button type="button" class="btn" data-bs-dismiss="modal" 
+                            style="background-color: #949494; color: white; margin-left: 10px; width: 80px; border-radius: 20px;">X</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 블랙리스트 등록 취소 버튼 - 등록 후 alert 창  -->
+    <div class="modal fade" id="graylist_alert" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p style="text-align: center; font-size: 20px; margin-top: 25px; margin-bottom: 25px;">취소되었습니다.</p>
+
+                    <div style="display: flex; justify-content: center;">
+                        <button type="button" class="btn" onclick="updateGraylistOk()" 
+                            style="background-color: #949494; color: white; width: 80px; border-radius: 20px;">확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.5/axios.min.js"></script>
@@ -366,12 +518,12 @@
             scrolldown.style.display = "block";
         }
 
-        // Down(↓) 버튼을 클릭하면 페이지가 report 테이블로 스크롤
+        // Down(↓) 버튼을 클릭하면 페이지가 reporttable로 스크롤
         scrolldown.addEventListener("click", function () {
-            const reporttable = document.getElementById("reporttable");
-            const reporttablePosition = reporttable.offsetTop;
+            const member_reporttable = document.getElementById("member_reporttable");
+            const member_reporttablePosition = member_reporttable.offsetTop;
 
-            window.scrollTo({ top: reporttablePosition, behavior: "smooth" });
+            window.scrollTo({ top: member_reporttablePosition, behavior: "smooth" });
         });
 
         window.addEventListener("scroll", function () {
@@ -390,6 +542,88 @@
         scrollup.addEventListener("click", function () {
             window.scrollTo({ top: 0, behavior: "smooth" });
         });
+    </script>
+
+    <script th:inline="javascript" type="text/javascript">
+        // 블랙리스트 등록 버튼
+        // (1) confirm 
+        async function updateBlacklist() {
+            const email = document.getElementById('email').textContent;
+
+            // rest api 호출
+            const url = [[@{/api/updateblacklist.json}]];
+            const headers = {"Content-Type":"application/json"};
+            const body = {"email":email};
+            const { data } = await axios.put(url, body, { headers });
+
+            // console.log(data);
+
+            if (data.status === 200) {
+                // 등록 confirm 모달창 닫기
+                const blacklist_confirm = new bootstrap.Modal(document.getElementById('blacklist_confirm'));
+                blacklist_confirm.hide();
+
+                // 등록 alert 모달창 열기
+                const blacklist_alert = new bootstrap.Modal(document.getElementById('blacklist_alert'));
+                blacklist_alert.show();
+            }
+        }
+        // (2) alert
+        function updateBlacklistOk() {
+            // 등록 alert 모달창 닫기
+            const blacklist_alert = new bootstrap.Modal(document.getElementById('blacklist_alert'));
+            blacklist_alert.hide();
+
+            const email = document.getElementById('email').textContent;
+
+            // 주소 이동
+            if ([[${menu}]] == 'all') { // 전체 회원 목록 -> 전체 회원 목록 - 해당 회원 이메일
+                window.location.href = [[@{/memberlist.do(type='memberlist', menu='all')}]] + '&email=' + email;
+            }
+            else { // 블랙리스트 회원 페이지 - 해당 회원 이메일
+                window.location.href = [[@{/memberlist.do(type='memberlist', menu='blacklist')}]] + '&email=' + email;
+            }
+        }
+
+        // 블랙리스트 등록 취소 버튼
+        // (1) confirm 
+        async function updateGraylist() {
+            const email = document.getElementById('email').textContent;
+
+            // rest api 호출
+            const url = [[@{/api/updategraylist.json}]];
+            const headers = {"Content-Type":"application/json"};
+            const body = {email:email};
+            const { data } = await axios.put(url, body, { headers });
+
+            // console.log(data);
+
+            if (data.status === 200) {
+                // 취소 confirm 모달창 닫기
+                const graylist_confirm = new bootstrap.Modal(document.getElementById('graylist_confirm'));
+                graylist_confirm.hide();
+
+                // 취소 alert 모달창 열기
+                const graylist_alert = new bootstrap.Modal(document.getElementById('graylist_alert'));
+                graylist_alert.show();
+            }
+        }
+        // (2) alert
+        function updateGraylistOk() {
+            // 취소 alert 모달창 닫기
+            const graylist_alert = new bootstrap.Modal(document.getElementById('graylist_alert'));
+            graylist_alert.hide();
+
+            const email = document.getElementById('email').textContent;
+
+            // 주소 이동
+            if ([[${menu}]] == 'all') { // 전체 회원 목록 -> 전체 회원 목록 - 해당 회원 이메일
+                window.location.href = [[@{/memberlist.do(type='memberlist', menu='all')}]] + '&email=' + email;
+            }
+            else { // 블랙리스트 대기 페이지 - 해당 회원 이메일
+                window.location.href = [[@{/memberlist.do(type='memberlist', menu='graylist')}]] + '&email=' + email;
+            }
+        }
     </script>
 </body>
 

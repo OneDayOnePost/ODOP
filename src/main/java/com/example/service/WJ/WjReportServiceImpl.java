@@ -398,4 +398,28 @@ public class WjReportServiceImpl implements WjReportService {
             return -1;
         }
     }
+
+    // 일반 회원(블랙리스트 대기 회원) -> 블랙리스트로 변경
+    @Override
+    public int updateToBlackList(String email) {
+        try {
+            return rMapper.updateToBlackList(email);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+    
+    // 블랙리스트 회원 -> 일반회원(블랙리스트 대기)으로 변경
+    @Override
+    public int updateToGrayList(String email) {
+        try {
+            return rMapper.updateToGrayList(email);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
 }
