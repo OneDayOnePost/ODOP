@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
-    <title>ODOP 아이디 찾기</title>
+    <title>ODOP 비밀번호 찾기</title>
     <!--Bootstrap 용 CSS-->
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <!--Bootstrap 용 Icon CDN-->
@@ -84,7 +84,7 @@
 
         }
 
-        .name_input {
+        .email_input {
             border: none;
             background: #EFEFEF;
             width: 330px;
@@ -93,7 +93,16 @@
             text-align: center;
         }
 
-        .phone_input {
+        .chk_input {
+        border: none;
+        background: #EFEFEF;
+        width: 220px;
+        height: 40px;
+        border-radius: 5px;
+        text-align: center;
+        }
+
+        .newpw_input {
             border: none;
             background: #EFEFEF;
             width: 330px;
@@ -101,6 +110,16 @@
             border-radius: 5px;
             text-align: center;
         }
+
+        .newpwchk_input {
+            border: none;
+            background: #EFEFEF;
+            width: 330px;
+            height: 40px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
 
         .label_span {
             font-weight: 400;
@@ -200,6 +219,17 @@
             cursor: pointer;
         }
 
+        #sendbutton, #sendchkbutton {
+        width: 155px;
+        height: 50px;
+        border: solid;
+        border-radius: 50px;
+        background: #1D3563;
+        color: #FFF;
+        font-size: 18px;
+        margin-left: 20px;
+        }
+
         #findbutton {
             width: 120px;
             height: 50px;
@@ -236,23 +266,36 @@
 
         <!-- 본문 영역 -->
         <div id="wrapper" class="container">
-            <h3 id="logintitle">아이디 찾기</h3>
+            <h3 id="logintitle">비밀번호 찾기</h3>
             <div id="homeline"></div>
             <div id="login_box" class="container">
                 <div id="box_row1" class="row">
-                    <form th:action="@{/findemail.do}" method="post" id="findemailform">
+                    <form th:action="@{/findpw.do}" method="post" id="findpwform">
                         <div id="loginpart">
                             <div id="inputpart">
-                                <div>
-                                    <span class="label_span">이름</span>
-                                    <input class="name_input" type="text" id="name" name="name"
-                                        style="margin-left: 45px;">
+                                <div style="padding-left: 41px;">
+                                    <span class="label_span">이메일</span>
+                                    <input class="email_input" type="text" id="email" name="email"
+                                        style="margin-left: 25px;">
+                                    <input type="button" id="sendbutton" value="인증번호 발송" onclick="sendEmailAction()"></input>
                                 </div>
-                                <div style="padding-top: 25px;">
-                                    <span class="label_span">연락처</span>
-                                    <input class="phone_input" type="text" maxlength="13" id="phone"
-                                        name="phone" style="margin-left: 26px;" placeholder="000-0000-0000">
+                                <div id="chkbox" style="padding-left: 126px; padding-top: 6px; display: none;" >
+                                    <span class="label_span">인증번호</span>
+                                    <input class="chk_input" type="text" id="email" name="email"
+                                        style="margin-left: 32px;">
+                                    <input type="button" id="sendchkbutton" value="확인" onclick="findAction()"></input>
                                 </div>
+                                <div style="padding-top: 10px; padding-right: 185px;">
+                                    <span class="label_span">새 비밀번호</span>
+                                    <input class="newpw_input" type="password" maxlength="16" id="password"
+                                        name="password" style="margin-left: 27px;" >
+                                </div>
+                                <div style="padding-top: 16px; padding-right: 226px;">
+                                    <span class="label_span" style="padding-right: 26px;">새 비밀번호 확인</span>
+                                    <input class="newpwchk_input" type="password" id="pwcheck" name="pwcheck"
+                                         maxlength="16" >
+                                </div>
+
                             </div>
                             <div id="buttonbox">
                                 <th style="padding-left: 400px;">
@@ -286,49 +329,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.5/axios.min.js"></script>
     <script th:inline="javascript" type="text/javascript">
+        
+        function sendEmailAction(){
+            const chkbox = document.getElementById("chkbox");
 
-         //전화번호 자동 하이픈 처리
-         var autoHypenPhone = function (str) {
-            str = str.replace(/[^0-9]/g, '');
-            var tmp = '';
-            if (str.length < 4) {
-                return str;
-            } else if (str.length < 7) {
-                tmp += str.substr(0, 3);
-                tmp += '-';
-                tmp += str.substr(3);
-                return tmp;
-            } else if (str.length < 11) {
-                tmp += str.substr(0, 3);
-                tmp += '-';
-                tmp += str.substr(3, 3);
-                tmp += '-';
-                tmp += str.substr(6);
-                return tmp;
-            } else {
-                tmp += str.substr(0, 3);
-                tmp += '-';
-                tmp += str.substr(3, 4);
-                tmp += '-';
-                tmp += str.substr(7);
-                return tmp;
-            }
-
-            return str;
+            chkbox.style = "display:block; padding-left: 126px; padding-top: 6px;";
         }
-
-        const phone = document.getElementById('phone');
-
-        phone.onkeyup = function () {
-            console.log(this.value);
-            this.value = autoHypenPhone(this.value);
-        }
-
-
-
-
-
-
     //form 전송
         function findAction() {
             const name = document.getElementById("name").value;
