@@ -18,7 +18,9 @@ public interface ArMemberRepository extends JpaRepository<Member, String> {
     int countByNickname(String nickname);
 
     //로그인 관련
-    MemberDTO findByEmail(String email);
+    Member findByEmail(String email);
 
+    //아이디 찾기
+    Member findByNameAndPhone(String name, String phone);
 
 }

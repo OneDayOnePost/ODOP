@@ -19,7 +19,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.stereotype.Component;
 
 import com.example.dto.MemberDTO;
-
+import com.example.entity.Member;
 import com.example.service.AR.ArMemberService;
 
 import lombok.RequiredArgsConstructor;
@@ -44,7 +44,7 @@ public class CustomLoginFailHandler implements AuthenticationFailureHandler {
         String password = request.getParameter("password");
         String errorMessage = "";
         log.info(email.toString());
-        MemberDTO member = mService.findByEmail(request.getParameter("email").toString());
+        Member member = mService.findByEmail(request.getParameter("email").toString());
 
 
 

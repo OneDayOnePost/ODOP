@@ -53,10 +53,24 @@ public class ArMemberServiceImpl implements ArMemberService {
         }
     }
 
+
+    //로그인(loginfailurehandler alert 관련)
     @Override
-    public MemberDTO findByEmail(String email) {
+    public Member findByEmail(String email) {
         try {
             return mRepository.findByEmail(email);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+
+    @Override
+    public Member selectMemberEmail(String name, String phone) {
+        try {
+            return mRepository.findByNameAndPhone(name, phone);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

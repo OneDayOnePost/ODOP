@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.entity.Member;
 import com.example.mapper.AR.ArMemberMapper;
@@ -93,6 +94,72 @@ public class ArMemberController {
 
     }
 
+
+    @PostMapping(value = "findemail.do")
+    public String findemailPOST(@RequestParam("name") String name, @RequestParam("phone") String phone, HttpSession httpSession ){
+        try{
+            Member member = mService.selectMemberEmail(name, phone);
+
+            //이메일 마스킹에 필요함
+            int atIndex = member.getEmail().toString().indexOf('@');
+           
+            
+
+            
+            if(member != null){
+                if(atIndex <= 3){
+                    String shortemail = member.getEmail().toString().charAt(0) + "*****" + member.getEmail().toString().substring(atIndex);
+                    httpSession.setAttribute("alertTitle",member.getName()+"님의 아이디는");                
+                    httpSession.setAttribute("alertMessage",shortemail+ " 입니다 ");
+                    httpSession.setAttribute("alertUrl", "/login.do");
+                    return "redirect:/alert.do";    
+                }
+                else{
+                    int lenToMask = Math.min(atIndex - 3, 5);
+                    String mask = "*".repeat(lenToMask);
+                    String email = member.getEmail().toString().substring(0, 3) + mask + member.getEmail().toString().substring(atIndex);
+
+                    httpSession.setAttribute("alertTitle",member.getName()+"님의 아이디는");                
+                    httpSession.setAttribute("alertMessage",email+ " 입니다 ");
+                    httpSession.setAttribute("alertUrl", "/login.do");
+                    return "redirect:/alert.do";    
+                }
+               
+            }
+            else{
+                httpSession.setAttribute("alertTitle", "존재 하지 않는 정보입니다.");                
+                httpSession.setAttribute("alertMessage", "가입 후 로그인 해주세요.");
+                httpSession.setAttribute("alertUrl", "/login.do");
+                return "redirect:/alert.do";    
+            }
+
+         
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return "redirect:/findemail.do";
+        }
+    }
+
+
+
+
+    //비밀번호 찾기---------------------------
+    @GetMapping(value = "/findpw.do")
+    public String findpwGET(){
+      return "/AR/findpw";
+    }
+
+
+    @PostMapping(value = "/findpw.do")
+    public String findpwPOST(){
+        try {
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/findpw.do";
+        }
+    }
 
 }
 

@@ -21,7 +21,10 @@ public interface ArMemberService {
     public int selectMemberNicknameCheck(@Param("nickname") String nickname);
 
     //로그인 관련
-    public MemberDTO findByEmail(@Param("email") String email);
+    public Member findByEmail(@Param("email") String email);
+
+    //아이디 찾기 findByEmailAndNameAndPhone
+    public Member selectMemberEmail(@Param("name") String name, @Param("phone") String phone);
 
     
 
