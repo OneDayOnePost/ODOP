@@ -18,6 +18,7 @@ import com.example.dto.MemberListViewDTO;
 import com.example.dto.PostDTO;
 import com.example.dto.ReplyDTO;
 import com.example.dto.ReportListDTO;
+import com.example.entity.Member;
 import com.example.service.WJ.WjReportService;
 
 import lombok.RequiredArgsConstructor;
@@ -153,6 +154,53 @@ public class WjRestAdminHomeController {
 
         try {
             int ret = rService.replyDeleteCancel(reply.getNo());
+
+            if (ret == 1) {
+                retMap.put("status", 200);
+            } else {
+                retMap.put("status", 0);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            retMap.put("status", -1);
+            retMap.put("error", e.getMessage());
+        }
+
+        return retMap;
+    }
+
+    // --------------------------------------------------------------------
+
+    // 회원 상세 페이지
+    // (1) 블랙리스트 등록 버튼
+    @PutMapping(value = "/updateblacklist.json")
+    public Map<String, Object> updateblacklistPUT(@RequestBody Member member) {
+        Map<String, Object> retMap = new HashMap<>();
+
+        try {
+            int ret = rService.updateToBlackList(member.getEmail());
+
+            if (ret == 1) {
+                retMap.put("status", 200);
+            } else {
+                retMap.put("status", 0);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            retMap.put("status", -1);
+            retMap.put("error", e.getMessage());
+        }
+
+        return retMap;
+    }
+
+    // (2) 블랙리스트 등록 취소 버튼
+    @PutMapping(value = "/updategraylist.json")
+    public Map<String, Object> updategraylistPUT(@RequestBody Member member) {
+        Map<String, Object> retMap = new HashMap<>();
+
+        try {
+            int ret = rService.updateToGrayList(member.getEmail());
 
             if (ret == 1) {
                 retMap.put("status", 200);

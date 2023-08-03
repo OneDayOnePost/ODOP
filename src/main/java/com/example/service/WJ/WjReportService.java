@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Service;
 
 import com.example.dto.MemberDTO;
@@ -121,4 +122,10 @@ public interface WjReportService {
 
     // 신고되어 삭제된 댓글 수
     public int selectReplyReportDeleteCount(@Param("email") String email);
+
+    // 일반 회원(블랙리스트 대기 회원) -> 블랙리스트로 변경
+    public int updateToBlackList(@Param("email") String email);
+
+    // 블랙리스트 회원 -> 일반회원(블랙리스트 대기)으로 변경
+    public int updateToGrayList(@Param("email") String email);
 }
