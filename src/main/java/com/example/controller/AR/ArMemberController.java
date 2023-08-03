@@ -106,7 +106,8 @@ public class ArMemberController {
             
 
             
-            if(member != null){
+            if (member != null) {
+
                 if(atIndex <= 3){
                     String shortemail = member.getEmail().toString().charAt(0) + "*****" + member.getEmail().toString().substring(atIndex);
                     httpSession.setAttribute("alertTitle",member.getName()+"님의 아이디는");                
@@ -126,7 +127,7 @@ public class ArMemberController {
                 }
                
             }
-            else{
+            else {
                 httpSession.setAttribute("alertTitle", "존재 하지 않는 정보입니다.");                
                 httpSession.setAttribute("alertMessage", "가입 후 로그인 해주세요.");
                 httpSession.setAttribute("alertUrl", "/login.do");
