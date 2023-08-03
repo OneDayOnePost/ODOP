@@ -12,4 +12,6 @@ public class ReportListDTO {
     private String email;
 
     private BigInteger reportcount;
+
+    private BigInteger state;
 }

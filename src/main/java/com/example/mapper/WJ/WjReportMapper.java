@@ -12,6 +12,7 @@ import org.apache.ibatis.annotations.Update;
 import com.example.dto.ReportOneDTO;
 import com.example.entity.Member;
 import com.example.dto.MemberDTO;
+import com.example.dto.MemberListViewDTO;
 import com.example.dto.PostDTO;
 import com.example.dto.ReplyDTO;
 import com.example.dto.ReportListDTO;
@@ -20,7 +21,7 @@ import com.example.dto.ReportListDTO;
 public interface WjReportMapper {
     // 게시글
     // 1. 전체 신고 목록
-    @Select({" SELECT pr.postno AS no, p.writer AS email, COUNT(*) AS reportcount FROM POST_REPORT pr LEFT JOIN post p ON pr.POSTNO = p.NO WHERE p.state != 1 GROUP BY pr.POSTNO ORDER BY no DESC "})
+    @Select({" SELECT pr.postno AS no, p.writer AS email, COUNT(*) AS reportcount, p.state FROM POST_REPORT pr LEFT JOIN post p ON pr.POSTNO = p.NO GROUP BY pr.POSTNO ORDER BY no DESC "})
     public List<ReportListDTO> selectPostListAll();
 
     // 2. 승인 대기
@@ -28,9 +29,18 @@ public interface WjReportMapper {
     @Select({" SELECT * FROM (SELECT pr.postno AS no, p.writer AS email, COUNT(*) AS reportcount FROM POST_REPORT pr LEFT JOIN post p ON pr.POSTNO = p.NO WHERE p.state = 0 GROUP BY pr.POSTNO) WHERE reportcount >= 2 ORDER BY reportcount DESC, no DESC "})
     public List<ReportListDTO> selectPostListWait();
 
-    // 3. 삭제 완료
+    // 3. 관리자 삭제
     @Select({" SELECT pr.postno AS no, p.writer AS email, COUNT(*) AS reportcount FROM POST_REPORT pr LEFT JOIN post p ON pr.POSTNO = p.NO WHERE p.state = -1 GROUP BY pr.POSTNO ORDER BY no DESC "})
-    public List<ReportListDTO> selectPostListDelete();
+    public List<ReportListDTO> selectPostListDeleteByAdmin();
+
+    // 4. 작성자 삭제
+    @Select({" SELECT pr.postno AS no, p.writer AS email, COUNT(*) AS reportcount FROM POST_REPORT pr LEFT JOIN post p ON pr.POSTNO = p.NO WHERE p.state = 1 GROUP BY pr.POSTNO ORDER BY no DESC "})
+    public List<ReportListDTO> selectPostListDeleteByWriter();
+
+    // 5. 기준 미달
+    // 숫자 2 나중에 변경 해야함 10으로!!!!!
+    @Select({" SELECT * FROM (SELECT pr.postno AS no, p.writer AS email, COUNT(*) AS reportcount FROM POST_REPORT pr LEFT JOIN post p ON pr.POSTNO = p.NO WHERE p.state = 0 GROUP BY pr.POSTNO) WHERE reportcount < 2 ORDER BY reportcount DESC, no DESC "})
+    public List<ReportListDTO> selectPostListUnderCount();
 
     // --------------------------------------------------------------------
 
@@ -63,7 +73,7 @@ public interface WjReportMapper {
 
     // 댓글
     // 1. 전체 신고 목록
-    @Select({" SELECT rr.REPLYNO AS no, r.writer AS email, COUNT(*) AS reportcount FROM REPLY_REPORT rr LEFT JOIN reply r ON rr.REPLYNO = r.NO WHERE r.state != 1 GROUP BY rr.REPLYNO ORDER BY no DESC "})
+    @Select({" SELECT rr.REPLYNO AS no, r.writer AS email, COUNT(*) AS reportcount, r.state FROM REPLY_REPORT rr LEFT JOIN reply r ON rr.REPLYNO = r.NO GROUP BY rr.REPLYNO ORDER BY no DESC "})
     public List<ReportListDTO> selectReplyListAll();
 
     // 2. 승인 대기
@@ -71,9 +81,17 @@ public interface WjReportMapper {
     @Select({" SELECT * FROM (SELECT rr.replyno AS no, r.writer AS email, COUNT(*) AS reportcount FROM REPLY_REPORT rr LEFT JOIN REPLY r ON rr.replyno = r.NO WHERE r.state = 0 GROUP BY rr.replyno) WHERE reportcount >= 2 ORDER BY reportcount DESC, no DESC "})
     public List<ReportListDTO> selectReplyListWait();
 
-    // 3. 삭제 완료
+    // 3. 관리자 삭제
     @Select({" SELECT rr.REPLYNO AS no, r.writer AS email, COUNT(*) AS reportcount FROM REPLY_REPORT rr LEFT JOIN REPLY r ON rr.REPLYNO = r.NO WHERE r.state = -1 GROUP BY rr.REPLYNO ORDER BY no DESC "})
-    public List<ReportListDTO> selectReplyListDelete();
+    public List<ReportListDTO> selectReplyListDeleteByAdmin();
+
+    // 4. 작성자 삭제
+    @Select({" SELECT rr.REPLYNO AS no, r.writer AS email, COUNT(*) AS reportcount FROM REPLY_REPORT rr LEFT JOIN REPLY r ON rr.REPLYNO = r.NO WHERE r.state = -1 GROUP BY rr.REPLYNO ORDER BY no DESC "})
+    public List<ReportListDTO> selectReplyListDeleteByWriter();
+
+    // 5. 기준 미달
+    @Select({" SELECT * FROM (SELECT rr.replyno AS no, r.writer AS email, COUNT(*) AS reportcount FROM REPLY_REPORT rr LEFT JOIN REPLY r ON rr.replyno = r.NO WHERE r.state = 0 GROUP BY rr.replyno) WHERE reportcount < 2 ORDER BY reportcount DESC, no DESC "})
+    public List<ReportListDTO> selectReplyListUnderCount();
 
     // --------------------------------------------------------------------
 
@@ -105,13 +123,25 @@ public interface WjReportMapper {
     // --------------------------------------------------------------------
 
     // 회원
-    // 1. 전체 회원 목록
-    @Select(" SELECT email, name, phone, nickname, quitchk FROM MEMBER ORDER BY regdate DESC ")
-    public List<MemberDTO> selectMemberListAll();
+    // 1. 전체 회원 목록 => 이메일, 이름, 연락처, 닉네임, 탈퇴유무, 관리자 삭제된 게시글 수, 관리자 삭제된 댓글 수, 관리자 삭제된 (게시글 수 + 댓글 수)
+    @Select(" SELECT * FROM memberlistview ORDER BY regdate DESC ")
+    public List<MemberListViewDTO> selectMemberListAll();
 
-    // 2. 일반 회원 목록(G, 0), 블랙리스트 회원 목록 (B, -1), 탈퇴한 회원 목록 (L, 1) 
-    @Select(" SELECT email, name, phone, nickname FROM MEMBER WHERE quitchk = #{quitchk} ORDER BY regdate DESC ")
-    public List<MemberDTO> selectMemberListGBL(@Param("quitchk") BigInteger quitchk);
+    // 2. 블랙리스트 대기 회원
+    @Select(" SELECT * FROM memberlistview WHERE quitchk = 0 AND totalreportcount > 0 ORDER BY totalreportcount DESC, regdate DESC ")
+    public List<MemberListViewDTO> selectMemberListGrayList();
+
+    // 3. 일반 회원
+    @Select(" SELECT * FROM memberlistview WHERE quitchk = 0 AND totalreportcount <= 0 ORDER BY regdate DESC ")
+    public List<MemberListViewDTO> selectMemberListGeneral();
+
+    // 4. 블랙리스트 회원
+    @Select(" SELECT * FROM memberlistview WHERE quitchk = -1 ORDER BY regdate DESC ")
+    public List<MemberListViewDTO> selectMemberListBlackList();
+
+    // 5. 탈퇴한 회원
+    @Select(" SELECT * FROM memberlistview WHERE quitchk = 1 ORDER BY regdate DESC ")
+    public List<MemberListViewDTO> selectMemberListLeave();
 
     // --------------------------------------------------------------------
 
