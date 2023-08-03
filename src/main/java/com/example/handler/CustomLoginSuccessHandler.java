@@ -30,11 +30,11 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
         // 필요시 이전 페이지로 이동함
         if (role.equals("ROLE_C")) { // 권한이 고객
-            response.sendRedirect(request.getContextPath() + "/home.com");
+            response.sendRedirect(request.getContextPath() + "/home.do");
         } else if (role.equals("ROLE_A")) { // 권한이 관리자
-            response.sendRedirect(request.getContextPath() + "/home.com");
+            response.sendRedirect(request.getContextPath() + "/home.do");
         } else { // 위의 권한이 아닌 경우
-            response.sendRedirect(request.getContextPath() + "/home.com");
+            response.sendRedirect(request.getContextPath() + "/home.do");
         }
     }
 

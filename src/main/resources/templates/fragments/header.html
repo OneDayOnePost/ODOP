@@ -43,19 +43,26 @@
 
                 <!-- 헤더 오른쪽 아이콘들 -->
                 <div class="header-icons">
-                    <div class="new-post">
-                        <a th:href="@{/mhwrite.do}"><input type="button" value="새 글 작성"></a>
-                    </div>
-                    <div class="notification-icon">
-                        <i class="bi bi-bell"></i>
-                    </div>
-                    <div class="my-page-icon" id="myPageIcon">
-                        <i class="bi bi-person-circle"></i>
-                    </div>
-                    <!-- 로그인 안됐을 시 활성화 되는 버튼
-                    <div class="login-btn">
-                        <input type="button" value="로그인">
-                    </div> -->
+                    <!-- 로그인 되어있을 때 -->
+                    <th:block th:if="${user} != null">
+                        <div class="new-post">
+                            <a th:href="@{/mhwrite.do}"><input type="button" value="새 글 작성"></a>
+                        </div>
+                        <div class="notification-icon">
+                            <i class="bi bi-bell"></i>
+                        </div>
+                        <div class="my-page-icon" id="myPageIcon">
+                            <i class="bi bi-person-circle"></i>
+                        </div>
+                    </th:block>
+
+                    <!-- 로그인 되어있지 않을 때 -->
+                    <th:block th:if="${user} == null">                   
+                        <div class="login-btn">
+                            <a th:href="@{/login.do}"><input type="button" value="로그인"></a>
+                        </div>
+                    </th:block>
+
                 </div>
             </div>
         </header>
@@ -64,9 +71,6 @@
         <nav class="sub-menu" id="subMenu">
             <!-- 서브 메뉴 항목들 -->
             <ul>
-                <!-- <li><a href="#">메뉴1</a></li>
-                <li><a href="#">메뉴2</a></li>
-                <li><a href="#">메뉴3</a></li> -->
                 <div class="col">
                     <div class="col2">
                         <i class="bi bi-caret-down-fill"></i>
@@ -175,7 +179,7 @@
             <ul>
                 <li><a th:href="@{/myblog.do}">My Blog</a></li>
                 <hr style="border: solid 0.5px #3A5485; margin-top:15px; margin-bottom: 15px;">
-                <li><a href="#">로그아웃</a></li>
+                <li><a th:onclick="logoutAction()">로그아웃</a></li>
             </ul>
         </nav>
 
@@ -208,6 +212,27 @@
             myPageIcon.addEventListener('click', () => {
                 myPageMenu.classList.toggle('show');
             });
+
+            // 로그아웃
+            function logoutAction(){
+                const logoutform = document.createElement("form");
+                // logoutform.action = /*[[@{/logout.do}]]*/"";
+                // logoutform.method = "post";
+                // logoutform.style.display="none";
+                logoutform.setAttribute("action", [[@{/logout.do}]] );
+                logoutform.setAttribute("method", "post");
+                logoutform.style.display = "none";
+
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = "_csrf";
+                input.value =  /*[[${_csrf.token}]]*/"";
+                logoutform.appendChild(input);
+
+                document.body.appendChild(logoutform);
+                logoutform.submit();
+            }
+
         </script>
     </div>
 
