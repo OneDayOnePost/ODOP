@@ -223,6 +223,10 @@
             margin-left: 15px;
             
         }
+
+        .modal-body>div {
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -251,7 +255,7 @@
                                 <div style="padding-top: 25px;">
                                     <span class="label_span">연락처</span>
                                     <input class="phone_input" type="text" maxlength="13" id="phone"
-                                        name="phone" style="margin-left: 26px;" placeholder="000-0000-0000">
+                                        name="phone" style="margin-left: 26px;" placeholder="'-'하이픈을 제외하고 입력해 주세요">
                                 </div>
                             </div>
                             <div id="buttonbox">
@@ -280,12 +284,41 @@
     <th:block th:replace="~{/fragments/footer :: footerHTML}"></th:block>
 
 
+     <!-- modal 알림창 -->
+     <div class="modal fade" id="alert" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body" style="display: inline-block;">
+                    <div style="margin-bottom: 10px;"><i class="fas fa-duotone fa-shield-check"></i></div>
+                    <!-- 적절한 아이콘 추후 변경 -->
+                    <div><label id="title" style="padding-bottom: 10px;"></label></div>
+                    <div>
+                        <label id="content" style="color: gray; font-weight: bold; font-size: 19px;"></label>
+                    </div><br />
+                    <div>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            style="height: 35px; width: 80px; border-radius: 50px;" onclick="focusElement()">확인</button>
+                    </div>
+                    <!-- 홈으로 이동 -->
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.5/axios.min.js"></script>
     <script th:inline="javascript" type="text/javascript">
+
+
+        const modal = new bootstrap.Modal(
+            document.getElementById("alert"),
+            {}
+        );
+
+
 
          //전화번호 자동 하이픈 처리
          var autoHypenPhone = function (str) {
@@ -331,17 +364,23 @@
 
     //form 전송
         function findAction() {
-            const name = document.getElementById("name").value;
-            const phone = document.getElementById("phone").value;
+            const name = document.getElementById("name");
+            const phone = document.getElementById("phone");
 
-            if(name.length <= 0 ){
-                alert('이름을 입력해주세요');
-                name.focus;
+            if(name.value.length <= 0 ){
+                document.querySelector("#title").style ="display:none;";
+                document.querySelector("#title").setAttribute("focusElement", "name");
+                document.querySelector("#content").textContent = "이름을 입력해주세요.";
+
+                modal.show();
                 return false;
             }
-            if(phone.length <= 0){
-                alert('전화번호를 입력해주세요');
-                phone.focus;
+            if(phone.value.length <= 0){
+                document.querySelector("#title").style ="display:none;";
+                document.querySelector("#title").setAttribute("focusElement", "phone");
+                document.querySelector("#content").textContent = "전화번호를 입력해주세요.";
+
+                modal.show();
                 return false;
             }
             
@@ -349,6 +388,18 @@
             document.getElementById("findemailform").submit();
 
         }
+
+
+
+    
+    function focusElement() {
+        
+        var focusElement = document.querySelector("#title").getAttribute("focusElement");
+
+        console.log(focusElement);
+        
+        document.getElementById(`${focusElement}`).focus();
+    }
     </script>
 </body>
 
