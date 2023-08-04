@@ -31,14 +31,25 @@ public class SecurityServiceImpl implements UserDetailsService {
 
         Member obj = mRepository.findById(username).orElse(null);
 
+        log.info(obj.toString());
+
         // 아이디가 있는 경우
         if (obj != null) { 
             if (obj.getPassword() != null) {
-                return User.builder()
+                if (obj.getRole().equals("C")) {
+                    return User.builder()
                         .username(obj.getEmail())
                         .password(obj.getPassword())
                         .roles("C")
                         .build();
+                }
+                else if (obj.getRole().equals("A")) {
+                    return User.builder()
+                        .username(obj.getEmail())
+                        .password(obj.getPassword())
+                        .roles("A")
+                        .build();
+                }
             }
         }
 

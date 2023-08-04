@@ -179,15 +179,15 @@
             <nav class="sub-menu" id="myPageMenu">
                 <ul>
                     <li><a th:href="@{/myblog.do}">My Blog</a></li>
+                    <li th:if="${#strings.contains(user.authorities, 'ROLE_A')}"><a th:href="@{/adminhome.do}">관리자 홈</a></li>
                     <hr style="border: solid 0.5px #3A5485; margin-top:15px; margin-bottom: 15px;">
-                            <li th:if="${user.authorities} == [ROLE_A]"><a th:href="@{/adminhome.do}">관리자 홈</a></li>
-                            <hr th:if="${user.authorities} == [ROLE_A]" style="border: solid 0.5px #3A5485; margin-top:15px; margin-bottom: 15px;">
+                            <!-- <hr th:if="${user.authorities} == [ROLE_A]" style="border: solid 0.5px #3A5485; margin-top:15px; margin-bottom: 15px;"> -->
                     <li><a th:onclick="logoutAction()">로그아웃</a></li>
                 </ul>
             </nav>
         </th:block>
         
-        <!-- <th:block th:if="${ user != null and user.authorities} == [ROLE_C]">
+        <!-- <th:block th:if="${user != null && user.authorities == '[ROLE_C]'}">
             <nav class="sub-menu" id="myPageMenu">
                 <ul>
                     <li><a th:href="@{/myblog.do}">My Blog</a></li>
@@ -197,7 +197,7 @@
             </nav>
         </th:block>
 
-        <th:block th:if="${ user != null and user.authorities} == [ROLE_A]">
+        <th:block th:if="${user != null && user.authorities == '[ROLE_A]'}">
             <nav class="sub-menu" id="myPageMenu">
                 <ul>
                     <li><a th:href="@{/myblog.do}">My Blog</a></li>
