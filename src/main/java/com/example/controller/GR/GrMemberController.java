@@ -53,6 +53,7 @@ public class GrMemberController {
                 
                 // log.info("categoryId received: {}", categoryId);
                 log.info("user 정보 => {}", user.toString());
+                log.info("user user => {}", user.getAuthorities());
 
                 if (categoryId != null) {
                     log.info("categoryId: {}", categoryId); // categoryId 값 로그로 출력
