@@ -635,6 +635,7 @@
             const nickname = document.getElementById("nickname");
             const phone = document.getElementById("phone");
             const mbti = document.getElementById("mbti");
+            const nickchk = document.getElementById("nickchk");
             //중복확인 안했을 때 유효성 검사 (emjoongbokchk = y , 중복 확인 o)
             const emjoongbokchk = $('input[name=emjoongbokchk]').val();
             const nickjoongbokchk = $('input[name=nickjoongbokchk]').val();
@@ -702,17 +703,25 @@
                 return false;
             }
             if (emjoongbokchk == '') {
-                alert('이메일 중복 확인을 해주세요');
+                document.querySelector("#title").style ="display:none;";
+                document.querySelector("#title").setAttribute("focusElement", "email1");
+                document.querySelector("#content").textContent = "이메일 중복 확인을 해주세요";
+
+                modal.show();
                 return false;
             }
             if (nickjoongbokchk == '') {
-                alert('닉네임 중복 확인을 해주세요');
+                document.querySelector("#title").style ="display:none;";
+                document.querySelector("#title").setAttribute("focusElement", "nickname");
+                document.querySelector("#content").textContent = "닉네임 중복 확인을 해주세요";
+
+                modal.show();
                 return false;
             }
 
             // 전송하기
             document.getElementById("form").submit();
-            alert('회원가입되었습니다.');
+            
 
 
         }
