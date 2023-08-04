@@ -181,7 +181,6 @@
                     <li><a th:href="@{/myblog.do}">My Blog</a></li>
                     <li th:if="${#strings.contains(user.authorities, 'ROLE_A')}"><a th:href="@{/adminhome.do}">관리자 홈</a></li>
                     <hr style="border: solid 0.5px #3A5485; margin-top:15px; margin-bottom: 15px;">
-                            <!-- <hr th:if="${user.authorities} == [ROLE_A]" style="border: solid 0.5px #3A5485; margin-top:15px; margin-bottom: 15px;"> -->
                     <li><a th:onclick="logoutAction()">로그아웃</a></li>
                 </ul>
             </nav>
