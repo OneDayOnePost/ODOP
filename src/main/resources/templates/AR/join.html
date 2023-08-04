@@ -352,13 +352,13 @@
                 <div class="modal-body" style="display: inline-block;">
                     <div style="margin-bottom: 10px;"><i class="fas fa-duotone fa-shield-check"></i></div>
                     <!-- 적절한 아이콘 추후 변경 -->
-                    <div><label id="title"></label></div>
+                    <div><label id="title" style="padding-bottom: 10px;"></label></div>
                     <div>
-                        <label id="content" style="color: gray; font-weight: bold; font-size: small;"></label>
+                        <label id="content" style="color: gray; font-weight: bold; font-size: 19px;"></label>
                     </div><br />
                     <div>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                            style="height: 35px; width: 80px;" onclick="focusElement()">확인</button>
+                            style="height: 35px; width: 80px; border-radius: 50px;" onclick="focusElement()">확인</button>
                     </div>
                     <!-- 홈으로 이동 -->
                 </div>
@@ -420,36 +420,56 @@
         var emcheck = 0; //1 이면 사용 가능
         async function ajaxEmCheck(e) {
             const email = document.getElementById("email");
+            const password = document.getElementById("password");
 
             if (email.value.length > 0) {
                 // rest api 호출
-                const url = [[@{/ api / emailcheck.do}]]+ `?email=${email.value}`;
-            const headers = { "Content-Type": "application/json" };
-            const { data } = await axios.get(url, { headers });
+                const url = [[@{/api/emailcheck.do}]]+ `?email=${email.value}`;
+                const headers = { "Content-Type": "application/json" };
+                const { data } = await axios.get(url, { headers });
 
 
-            // console.log(data.ret);
+                // console.log(data.ret);
 
 
-            if (data.ret === 1) {
-                // 사용 불가
-                emcheck = 0;
-                alert('이미 존재하는 이메일입니다.');
-                e.value = '';
+                if (data.ret === 1) {
+                    // 사용 불가
+                    emcheck = 0;
+                    document.querySelector("#title").textContent ="이메일 중복 확인";
+                    document.querySelector("#title").setAttribute("focusElement", "email1");
+                    document.querySelector("#content").textContent = "이미 존재하는 이메일입니다";
+
+                    modal.show();
+                    // console.log(email.value);
+
+                    email.value = '';
+                    email1.value ='';
+                    //selectemail 부분을 초기화 시키면 그 이후 다시 선택시 선택값 안바뀜 오류
+                    return false;
+
+
+                }
+                else if (data.ret === 0) {
+                    // 사용 가능
+                    emcheck = 1;
+                    document.querySelector("#title").textContent ="이메일 중복 확인";
+                    document.querySelector("#title").setAttribute("focusElement", "password");
+                    document.querySelector("#content").textContent = "사용 가능한 이메일입니다";
+
+                    $('input[name=emjoongbokchk]').attr('value', 'y'); //중복확인 여부
+                    // console.log($('input[name=emjoongbokchk]').val());
+                    modal.show();
+
+                }
             }
-            else if (data.ret === 0) {
-                // 사용 가능
-                emcheck = 1;
-                alert('사용 가능한 이메일입니다.');
-                document.getElementById("password").focus();
-                $('input[name=emjoongbokchk]').attr('value', 'y'); //중복확인 여부
-                // console.log($('input[name=emjoongbokchk]').val());
-            }
-        }
             else {
-            alert('이메일을 입력하세요.');
-            e.focus();
-        }
+                document.querySelector("#title").textContent ="이메일 중복 확인";
+                document.querySelector("#title").setAttribute("focusElement", "email1");
+                document.querySelector("#content").textContent = "이메일을 입력하세요";
+
+                modal.show();
+                return false; // 함수종료, 전송하지 않음
+            }
 
         }
 
@@ -503,9 +523,10 @@
         async function ajaxNickCheck(nick) {
 
             const nickname = document.getElementById("nickname");
+            const phone  = document.getElementById("phone");
 
             if (nickname.value.length > 0) {
-                const url = /*[[@{/api/nickcheck.do}]]*/ + `?nickname=${nickname.value}`;
+                const url = [[@{/api/nickcheck.do}]] + `?nickname=${nickname.value}`;
                 const headers = { "Content-Type": "application/json" };
                 const { data } = await axios.get(url, { headers });
 
@@ -515,25 +536,35 @@
                 if (data.ret === 1) {
                     //사용 불가
                     nickcheck = 0;
+                    document.querySelector("#title").textContent ="닉네임 중복 확인";
+                    document.querySelector("#title").setAttribute("focusElement", "nickname");
+                    document.querySelector("#content").textContent = "이미 존재하는 닉네임입니다";
+                    modal.show();
                     nick.value = '';
-                    alert('이미 존재하는 닉네임입니다. ');
 
-                    console.log(data.ret.value);
                 }
                 else if (data.ret === 0) {
                     //사용 가능
                     nickcheck = 1;
-                    alert('사용 가능한 닉네임입니다.');
-                    document.getElementById("phone").focus();
+                    document.querySelector("#title").textContent ="닉네임 중복 확인";
+                    document.querySelector("#title").setAttribute("focusElement", "phone");
+                    document.querySelector("#content").textContent = "사용 가능한 닉네임입니다";
                     $('input[name=nickjoongbokchk]').attr('value', 'y'); //중복확인 여부
-                    console.log($('input[name=nickjoongbokchk]').val());
+
+                    modal.show();
+                    return false; // 함수종료, 전송하지 않음
+
 
                 }
 
             }
             else {
-                alert('닉네임을 입력하세요.');
-                nick.focus();
+                document.querySelector("#title").textContent ="닉네임 중복 확인";
+                document.querySelector("#title").setAttribute("focusElement", "nickname");
+                document.querySelector("#content").textContent = "닉네임을 입력하세요";
+
+                modal.show();
+                return false; // 함수종료, 전송하지 않음
             }
         }
 
@@ -614,45 +645,60 @@
             // 1. 모든 항목이 입력되어 있어야함
             if (email.value.length <= 0) {
 
-                document.querySelector("#title").textContent = "이메일 입력";
+                document.querySelector("#title").style ="display:none;";
                 document.querySelector("#title").setAttribute("focusElement", "email1");
                 document.querySelector("#content").textContent = "이메일을 입력하세요";
 
                 modal.show();
-                // alert("이메일을 입력해주세요");
-                email1.focus();
-
                 return false; // 함수종료, 전송하지 않음
             }
             if (pw.value.length <= 0) {
-                alert('비밀번호를 입력하세요');
-                pw.focus();
+                document.querySelector("#title").style ="display:none;";
+                document.querySelector("#title").setAttribute("focusElement", "pw");
+                document.querySelector("#content").textContent = "비밀번호를 입력하세요";
+
+                modal.show();
                 return false;
             }
             if (pwcheck.value.length <= 0) {
-                alert('비밀번호 확인을 입력하세요');
-                pwcheck.focus();
+                document.querySelector("#title").style ="display:none;";
+                document.querySelector("#title").setAttribute("focusElement", "pwcheck");
+                document.querySelector("#content").textContent = "비밀번호 확인을 입력하세요";
+
+                modal.show();
                 return false;
             }
 
             if (name.value.length <= 0) {
-                alert('이름을 입력하세요');
-                name.focus();
+                document.querySelector("#title").style ="display:none;";
+                document.querySelector("#title").setAttribute("focusElement", "name");
+                document.querySelector("#content").textContent = "이름을 입력하세요";
+
+                modal.show();
                 return false;
             }
             if (nickname.value.length <= 0) {
-                alert('닉네임을 입력하세요');
-                nickname.focus();
+                document.querySelector("#title").style ="display:none;";
+                document.querySelector("#title").setAttribute("focusElement", "nickname");
+                document.querySelector("#content").textContent = "닉네임을 입력하세요";
+
+                modal.show();
                 return false;
             }
             if (phone.value.length <= 0) {
-                alert('전화번호를 입력하세요');
-                phone.focus();
+                document.querySelector("#title").style ="display:none;";
+                document.querySelector("#title").setAttribute("focusElement", "phone");
+                document.querySelector("#content").textContent = "전화번호를 입력하세요";
+
+                modal.show();
                 return false;
             }
             if (mbti.value.length <= 0) {
-                alert('mbti를 입력하세요');
-                mbti.focus();
+                document.querySelector("#title").style ="display:none;";
+                document.querySelector("#title").setAttribute("focusElement", "mbti");
+                document.querySelector("#content").textContent = "MBTI를 선택하세요";
+
+                modal.show();
                 return false;
             }
             if (emjoongbokchk == '') {

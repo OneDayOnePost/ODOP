@@ -30,7 +30,7 @@ public class Member {
 
   // 암호
   @Column(nullable = false)
-  @ToString.Exclude
+  //tostring.exclude 있으면 로그인이 안되는데 .. 이무슨.,일일까용. . 
   private String password;
 
   // 이름
