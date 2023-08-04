@@ -14,9 +14,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -35,7 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j 
 @RequestMapping
 @RequiredArgsConstructor
-public class GrMyBlogController {
+public class GrMemberController {
 
     // test용
     final GrMyblogMapper gMapper;
@@ -43,16 +47,18 @@ public class GrMyBlogController {
     final private GrMemberRepository gRepository;
 
     @GetMapping(value = "/myblog.do")
-    public String myblogGET(Model model,
+    public String myblogGET(Model model,  @AuthenticationPrincipal User user,
         @RequestParam(name = "categoryId", required = false) Long categoryId) { // @AuthenticationPrincipal User user
             try {
                 
                 // log.info("categoryId received: {}", categoryId);
+                log.info("user 정보 => {}", user.toString());
+                log.info("user user => {}", user.getAuthorities());
 
                 if (categoryId != null) {
                     log.info("categoryId: {}", categoryId); // categoryId 값 로그로 출력
                     log.info("cate val => {}", BigInteger.valueOf(categoryId));
-                    List<Post> list = postRepository.findByWriterAndCateNo("test1@gmail.com", BigInteger.valueOf(categoryId));
+                    List<Post> list = postRepository.findByWriterAndCateNo(user.getUsername(), BigInteger.valueOf(categoryId));
                     model.addAttribute("list", list);
                     log.info("rkfka => {}", list.toString());
 
@@ -70,7 +76,7 @@ public class GrMyBlogController {
                 } else {
                     // 카테고리를 선택하지 않았을 때의 기본 동작
                     // 기본적으로 전체 포스트 목록을 보여주는 등의 처리를 추가할 수 있음
-                    List<Post> list = postRepository.findByWriter("test1@gmail.com");
+                    List<Post> list = postRepository.findByWriter(user.getUsername());
                     model.addAttribute("list", list);
                     log.info("skdhkfk => {}", list.toString());
 
@@ -87,17 +93,18 @@ public class GrMyBlogController {
 
 
 
-                    Member user = gRepository.findById("test1@gmail.com").orElse(null);
-                    int following = gMapper.countfollowing("test1@gmail.com");
-                    int follower = gMapper.countfollower("test1@gmail.com");
+                    Member member = gRepository.findById(user.getUsername()).orElse(null);
+                    int following = gMapper.countfollowing(user.getUsername());
+                    int follower = gMapper.countfollower(user.getUsername());
 
-                    log.info("user => {}", user.toString());
+                    log.info("user1 => {}", user.toString());
 
                     // 카테고리별 게시글 갯수
-                    List<Map<String, Integer>> pclist = gMapper.selectpostcatecount("test1@gmail.com");
+                    List<Map<String, Integer>> pclist = gMapper.selectpostcatecount(user.getUsername());
                     log.info("listlist=>{}", pclist.toString());
 
                     model.addAttribute("user", user);
+                    model.addAttribute("member", member);
                     model.addAttribute("following", following);
                     model.addAttribute("follower", follower);
                     model.addAttribute("pclist", pclist);
@@ -122,17 +129,44 @@ public class GrMyBlogController {
 
     //  마이페이지
     @GetMapping(value="/mypage.do")
-    public String mypageGET(Model model){
+    public String mypageGET(Model model, @AuthenticationPrincipal User user){
         try{
-            Member user = gRepository.findById("test1@gmail.com").orElse(null);
+            Member member = gRepository.findById(user.getUsername()).orElse(null);
 
+            model.addAttribute("member", member);
             model.addAttribute("user", user);
             return "/GR/mypage";
         }
         catch(Exception e){
             e.printStackTrace();
-            return "/myblog";
+            return "/home";
         }
+    }
+
+    @PostMapping(value = "/mypage_blog.do")
+    public String mypagePOST(@ModelAttribute Member member, @AuthenticationPrincipal User user){
+
+        // 블로그 내용 변경
+        try {
+
+            Member m = gRepository.findById(user.getUsername()).orElse(null);
+
+            log.info("rkrkrk => {}", member.toString());
+            log.info("가람 => {}", m.toString());
+
+            m.setBlogname(member.getBlogname());
+            m.setIntroduce(member.getIntroduce());
+
+            Member ret = gRepository.save(m);
+
+            return "redirect:/mypage.do";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "/home";
+        }
+       
+
     }
     
 }

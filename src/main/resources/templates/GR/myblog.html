@@ -360,18 +360,18 @@
     <!-- 본문 영역 -->
     <div id="wrapper" class="container" style="margin-bottom: 200px;">
         <div class="blogname d-flex justify-content-center">
-            <h3 th:text="${user.blogname}"></h3>
+            <h3 th:text="${member.blogname}"></h3>
         </div>
 
             <div id="blog_box" class="container">
                 <div id="left-area">
                     <div class="blog-profile">
                         <div class="myimg">
-                            <img th:src="${user.imgpath}" th:key="${user.imgkey}" width="100px" height="100px" onerror="this.src='images/default_thumbnail.png'">
+                            <img th:src="${member.imgpath}" th:key="${member.imgkey}" width="100px" height="100px" onerror="this.src='images/default_thumbnail.png'">
                         </div>
                         <div class="myinfo_box">
                             <div class="myinfo">
-                                <p th:text="${user.nickname}"></p>
+                                <p th:text="${member.nickname}"></p>
                                 <div class="myinfo_follow">
                                     <div class="myfollowing">
                                         <div class="follow_number" th:text="${following}"></div>
@@ -391,7 +391,7 @@
                                 <a th:href="@{/mypage.do}"><input type="button" value="내 정보 수정"></a>
                             </div>
                             <div class="introduce">
-                                <p th:text="${user.introduce}"></p>
+                                <p th:text="${member.introduce}"></p>
                             </div>
                         </div>
                         <div class="my_category">
