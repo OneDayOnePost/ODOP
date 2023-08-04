@@ -372,6 +372,8 @@
 
     <script th:inline="javascript" type="text/javascript">
 
+        const contextPath = $('#contextPathHolder').attr('data-contextPath');
+
         const modal = new bootstrap.Modal(
             document.getElementById("alert"),
             {}
@@ -422,11 +424,12 @@
             const email = document.getElementById("email");
 
             if (email.value.length > 0) {
-                // rest api 호출
-                const url = [[@{/ api / emailcheck.do}]]+ `?email=${email.value}`;
-            const headers = { "Content-Type": "application/json" };
-            const { data } = await axios.get(url, { headers });
 
+
+                // rest api 호출
+                const url = `${contextPath}/api/emailcheck.do?email=${email.value}`;
+                const headers = { "Content-Type": "application/json" };
+                const { data } = await axios.get(url, { headers });
 
             // console.log(data.ret);
 
@@ -505,7 +508,7 @@
             const nickname = document.getElementById("nickname");
 
             if (nickname.value.length > 0) {
-                const url = /*[[@{/api/nickcheck.do}]]*/ + `?nickname=${nickname.value}`;
+                const url = `${contextPath}/api/nickcheck.do?nickname=${nickname.value}`;
                 const headers = { "Content-Type": "application/json" };
                 const { data } = await axios.get(url, { headers });
 
