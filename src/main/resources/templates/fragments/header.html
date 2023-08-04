@@ -175,17 +175,39 @@
         </nav>
 
         <!-- 프로필 눌렀을 때 나오는 메뉴 -->
-        <nav class="sub-menu" id="myPageMenu">
-            <ul>
-                <li><a th:href="@{/myblog.do}">My Blog</a></li>
-                <hr style="border: solid 0.5px #3A5485; margin-top:15px; margin-bottom: 15px;">
-                <!-- <th:block th:if="${ user != null and user.authorities} == [ROLE_A]">
+        <th:block th:if="${user != null}">
+            <nav class="sub-menu" id="myPageMenu">
+                <ul>
+                    <li><a th:href="@{/myblog.do}">My Blog</a></li>
+                    <hr style="border: solid 0.5px #3A5485; margin-top:15px; margin-bottom: 15px;">
+                            <li th:if="${user.authorities} == [ROLE_A]"><a th:href="@{/adminhome.do}">관리자 홈</a></li>
+                            <hr th:if="${user.authorities} == [ROLE_A]" style="border: solid 0.5px #3A5485; margin-top:15px; margin-bottom: 15px;">
+                    <li><a th:onclick="logoutAction()">로그아웃</a></li>
+                </ul>
+            </nav>
+        </th:block>
+        
+        <!-- <th:block th:if="${ user != null and user.authorities} == [ROLE_C]">
+            <nav class="sub-menu" id="myPageMenu">
+                <ul>
+                    <li><a th:href="@{/myblog.do}">My Blog</a></li>
+                    <hr style="border: solid 0.5px #3A5485; margin-top:15px; margin-bottom: 15px;">
+                    <li><a th:onclick="logoutAction()">로그아웃</a></li>
+                </ul>
+            </nav>
+        </th:block>
+
+        <th:block th:if="${ user != null and user.authorities} == [ROLE_A]">
+            <nav class="sub-menu" id="myPageMenu">
+                <ul>
+                    <li><a th:href="@{/myblog.do}">My Blog</a></li>
+                    <hr style="border: solid 0.5px #3A5485; margin-top:15px; margin-bottom: 15px;">
                     <li><a th:href="@{/adminhome.do}">관리자 홈</a></li>
                     <hr style="border: solid 0.5px #3A5485; margin-top:15px; margin-bottom: 15px;">
-                </th:block> -->
-                <li><a th:onclick="logoutAction()">로그아웃</a></li>
-            </ul>
-        </nav>
+                    <li><a th:onclick="logoutAction()">로그아웃</a></li>
+                </ul>
+            </nav>
+        </th:block> -->
 
         <script th:inline="javascript" type="text/javascript">
             // 햄버거 버튼과 서브 메뉴 요소를 가져옴
