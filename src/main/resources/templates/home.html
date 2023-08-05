@@ -40,7 +40,131 @@
       position: relative;
       transform: translateY(-100%);
     }
-    /* */
+   
+
+    /* 본문 내용 */
+    .container{
+        max-width: 1210px;
+        margin-bottom: 200px;
+    }
+
+    #menu-box {
+      margin-top: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+    }
+
+    #left-area{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #left-area i{
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    #left-area a{
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #right-area{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* 셀렉박스 */
+    #select-box{
+      width: 100px;
+      height: 35px;
+      padding-left: 5px;
+      padding-right: 5px;
+      background-color: #EFEFEF;
+      border: #EFEFEF;
+      
+    }
+
+    /* 검색창 */
+    .search-container {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 5px;
+      width: 240px;
+      height: 40px;
+      flex-shrink: 0; /* 아이콘이 줄어들지 않도록 고정 */
+    }
+
+    .search-input {
+      border: none;
+      outline: none;
+      flex: 1;
+      padding: 5px;
+      width: ;
+    }
+
+    .search-icon {
+      color: #999;
+      margin-left: 5px;
+      cursor: pointer;
+    }
+
+    .search-button{
+      background-color: transparent; 
+      border: none;
+    }
+
+    /* 게시글 부분 */
+    #items{
+      padding: 20px 30px;
+      display: flex;
+    }
+
+    #item{
+      width: 260px;
+    }
+
+    #content_1{
+      background-color: #DFECF6;
+      padding: 7px 14px;
+    }
+    #title{
+      font-size: 17px;
+      line-height: 1.5;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      font-weight: bold;
+    }
+
+    #profile a{
+      font-size: 14px;
+    }
+
+    #main-img{
+      width: 260px;
+      height: 200px;
+    }
+
+    #content_2{
+      background-color: #DFECF6;
+      padding: 7px 10px;
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    #like i{
+      color: #FF5555;
+    }
 
   </style>
 
@@ -57,7 +181,58 @@
 
     <!-- 본문 영역 -->
     <div id="wrapper" class="container">
-      <h1>본문본문</h1>
+      <div id="menu-box">
+        <div id="left-area">
+          <a><i class="bi bi-heart"></i>&nbsp;&nbsp;좋아요</a>&nbsp;
+          <a><i class="bi bi-clock-history"></i>&nbsp;&nbsp;최신순</a>&nbsp;
+          <!-- 팔로잉 버튼은 로그인 했을 때 나타남 -->
+          <th:block th:if="${user} != null">
+            <a><i class="bi bi-person-check"></i>&nbsp;&nbsp;팔로잉</a>
+          </th:block>
+        </div>
+        <div id="right-area">
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <select name="" id="select-box" >
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+            <div class="search-container">
+              <input type="text" class="search-input" placeholder="검색어를 입력하세요">
+              <button type="button" class="search-button" >
+                <i class="bi bi-search search-icon"></i>
+              </button>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+      <div id="items">
+        <div id="item">
+          <div id="content_1">
+            <div id="title">
+              <a>제목제목제목</a>
+            </div>
+            <div id="profile">
+              <img th:src="@{/images/default_thumbnail.png}" style="width: 20px; height: 20px;">
+              <a>닉네임</a>
+            </div>
+          </div>
+          <div id="main-img">
+            <img th:src="@{/images/gr/123123.jpg}" style="width: 260px; height: 200px;">
+          </div>
+          <div id="content_2">
+            <div id="date">
+              <a>2023.00.00</a>
+            </div>
+            <div id="like">
+              <i class="bi bi-suit-heart-fill"></i>&nbsp;<a>00</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
     </div>
 
   </div>
