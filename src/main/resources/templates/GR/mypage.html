@@ -378,7 +378,7 @@
                                 <img th:src="${member.imgpath}" th:key="${member.imgkey}" width="170px" height="170px" onerror="this.src='images/default_thumbnail.png'">
                             </div>
                             <input type="file" id="imageUpload" style="display: none;">
-                            <input class="blogbutton" type="button" value="이미지 업로드" onclick="openImageUpload()">
+                            <input class="blogbutton" type="button" value="이미지 업로드" onclick="imageUpload()">
                             <br/>
                             <div class="d-flex justify-content-center">
                                 <span class="text-button" id="profile_remove" onclick="removeImage()">이미지 제거</span>
@@ -526,12 +526,16 @@
 
         // 프로필 이미지 업로드 용
 
-        // const contextPath = $('#contextPathHolder').attr('data-contextPath');
+        const contextPath = $('#contextPathHolder').attr('data-contextPath');
 
-        // const user_email = /*[[${user.username}]]*/ ;
+        const user_email = /*[[${user.username}]]*/ ;
 
-        // var aws_key = "";
-        // var aws_path = "";
+        var aws_key = "";
+        var aws_path = "";
+
+        function imageUpload(){
+            const key = document.qur
+        }
 
         // 블로그 내용 변경
         const id = /*[[${user.username}]]*/"";

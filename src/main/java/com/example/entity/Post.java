@@ -113,6 +113,8 @@ public class Post {
   // AWS S3 리스트를 저장할 임시 변수
   @Transient
   private List<Image> imageList = new ArrayList<>();
+
+  
   
 
   
