@@ -1,11 +1,18 @@
 package com.example.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.example.service.WJ.WjCateService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping
 @RequiredArgsConstructor
 public class HomeController {
+    final WjCateService WjcService;
 
     @GetMapping(value = "/home.do")
     public String homeGET(@AuthenticationPrincipal User user, Model model) {
@@ -22,5 +30,17 @@ public class HomeController {
         // return "/fragments/header";
         return "/home";
 
+    }
+
+    // header - 서브 메뉴 (카테고리)
+    // categories 데이터가 모든 페이지의 모델에 자동으로 추가
+    @ControllerAdvice
+    public class GlobalControllerAdvice {
+        @ModelAttribute("categories")
+        public List<String> getCategories() {
+            List<String> categories = WjcService.selectCateList();
+
+            return categories;
+        }
     }
 }

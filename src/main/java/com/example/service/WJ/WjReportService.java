@@ -4,10 +4,8 @@ import java.math.BigInteger;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Service;
 
-import com.example.dto.MemberDTO;
 import com.example.dto.MemberListViewDTO;
 import com.example.dto.PostDTO;
 import com.example.dto.ReplyDTO;
