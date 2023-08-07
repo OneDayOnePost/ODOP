@@ -523,7 +523,7 @@
             const postno = document.getElementById('post_no').value;
 
             // rest api 호출
-            const url = [[@{/api/postdelete.json}]];
+            const url = [[@{/api/admin/postdelete.json}]];
             const headers = {"Content-Type":"application/json"};
             const body = {no:postno};
             const { data } = await axios.put(url, body, { headers });
@@ -564,7 +564,7 @@
             const postno = document.getElementById('post_no').value;
 
             // rest api 호출
-            const url = [[@{/api/postreportdelete.json}]] + '?no=' + postno;
+            const url = [[@{/api/admin/postreportdelete.json}]] + '?no=' + postno;
             const headers = {"Content-Type":"application/json"};
             const { data } = await axios.delete(url, { headers });
 
@@ -603,7 +603,7 @@
             const postno = document.getElementById('post_no').value;
 
             // rest api 호출
-            const url = [[@{/api/postdeletecancel.json}]];
+            const url = [[@{/api/admin/postdeletecancel.json}]];
             const headers = {"Content-Type":"application/json"};
             const body = {no:postno};
             const { data } = await axios.put(url, body, { headers });

@@ -25,12 +25,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.dto.MemberDTO;
+import com.example.entity.Follow;
 import com.example.entity.Member;
 import com.example.entity.Post;
 import com.example.mapper.GR.GrMyblogMapper;
 import com.example.repository.GR.GrMemberRepository;
 import com.example.repository.GR.GrPostRepository;
 import com.example.repository.MH.MhMemberRepository;
+import com.example.service.WJ.WjMyblogService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,9 +48,12 @@ public class GrMemberController {
     final GrPostRepository postRepository;
     final private GrMemberRepository gRepository;
 
+    final WjMyblogService wjmyblogservice;
+
     @GetMapping(value = "/myblog.do")
     public String myblogGET(Model model,  @AuthenticationPrincipal User user,
-        @RequestParam(name = "categoryId", required = false) Long categoryId) { // @AuthenticationPrincipal User user
+        @RequestParam(name = "categoryId", required = false) Long categoryId,
+        @RequestParam(name = "email", required = true) String email) { // @AuthenticationPrincipal User user
             try {
                 
                 // log.info("categoryId received: {}", categoryId);
@@ -95,7 +100,7 @@ public class GrMemberController {
 
 
 
-                    Member member = gRepository.findById(user.getUsername()).orElse(null);
+                    Member member = gRepository.findById(email).orElse(null);
                     if( member.getBlogname() == null ){
                         member.setBlogname( member.getNickname() + "님의 블로그");
                     }
@@ -112,6 +117,19 @@ public class GrMemberController {
                     // 카테고리별 게시글 갯수
                     List<Map<String, Integer>> pclist = gMapper.selectpostcatecount(user.getUsername());
                     log.info("listlist=>{}", pclist.toString());
+
+
+                    // 내 정보 수정 / 팔로우 / 언팔로우 버튼 구분
+                    Follow followbtn = wjmyblogservice.selectFollow(user.getUsername(), email);
+                    if (user.getUsername().equals(email)) { // (1) 로그인한 유저 = myblog 파라미터 => 내 정보 수정
+                        model.addAttribute("my_btn_value", 0);
+                    }
+                    else if (followbtn != null) { // (2) 로그인한 유저가 myblog 파라미터 팔로잉 o => 언팔로우 버튼
+                        model.addAttribute("my_btn_value", 1);
+                    }
+                    else if (followbtn == null) { // (3) 로그인한 유저가 myblog 파라미터 팔로잉 x => 팔로우버튼
+                        model.addAttribute("my_btn_value", 2);
+                    }
 
                     model.addAttribute("user", user);
                     model.addAttribute("member", member);

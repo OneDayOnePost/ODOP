@@ -552,7 +552,7 @@
             const email = document.getElementById('email').textContent;
 
             // rest api 호출
-            const url = [[@{/api/updateblacklist.json}]];
+            const url = [[@{/api/admin/updateblacklist.json}]];
             const headers = {"Content-Type":"application/json"};
             const body = {"email":email};
             const { data } = await axios.put(url, body, { headers });
@@ -592,7 +592,7 @@
             const email = document.getElementById('email').textContent;
 
             // rest api 호출
-            const url = [[@{/api/updategraylist.json}]];
+            const url = [[@{/api/admin/updategraylist.json}]];
             const headers = {"Content-Type":"application/json"};
             const body = {email:email};
             const { data } = await axios.put(url, body, { headers });
