@@ -87,7 +87,7 @@
     .myinfo p{
         margin-bottom: 5px;
         float: left;
-        margin-right: 80px;
+        /* margin-right: 80px; */
         padding-left: 30px;
     }
 
@@ -371,7 +371,9 @@
                         </div>
                         <div class="myinfo_box">
                             <div class="myinfo">
-                                <p th:text="${member.nickname}"></p>
+                                <div id="nickname">
+                                    <p th:text="${member.nickname}"></p>
+                                </div>
                                 <div class="myinfo_follow">
                                     <div class="myfollowing">
                                         <div class="follow_number" th:text="${following}"></div>

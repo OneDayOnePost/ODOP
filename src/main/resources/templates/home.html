@@ -124,12 +124,33 @@
 
     /* 게시글 부분 */
     #items{
-      padding: 20px 30px;
+      padding: 20px 10px 20px 30px;
       display: flex;
+
+      flex-wrap: wrap;
+      gap: 20px;
     }
 
     #item{
       width: 260px;
+
+      flex-basis: calc(25% - 20px);
+      max-width: calc(25% - 20px);
+    }
+
+    /* 미디어 쿼리를 사용하여 화면 크기에 따라 아이템 개수 조정 */
+    @media (max-width: 1023px) {
+      #item {
+        flex-basis: calc(33.33% - 20px); /* 각 아이템의 기본 크기를 33.33%로 지정 (3개가 보일 때) */
+        max-width: calc(33.33% - 20px); /* 아이템의 최대 너비를 33.33%로 지정 (3개가 보일 때) */
+      }
+    }
+
+    @media (max-width: 767px) {
+      #item {
+        flex-basis: calc(50% - 20px); /* 각 아이템의 기본 크기를 50%로 지정 (2개가 보일 때) */
+        max-width: calc(50% - 20px); /* 아이템의 최대 너비를 50%로 지정 (2개가 보일 때) */
+      }
     }
 
     #content_1{
@@ -149,9 +170,21 @@
       font-size: 14px;
     }
 
-    #main-img{
+    /* #main-img{
       width: 260px;
       height: 200px;
+    } */
+
+    #main-img {
+      width: 100%; /* 이미지의 기본 너비를 100%로 설정 */
+      height: 200px; /* 이미지 높이를 자동으로 조정하여 비율을 유지 */
+      max-width: 100%; /* 이미지의 최대 너비를 부모 요소인 #item의 너비로 설정 */
+    }
+
+    #main-img img{
+      width: 100%; /* 이미지의 기본 너비를 100%로 설정 */
+      height: 200px; /* 이미지 높이를 자동으로 조정하여 비율을 유지 */
+      max-width: 100%; /* 이미지의 최대 너비를 부모 요소인 #item의 너비로 설정 */
     }
 
     #content_2{
@@ -220,7 +253,73 @@
             </div>
           </div>
           <div id="main-img">
-            <img th:src="@{/images/gr/123123.jpg}" style="width: 260px; height: 200px;">
+            <img th:src="@{/images/gr/123123.jpg}" >
+          </div>
+          <div id="content_2">
+            <div id="date">
+              <a>2023.00.00</a>
+            </div>
+            <div id="like">
+              <i class="bi bi-suit-heart-fill"></i>&nbsp;<a>00</a>
+            </div>
+          </div>
+        </div>
+        <div id="item">
+          <div id="content_1">
+            <div id="title">
+              <a>제목제목제목</a>
+            </div>
+            <div id="profile">
+              <img th:src="@{/images/default_thumbnail.png}" style="width: 20px; height: 20px;">
+              <a>닉네임</a>
+            </div>
+          </div>
+          <div id="main-img">
+            <img th:src="@{/images/gr/123123.jpg}" >
+          </div>
+          <div id="content_2">
+            <div id="date">
+              <a>2023.00.00</a>
+            </div>
+            <div id="like">
+              <i class="bi bi-suit-heart-fill"></i>&nbsp;<a>00</a>
+            </div>
+          </div>
+        </div>
+        <div id="item">
+          <div id="content_1">
+            <div id="title">
+              <a>제목제목제목</a>
+            </div>
+            <div id="profile">
+              <img th:src="@{/images/default_thumbnail.png}" style="width: 20px; height: 20px;">
+              <a>닉네임</a>
+            </div>
+          </div>
+          <div id="main-img">
+            <img th:src="@{/images/gr/123123.jpg}" >
+          </div>
+          <div id="content_2">
+            <div id="date">
+              <a>2023.00.00</a>
+            </div>
+            <div id="like">
+              <i class="bi bi-suit-heart-fill"></i>&nbsp;<a>00</a>
+            </div>
+          </div>
+        </div>
+        <div id="item">
+          <div id="content_1">
+            <div id="title">
+              <a>제목제목제목</a>
+            </div>
+            <div id="profile">
+              <img th:src="@{/images/default_thumbnail.png}" style="width: 20px; height: 20px;">
+              <a>닉네임</a>
+            </div>
+          </div>
+          <div id="main-img">
+            <img th:src="@{/images/gr/123123.jpg}" >
           </div>
           <div id="content_2">
             <div id="date">

@@ -59,6 +59,8 @@ public class GrMemberController {
                     log.info("categoryId: {}", categoryId); // categoryId 값 로그로 출력
                     log.info("cate val => {}", BigInteger.valueOf(categoryId));
                     List<Post> list = postRepository.findByWriterAndCateNo(user.getUsername(), BigInteger.valueOf(categoryId));
+                    
+                    
                     model.addAttribute("list", list);
                     log.info("rkfka => {}", list.toString());
 
@@ -94,6 +96,14 @@ public class GrMemberController {
 
 
                     Member member = gRepository.findById(user.getUsername()).orElse(null);
+                    if( member.getBlogname() == null ){
+                        member.setBlogname( member.getNickname() + "님의 블로그");
+                    }
+
+                    if(member.getIntroduce() == null ){
+                        member.setIntroduce( member.getNickname() + "님의 블로그입니다.");
+                    }
+
                     int following = gMapper.countfollowing(user.getUsername());
                     int follower = gMapper.countfollower(user.getUsername());
 
