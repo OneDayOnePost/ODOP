@@ -235,6 +235,15 @@
       max-width: 100%; /* 이미지의 최대 너비를 부모 요소인 #item의 너비로 설정 */
     }
 
+    #main-img p{
+      padding: 5px 10px;
+      /* 텍스트가 3줄을 넘어가면 말줄임표로 처리 */
+      display: -webkit-box;
+      -webkit-line-clamp: 7;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
     #content_2{
       background-color: #DFECF6;
       padding: 7px 10px;
@@ -301,7 +310,10 @@
             </div>
           </div>
           <div id="main-img">
-            <img th:src="@{/images/gr/123123.jpg}" >
+            <img th:if="${obj.p_imgkey != null and obj.p_imgpath != null}"
+                  th:src="${obj.p_imgpath}" th:key="${obj.imgkey}" >
+            <p th:if="${obj.p_imgkey == null and obj.p_imgpath == null}"
+                  th:text="${T(org.jsoup.Jsoup).parse(obj.content).text()}"></p>
           </div>
           <div id="content_2">
             <div id="date">

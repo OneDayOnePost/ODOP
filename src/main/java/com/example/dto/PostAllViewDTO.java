@@ -65,5 +65,9 @@ public class PostAllViewDTO {
     // 프로필 이미지
     private String imgkey;
     private String imgpath;
+
+    // 게시글 대표 이미지
+    private String p_imgkey;
+    private String p_imgpath;
     
 }
