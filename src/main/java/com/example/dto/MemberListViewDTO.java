@@ -4,7 +4,6 @@ import java.math.BigInteger;
 import java.util.Date;
 
 import lombok.Data;
-import lombok.ToString;
 
 // 멤버
 @Data
