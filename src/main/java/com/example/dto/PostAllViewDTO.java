@@ -1,6 +1,7 @@
 package com.example.dto;
 
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import lombok.Data;
@@ -26,6 +27,14 @@ public class PostAllViewDTO {
 
     // 작성일
     private Date regdate;
+    public String regdate1() {
+        if (regdate != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+            return sdf.format(regdate);
+        } else {
+            return null;
+        }
+    }
 
     // 카테고리 번호(시퀀스
     private BigInteger cateno;
@@ -41,6 +50,14 @@ public class PostAllViewDTO {
 
     // 좋아요 (카운트)
     private int dope_count;
+    public String dope_count1() {
+        if (dope_count >= 0 && dope_count <= 9) {
+            return "0" + dope_count;
+        } else {
+            return Integer.toString(dope_count);
+        }
+    }
+
 
     // 닉네임
     private String nickname;
