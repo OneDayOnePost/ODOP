@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.dto.PostAllViewDTO;
+import com.example.service.GR.GrHomeService;
 import com.example.service.WJ.WjCateService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,12 +26,34 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class HomeController {
     final WjCateService WjcService;
+    final GrHomeService GhService;
 
     @GetMapping(value = "/home.do")
-    public String homeGET(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("user", user);
-        // return "/fragments/header";
-        return "/home";
+    public String homeGET(@AuthenticationPrincipal User user, Model model,
+                            @RequestParam(name = "type", required = false, defaultValue = "newest") String type) {
+        
+        try {
+            model.addAttribute("user", user);
+
+            if(type.equals("newest")){
+                List<PostAllViewDTO> postalllist = GhService.selectPostAllByRegdate();
+
+                model.addAttribute("plist", postalllist);
+
+            }
+            else if(type.equals("like")){
+                List<PostAllViewDTO> postalllist = GhService.selectPostAllByDope();
+                
+                
+                model.addAttribute("plist", postalllist);
+            }
+            return "/home";
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/home.do";
+        }
+        
 
     }
 

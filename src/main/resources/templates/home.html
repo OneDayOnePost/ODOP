@@ -71,7 +71,39 @@
       font-size: 20px;
       font-weight: bold;
       cursor: pointer;
+      text-decoration: none;
+      color: #000;
     }
+
+  /* 최신순, 좋아요, 팔로잉 링크에 왼쪽에서 오른쪽으로 밑줄 추가 */
+    #newest,
+    #like,
+    #follow {
+      position: relative;
+      text-decoration: none;
+      color: black;
+    }
+
+    #newest::after,
+    #like::after,
+    #follow::after {
+      content: "";
+      position: absolute;
+      bottom: -2px; /* 밑줄이 텍스트 아래로 위치하도록 조정 */
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: black;
+      transition: width 0.3s ease; /* 효과를 위한 transition 추가 */
+    }
+
+    #newest:hover::after,
+    #like:hover::after,
+    #follow:hover::after {
+      width: 110%;
+    }
+
+
 
     #right-area{
       display: flex;
@@ -182,6 +214,10 @@
       font-size: 14px;
     }
 
+    #profile img{
+      border-radius: 50%;
+    }
+
     /* #main-img{
       width: 260px;
       height: 200px;
@@ -207,7 +243,7 @@
       justify-content: space-between;
     }
 
-    #like i{
+    #likelike i{
       color: #FF5555;
     }
 
@@ -228,11 +264,11 @@
     <div id="wrapper" class="container">
       <div id="menu-box">
         <div id="left-area">
-          <a><i class="bi bi-heart"></i>&nbsp;&nbsp;좋아요</a>&nbsp;
-          <a><i class="bi bi-clock-history"></i>&nbsp;&nbsp;최신순</a>&nbsp;
+          <a th:href="@{/home.do(type=newest)}" id="newest" class="active" ><i class="bi bi-clock-history"></i>&nbsp;&nbsp;최신순</a>&nbsp;
+          <a th:href="@{/home.do(type=like)}" id="like" class="active"><i class="bi bi-heart"></i>&nbsp;&nbsp;좋아요</a>&nbsp;
           <!-- 팔로잉 버튼은 로그인 했을 때 나타남 -->
           <th:block th:if="${user} != null">
-            <a><i class="bi bi-person-check"></i>&nbsp;&nbsp;팔로잉</a>
+            <a th:href="@{/home.do(type=follow)}" id="follow" class="active"><i class="bi bi-person-check"></i>&nbsp;&nbsp;팔로잉</a>
           </th:block>
         </div>
         <div id="right-area">
@@ -254,14 +290,14 @@
         </div>
       </div>
       <div id="items">
-        <div id="item">
+        <div id="item" th:each="obj : ${plist}">
           <div id="content_1">
             <div id="title">
-              <a>제목제목제목</a>
+              <a th:text="${obj.title}"></a>
             </div>
             <div id="profile">
-              <img th:src="@{/images/default_thumbnail.png}" style="width: 20px; height: 20px;">
-              <a>닉네임</a>
+              <img th:src="${obj.imgpath}" th:key="${obj.imgkey}" style="width: 20px; height: 20px;" onerror="this.src='images/default_thumbnail.png'">
+              <a th:text="${obj.nickname}"></a>
             </div>
           </div>
           <div id="main-img">
@@ -269,76 +305,10 @@
           </div>
           <div id="content_2">
             <div id="date">
-              <a>2023.00.00</a>
+              <a th:text="${obj.regdate}"></a>
             </div>
-            <div id="like">
-              <i class="bi bi-suit-heart-fill"></i>&nbsp;<a>00</a>
-            </div>
-          </div>
-        </div>
-        <div id="item">
-          <div id="content_1">
-            <div id="title">
-              <a>제목제목제목</a>
-            </div>
-            <div id="profile">
-              <img th:src="@{/images/default_thumbnail.png}" style="width: 20px; height: 20px;">
-              <a>닉네임</a>
-            </div>
-          </div>
-          <div id="main-img">
-            <img th:src="@{/images/gr/123123.jpg}" >
-          </div>
-          <div id="content_2">
-            <div id="date">
-              <a>2023.00.00</a>
-            </div>
-            <div id="like">
-              <i class="bi bi-suit-heart-fill"></i>&nbsp;<a>00</a>
-            </div>
-          </div>
-        </div>
-        <div id="item">
-          <div id="content_1">
-            <div id="title">
-              <a>제목제목제목</a>
-            </div>
-            <div id="profile">
-              <img th:src="@{/images/default_thumbnail.png}" style="width: 20px; height: 20px;">
-              <a>닉네임</a>
-            </div>
-          </div>
-          <div id="main-img">
-            <img th:src="@{/images/gr/123123.jpg}" >
-          </div>
-          <div id="content_2">
-            <div id="date">
-              <a>2023.00.00</a>
-            </div>
-            <div id="like">
-              <i class="bi bi-suit-heart-fill"></i>&nbsp;<a>00</a>
-            </div>
-          </div>
-        </div>
-        <div id="item">
-          <div id="content_1">
-            <div id="title">
-              <a>제목제목제목</a>
-            </div>
-            <div id="profile">
-              <img th:src="@{/images/default_thumbnail.png}" style="width: 20px; height: 20px;">
-              <a>닉네임</a>
-            </div>
-          </div>
-          <div id="main-img">
-            <img th:src="@{/images/gr/123123.jpg}" >
-          </div>
-          <div id="content_2">
-            <div id="date">
-              <a>2023.00.00</a>
-            </div>
-            <div id="like">
-              <i class="bi bi-suit-heart-fill"></i>&nbsp;<a>00</a>
+            <div id="likelike">
+              <i class="bi bi-suit-heart-fill"></i>&nbsp;<a th:text="${obj.dope_count}"></a>
             </div>
           </div>
         </div>
@@ -353,6 +323,27 @@
 
 
   <script th:inline="javascript" type="text/javascript">
+
+    window.addEventListener('load', function() {
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const typeParam = urlParams.get('type');
+
+      if (!typeParam){
+        const changeUrl = urlParams + '?type=newest';
+        window.location.replace(changeUrl);
+      }
+      else if (typeParam === 'newest'){
+
+      }
+      else if (typeParam === 'like' ){
+
+      }
+      else if (typeParam === 'follow'){
+
+      }
+
+    });
 
   </script>
 </body>
