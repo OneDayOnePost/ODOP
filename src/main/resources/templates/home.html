@@ -87,7 +87,7 @@
     #newest::after,
     #like::after,
     #follow::after {
-      content: "";
+      content: " ";
       position: absolute;
       bottom: -2px; /* 밑줄이 텍스트 아래로 위치하도록 조정 */
       left: 0;
@@ -346,13 +346,20 @@
         window.location.replace(changeUrl);
       }
       else if (typeParam === 'newest'){
-
+        
+        document.getElementById("newest").style.borderBottom = "2px solid #000"
+        // document.getElementById("newest").style.width = "75px"
       }
       else if (typeParam === 'like' ){
 
+        document.getElementById("like").style.borderBottom = "2px solid #000"
+        // document.getElementById("like").style.width = "75px"
+        
       }
       else if (typeParam === 'follow'){
 
+        document.getElementById("follow").style.borderBottom = "2px solid #000"
+        // document.getElementById("like").style.width = "75px"
       }
 
     });
