@@ -294,7 +294,7 @@
                         <tr class="tableline">
                             <th>전화 번호</th>
                             <td><input type="text" id="phone" name="phone" maxlength="13"
-                                    style="padding: 0.5% 5% 0.5% 5%" placeholder="010 - 0000 - 0000"></td>
+                                    style="padding: 0.5% 5% 0.5% 5%" placeholder="'-'하이픈을 제외하고 입력해 주세요"></td>
                             <td></td>
                         </tr>
                         <tr class="tableline">
@@ -607,6 +607,7 @@
             const nickname = document.getElementById("nickname");
             const phone = document.getElementById("phone");
             const mbti = document.getElementById("mbti");
+            const nickchk = document.getElementById("nickchk");
             //중복확인 안했을 때 유효성 검사 (emjoongbokchk = y , 중복 확인 o)
             const emjoongbokchk = $('input[name=emjoongbokchk]').val();
             const nickjoongbokchk = $('input[name=nickjoongbokchk]').val();
@@ -659,17 +660,25 @@
                 return false;
             }
             if (emjoongbokchk == '') {
-                alert('이메일 중복 확인을 해주세요');
+                document.querySelector("#title").style ="display:none;";
+                document.querySelector("#title").setAttribute("focusElement", "email1");
+                document.querySelector("#content").textContent = "이메일 중복 확인을 해주세요";
+
+                modal.show();
                 return false;
             }
             if (nickjoongbokchk == '') {
-                alert('닉네임 중복 확인을 해주세요');
+                document.querySelector("#title").style ="display:none;";
+                document.querySelector("#title").setAttribute("focusElement", "nickname");
+                document.querySelector("#content").textContent = "닉네임 중복 확인을 해주세요";
+
+                modal.show();
                 return false;
             }
 
             // 전송하기
             document.getElementById("form").submit();
-            alert('회원가입되었습니다.');
+            
 
 
         }

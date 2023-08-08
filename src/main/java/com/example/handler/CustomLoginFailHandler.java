@@ -47,7 +47,7 @@ public class CustomLoginFailHandler implements AuthenticationFailureHandler {
          log.info(password.toString());
 
         Member member = mService.findByEmail(request.getParameter("email").toString());
-        log.info("Member=>{}", member.toString());
+        // log.info("Member=>{}", member.toString()); null일경우 이부분이 오류남 -> 주석처리 !!
 
 
         if (email.isEmpty()) {
@@ -62,7 +62,7 @@ public class CustomLoginFailHandler implements AuthenticationFailureHandler {
         // 이메일 형식이 올바르지 않은 경우
         errorMessage = "이메일 형식을 확인해주세요 ";
         }
-        else if (member== null ) {
+        else{
             // 이부분 email/password 나눠서 주고싶은데 제능력부족으로 .. 
             //그냥 db에 없는 계정이면 다 막습니다...
             errorMessage = "존재하지 않는 계정입니다";

@@ -253,6 +253,10 @@
             margin-left: 15px;
             
         }
+
+        .modal-body>div {
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -281,7 +285,7 @@
                                 </div>
                                 <div id="chkbox" style="padding-left: 126px; padding-top: 6px; display: none;" >
                                     <span class="label_span">인증번호</span>
-                                    <input class="chk_input" type="text" id="email" name="email"
+                                    <input class="chk_input" type="text" id="chk_number" name="chk_number"
                                         style="margin-left: 32px;">
                                     <input type="button" id="sendchkbutton" value="확인" onclick="findAction()"></input>
                                 </div>
@@ -323,6 +327,27 @@
     <th:block th:replace="~{/fragments/footer :: footerHTML}"></th:block>
 
 
+    <!-- modal 알림창 -->
+    <div class="modal fade" id="alert" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body" style="display: inline-block;">
+                    <div style="margin-bottom: 10px;"><i class="fas fa-duotone fa-shield-check"></i></div>
+                    <!-- 적절한 아이콘 추후 변경 -->
+                    <div><label id="title" style="padding-bottom: 10px;"></label></div>
+                    <div>
+                        <label id="content" style="color: gray; font-weight: bold; font-size: 19px;"></label>
+                    </div><br />
+                    <div>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            style="height: 35px; width: 80px; border-radius: 50px;" onclick="focusElement()">확인</button>
+                    </div>
+                    <!-- 홈으로 이동 -->
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
@@ -337,15 +362,22 @@
         }
     //form 전송
         function findAction() {
-            const name = document.getElementById("name").value;
-            const phone = document.getElementById("phone").value;
+            const email = document.getElementById("email");
+            const chk_number = document.getElementById("chk_number");
+            const password = document.getElementById("password");
+            const pwcheck = document.getElementById("pwcheck");
+            
 
-            if(name.length <= 0 ){
-                alert('이름을 입력해주세요');
-                name.focus;
+
+            if(name.value.length <= 0 ){
+                document.querySelector("#title").style ="display:none;";
+                document.querySelector("#title").setAttribute("focusElement", "name");
+                document.querySelector("#content").textContent = "이름을 입력해주세요.";
+
+                modal.show();
                 return false;
             }
-            if(phone.length <= 0){
+            if(phone.value.length <= 0){
                 alert('전화번호를 입력해주세요');
                 phone.focus;
                 return false;
