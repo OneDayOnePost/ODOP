@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.dto.MemberDTO;
+import com.example.dto.MemberFollowDTO;
 import com.example.entity.Follow;
 import com.example.entity.Member;
 import com.example.entity.Post;
@@ -124,6 +124,13 @@ public class GrMemberController {
             } else if (followbtn == null) { // (3) 로그인한 유저가 myblog 파라미터 팔로잉 x => 팔로우버튼
                 model.addAttribute("my_btn_value", 2);
             }
+
+            // 팔로워 목록
+            List<MemberFollowDTO> followerlist = wjmyblogservice.followerList(user.getUsername(), email);
+            model.addAttribute("followerlist", followerlist);
+            // 팔로잉 목록
+            List<MemberFollowDTO> followinglist = wjmyblogservice.followingList(user.getUsername(), email);
+            model.addAttribute("followinglist", followinglist);
 
             model.addAttribute("user", user);
             model.addAttribute("member", member);

@@ -21,6 +21,11 @@
   <link th:href="@{/css/footer.css}" rel="stylesheet">
   <!--thymeleaf contextpath-->
   <link id="contextPathHolder" th:data-contextPath="${#httpServletRequest.getContextPath()}" />
+
+  <!--jQuery 추가-->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+          integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+
   <style>
 
     /* 여기 지정된 부분은 모든 html 파일에 공통적으로 넣어줍니다. */
@@ -376,13 +381,13 @@
                                 </div>
                                 <div class="myinfo_follow">
                                     <div class="myfollower">
-                                        <div class="follow_number" th:text="${follower}"></div>
+                                        <div class="follow_number" th:text="${follower}" data-bs-toggle="modal" data-bs-target="#follower_list"></div>
                                         <div class="follow_word">
                                             팔로워
                                         </div>
                                     </div>
                                     <div class="myfollowing">
-                                        <div class="follow_number" th:text="${following}"></div>
+                                        <div class="follow_number" th:text="${following}" data-bs-toggle="modal" data-bs-target="#following_list"></div>
                                         <div class="follow_word">
                                             팔로잉
                                         </div>
@@ -467,6 +472,51 @@
   <!-- footer 영역 -->
   <th:block th:replace="~{/fragments/footer :: footerHTML}"></th:block>
 
+  <!-- 팔로워 리스트 모달창 -->
+  <div class="modal fade" id="follower_list" tabindex="-1" aria-labelledby="ModalTitle1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalTitle1" style="font-weight: bold;">팔로워</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr th:each="follower : ${followerlist}">
+                        <td><img th:src="${follower.imgpath}" th:key="${follower.imgkey}" style="border-radius: 50%; width: 40px; height: 40px;"
+                                 onerror="this.src='images/default_thumbnail.png'"></td>
+                        <td th:text="${follower.email}" id="modal_email"></td>
+                        <td><input type="button" id="modal_btn" th:value="${follower.follow_yumu == 0 ? '팔로우' : '팔로우 취소'}"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <!-- 팔로잉 리스트 모달창 -->
+  <div class="modal fade" id="following_list" tabindex="-1" aria-labelledby="ModalTitle2" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalTitle2" style="font-weight: bold;">팔로잉</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr th:each="following : ${followinglist}">
+                        <td><img th:src="${following.imgpath}" th:key="${following.imgkey}" style="border-radius: 50%; width: 40px; height: 40px;"
+                                 onerror="this.src='images/default_thumbnail.png'"></td>
+                        <td th:text="${following.email}" id="modal_email"></td>
+                        <td><input type="button" id="modal_btn" th:value="${following.follow_yumu == 0 ? '팔로우' : '팔로우 취소'}"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.5/axios.min.js"></script>
 
   <script th:inline="javascript" type="text/javascript">
@@ -523,8 +573,6 @@
             }
         }
     }
-
-
   </script>
 </body>
 
