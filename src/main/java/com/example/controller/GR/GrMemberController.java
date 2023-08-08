@@ -109,8 +109,8 @@ public class GrMemberController {
                         member.setIntroduce( member.getNickname() + "님의 블로그입니다.");
                     }
 
-                    int following = gMapper.countfollowing(user.getUsername());
-                    int follower = gMapper.countfollower(user.getUsername());
+                    int following = gMapper.countfollowing(email);
+                    int follower = gMapper.countfollower(email);
 
                     log.info("user1 => {}", user.toString());
 
@@ -119,12 +119,12 @@ public class GrMemberController {
                     log.info("listlist=>{}", pclist.toString());
 
 
-                    // 내 정보 수정 / 팔로우 / 언팔로우 버튼 구분
+                    // 내 정보 수정 / 팔로우 / 팔로우 취소 버튼 구분
                     Follow followbtn = wjmyblogservice.selectFollow(user.getUsername(), email);
                     if (user.getUsername().equals(email)) { // (1) 로그인한 유저 = myblog 파라미터 => 내 정보 수정
                         model.addAttribute("my_btn_value", 0);
                     }
-                    else if (followbtn != null) { // (2) 로그인한 유저가 myblog 파라미터 팔로잉 o => 언팔로우 버튼
+                    else if (followbtn != null) { // (2) 로그인한 유저가 myblog 파라미터 팔로잉 o => 팔로우 취소 버튼
                         model.addAttribute("my_btn_value", 1);
                     }
                     else if (followbtn == null) { // (3) 로그인한 유저가 myblog 파라미터 팔로잉 x => 팔로우버튼

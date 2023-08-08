@@ -35,7 +35,7 @@ public class WjRestMyblogController {
     final WjMyblogService mbService;
 
     // myblog 페이지
-    // (1) 언팔로우 버튼 (follow 테이블에서 삭제)
+    // (1) 팔로우 취소 버튼 (follow 테이블에서 삭제)
     @DeleteMapping(value = "/followdelete.json")
     public Map<String, Object> followdeleteDELETE(@RequestParam(name = "useremail") String useremail,
                                                   @RequestParam(name = "blogemail") String blogemail) {

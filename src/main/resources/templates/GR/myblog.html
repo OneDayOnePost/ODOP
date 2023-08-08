@@ -375,23 +375,23 @@
                                     <p th:text="${member.nickname}"></p>
                                 </div>
                                 <div class="myinfo_follow">
+                                    <div class="myfollower">
+                                        <div class="follow_number" th:text="${follower}"></div>
+                                        <div class="follow_word">
+                                            팔로워
+                                        </div>
+                                    </div>
                                     <div class="myfollowing">
                                         <div class="follow_number" th:text="${following}"></div>
                                         <div class="follow_word">
                                             팔로잉
                                         </div>
                                     </div>
-                                    <div class="myfollower">
-                                        <div class="follow_number" th:text="${follower}"></div>
-                                        <div class="follow_word">
-                                            팔로우
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
 
                             <div class="my_btn">
-                                <input type="button" id="mybtn" th:value="${my_btn_value == 0 ? '내 정보 수정' : (my_btn_value == 1 ? '언팔로우' : '팔로우')}" onclick="changeMyBtn()">
+                                <input type="button" id="mybtn" th:value="${my_btn_value == 0 ? '내 정보 수정' : (my_btn_value == 1 ? '팔로우 취소' : '팔로우')}" onclick="changeMyBtn()">
                             </div>
 
                             <div class="introduce">
@@ -486,7 +486,7 @@
 
             return;
         } 
-        else if (button.value === '언팔로우') {
+        else if (button.value === '팔로우 취소') {
             // rest api 호출
             const url = [[@{/api/myblog/followdelete.json}]] + '?useremail=' + useremail + '&blogemail=' + blogemail;
             const headers = {"Content-Type":"application/json"};
@@ -494,6 +494,10 @@
 
             if (data.status === 200) {
                 button.value = '팔로우';
+
+                // 팔로워 숫자 변경 코드 추가
+                const followerNumber = parseInt(document.querySelector('.myfollower .follow_number').textContent);
+                document.querySelector('.myfollower .follow_number').textContent = followerNumber - 1;
             }
         } 
         else { // button.value === '팔로우'
@@ -504,7 +508,11 @@
             const { data } = await axios.post(url, body, { headers: headers });
 
             if (data.status === 200) {
-                button.value = '언팔로우';
+                button.value = '팔로우 취소';
+
+                // 팔로워 숫자 변경 코드 추가
+                const followerNumber = parseInt(document.querySelector('.myfollower .follow_number').textContent);
+                document.querySelector('.myfollower .follow_number').textContent = followerNumber + 1;
             }
         }
     }
