@@ -1,23 +1,18 @@
 package com.example.restcontroller.WJ;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.dto.MemberListViewDTO;
 import com.example.dto.PostDTO;
 import com.example.dto.ReplyDTO;
-import com.example.dto.ReportListDTO;
 import com.example.entity.Member;
 import com.example.service.WJ.WjReportService;
 

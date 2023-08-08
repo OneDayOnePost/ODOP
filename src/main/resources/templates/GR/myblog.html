@@ -422,7 +422,14 @@
                         <div class="mypost">
                             <div class="post_info" th:each="obj:${list}">
                                 <div style="position: relative;">
-                                    <img th:src="@{/images/gr/123123.jpg}" width="780px" height="300px">
+                                    <!-- obj.postImageList.?[image.chk == 1] : chk 값이 1인 이미지들의 리스트를 반환 -->
+                                    <!-- 대표 이미지가 존재하는 경우 -->
+                                    <img th:if="${obj.postImageList.?[image.chk == 1].size() > 0}"
+                                         th:src="${obj.postImageList.?[image.chk == 1][0].image.imgpath}" width="780px" height="300px">
+                                    <!-- 대표 이미지가 존재하지 않는 경우 -->
+                                    <img th:unless="${obj.postImageList.?[image.chk == 1].size() > 0}"
+                                         th:src="@{/images/gr/123123.jpg}" width="780px" height="300px">
+
                                     <div class="me-3" >
                                         <i class="bi bi-eye me-2"></i><span th:text="${obj.hit}"></span>
                                     </div>
