@@ -1,7 +1,6 @@
 package com.example.restcontroller.WJ;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entity.Follow;
-import com.example.entity.Member;
 import com.example.service.WJ.WjMyblogService;
 
 import lombok.RequiredArgsConstructor;
@@ -66,6 +64,44 @@ public class WjRestMyblogController {
             } else {
                 retMap.put("status", 0);
             }
+        } 
+        catch (Exception e) {
+            e.printStackTrace();
+            retMap.put("status", -1);
+            retMap.put("error", e.getMessage());
+        }
+
+        return retMap;
+    }
+
+    // 팔로워 목록
+    @GetMapping(value = "/followerlist.json")
+    public Map<String, Object> followerlistGET(@RequestParam(name = "useremail") String useremail,
+                                               @RequestParam(name = "blogemail") String blogemail){
+        Map<String, Object> retMap = new HashMap<>();
+
+        try {
+            retMap.put("status", 200);
+            retMap.put("followerlist", mbService.followerList(useremail, blogemail));
+        } 
+        catch (Exception e) {
+            e.printStackTrace();
+            retMap.put("status", -1);
+            retMap.put("error", e.getMessage());
+        }
+
+        return retMap;
+    }
+
+    // 팔로잉 목록
+    @GetMapping(value = "/followinglist.json")
+    public Map<String, Object> followinglistGET(@RequestParam(name = "useremail") String useremail,
+                                                @RequestParam(name = "blogemail") String blogemail){
+        Map<String, Object> retMap = new HashMap<>();
+
+        try {
+            retMap.put("status", 200);
+            retMap.put("followinglist", mbService.followingList(useremail, blogemail));
         } 
         catch (Exception e) {
             e.printStackTrace();

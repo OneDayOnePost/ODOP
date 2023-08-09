@@ -109,6 +109,10 @@
         font-size: 25px;
     }
 
+    .follow_number:hover {
+        cursor: pointer;
+    }
+
     .myinfo_follow .follow_word{
         font-size: 15px;
         color: #5C5960;
@@ -381,13 +385,13 @@
                                 </div>
                                 <div class="myinfo_follow">
                                     <div class="myfollower">
-                                        <div class="follow_number" th:text="${follower}" data-bs-toggle="modal" data-bs-target="#follower_list"></div>
+                                        <div class="follow_number" id="followernumber" th:text="${follower}" onclick="followerlistcall()"></div>
                                         <div class="follow_word">
                                             팔로워
                                         </div>
                                     </div>
                                     <div class="myfollowing">
-                                        <div class="follow_number" th:text="${following}" data-bs-toggle="modal" data-bs-target="#following_list"></div>
+                                        <div class="follow_number" id="followingnumber" th:text="${following}" onclick="followinglistcall()"></div>
                                         <div class="follow_word">
                                             팔로잉
                                         </div>
@@ -478,13 +482,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <table>
-                    <tr th:each="follower : ${followerlist}">
-                        <td><img th:src="${follower.imgpath}" th:key="${follower.imgkey}" style="border-radius: 50%; width: 40px; height: 40px;"
-                                 onerror="this.src='images/default_thumbnail.png'"></td>
-                        <td th:text="${follower.email}" id="modal_email"></td>
-                        <td><input type="button" id="modal_btn" th:value="${follower.follow_yumu == 0 ? '팔로우' : '팔로우 취소'}"></td>
-                    </tr>
+                <table id="followerlisttable">
                 </table>
             </div>
         </div>
@@ -500,13 +498,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <table>
-                    <tr th:each="following : ${followinglist}">
-                        <td><img th:src="${following.imgpath}" th:key="${following.imgkey}" style="border-radius: 50%; width: 40px; height: 40px;"
-                                 onerror="this.src='images/default_thumbnail.png'"></td>
-                        <td th:text="${following.email}" id="modal_email"></td>
-                        <td><input type="button" id="modal_btn" th:value="${following.follow_yumu == 0 ? '팔로우' : '팔로우 취소'}"></td>
-                    </tr>
+                <table id="followinglisttable">
                 </table>
             </div>
         </div>
@@ -570,6 +562,150 @@
             }
         }
     }
+
+    async function followerlistcall() {
+        let useremail = [[${user.username}]];
+        let blogemail = [[${member.email}]];
+
+        // rest api 호출
+        const url = [[@{/api/myblog/followerlist.json}]] + '?useremail=' + useremail + '&blogemail=' + blogemail;
+        const headers = {"Content-Type":"application/json"};
+        const { data } = await axios.get(url, { headers });
+
+        if (data.status === 200) {
+            const followerlist = data.followerlist;
+
+            let tableHTML = '';
+            for (const follower of followerlist) {
+                const imgSrc = follower.imgpath || 'images/default_thumbnail.png';
+
+                tableHTML += `
+                    <tr>
+                        <td><img src="${imgSrc}" key="${follower.imgkey}" style="border-radius: 50%; width: 40px; height: 40px;"
+                                 onerror="this.src='images/default_thumbnail.png'"></td>
+                        <td>${follower.email}</td>
+                        <td><input type="button" id="follower_btn" value="${follower.follow_yumu === 0 ? '팔로우' : '팔로우 취소'}"></td>
+                    </tr>
+                `;
+            }
+            
+            document.getElementById('followerlisttable').innerHTML = tableHTML;
+
+            $("#follower_list").modal("show");
+        }
+    }
+
+    async function followinglistcall() {
+        let useremail = [[${user.username}]];
+        let blogemail = [[${member.email}]];
+        
+        // rest api 호출
+        const url = [[@{/api/myblog/followinglist.json}]] + '?useremail=' + useremail + '&blogemail=' + blogemail;
+        const headers = {"Content-Type":"application/json"};
+        const { data } = await axios.get(url, { headers });
+
+        if (data.status === 200) {
+            const followinglist = data.followinglist;
+
+            let tableHTML = '';
+            for (const following of followinglist) {
+                const imgSrc = following.imgpath || 'images/default_thumbnail.png';
+
+                tableHTML += `
+                    <tr>
+                        <td><img src="${imgSrc}" key="${following.imgkey}" style="border-radius: 50%; width: 40px; height: 40px;"
+                                 onerror="this.src='images/default_thumbnail.png'"></td>
+                        <td>${following.email}</td>
+                        <td><input type="button" id="following_btn" value="${following.follow_yumu === 0 ? '팔로우' : '팔로우 취소'}"></td>
+                    </tr>
+                `;
+            }
+            
+            document.getElementById('followinglisttable').innerHTML = tableHTML;
+
+            $("#following_list").modal("show");
+        }
+    }
+
+    $("#followerlisttable").on("click", "tr #follower_btn", async function() {
+        let useremail = [[${user.username}]];
+        let blogemail = [[${member.email}]];
+        let button = $(this).closest("tr").find("td:nth-child(3) input");
+
+        if (button.val() === '팔로우 취소') {
+            // rest api 호출
+            const url = [[@{/api/myblog/followdelete.json}]] + '?useremail=' + useremail + '&blogemail=' + $(this).closest("tr").find("td:nth-child(2)").text();
+            const headers = {"Content-Type":"application/json"};
+            const { data } = await axios.delete(url, { headers });
+
+            if (data.status === 200) {
+                button.val('팔로우');
+
+                if (useremail === blogemail) {
+                    // 팔로잉 숫자 변경 코드 추가
+                    const followingNumber = parseInt(document.querySelector('.myfollowing .follow_number').textContent);
+                    document.querySelector('.myfollowing .follow_number').textContent = followingNumber - 1;
+                }
+            }
+        } 
+        else { // button === '팔로우'
+            // rest api 호출
+            const url = [[@{/api/myblog/followinsert.json}]];
+            const headers = { "Content-Type": "application/json" };
+            const body = {"fromMember": {"email": useremail}, "toMember": {"email": $(this).closest("tr").find("td:nth-child(2)").text()}};
+            const { data } = await axios.post(url, body, { headers: headers });
+
+            if (data.status === 200) {
+                button.val('팔로우 취소');
+
+                if (useremail === blogemail) {
+                    // 팔로잉 숫자 변경 코드 추가
+                    const followingNumber = parseInt(document.querySelector('.myfollowing .follow_number').textContent);
+                    document.querySelector('.myfollowing .follow_number').textContent = followingNumber + 1;
+                }
+            }
+        }
+    });
+
+    $("#followinglisttable").on("click", "tr #following_btn", async function() {
+        let useremail = [[${user.username}]];
+        let blogemail = [[${member.email}]];
+        let button = $(this).closest("tr").find("td:nth-child(3) input");
+
+        if (button.val() === '팔로우 취소') {
+            // rest api 호출
+            const url = [[@{/api/myblog/followdelete.json}]] + '?useremail=' + useremail + '&blogemail=' + $(this).closest("tr").find("td:nth-child(2)").text();
+            const headers = {"Content-Type":"application/json"};
+            const { data } = await axios.delete(url, { headers });
+
+            if (data.status === 200) {
+                button.val('팔로우');
+
+                if (useremail === blogemail) {
+                    // 팔로잉 숫자 변경 코드 추가
+                    const followingNumber = parseInt(document.querySelector('.myfollowing .follow_number').textContent);
+                    document.querySelector('.myfollowing .follow_number').textContent = followingNumber - 1;
+                }
+            }
+        } 
+        else { // button === '팔로우'
+            // rest api 호출
+            const url = [[@{/api/myblog/followinsert.json}]];
+            const headers = { "Content-Type": "application/json" };
+            const body = {"fromMember": {"email": useremail}, "toMember": {"email": $(this).closest("tr").find("td:nth-child(2)").text()}};
+            const { data } = await axios.post(url, body, { headers: headers });
+
+            if (data.status === 200) {
+                button.val('팔로우 취소');
+
+                if (useremail === blogemail) {
+                    // 팔로잉 숫자 변경 코드 추가
+                    const followingNumber = parseInt(document.querySelector('.myfollowing .follow_number').textContent);
+                    document.querySelector('.myfollowing .follow_number').textContent = followingNumber + 1;
+                }
+            }
+        }
+    });
   </script>
 </body>
 
