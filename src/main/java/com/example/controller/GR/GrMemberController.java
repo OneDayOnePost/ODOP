@@ -125,13 +125,6 @@ public class GrMemberController {
                 model.addAttribute("my_btn_value", 2);
             }
 
-            // 팔로워 목록
-            List<MemberFollowDTO> followerlist = wjmyblogservice.followerList(user.getUsername(), email);
-            model.addAttribute("followerlist", followerlist);
-            // 팔로잉 목록
-            List<MemberFollowDTO> followinglist = wjmyblogservice.followingList(user.getUsername(), email);
-            model.addAttribute("followinglist", followinglist);
-
             model.addAttribute("user", user);
             model.addAttribute("member", member);
             model.addAttribute("following", following);
