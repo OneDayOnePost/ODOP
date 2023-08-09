@@ -365,6 +365,20 @@
 
     });
 
+    function search(){
+      const selectBox = document.getElementById("select-box");
+      const searchInput = document.querySelector(".search-input");
+
+      const selectedOption = selectBox.value;
+      const keywrod = searchInput.value;
+
+      let url = "/home.do?type=" + selectedOption;
+      if(keywrod){
+        url += "&keyword=" + encodeURIComponent(keywrod);
+      }
+
+      window.location.href = url;
+    }
     
 
   </script>
