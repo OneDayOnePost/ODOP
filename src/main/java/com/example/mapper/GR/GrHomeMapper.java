@@ -26,6 +26,6 @@ public interface GrHomeMapper {
     public List<PostAllViewDTO> selectPostAllByFollow( @Param("email") String email);
 
     // 제목 키워드 검색
-    @Select({" SELECT * FROM postallview WHERE title LIKE CONCAT('%', #{keyword}, '%') "})
+    @Select({" SELECT * FROM postallview WHERE title LIKE CONCAT('%', #{keyword}, '%') ORDER BY regdate desc "})
     public List<PostAllViewDTO> selecttitlekeyword(@Param("keyword") String keyword);
 }
