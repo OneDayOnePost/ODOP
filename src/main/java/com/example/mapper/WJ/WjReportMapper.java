@@ -11,7 +11,6 @@ import org.apache.ibatis.annotations.Update;
 
 import com.example.dto.ReportOneDTO;
 import com.example.entity.Member;
-import com.example.dto.MemberDTO;
 import com.example.dto.MemberListViewDTO;
 import com.example.dto.PostDTO;
 import com.example.dto.ReplyDTO;

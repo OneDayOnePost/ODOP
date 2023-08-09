@@ -514,7 +514,7 @@
             const replyno = document.getElementById('reply_no').value;
 
             // rest api 호출
-            const url = [[@{/api/replydelete.json}]];
+            const url = [[@{/api/admin/replydelete.json}]];
             const headers = {"Content-Type":"application/json"};
             const body = {no:replyno};
             const { data } = await axios.put(url, body, { headers });
@@ -555,7 +555,7 @@
             const replyno = document.getElementById('reply_no').value;
 
             // rest api 호출
-            const url = [[@{/api/replyreportdelete.json}]] + '?no=' + replyno;
+            const url = [[@{/api/admin/replyreportdelete.json}]] + '?no=' + replyno;
             const headers = {"Content-Type":"application/json"};
             const { data } = await axios.delete(url, { headers });
 
@@ -594,7 +594,7 @@
             const replyno = document.getElementById('reply_no').value;
 
             // rest api 호출
-            const url = [[@{/api/replydeletecancel.json}]];
+            const url = [[@{/api/admin/replydeletecancel.json}]];
             const headers = {"Content-Type":"application/json"};
             const body = {no:replyno};
             const { data } = await axios.put(url, body, { headers });

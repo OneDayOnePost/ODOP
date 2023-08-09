@@ -13,10 +13,10 @@ import com.example.entity.Post;
 @Repository
 public interface GrPostRepository extends JpaRepository<Post, BigInteger> {
 
-    List<Post> findByWriter(String writer);
+    List<Post> findByWriterOrderByNoDesc(String writer);
 
     // 카테고리 별 조회
-    List<Post> findByWriterAndCateNo(String writer, BigInteger cateno);
+    List<Post> findByWriterAndCateNoOrderByNoDesc(String writer, BigInteger cateno);
     // @Query("SELECT p FROM Post p WHERE p.writer = :writer AND p.cate.no = :cateNo")
     // List<Post> findByWriterAndCateNo(@Param("writer") String writer, @Param("cateNo") BigInteger cateNo);
 
