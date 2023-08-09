@@ -20,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,12 +51,13 @@ public class GrMemberController {
 
     final WjMyblogService wjmyblogservice;
 
-    @GetMapping(value = "/myblog.do")
+    @GetMapping(value = "/myblog.do/{email}")
     public String myblogGET(Model model, @AuthenticationPrincipal User user,
             @RequestParam(name = "categoryId", required = false) Long categoryId,
-            @RequestParam(name = "email", required = true) String email) { // @AuthenticationPrincipal User user
+            @PathVariable(name = "email") String email) { // @AuthenticationPrincipal User user
         try {
 
+            // log.info("email 정보 => {}", email);
             // log.info("categoryId received: {}", categoryId);
             log.info("user 정보 => {}", user.toString());
             log.info("user user => {}", user.getAuthorities());
@@ -125,7 +127,7 @@ public class GrMemberController {
                 model.addAttribute("my_btn_value", 2);
             }
 
-            model.addAttribute("user", user);
+            // model.addAttribute("user", user);
             model.addAttribute("member", member);
             model.addAttribute("following", following);
             model.addAttribute("follower", follower);

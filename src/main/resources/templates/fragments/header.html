@@ -8,11 +8,10 @@
     <title>헤더</title>
     <!-- Bootstrap용 css CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp"
-        crossorigin="anonymous">
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <!--Bootstrap 용 Icon CDN-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-    
+
 
 
 </head>
@@ -37,7 +36,8 @@
                 <!-- 로고 이미지 -->
                 <div class="logo_box">
                     <div class="logo">
-                        <a th:href="@{/home.do}"><img th:src="@{/images/gr/odoplogo(2).png}" alt="로고 이미지" style="margin-left: 145px;"></a>
+                        <a th:href="@{/home.do}"><img th:src="@{/images/gr/odoplogo(2).png}" alt="로고 이미지"
+                                style="margin-left: 145px;"></a>
                     </div>
                 </div>
 
@@ -46,7 +46,7 @@
                     <!-- 로그인 되어있을 때 -->
                     <th:block th:if="${user} != null">
                         <div class="new-post">
-                            <a th:href="@{/mhwrite.do}"><input type="button" value="새 글 작성"></a>
+                            <a th:href="@{/post/write.do}"><input type="button" value="새 글 작성"></a>
                         </div>
                         <div class="notification-icon">
                             <i class="bi bi-bell"></i>
@@ -57,7 +57,7 @@
                     </th:block>
 
                     <!-- 로그인 되어있지 않을 때 -->
-                    <th:block th:if="${user} == null">                   
+                    <th:block th:if="${user} == null">
                         <div class="login-btn">
                             <a th:href="@{/login.do}"><input type="button" value="로그인"></a>
                         </div>
@@ -74,76 +74,76 @@
                 <div class="col">
                     <div class="col2">
                         <i class="bi bi-caret-down-fill"></i>
-                    <div class="title_detail">CATEGORY </div>
+                        <div class="title_detail">CATEGORY </div>
                     </div>
                     <div class="line"></div>
                     <div class="category">
-                    <table>
-                        <tr th:each="category : ${categories}">
-                            <td><input type="checkbox"></td>
-                            <td th:text="${category}"></td>
-                        </tr>
-                    </table>
+                        <table>
+                            <tr th:each="category : ${categories}">
+                                <td><input type="checkbox"></td>
+                                <td th:text="${category}"></td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
 
                 <div class="col">
                     <div class="col2_m">
                         <i class="bi bi-caret-down-fill"></i>
-                    <div class="title_detail_m">MBTI </div>
+                        <div class="title_detail_m">MBTI </div>
                     </div>
                     <div class="line"></div>
                     <div class="select_mbti">
-                    <table>
-                        <tr>
-                        <td><input type="checkbox"></td>
-                        <td>ENFP</td>
-                        <td><input type="checkbox"></td>
-                        <td>ENFJ</td>
-                        </tr>
-                        <tr>
-                        <td><input type="checkbox"></td>
-                        <td>ENTP</td>
-                        <td><input type="checkbox"></td>
-                        <td>ENTJ</td>
-                        </tr>
-                        <tr>
-                        <td><input type="checkbox"></td>
-                        <td>ESTP</td>
-                        <td><input type="checkbox"></td>
-                        <td>ESTJ</td>
-                        </tr>
-                        <tr>
-                        <td><input type="checkbox"></td>
-                        <td>ESFP</td>
-                        <td><input type="checkbox"></td>
-                        <td>ESFJ</td>
-                        </tr>
-                        <tr>
-                        <td><input type="checkbox"></td>
-                        <td>INFP</td>
-                        <td><input type="checkbox"></td>
-                        <td>INFJ</td>
-                        </tr>
-                        <tr>
-                        <td><input type="checkbox"></td>
-                        <td>INTP</td>
-                        <td><input type="checkbox"></td>
-                        <td>INTJ</td>
-                        </tr>
-                        <tr>
-                        <td><input type="checkbox"></td>
-                        <td>ISTP</td>
-                        <td><input type="checkbox"></td>
-                        <td>ISTJ</td>
-                        </tr>
-                        <tr>
-                        <td><input type="checkbox"></td>
-                        <td>ISFP</td>
-                        <td><input type="checkbox"></td>
-                        <td>ISFJ</td>
-                        </tr>
-                    </table>
+                        <table>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>ENFP</td>
+                                <td><input type="checkbox"></td>
+                                <td>ENFJ</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>ENTP</td>
+                                <td><input type="checkbox"></td>
+                                <td>ENTJ</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>ESTP</td>
+                                <td><input type="checkbox"></td>
+                                <td>ESTJ</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>ESFP</td>
+                                <td><input type="checkbox"></td>
+                                <td>ESFJ</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>INFP</td>
+                                <td><input type="checkbox"></td>
+                                <td>INFJ</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>INTP</td>
+                                <td><input type="checkbox"></td>
+                                <td>INTJ</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>ISTP</td>
+                                <td><input type="checkbox"></td>
+                                <td>ISTJ</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>ISFP</td>
+                                <td><input type="checkbox"></td>
+                                <td>ISFJ</td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
 
@@ -166,23 +166,32 @@
                 </ul>
             </nav>
         </th:block> -->
-        
+
         <!-- 프로필 눌렀을 때 나오는 메뉴 -->
         <th:block th:if="${user != null}">
-            <nav class="sub-menu" id="myPageMenu" th:style="${#strings.contains(user.authorities, 'ROLE_A')} ? 'height: 145px;' : ''">
+            <nav class="sub-menu" id="myPageMenu"
+                th:style="${#strings.contains(user.authorities, 'ROLE_A')} ? 'height: 145px;' : ''">
                 <ul>
                     <li><a th:href="@{/myblog.do(email=${user.username})}">My Blog</a></li>
                     <hr style="border: solid 0.5px #3A5485; margin-top:15px; margin-bottom: 15px;">
-                    <li th:if="${#strings.contains(user.authorities, 'ROLE_A')}"><a th:href="@{/adminhome.do(type=post, menu=all)}">관리자 홈</a></li>
-                    <hr th:if="${#strings.contains(user.authorities, 'ROLE_A')}" style="border: solid 0.5px #3A5485; margin-top:15px; margin-bottom: 15px;">
+                    <li th:if="${#strings.contains(user.authorities, 'ROLE_A')}"><a
+                            th:href="@{/adminhome.do(type=post, menu=all)}">관리자 홈</a></li>
+                    <hr th:if="${#strings.contains(user.authorities, 'ROLE_A')}"
+                        style="border: solid 0.5px #3A5485; margin-top:15px; margin-bottom: 15px;">
                     <li><a th:onclick="logoutAction()">로그아웃</a></li>
                 </ul>
             </nav>
         </th:block>
 
 
-
+        <!--jQuery-->
+        <script th:src="@{/js/jquery-3.6.4.min.js}"></script>
+        <!--axios library-->
+        <script th:src="@{/js/axios.min.js}"></script>
         <script th:inline="javascript" type="text/javascript">
+
+            const contextPath = $('#contextPathHolder').attr('data-contextPath');
+
             // 햄버거 버튼과 서브 메뉴 요소를 가져옴
             const hamburgerBtn = document.getElementById('hamburgerBtn');
             const closeBtn = document.getElementById('closeBtn');
@@ -197,7 +206,7 @@
                 closeBtn.classList.toggle('hide');
             });
 
-            closeBtn.addEventListener('click', () =>{
+            closeBtn.addEventListener('click', () => {
                 subMenu.classList.toggle('show');
 
                 hamburgerBtn.classList.toggle('hide');
@@ -213,12 +222,12 @@
             });
 
             // 로그아웃
-            function logoutAction(){
+            function logoutAction() {
                 const logoutform = document.createElement("form");
                 // logoutform.action = /*[[@{/logout.do}]]*/"";
                 // logoutform.method = "post";
                 // logoutform.style.display="none";
-                logoutform.setAttribute("action", [[@{/logout.do}]] );
+                logoutform.setAttribute("action", contextPath + "/logout.do");
                 logoutform.setAttribute("method", "post");
                 logoutform.style.display = "none";
 

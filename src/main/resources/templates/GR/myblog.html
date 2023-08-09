@@ -376,7 +376,7 @@
                 <div id="left-area">
                     <div class="blog-profile">
                         <div class="myimg">
-                            <img th:src="${member.imgpath}" th:key="${member.imgkey}" width="100px" height="100px" onerror="this.src='images/default_thumbnail.png'">
+                            <img th:src="${member.imgpath}" th:key="${member.imgkey}" width="100px" height="100px" th:onerror="this.src='/odop/images/default_thumbnail.png'">
                         </div>
                         <div class="myinfo_box">
                             <div class="myinfo">
@@ -413,7 +413,7 @@
                                     <p>카테고리</p>
                                 </div>
                             </div>
-                            <div class="cate_all"><a th:href="@{/myblog.do(email=${member.email})}">전체보기</a></div>
+                            <div class="cate_all"><a th:href="@{/myblog.do/{email}}">전체보기</a></div>
                             <div class="cate" th:each="obj:${pclist}">
                                 <a href=# onclick="loadPostsByCategory(this.getAttribute('data-category-id')); return false;" th:text="${obj.CATEGORY}" th:data-category-id="${obj.NO}"></a>
                                 <div class="cate_num" th:text="${obj.PNOCOUNT}"></div>
@@ -516,7 +516,7 @@
         console.log(typeof categoryId);
         var newCategoryId = Number(categoryId);
         console.log(typeof newCategoryId);
-        var newUrl = [[@{/myblog.do}]] + "?email=" + [[${member.email}]] + "&categoryId=" + newCategoryId; // 카테고리 번호를 추가하여 새로운 URL 생성
+        var newUrl = [[@{/myblog.do/}]] + /*[[${email}]]*/ + "?categoryId=" + newCategoryId; // 카테고리 번호를 추가하여 새로운 URL 생성
         window.location.href = newUrl; // 새로운 URL로 페이지 이동
         console.log(newCategoryId);
     }
