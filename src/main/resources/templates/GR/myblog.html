@@ -579,12 +579,19 @@
             for (const follower of followerlist) {
                 const imgSrc = follower.imgpath || 'images/default_thumbnail.png';
 
+                let buttonHTML = '';
+                if (useremail !== follower.email) {
+                    buttonHTML = `
+                        <input type="button" id="follower_btn" value="${follower.follow_yumu === 0 ? '팔로우' : '팔로우 취소'}">
+                    `;
+                }
+
                 tableHTML += `
                     <tr>
                         <td><img src="${imgSrc}" key="${follower.imgkey}" style="border-radius: 50%; width: 40px; height: 40px;"
-                                 onerror="this.src='images/default_thumbnail.png'"></td>
+                                onerror="this.src='images/default_thumbnail.png'"></td>
                         <td>${follower.email}</td>
-                        <td><input type="button" id="follower_btn" value="${follower.follow_yumu === 0 ? '팔로우' : '팔로우 취소'}"></td>
+                        <td>${buttonHTML}</td>
                     </tr>
                 `;
             }
@@ -611,12 +618,19 @@
             for (const following of followinglist) {
                 const imgSrc = following.imgpath || 'images/default_thumbnail.png';
 
+                let buttonHTML = '';
+                if (useremail !== following.email) {
+                    buttonHTML = `
+                        <input type="button" id="following_btn" value="${following.follow_yumu === 0 ? '팔로우' : '팔로우 취소'}">
+                    `;
+                }
+
                 tableHTML += `
                     <tr>
                         <td><img src="${imgSrc}" key="${following.imgkey}" style="border-radius: 50%; width: 40px; height: 40px;"
                                  onerror="this.src='images/default_thumbnail.png'"></td>
                         <td>${following.email}</td>
-                        <td><input type="button" id="following_btn" value="${following.follow_yumu === 0 ? '팔로우' : '팔로우 취소'}"></td>
+                        <td>${buttonHTML}</td>
                     </tr>
                 `;
             }
