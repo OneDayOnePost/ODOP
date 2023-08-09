@@ -35,5 +35,25 @@ public class GrHomeServiceImpl implements GrHomeService{
             return null;
         } 
     }
+
+    @Override
+    public List<PostAllViewDTO> selectPostAllByFollow(String email) {
+        try {
+            return hMapper.selectPostAllByFollow( email);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } 
+    }
+
+    @Override
+    public List<PostAllViewDTO> selecttitlekeyword(String keyword) {
+        try {
+            return hMapper.selecttitlekeyword(keyword);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     
 }

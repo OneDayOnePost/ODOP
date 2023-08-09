@@ -47,6 +47,12 @@ public class HomeController {
                 
                 model.addAttribute("plist", postalllist);
             }
+            else if (type.equals(("follow"))){
+                List<PostAllViewDTO> postalllist = GhService.selectPostAllByFollow( user.getUsername());
+            
+                model.addAttribute("plist", postalllist);
+            }
+
             return "/home";
             
         } catch (Exception e) {
