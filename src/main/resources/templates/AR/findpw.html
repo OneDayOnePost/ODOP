@@ -282,12 +282,14 @@
                                     <input class="email_input" type="text" id="email" name="email"
                                         style="margin-left: 25px;">
                                     <input type="button" id="sendbutton" value="인증번호 발송" onclick="sendEmailAction()"></input>
+                                    <input type="hidden" id="sendbuttonclick" name="sendbuttonclick"></input>
                                 </div>
                                 <div id="chkbox" style="padding-left: 126px; padding-top: 6px; display: none;" >
                                     <span class="label_span">인증번호</span>
                                     <input class="chk_input" type="text" id="chk_number" name="chk_number"
                                         style="margin-left: 32px;">
-                                    <input type="button" id="sendchkbutton" value="확인" onclick="findAction()"></input>
+                                    <input type="button" id="sendchkbutton" value="확인" onclick="certificationAction()"></input>
+                                    <input type="hidden" id="sendchkbuttonclick" name="sendchkbuttonclick"></input>
                                 </div>
                                 <div style="padding-top: 10px; padding-right: 185px;">
                                     <span class="label_span">새 비밀번호</span>
@@ -305,7 +307,7 @@
                                 <th style="padding-left: 400px;">
                                     <input type="button" id="cancelbutton" value="취소"
                                         onclick="location.href='login.do'"></input>
-                                    <input type="button" id="findbutton" value="찾기" onclick="findAction()"></input>
+                                    <input type="button" id="findbutton" value="변경" onclick="findAction()"></input>
 
                                 </th>
                             </div>
@@ -355,38 +357,115 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.5/axios.min.js"></script>
     <script th:inline="javascript" type="text/javascript">
         
+        const modal = new bootstrap.Modal(
+            document.getElementById("alert"),
+            {}
+        );
+
+
+
         function sendEmailAction(){
-            const chkbox = document.getElementById("chkbox");
-
-            chkbox.style = "display:block; padding-left: 126px; padding-top: 6px;";
-        }
-    //form 전송
-        function findAction() {
-            const email = document.getElementById("email");
-            const chk_number = document.getElementById("chk_number");
-            const password = document.getElementById("password");
-            const pwcheck = document.getElementById("pwcheck");
-            
-
-
-            if(name.value.length <= 0 ){
+            if(email.value.length <= 0 ){ //1.이메일을 입력했는가
                 document.querySelector("#title").style ="display:none;";
-                document.querySelector("#title").setAttribute("focusElement", "name");
-                document.querySelector("#content").textContent = "이름을 입력해주세요.";
+                document.querySelector("#title").setAttribute("focusElement", "email");
+                document.querySelector("#content").textContent = "이메일을 입력해주세요.";
 
                 modal.show();
                 return false;
             }
-            if(phone.value.length <= 0){
-                alert('전화번호를 입력해주세요');
-                phone.focus;
+            else if(){ //db에 있는 이메일인가
+                 //이메일로 인증번호 발송
+                 $('input[name=sendbuttonclick]').attr('value', 'y'); //클릭확인 여부
+
+
+                 //버튼을 누르면 인증번호 입력칸이 뜬다
+                const chkbox = document.getElementById("chkbox");
+                chkbox.style = "display:block; padding-left: 126px; padding-top: 6px;";
+       
+
+            }
+
+            
+        }
+        //인증번호 확인
+        function certificationAction() {
+
+            $('input[name=sendchkbuttonclick]').attr('value', 'y'); //클릭확인 여부
+
+            const email = document.getElementById("email");
+            const chk_number = document.getElementById("chk_number");
+            const password = document.getElementById("password");
+            const pwcheck = document.getElementById("pwcheck");
+            const sendbuttonclick = document.getElementById("sendbuttonclick");
+            const sendchkbuttonclick = document.getElementById("sendchkbuttonclick");
+            
+
+
+           
+            if(chk_number.value.length <= 0 ){ //인증번호를 입력했는가
+                document.querySelector("#title").style ="display:none;";
+                document.querySelector("#title").setAttribute("focusElement", "chk_number");
+                document.querySelector("#content").textContent = "인증번호를 입력해주세요.";
+
+                modal.show();
                 return false;
+                if(){ //유효시간안에 입력햇는가
+                    if(){//인증번호가 일치하는가
+
+                    }
+
+                }
+            
+            
+
             }
             
             //전송하기
-            document.getElementById("findemailform").submit();
+            document.getElementById("findpwform").submit();
 
         }
+
+         //form 전송
+        function findAction() {
+
+            $('input[name=sendchkbuttonclick]').attr('value', 'y'); //클릭확인 여부
+
+            const email = document.getElementById("email");
+            const chk_number = document.getElementById("chk_number");
+            const password = document.getElementById("password");
+            const pwcheck = document.getElementById("pwcheck");
+            const sendbuttonclick = document.getElementById("sendbuttonclick");
+            const sendchkbuttonclick = document.getElementById("sendchkbuttonclick");
+
+
+
+
+            if(chk_number.value.length <= 0 ){ //인증번호를 입력했는가
+                document.querySelector("#title").style ="display:none;";
+                document.querySelector("#title").setAttribute("focusElement", "chk_number");
+                document.querySelector("#content").textContent = "인증번호를 입력해주세요.";
+
+                modal.show();
+                return false;
+            }
+
+            if(){ //인증번호가 일치하는가
+
+            }
+
+            //전송하기
+            document.getElementById("findpwform").submit();
+
+        }
+
+        function focusElement() {
+        
+        var focusElement = document.querySelector("#title").getAttribute("focusElement");
+
+        console.log(focusElement);
+        
+        document.getElementById(`${focusElement}`).focus();
+    }
     </script>
 </body>
 

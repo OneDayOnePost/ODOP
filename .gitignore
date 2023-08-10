@@ -37,3 +37,6 @@ application-oauth.properties
 
 ### AWS S3 엑세스 키 ###
 application-aws.properties
+
+### odop email 인증 번호 전송 ###
+application-email.properties
