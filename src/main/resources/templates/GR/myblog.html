@@ -343,16 +343,47 @@
         background-color: #e5e5e5;
         margin-top: 30px;
     }
-    
 
+    /* 팔로워, 팔로잉 모달창 크기 */
+    .modal-content {
+        height: 500px;
+    }
 
+    /* 모달 스크롤 */
+    .modal-scrollable-content {
+        max-height: 400px;
+        overflow-y: auto;
+    }
 
+    #followerlisttable,
+    #followinglisttable {
+        display: flex;
+        justify-content: center;
+    }
 
+    #followerlisttable tbody,
+    #followinglisttable tbody {
+        width: 90%;
+    }
 
+    #followerlisttable tbody tr,
+    #followinglisttable tbody tr {
+        height: 60px;
+    }
 
+    #followerlisttable tbody tr td input,
+    #followinglisttable tbody tr td input {
+        border: none;
+        width: 110px;
+        background-color: #3A5485;
+        color: #fff;
+        border-radius: 20px;
+        height: 35px;
+    }
 
-    
-
+    .myblog_img:hover {
+        cursor: pointer;
+    }
   </style>
 
 
@@ -478,12 +509,13 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="ModalTitle1" style="font-weight: bold;">팔로워</h5>
+                <h5 class="modal-title" id="ModalTitle1" style="font-weight: bold; margin-left: 15px;">팔로워</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <table id="followerlisttable">
-                </table>
+                <div class="modal-scrollable-content">
+                    <table id="followerlisttable"></table>
+                </div>
             </div>
         </div>
     </div>
@@ -494,12 +526,13 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="ModalTitle2" style="font-weight: bold;">팔로잉</h5>
+                <h5 class="modal-title" id="ModalTitle2" style="font-weight: bold; margin-left: 15px;">팔로잉</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <table id="followinglisttable">
-                </table>
+                <div class="modal-scrollable-content">
+                    <table id="followinglisttable"></table>             
+                </div>
             </div>
         </div>
     </div>
@@ -520,7 +553,6 @@
         window.location.href = newUrl; // 새로운 URL로 페이지 이동
         console.log(newCategoryId);
     }
-
 
     async function changeMyBtn() {
         let useremail = [[${user.username}]];
@@ -588,9 +620,11 @@
 
                 tableHTML += `
                     <tr>
-                        <td><img src="${imgSrc}" key="${follower.imgkey}" style="border-radius: 50%; width: 40px; height: 40px;"
-                                onerror="this.src='images/default_thumbnail.png'"></td>
-                        <td>${follower.email}</td>
+                        <td><img src="${imgSrc}" key="${follower.imgkey}" style="border-radius: 50%; width: 45px; height: 45px; margin-right: 15px"
+                                onerror="this.src='images/default_thumbnail.png'" onclick="goToBlog('${follower.email}')" class="myblog_img"></td>
+                        <td style="font-size: 18px; padding-bottom: 5px; width: 246px;">
+                            <button type="button" onclick="goToBlog('${follower.email}')" style="border: none; background-color: #fff;">${follower.email}</button>
+                        </td>
                         <td>${buttonHTML}</td>
                     </tr>
                 `;
@@ -627,9 +661,11 @@
 
                 tableHTML += `
                     <tr>
-                        <td><img src="${imgSrc}" key="${following.imgkey}" style="border-radius: 50%; width: 40px; height: 40px;"
-                                 onerror="this.src='images/default_thumbnail.png'"></td>
-                        <td>${following.email}</td>
+                        <td><img src="${imgSrc}" key="${following.imgkey}" style="border-radius: 50%; width: 45px; height: 45px; margin-right: 15px"
+                                 onerror="this.src='images/default_thumbnail.png'" onclick="goToBlog('${following.email}')" class="myblog_img"></td>
+                        <td style="font-size: 18px; padding-bottom: 5px; width: 246px;">
+                            <button type="button" onclick="goToBlog('${following.email}')" style="border: none; background-color: #fff;">${following.email}</button>
+                        </td>
                         <td>${buttonHTML}</td>
                     </tr>
                 `;
@@ -720,6 +756,10 @@
             }
         }
     });
+
+    function goToBlog(email) {
+        window.location.href = [[@{/myblog.do}]] + '?email=' + email;
+    }
   </script>
 </body>
 
