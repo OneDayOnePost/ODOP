@@ -2,412 +2,410 @@
 <html lang="ko">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
-  <title>ODOP</title>
-  <!--Bootstrap 용 CSS-->
-  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-  <!--Bootstrap 용 Icon CDN-->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-  <!--font awesome 용-->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <!--google fonts-->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
-  <!--CSS-->
-  <link th:href="@{/css/header.css}" rel="stylesheet">
-  <link th:href="@{/css/footer.css}" rel="stylesheet">
-  <!--thymeleaf contextpath-->
-  <link id="contextPathHolder" th:data-contextPath="${#httpServletRequest.getContextPath()}" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <title>ODOP</title>
+    <!--Bootstrap 용 CSS-->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <!--Bootstrap 용 Icon CDN-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <!--font awesome 용-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!--google fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+    <!--CSS-->
+    <link th:href="@{/css/header.css}" rel="stylesheet">
+    <link th:href="@{/css/footer.css}" rel="stylesheet">
+    <!--thymeleaf contextpath-->
+    <link id="contextPathHolder" th:data-contextPath="${#httpServletRequest.getContextPath()}" />
+    <style>
+        /* 여기 지정된 부분은 모든 html 파일에 공통적으로 넣어줍니다. */
+        html,
+        body {
+            height: 100%;
+        }
 
-  <!--jQuery 추가-->
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"
-          integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+        #body-wrapper {
+            position: relative;
+            min-height: 100vh;
+            padding-bottom: 230px;
+        }
 
-  <style>
-
-    /* 여기 지정된 부분은 모든 html 파일에 공통적으로 넣어줍니다. */
-    html,
-    body {
-      height: 100%;
-    }
-
-    #body-wrapper {
-      position: relative;
-      min-height: 100vh;
-      padding-bottom: 230px;
-    }
-
-    footer {
-      height: 230px;
-      position: relative;
-      transform: translateY(-100%);
-    }
-    
-    
-    /* 본문 내용 */
-    .container{
-        max-width: 1210px;
-    }
-
-    .blogname h3{
-        font-size: 22px;
-        padding-top: 90px;
-        padding-bottom: 33px;
-    }
-
-    #blog_box {
-        /* border: 1.5px solid #A2B2CD; */
-        background: rgba(254, 254, 254, 0.65);
-        display: flex;
-    }
-
-    #left-area{
-        /* border: 1.5px solid #A2B2CD; */
-        /* position: absolute; */
-        width: 300px;
-        left: 312px;
-    }
-
-    .myimg{
-        float: left;
-        padding-left: 15px;
-        padding-top: 23px;
-    }
-
-    .myimg img{
-      border-radius: 50%; /* 50%로 설정하여 원 모양으로 잘려짐 */
-      overflow: hidden; /* 넘치는 부분은 숨기도록 설정 */
-    }
-
-    .myinfo{
-        padding-top: 29px;
-
-        display: flex;
-        flex-direction: column;
-    }
-
-    .myinfo p{
-        margin-bottom: 5px;
-        float: left;
-        /* margin-right: 80px; */
-        padding-left: 30px;
-    }
-
-    .myinfo_follow{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        position: relative;
-
-    }
-
-    .myinfo_follow .follow_number{
-        font-size: 25px;
-    }
-
-    .follow_number:hover {
-        cursor: pointer;
-    }
-
-    .myinfo_follow .follow_word{
-        font-size: 15px;
-        color: #5C5960;
-    }
-
-    .myinfo_follow::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 50%;
-        width: 1px;
-        background-color: #e5e5e5;
-        transform: translateX(-50%);
-    }
-    
-    .myfollowing,
-    .myfollower{
-        flex-basis: 50%;
-    }
-
-    .myfollowing div,
-    .myfollower div{
-        text-align: center;
-    }
-
-    .my_btn input{
-        /* padding-top: 55px; */
-        width: 300px;
-        height: 40px;
-        border-radius: 15px;
-        margin-top: 22px;
-        background-color: #3A5485;
-        border : none;
-
-        color: white;
-        font-weight: bold;
-    }
-
-    .introduce{
-        padding: 25px 20px 30px 20px;
-        float: left;
-    }
-
-    .my_category{
-        clear: both;
-        float: left;
-        padding-left: 20px;
-        padding-top: 25px;
-    }
-
-    .cate_name_box{
-        font-weight: bold;
-        border-bottom: 2px solid #e5e5e5;
-        padding-bottom: 5px;
-        width: 260px;
-        display: flex;
-        align-items: flex-start;
-    }
-
-    .cate_name{
-        padding-left: 15px;
-    }
-    .cate_name p{
-        margin-bottom: -3px;
-    }
-
-    .cate{
-        padding-top: 15px;
-        padding-left: 20px;
-        padding-right: 20px;
-        display: flex;
-        align-items: flex-start;
-        font-size: 14px;
-    }
-
-    .cate a{
-        text-decoration: none;
-        color: #333;
-    }
-
-    .cate_all{
-        padding-top: 15px;
-        padding-left: 20px;
-        padding-right: 20px;
-        display: flex;
-        align-items: flex-start;
-        font-size: 14px;
-    }
-
-    .cate_all a{
-        text-decoration: none;
-        color: #333;
-        font-weight: bold;
-    }
-
-    .cate_1{
-        margin-right: auto;
-    }
-
-    .cate_num{
-        margin-left: auto;
-    }
+        footer {
+            height: 230px;
+            position: relative;
+            transform: translateY(-100%);
+        }
 
 
-    #right-area{
-        flex: 1;
-        /* background-color: #EFEFEF; */
-    }
+        /* 본문 내용 */
+        .container {
+            max-width: 1210px;
+        }
 
-    #right-area p{
-        float: left;
-    }
+        .blogname h3 {
+            font-size: 22px;
+            padding-top: 90px;
+            padding-bottom: 33px;
+        }
 
-    .post{
-        padding-left: 53px;
-        margin-bottom: -45px;
-    }
+        #blog_box {
+            /* border: 1.5px solid #A2B2CD; */
+            background: rgba(254, 254, 254, 0.65);
+            display: flex;
+        }
 
-    .post_img{
-        float: right;
-        position: relative;
-    }
+        #left-area {
+            /* border: 1.5px solid #A2B2CD; */
+            /* position: absolute; */
+            width: 300px;
+            left: 312px;
+        }
 
-    .me-3{
-        position: absolute;
-        top: 13px;
-        right: 7px;
-        z-index: 1;
-    }
+        .myimg {
+            float: left;
+            padding-left: 15px;
+            padding-top: 23px;
+        }
 
-    .post_box{
-        padding-left: 50px;
-        padding-top: 10px;
-        display: flex;
-        flex-direction: column;
-    }
+        .myimg img {
+            border-radius: 50%;
+            /* 50%로 설정하여 원 모양으로 잘려짐 */
+            overflow: hidden;
+            /* 넘치는 부분은 숨기도록 설정 */
+        }
 
-    .mypost{
-        padding-bottom: 50px;
-        width: 820px;
-    }
-    
+        .myinfo {
+            padding-top: 29px;
+
+            display: flex;
+            flex-direction: column;
+        }
+
+        .myinfo p {
+            margin-bottom: 5px;
+            float: left;
+            /* margin-right: 80px; */
+            padding-left: 30px;
+        }
+
+        .myinfo_follow {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+
+        }
+
+        .myinfo_follow .follow_number {
+            font-size: 25px;
+        }
+
+        .follow_number:hover {
+            cursor: pointer;
+        }
+
+        .myinfo_follow .follow_word {
+            font-size: 15px;
+            color: #5C5960;
+        }
+
+        .myinfo_follow::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 1px;
+            background-color: #e5e5e5;
+            transform: translateX(-50%);
+        }
+
+        .myfollowing,
+        .myfollower {
+            flex-basis: 50%;
+        }
+
+        .myfollowing div,
+        .myfollower div {
+            text-align: center;
+        }
+
+        .my_btn input {
+            /* padding-top: 55px; */
+            width: 300px;
+            height: 40px;
+            border-radius: 15px;
+            margin-top: 22px;
+            background-color: #3A5485;
+            border: none;
+
+            color: white;
+            font-weight: bold;
+        }
+
+        .introduce {
+            padding: 25px 20px 30px 20px;
+            float: left;
+        }
+
+        .my_category {
+            clear: both;
+            float: left;
+            padding-left: 20px;
+            padding-top: 25px;
+        }
+
+        .cate_name_box {
+            font-weight: bold;
+            border-bottom: 2px solid #e5e5e5;
+            padding-bottom: 5px;
+            width: 260px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .cate_name {
+            padding-left: 15px;
+        }
+
+        .cate_name p {
+            margin-bottom: -3px;
+        }
+
+        .cate {
+            padding-top: 15px;
+            padding-left: 20px;
+            padding-right: 20px;
+            display: flex;
+            align-items: flex-start;
+            font-size: 14px;
+        }
+
+        .cate a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .cate_all {
+            padding-top: 15px;
+            padding-left: 20px;
+            padding-right: 20px;
+            display: flex;
+            align-items: flex-start;
+            font-size: 14px;
+        }
+
+        .cate_all a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .cate_1 {
+            margin-right: auto;
+        }
+
+        .cate_num {
+            margin-left: auto;
+        }
 
 
-    .post_info{
-        width: 820px;
-        padding-left: 50px;
-        padding-top: 40px;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: flex-start;
-        flex-direction: row;
-        justify-content: flex-start;
-    }
+        #right-area {
+            flex: 1;
+            /* background-color: #EFEFEF; */
+        }
 
-    .post_title{
-        padding-left: 10px;
-        font-weight: bold;
-        margin-top: 20px;
-    }
+        #right-area p {
+            float: left;
+        }
 
-    .post_info p{
-        text-align: left;
-        width: 695px;
-        margin: 0;
-    }
+        .post {
+            padding-left: 53px;
+            margin-bottom: -45px;
+        }
 
-    .post_content{
-        width: 815px;
-        padding-left: 15px;
-        padding-top: 5px;
-        padding-right: 15px;
-        text-align: left;
-        font-size: 14px;
+        .post_img {
+            float: right;
+            position: relative;
+        }
 
-        /* 텍스트가 3줄을 넘어가면 말줄임표로 처리 */
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
+        .me-3 {
+            position: absolute;
+            top: 13px;
+            right: 7px;
+            z-index: 1;
+        }
 
-    }
+        .post_box {
+            padding-left: 50px;
+            padding-top: 10px;
+            display: flex;
+            flex-direction: column;
+        }
 
-    .post_tag{
-        padding-top: 15px;
-        display: flex;
-        margin-right: 5px;
-    }
+        .mypost {
+            padding-bottom: 50px;
+            width: 820px;
+        }
 
-    .post_tag input{
-        border-radius: 50px;
-        border: none;
-        background-color: #D9D9D9;
-        font-size: 13px;
-        width: 100px;
-        height: 25px;
-        display: inline-block;
 
-    }
 
-    .post_lastline{
-        padding-top: 15px;
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        width: 780px;
-    }
+        .post_info {
+            width: 820px;
+            padding-left: 50px;
+            padding-top: 40px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            flex-direction: row;
+            justify-content: flex-start;
+        }
 
-    .post_date{
-        /* order: 1; */
-        flex: 1;
-        font-size: 13px;
-        color: #5C5960;
-        width: 630px;
-    }
+        .post_title {
+            padding-left: 10px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
 
-    .post_infoinfo{
-        /* order: 2; */
-        flex : 1;
-        font-size: 13px;
-        width: 150px;
-    }
+        .post_info p {
+            text-align: left;
+            width: 695px;
+            margin: 0;
+        }
 
-    .post_line{
-        width: 100%;
-        height: 1px;
-        background-color: #e5e5e5;
-        margin-top: 30px;
-    }
+        .post_content {
+            width: 815px;
+            padding-left: 15px;
+            padding-top: 5px;
+            padding-right: 15px;
+            text-align: left;
+            font-size: 14px;
 
-    /* 팔로워, 팔로잉 모달창 크기 */
-    .modal-content {
-        height: 500px;
-    }
+            /* 텍스트가 3줄을 넘어가면 말줄임표로 처리 */
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
 
-    /* 모달 스크롤 */
-    .modal-scrollable-content {
-        max-height: 400px;
-        overflow-y: auto;
-    }
+        }
 
-    #followerlisttable,
-    #followinglisttable {
-        display: flex;
-        justify-content: center;
-    }
+        .post_tag {
+            padding-top: 15px;
+            display: flex;
+            margin-right: 5px;
+        }
 
-    #followerlisttable tbody,
-    #followinglisttable tbody {
-        width: 90%;
-    }
+        .post_tag input {
+            border-radius: 50px;
+            border: none;
+            background-color: #D9D9D9;
+            font-size: 13px;
+            width: 100px;
+            height: 25px;
+            display: inline-block;
 
-    #followerlisttable tbody tr,
-    #followinglisttable tbody tr {
-        height: 60px;
-    }
+        }
 
-    #followerlisttable tbody tr td input,
-    #followinglisttable tbody tr td input {
-        border: none;
-        width: 110px;
-        background-color: #3A5485;
-        color: #fff;
-        border-radius: 20px;
-        height: 35px;
-    }
+        .post_lastline {
+            padding-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 780px;
+        }
 
-    .myblog_img:hover {
-        cursor: pointer;
-    }
-  </style>
+        .post_date {
+            /* order: 1; */
+            flex: 1;
+            font-size: 13px;
+            color: #5C5960;
+            width: 630px;
+        }
+
+        .post_infoinfo {
+            /* order: 2; */
+            flex: 1;
+            font-size: 13px;
+            width: 150px;
+        }
+
+        .post_line {
+            width: 100%;
+            height: 1px;
+            background-color: #e5e5e5;
+            margin-top: 30px;
+        }
+
+        /* 팔로워, 팔로잉 모달창 크기 */
+        .modal-content {
+            height: 500px;
+        }
+
+        /* 모달 스크롤 */
+        .modal-scrollable-content {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        #followerlisttable,
+        #followinglisttable {
+            display: flex;
+            justify-content: center;
+        }
+
+        #followerlisttable tbody,
+        #followinglisttable tbody {
+            width: 90%;
+        }
+
+        #followerlisttable tbody tr,
+        #followinglisttable tbody tr {
+            height: 60px;
+        }
+
+        #followerlisttable tbody tr td input,
+        #followinglisttable tbody tr td input {
+            border: none;
+            width: 110px;
+            background-color: #3A5485;
+            color: #fff;
+            border-radius: 20px;
+            height: 35px;
+        }
+
+        .myblog_img:hover {
+            cursor: pointer;
+        }
+    </style>
 
 
 </head>
 
 <body>
 
-  <!--wrapper 영역-->
-  <div id="body-wrapper">
+    <!--wrapper 영역-->
+    <div id="body-wrapper">
 
-    <!-- header 영역 -->
-    <div th:replace="~{fragments/header :: header}"></div>
+        <!-- header 영역 -->
+        <div th:replace="~{fragments/header :: header}"></div>
 
-    <!-- 본문 영역 -->
-    <div id="wrapper" class="container" style="margin-bottom: 200px;">
-        <div class="blogname d-flex justify-content-center">
-            <h3 th:text="${member.blogname}"></h3>
-        </div>
+        <!-- 본문 영역 -->
+        <div id="wrapper" class="container" style="margin-bottom: 200px;">
+            <div class="blogname d-flex justify-content-center">
+                <h3 th:text="${member.blogname}"></h3>
+            </div>
 
             <div id="blog_box" class="container">
                 <div id="left-area">
                     <div class="blog-profile">
                         <div class="myimg">
-                            <img th:src="${member.imgpath}" th:key="${member.imgkey}" width="100px" height="100px" onerror="this.src='images/default_thumbnail.png'">
+                            <img id="profile_img" th:src="${member.imgpath}" th:key="${member.imgkey}" width="100px"
+                                height="100px"  onerror="this.src='/odop/images/default_thumbnail.png'">
                         </div>
                         <div class="myinfo_box">
                             <div class="myinfo">
@@ -416,13 +414,15 @@
                                 </div>
                                 <div class="myinfo_follow">
                                     <div class="myfollower">
-                                        <div class="follow_number" id="followernumber" th:text="${follower}" onclick="followerlistcall()"></div>
+                                        <div class="follow_number" id="followernumber" th:text="${follower}"
+                                            onclick="followerlistcall()"></div>
                                         <div class="follow_word">
                                             팔로워
                                         </div>
                                     </div>
                                     <div class="myfollowing">
-                                        <div class="follow_number" id="followingnumber" th:text="${following}" onclick="followinglistcall()"></div>
+                                        <div class="follow_number" id="followingnumber" th:text="${following}"
+                                            onclick="followinglistcall()"></div>
                                         <div class="follow_word">
                                             팔로잉
                                         </div>
@@ -431,7 +431,9 @@
                             </div>
 
                             <div class="my_btn">
-                                <input type="button" id="mybtn" th:value="${my_btn_value == 0 ? '내 정보 수정' : (my_btn_value == 1 ? '팔로우 취소' : '팔로우')}" onclick="changeMyBtn()">
+                                <input type="button" id="mybtn"
+                                    th:value="${my_btn_value == 0 ? '내 정보 수정' : (my_btn_value == 1 ? '팔로우 취소' : '팔로우')}"
+                                    onclick="changeMyBtn()">
                             </div>
 
                             <div class="introduce">
@@ -446,18 +448,21 @@
                             </div>
                             <div class="cate_all"><a th:href="@{/myblog.do(email=${member.email})}">전체보기</a></div>
                             <div class="cate" th:each="obj:${pclist}">
-                                <a href=# onclick="loadPostsByCategory(this.getAttribute('data-category-id')); return false;" th:text="${obj.CATEGORY}" th:data-category-id="${obj.NO}"></a>
+                                <a href=#
+                                    onclick="loadPostsByCategory(this.getAttribute('data-category-id')); return false;"
+                                    th:text="${obj.CATEGORY}" th:data-category-id="${obj.NO}"></a>
                                 <div class="cate_num" th:text="${obj.PNOCOUNT}"></div>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
-                
+
                 <div id="right-area" class="side-width side-width-1">
                     <div class="post_box">
                         <div class="post">
-                            <p>post&nbsp;&nbsp;</p><p th:text="${formattedpostcount}"></p>
+                            <p>post&nbsp;&nbsp;</p>
+                            <p th:text="${formattedpostcount}"></p>
                         </div>
                         <div class="mypost">
                             <div class="post_info" th:each="obj:${list}">
@@ -465,10 +470,11 @@
                                     <!-- obj.postImageList.?[image.chk == 1] : chk 값이 1인 이미지들의 리스트를 반환 -->
                                     <!-- 대표 이미지가 존재하는 경우 -->
                                     <img th:if="${obj.postImageList.?[image.chk == 1].size() > 0}"
-                                         th:src="${obj.postImageList.?[image.chk == 1][0].image.imgpath}" width="780px" height="300px">
-                                    
-                                    <div class="me-3" th:if="${obj.postImageList.?[image.chk == 1].size() > 0}" >
-                                        <i class="bi bi-eye me-2" ></i><span th:text="${obj.hit}"></span>
+                                        th:src="${obj.postImageList.?[image.chk == 1][0].image.imgpath}" width="780px"
+                                        height="300px">
+
+                                    <div class="me-3" th:if="${obj.postImageList.?[image.chk == 1].size() > 0}">
+                                        <i class="bi bi-eye me-2"></i><span th:text="${obj.hit}"></span>
                                     </div>
                                 </div>
                                 <div class="post_title">
@@ -485,123 +491,124 @@
                                         <p th:text="${obj.regdate}"></p>
                                     </div>
                                     <div class="post_infoinfo" name="countreply">
-                                        <i class="bi bi-chat-dots me-2"></i><span>댓글&nbsp;</span><span style="font-weight: bold;" th:text="${obj.replyList.size()}"></span>
-                                        &nbsp;&nbsp;<i class="bi bi-heart me-2"></i><span>좋아요&nbsp;</span><span style="font-weight: bold;" th:text="${obj.dopeList.size()}"></span>
+                                        <i class="bi bi-chat-dots me-2"></i><span>댓글&nbsp;</span><span
+                                            style="font-weight: bold;" th:text="${obj.replyList.size()}"></span>
+                                        &nbsp;&nbsp;<i class="bi bi-heart me-2"></i><span>좋아요&nbsp;</span><span
+                                            style="font-weight: bold;" th:text="${obj.dopeList.size()}"></span>
                                     </div>
                                 </div>
                                 <div class="post_line"></div>
                             </div>
                         </div>
-                        
+
                     </div>
-                    
+
                 </div>
             </div>
+        </div>
+
     </div>
 
-  </div>
+    <!-- footer 영역 -->
+    <th:block th:replace="~{/fragments/footer :: footerHTML}"></th:block>
 
-  <!-- footer 영역 -->
-  <th:block th:replace="~{/fragments/footer :: footerHTML}"></th:block>
-
-  <!-- 팔로워 리스트 모달창 -->
-  <div class="modal fade" id="follower_list" tabindex="-1" aria-labelledby="ModalTitle1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="ModalTitle1" style="font-weight: bold; margin-left: 15px;">팔로워</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="modal-scrollable-content">
-                    <table id="followerlisttable"></table>
+    <!-- 팔로워 리스트 모달창 -->
+    <div class="modal fade" id="follower_list" tabindex="-1" aria-labelledby="ModalTitle1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalTitle1" style="font-weight: bold; margin-left: 15px;">팔로워</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-scrollable-content">
+                        <table id="followerlisttable"></table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-  </div>
 
-  <!-- 팔로잉 리스트 모달창 -->
-  <div class="modal fade" id="following_list" tabindex="-1" aria-labelledby="ModalTitle2" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="ModalTitle2" style="font-weight: bold; margin-left: 15px;">팔로잉</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="modal-scrollable-content">
-                    <table id="followinglisttable"></table>             
+    <!-- 팔로잉 리스트 모달창 -->
+    <div class="modal fade" id="following_list" tabindex="-1" aria-labelledby="ModalTitle2" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalTitle2" style="font-weight: bold; margin-left: 15px;">팔로잉</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-scrollable-content">
+                        <table id="followinglisttable"></table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-  </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.5/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.5/axios.min.js"></script>
+    <script th:inline="javascript" type="text/javascript">
 
-  <script th:inline="javascript" type="text/javascript">
-
-    // 카테고리별 조회하기
-    function loadPostsByCategory(categoryId) {
-        // 클릭한 카테고리의 번호를 categoryId 변수로 받아온다.
-        console.log(typeof categoryId);
-        var newCategoryId = Number(categoryId);
-        console.log(typeof newCategoryId);
-        var newUrl = [[@{/myblog.do}]] + "?email=" + [[${member.email}]] + "&categoryId=" + newCategoryId; // 카테고리 번호를 추가하여 새로운 URL 생성
+        // 카테고리별 조회하기
+        function loadPostsByCategory(categoryId) {
+            // 클릭한 카테고리의 번호를 categoryId 변수로 받아온다.
+            console.log(typeof categoryId);
+            var newCategoryId = Number(categoryId);
+            console.log(typeof newCategoryId);
+            var newUrl = [[@{/ myblog.do}]]+ "?email=" + [[${ member.email }]] + "&categoryId=" + newCategoryId; // 카테고리 번호를 추가하여 새로운 URL 생성
         window.location.href = newUrl; // 새로운 URL로 페이지 이동
         console.log(newCategoryId);
-    }
+        }
 
-    async function changeMyBtn() {
-        let useremail = [[${user.username}]];
-        let blogemail = [[${member.email}]];
-        let button = document.getElementById('mybtn');
-        
-        if (button.value === '내 정보 수정') {
-            window.location.href = [[@{/mypage.do}]];
+        async function changeMyBtn() {
+            let useremail = [[${ user.username }]];
+            let blogemail = [[${ member.email }]];
+            let button = document.getElementById('mybtn');
+
+            if (button.value === '내 정보 수정') {
+                window.location.href = [[@{/ mypage.do}]];
 
             return;
         } 
-        else if (button.value === '팔로우 취소') {
+    else if (button.value === '팔로우 취소') {
             // rest api 호출
-            const url = [[@{/api/myblog/followdelete.json}]] + '?useremail=' + useremail + '&blogemail=' + blogemail;
-            const headers = {"Content-Type":"application/json"};
-            const { data } = await axios.delete(url, { headers });
+            const url = [[@{/ api / myblog / followdelete.json}]]+ '?useremail=' + useremail + '&blogemail=' + blogemail;
+        const headers = { "Content-Type": "application/json" };
+        const { data } = await axios.delete(url, { headers });
 
-            if (data.status === 200) {
-                button.value = '팔로우';
+        if (data.status === 200) {
+            button.value = '팔로우';
 
-                // 팔로워 숫자 변경 코드 추가
-                const followerNumber = parseInt(document.querySelector('.myfollower .follow_number').textContent);
-                document.querySelector('.myfollower .follow_number').textContent = followerNumber - 1;
-            }
-        } 
-        else { // button.value === '팔로우'
+            // 팔로워 숫자 변경 코드 추가
+            const followerNumber = parseInt(document.querySelector('.myfollower .follow_number').textContent);
+            document.querySelector('.myfollower .follow_number').textContent = followerNumber - 1;
+        }
+    } 
+    else { // button.value === '팔로우'
             // rest api 호출
-            const url = [[@{/api/myblog/followinsert.json}]];
-            const headers = { "Content-Type": "application/json" };
-            const body = {"fromMember": {"email": useremail}, "toMember": {"email": blogemail}};
-            const { data } = await axios.post(url, body, { headers: headers });
+            const url = [[@{/ api / myblog / followinsert.json}]];
+        const headers = { "Content-Type": "application/json" };
+        const body = { "fromMember": { "email": useremail }, "toMember": { "email": blogemail } };
+        const { data } = await axios.post(url, body, { headers: headers });
 
-            if (data.status === 200) {
-                button.value = '팔로우 취소';
+        if (data.status === 200) {
+            button.value = '팔로우 취소';
 
-                // 팔로워 숫자 변경 코드 추가
-                const followerNumber = parseInt(document.querySelector('.myfollower .follow_number').textContent);
-                document.querySelector('.myfollower .follow_number').textContent = followerNumber + 1;
-            }
+            // 팔로워 숫자 변경 코드 추가
+            const followerNumber = parseInt(document.querySelector('.myfollower .follow_number').textContent);
+            document.querySelector('.myfollower .follow_number').textContent = followerNumber + 1;
         }
     }
+}
 
-    async function followerlistcall() {
-        let useremail = [[${user.username}]];
-        let blogemail = [[${member.email}]];
+        async function followerlistcall() {
+            let useremail = [[${ user.username }]];
+            let blogemail = [[${ member.email }]];
 
-        // rest api 호출
-        const url = [[@{/api/myblog/followerlist.json}]] + '?useremail=' + useremail + '&blogemail=' + blogemail;
-        const headers = {"Content-Type":"application/json"};
+            // rest api 호출
+            const url = [[@{/ api / myblog / followerlist.json}]]+ '?useremail=' + useremail + '&blogemail=' + blogemail;
+        const headers = { "Content-Type": "application/json" };
         const { data } = await axios.get(url, { headers });
 
         if (data.status === 200) {
@@ -614,35 +621,35 @@
                 let buttonHTML = '';
                 if (useremail !== follower.email) {
                     buttonHTML = `
-                        <input type="button" id="follower_btn" value="${follower.follow_yumu === 0 ? '팔로우' : '팔로우 취소'}">
-                    `;
+                    <input type="button" id="follower_btn" value="${follower.follow_yumu === 0 ? '팔로우' : '팔로우 취소'}">
+                `;
                 }
 
                 tableHTML += `
-                    <tr>
-                        <td><img src="${imgSrc}" key="${follower.imgkey}" style="border-radius: 50%; width: 45px; height: 45px; margin-right: 15px"
-                                onerror="this.src='images/default_thumbnail.png'" onclick="goToBlog('${follower.email}')" class="myblog_img"></td>
-                        <td style="font-size: 18px; padding-bottom: 5px; width: 246px;">
-                            <button type="button" onclick="goToBlog('${follower.email}')" style="border: none; background-color: #fff;">${follower.email}</button>
-                        </td>
-                        <td>${buttonHTML}</td>
-                    </tr>
-                `;
+                <tr>
+                    <td><img src="${imgSrc}" key="${follower.imgkey}" style="border-radius: 50%; width: 45px; height: 45px; margin-right: 15px"
+                            onerror="this.src='images/default_thumbnail.png'" onclick="goToBlog('${follower.email}')" class="myblog_img"></td>
+                    <td style="font-size: 18px; padding-bottom: 5px; width: 246px;">
+                        <button type="button" onclick="goToBlog('${follower.email}')" style="border: none; background-color: #fff;">${follower.email}</button>
+                    </td>
+                    <td>${buttonHTML}</td>
+                </tr>
+            `;
             }
-            
+
             document.getElementById('followerlisttable').innerHTML = tableHTML;
 
             $("#follower_list").modal("show");
         }
-    }
+}
 
-    async function followinglistcall() {
-        let useremail = [[${user.username}]];
-        let blogemail = [[${member.email}]];
-        
-        // rest api 호출
-        const url = [[@{/api/myblog/followinglist.json}]] + '?useremail=' + useremail + '&blogemail=' + blogemail;
-        const headers = {"Content-Type":"application/json"};
+        async function followinglistcall() {
+            let useremail = [[${ user.username }]];
+            let blogemail = [[${ member.email }]];
+
+            // rest api 호출
+            const url = [[@{/ api / myblog / followinglist.json}]]+ '?useremail=' + useremail + '&blogemail=' + blogemail;
+        const headers = { "Content-Type": "application/json" };
         const { data } = await axios.get(url, { headers });
 
         if (data.status === 200) {
@@ -655,37 +662,37 @@
                 let buttonHTML = '';
                 if (useremail !== following.email) {
                     buttonHTML = `
-                        <input type="button" id="following_btn" value="${following.follow_yumu === 0 ? '팔로우' : '팔로우 취소'}">
-                    `;
+                    <input type="button" id="following_btn" value="${following.follow_yumu === 0 ? '팔로우' : '팔로우 취소'}">
+                `;
                 }
 
                 tableHTML += `
-                    <tr>
-                        <td><img src="${imgSrc}" key="${following.imgkey}" style="border-radius: 50%; width: 45px; height: 45px; margin-right: 15px"
-                                 onerror="this.src='images/default_thumbnail.png'" onclick="goToBlog('${following.email}')" class="myblog_img"></td>
-                        <td style="font-size: 18px; padding-bottom: 5px; width: 246px;">
-                            <button type="button" onclick="goToBlog('${following.email}')" style="border: none; background-color: #fff;">${following.email}</button>
-                        </td>
-                        <td>${buttonHTML}</td>
-                    </tr>
-                `;
+                <tr>
+                    <td><img src="${imgSrc}" key="${following.imgkey}" style="border-radius: 50%; width: 45px; height: 45px; margin-right: 15px"
+                                onerror="this.src='images/default_thumbnail.png'" onclick="goToBlog('${following.email}')" class="myblog_img"></td>
+                    <td style="font-size: 18px; padding-bottom: 5px; width: 246px;">
+                        <button type="button" onclick="goToBlog('${following.email}')" style="border: none; background-color: #fff;">${following.email}</button>
+                    </td>
+                    <td>${buttonHTML}</td>
+                </tr>
+            `;
             }
-            
+
             document.getElementById('followinglisttable').innerHTML = tableHTML;
 
             $("#following_list").modal("show");
         }
-    }
+}
 
-    $("#followerlisttable").on("click", "tr #follower_btn", async function() {
-        let useremail = [[${user.username}]];
-        let blogemail = [[${member.email}]];
-        let button = $(this).closest("tr").find("td:nth-child(3) input");
+        $("#followerlisttable").on("click", "tr #follower_btn", async function () {
+            let useremail = [[${ user.username }]];
+            let blogemail = [[${ member.email }]];
+            let button = $(this).closest("tr").find("td:nth-child(3) input");
 
-        if (button.val() === '팔로우 취소') {
-            // rest api 호출
-            const url = [[@{/api/myblog/followdelete.json}]] + '?useremail=' + useremail + '&blogemail=' + $(this).closest("tr").find("td:nth-child(2)").text();
-            const headers = {"Content-Type":"application/json"};
+            if (button.val() === '팔로우 취소') {
+                // rest api 호출
+                const url = [[@{/ api / myblog / followdelete.json}]]+ '?useremail=' + useremail + '&blogemail=' + $(this).closest("tr").find("td:nth-child(2)").text();
+            const headers = { "Content-Type": "application/json" };
             const { data } = await axios.delete(url, { headers });
 
             if (data.status === 200) {
@@ -698,34 +705,34 @@
                 }
             }
         } 
-        else { // button === '팔로우'
-            // rest api 호출
-            const url = [[@{/api/myblog/followinsert.json}]];
-            const headers = { "Content-Type": "application/json" };
-            const body = {"fromMember": {"email": useremail}, "toMember": {"email": $(this).closest("tr").find("td:nth-child(2)").text()}};
-            const { data } = await axios.post(url, body, { headers: headers });
+    else { // button === '팔로우'
+                // rest api 호출
+                const url = [[@{/ api / myblog / followinsert.json}]];
+        const headers = { "Content-Type": "application/json" };
+        const body = { "fromMember": { "email": useremail }, "toMember": { "email": $(this).closest("tr").find("td:nth-child(2)").text() } };
+        const { data } = await axios.post(url, body, { headers: headers });
 
-            if (data.status === 200) {
-                button.val('팔로우 취소');
+        if (data.status === 200) {
+            button.val('팔로우 취소');
 
-                if (useremail === blogemail) {
-                    // 팔로잉 숫자 변경 코드 추가
-                    const followingNumber = parseInt(document.querySelector('.myfollowing .follow_number').textContent);
-                    document.querySelector('.myfollowing .follow_number').textContent = followingNumber + 1;
-                }
+            if (useremail === blogemail) {
+                // 팔로잉 숫자 변경 코드 추가
+                const followingNumber = parseInt(document.querySelector('.myfollowing .follow_number').textContent);
+                document.querySelector('.myfollowing .follow_number').textContent = followingNumber + 1;
             }
         }
-    });
+    }
+});
 
-    $("#followinglisttable").on("click", "tr #following_btn", async function() {
-        let useremail = [[${user.username}]];
-        let blogemail = [[${member.email}]];
-        let button = $(this).closest("tr").find("td:nth-child(3) input");
+        $("#followinglisttable").on("click", "tr #following_btn", async function () {
+            let useremail = [[${ user.username }]];
+            let blogemail = [[${ member.email }]];
+            let button = $(this).closest("tr").find("td:nth-child(3) input");
 
-        if (button.val() === '팔로우 취소') {
-            // rest api 호출
-            const url = [[@{/api/myblog/followdelete.json}]] + '?useremail=' + useremail + '&blogemail=' + $(this).closest("tr").find("td:nth-child(2)").text();
-            const headers = {"Content-Type":"application/json"};
+            if (button.val() === '팔로우 취소') {
+                // rest api 호출
+                const url = [[@{/ api / myblog / followdelete.json}]]+ '?useremail=' + useremail + '&blogemail=' + $(this).closest("tr").find("td:nth-child(2)").text();
+            const headers = { "Content-Type": "application/json" };
             const { data } = await axios.delete(url, { headers });
 
             if (data.status === 200) {
@@ -738,29 +745,43 @@
                 }
             }
         } 
-        else { // button === '팔로우'
-            // rest api 호출
-            const url = [[@{/api/myblog/followinsert.json}]];
-            const headers = { "Content-Type": "application/json" };
-            const body = {"fromMember": {"email": useremail}, "toMember": {"email": $(this).closest("tr").find("td:nth-child(2)").text()}};
-            const { data } = await axios.post(url, body, { headers: headers });
+    else { // button === '팔로우'
+                // rest api 호출
+                const url = [[@{/ api / myblog / followinsert.json}]];
+        const headers = { "Content-Type": "application/json" };
+        const body = { "fromMember": { "email": useremail }, "toMember": { "email": $(this).closest("tr").find("td:nth-child(2)").text() } };
+        const { data } = await axios.post(url, body, { headers: headers });
 
-            if (data.status === 200) {
-                button.val('팔로우 취소');
+        if (data.status === 200) {
+            button.val('팔로우 취소');
 
-                if (useremail === blogemail) {
-                    // 팔로잉 숫자 변경 코드 추가
-                    const followingNumber = parseInt(document.querySelector('.myfollowing .follow_number').textContent);
-                    document.querySelector('.myfollowing .follow_number').textContent = followingNumber + 1;
-                }
+            if (useremail === blogemail) {
+                // 팔로잉 숫자 변경 코드 추가
+                const followingNumber = parseInt(document.querySelector('.myfollowing .follow_number').textContent);
+                document.querySelector('.myfollowing .follow_number').textContent = followingNumber + 1;
             }
         }
-    });
-
-    function goToBlog(email) {
-        window.location.href = [[@{/myblog.do}]] + '?email=' + email;
     }
-  </script>
+});
+
+        function goToBlog(email) {
+
+            window.location.href = [[@{/myblog.do}]]+ '?email=' + email;
+
+}
+
+    
+
+    const profile = document.querySelector("#profile_img");
+    profile.addEventListener("error", function() {
+        console.log(1);
+        profile.setAttribute("src", contextPath + 'images/default_thumbnail.png');
+    })
+
+            
+
+
+    </script>
 </body>
 
 </html>

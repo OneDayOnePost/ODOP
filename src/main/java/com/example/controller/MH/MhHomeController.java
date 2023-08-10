@@ -1,9 +1,5 @@
 package com.example.controller.MH;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -16,13 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.example.entity.Cate;
 import com.example.entity.Member;
-import com.example.entity.Post;
-import com.example.entity.PostTagProjection;
 import com.example.repository.MH.MhMemberRepository;
-import com.example.service.MH.PostInsertService;
-import com.example.service.MH.PostSelectService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,10 +26,6 @@ public class MhHomeController {
     final String format = "MhHomeController => {}";
 
     final private MhMemberRepository mRepository;
-    final private PostInsertService pService;
-    final private PostSelectService postSelectService;
-
-    
 
     BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();
 
@@ -110,52 +97,6 @@ public class MhHomeController {
         } 
 
         return "redirect:/mhhome.do";
-    }
-
-    @GetMapping(value = "/mhwrite.do")
-    public String writeGET(Model model) {
-
-        List<Cate> catelist = pService.selectCateList();
-
-        model.addAttribute("catelist", catelist);
-
-        return "/MH/write";
-    }
-
-    @GetMapping(value = "/mhselect.do")
-    public String selectGET(Model model) {
-
-        BigInteger postno = new BigInteger("44");
-
-        Post post = postSelectService.selectPostOne(postno);
-
-        model.addAttribute("post", post);
-
-        return "/MH/selectone";
-    }
-
-    @GetMapping(value = "/mhupdate.do")
-    public String updateGET(Model model) {
-
-        BigInteger postno = new BigInteger("40");
-
-        List<Cate> catelist = pService.selectCateList();
-        Post post = postSelectService.selectPostOne(postno);
-        List<PostTagProjection> postTagList = postSelectService.selectPostTagList(postno);
-
-        List<String> tagList = new ArrayList<>();
-
-        for(PostTagProjection tagProjection : postTagList) {
-            tagList.add(tagProjection.getTag());
-        }
-
-        // log.info(format, tagList.size());
-
-        model.addAttribute("catelist", catelist);
-        model.addAttribute("post", post);
-        model.addAttribute("tagList", tagList);
-
-        return "/MH/update";
     }
 
     @GetMapping(value = "/imgtest.do")

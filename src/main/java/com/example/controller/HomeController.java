@@ -63,15 +63,27 @@ public class HomeController {
 
     }
 
-    // header - 서브 메뉴 (카테고리)
-    // categories 데이터가 모든 페이지의 모델에 자동으로 추가
     @ControllerAdvice
     public class GlobalControllerAdvice {
+
+        // header - 서브 메뉴 (카테고리)
+        // categories 데이터가 모든 페이지의 모델에 자동으로 추가
+
         @ModelAttribute("categories")
         public List<String> getCategories() {
             List<String> categories = WjcService.selectCateList();
 
             return categories;
+        }
+
+        // header - 유저 정보
+        // user 로그인 중인 유저 데이터가 모든 페이지의 모델에 자동 추가
+
+        @ModelAttribute("user")
+        public User getUser(@AuthenticationPrincipal User user) {
+
+            return user;
+
         }
     }
 }
