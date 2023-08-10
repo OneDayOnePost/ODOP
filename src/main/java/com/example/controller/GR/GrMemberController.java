@@ -51,13 +51,13 @@ public class GrMemberController {
 
     final WjMyblogService wjmyblogservice;
 
-    @GetMapping(value = "/myblog.do/{email}")
+    @GetMapping(value = "/blog/{email}/home.do")
     public String myblogGET(Model model, @AuthenticationPrincipal User user,
             @RequestParam(name = "categoryId", required = false) Long categoryId,
             @PathVariable(name = "email") String email) { // @AuthenticationPrincipal User user
         try {
 
-            // log.info("email 정보 => {}", email);
+            log.info("email 정보 => {}", email);
             // log.info("categoryId received: {}", categoryId);
             log.info("user 정보 => {}", user.toString());
             log.info("user user => {}", user.getAuthorities());

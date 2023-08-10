@@ -17,7 +17,7 @@ import com.example.service.MH.PostSelectService;
 
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping(value = "/post")
+@RequestMapping(value = "/blog/{email}")
 @RequiredArgsConstructor
 @Controller
 public class MhPostController {
