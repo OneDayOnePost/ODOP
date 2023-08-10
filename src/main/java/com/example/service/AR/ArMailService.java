@@ -1,20 +1,8 @@
 package com.example.service.AR;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
-public class ArMailService {
-    
-//     @Autowired
-//     private JavaMailSender mailSender;
-
-//     public void sendMail(SendMail mail) {
-//         SimpleMailMessage message = new SimpleMailMessage();
-//         message.setTo(mail.getAddress());
-// //        message.setFrom(""); from 값을 설정하지 않으면 application.yml의 username값이 설정됩니다.
-//         message.setSubject(mail.getTitle());
-//         message.setText(mail.getMessage());
-
-//         mailSender.send(message);
-//     }
+@Service
+public interface ArMailService {
+    String sendSimpleMessage(String toemail)throws Exception;
 }

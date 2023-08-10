@@ -1,0 +1,137 @@
+// 이메일 인증코드 타이머
+var verificationCodeEnabled = false; // 초기상태
+var timerInterval;
+
+async function enableEmailVerification() {
+
+    if (emailadr.value == "") { // 이메일값이 없을때 전송이 안되도록.
+        alert("이메일을 입력해주세요.")
+        return false;
+    }
+
+    if (!verificationCodeEnabled) { // if 이메일 인증버튼 클릭 시
+        document.getElementById("emailVerificationBtn").disabled = true; // 이메일 인증버튼 (입력 불가능상태로 전환)
+        document.getElementById("verificationCode").hidden = false; // 인증코드 입력칸 (입력상태 전환)
+        document.getElementById("verButton").hidden = false; // 인증버튼 활성화
+        document.getElementById("lbl_verificationCode").hidden = false; // 인증입력칸 라벨 활성화
+        document.getElementById("email").readOnly = true; // 이메일 입력칸 수정 불가능 상태로 전환
+        startTimer(); // 타이머 시작
+        verificationCodeEnabled = true;
+
+        const url = /*[[@{/api/sellercodesend.json}]]*/"";
+        const headers = { "Content-Type": "application/json" };
+        const body = emailadr.value;
+        const { data } = await axios.post(url, body, { headers: headers });
+
+        // console.log('반환되는 결과', data); // 결과 확인 완료. 작동잘됨.
+    }
+}
+
+function startTimer() {
+    var duration = 119; // 타이머는 기본 2분
+    var timer = duration, minutes, seconds;
+    timerInterval = setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        document.getElementById("lbl_verificationCode").textContent = "남은 시간 " + minutes + ":" + seconds;
+
+        if (--timer < 0) { // 타이머 시간 종료시
+            clearInterval(timerInterval); // 다시 처음상태로 되돌아감.
+            document.getElementById("emailVerificationBtn").disabled = false;
+            document.getElementById("verificationCode").hidden = true; // 인증코드 입력칸 비활성화
+            document.getElementById("verificationCode").value = null; // 인증코드 입력칸 값 초기화 (null)
+            document.getElementById("verButton").hidden = true; // 인증버튼 비활성화
+            document.getElementById("lbl_verificationCode").hidden = true; // 인증입력칸 라벨 비활성화
+            document.getElementById("email").readOnly = false;
+
+            verificationCodeEnabled = false;
+        }
+    }, 1000);
+}
+
+async function emailCodeCheck() {
+    if (code.value == "") { // 이메일값이 없을때 전송이 안되도록.
+        alert("인증코드를 입력해주세요.")
+        return false;
+    }
+
+    const url = /*[[@{/api/sellercodecheck.json}]]*/"";
+    const headers = { "Content-Type": "application/json" };
+    const body = code.value;
+    const { data } = await axios.post(url, body, { headers: headers });
+    console.log('반환되는 결과', data);
+
+    if (data.chk === 0) { // 이메일값이 없을때 전송이 안되도록.
+        alert("인증번호가 일치하지 않습니다.")
+        return false;
+    } else if (data.chk === 1) { // 인증 완료시
+        alert("인증이 완료되었습니다.")
+        checkCode = 1;
+        code.disabled = true;
+        clearInterval(timerInterval);
+        document.getElementById("verificationCode").hidden = true; // 인증코드 입력칸 비활성화
+        document.getElementById("verButton").hidden = true; // 인증버튼 비활성화
+        document.getElementById("lbl_verificationCode").hidden = true; // 인증입력칸 라벨 비활성화
+        document.getElementById("emailVerificationBtn").textContent = "인증 성공";
+        document.getElementById("lbl_verificationCode").textContent = "인증이 완료되었습니다.";
+        document.getElementById("lbl_verificationCode").style.color = '#5e89ef';
+        document.getElementById("verButton").disabled = true;
+        document.getElementById("verButton").value = "인증완료";
+    }
+}
+
+
+
+
+// ------------------------ 이메일 인증코드 발송 (POST) -------------------------- //
+
+@PostMapping(value = "/sellercodesend.json")
+public Map<String, Object> codeCheckPOST(@RequestBody String email) {
+    log.info("Send Code To => {}", email);
+    Map<String, Object> retMap = new HashMap<>();
+    try {
+        // 난수 생성시에 "-" 문자는 제외함.
+        String tempCode = UUID.randomUUID().toString().replace("-", "");
+        tempCode = tempCode.substring(0, 6); // 6자리의 인증코드 발급
+        if (tempCode != "") { // 코드가 생성되면
+            tempCodeChk = tempCode; // 인증확인용 변수 tempCodeChk에 대입
+                                    // (다른메소드에서 사용할 예정)
+            mailController.sendChkMail(email, tempCode); // 메일 컨트롤러를 통해 메일 전송
+            retMap.put("chk", 1); // 성공시 1
+        } else {
+            retMap.put("chk", 0); // 실패시 0
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        retMap.put("chk", -1); // 오류는 -1
+    }
+    return retMap;
+}
+
+// ------------------------ 이메일 인증코드 확인 (POST) -------------------------- //
+@PostMapping(value = "/sellercodecheck.json")
+public Map<String, Integer> codeCheckGET(@RequestBody String inputCode) {
+    log.info("Input Code is => {}", inputCode);
+    Map<String, Integer> retMap = new HashMap<>();
+    try {
+        // 큰 따옴표 " 표시를 없앰.
+        // (tempCodeChk로 옮기는 과정에서 큰따옴표가 벗겨지는 현상 해결용)
+        String code = inputCode.replace("\"", "");
+        log.info("Answer Code is => {}", tempCodeChk);
+        if (tempCodeChk.equals(code.toString())) { // 인증코드 일치여부 확인
+            retMap.put("chk", 1); // 일치하면 1
+        } else {
+            retMap.put("chk", 0); // 불일치하면 0 출력
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        retMap.put("chk", -1);
+    }
+    return retMap;
+}
+
+
