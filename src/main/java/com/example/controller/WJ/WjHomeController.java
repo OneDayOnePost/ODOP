@@ -104,13 +104,11 @@ public class WjHomeController {
     @GetMapping(value = "/postreport.do")
     public String postreportGET(Model model,
                                 @AuthenticationPrincipal User user,
-                                @RequestParam(name = "type", required = true) String type,
                                 @RequestParam(name = "menu", required = true) String menu,
                                 @RequestParam(name = "no", required = true) BigInteger no) {
         try {
             model.addAttribute("user", user);
 
-            model.addAttribute("type", type);
             model.addAttribute("menu", menu);
             
             // 게시글 정보
@@ -181,13 +179,11 @@ public class WjHomeController {
     @GetMapping(value = "/replyreport.do")
     public String replyreportGET(Model model,
                                 @AuthenticationPrincipal User user,
-                                @RequestParam(name = "type", required = true) String type,
                                 @RequestParam(name = "menu", required = true) String menu,
                                 @RequestParam(name = "no", required = true) BigInteger no) {
         try {
             model.addAttribute("user", user);
 
-            model.addAttribute("type", type);
             model.addAttribute("menu", menu);
             
             // 댓글 정보
@@ -258,13 +254,11 @@ public class WjHomeController {
     @GetMapping(value = "/memberlist.do")
     public String memberlistGET(Model model,
                                 @AuthenticationPrincipal User user,
-                                @RequestParam(name = "type", required = true) String type,
                                 @RequestParam(name = "menu", required = true) String menu,
                                 @RequestParam(name = "email", required = true) String email) {
         try {
             model.addAttribute("user", user);
-
-            model.addAttribute("type", type);
+            
             model.addAttribute("menu", menu);
             
             // 회원 1명 조회

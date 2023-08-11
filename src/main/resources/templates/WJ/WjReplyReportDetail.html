@@ -266,7 +266,7 @@
         <div id="wrapper" class="container" style="display: flex; justify-content: center; align-items: center; margin-top: 40px; margin-bottom: 30px;">
             <!-- 이전글 -->
             <div id="prevdiv" th:if="${prev > 0}">
-                <a th:href="@{/replyreport.do(type=${type}, menu=${menu}, no=${prev})}" id="prev">
+                <a th:href="@{/replyreport.do(menu=${menu}, no=${prev})}" id="prev">
                     <i class="bi bi-chevron-compact-left" style="font-size: 80px; color: #90909055; font-weight: 100; border: none;"></i>
                 </a>
             </div>
@@ -275,7 +275,7 @@
                 <input type="text" th:value="${reply.no}" id="reply_no" hidden />
     
                 <div id="reply_list" style="text-align: right;">
-                    <a th:href="@{/adminhome.do(type=${type}, menu=${menu})}">
+                    <a th:href="@{/adminhome.do(type=reply, menu=${menu})}">
                         <i class="bi bi-list"></i>
                         <span th:if="${menu} eq 'all'">전체 신고 목록</span>
                         <span th:if="${menu} eq 'wait'">승인 대기</span>
@@ -333,7 +333,7 @@
     
             <!-- 다음글 -->
             <div id="nextdiv" th:if="${next > 0}">
-                <a th:href="@{/replyreport.do(type=${type}, menu=${menu}, no=${next})}" id="next">
+                <a th:href="@{/replyreport.do(menu=${menu}, no=${next})}" id="next">
                     <i class="bi bi-chevron-compact-right" style="font-size: 80px; color: #90909055; font-weight: 100; border: none;"></i>
                 </a>
             </div>
@@ -502,7 +502,7 @@
             const writer = document.getElementById('link_writerinfo').textContent;
             // console.log(writer);
 
-            window.location.href = [[@{/memberlist.do(type=memberlist, menu=all)}]] + '&email=' + writer;
+            window.location.href = [[@{/memberlist.do(menu=all)}]] + '&email=' + writer;
         }
     </script>
 
@@ -540,10 +540,10 @@
             const replyno = document.getElementById('reply_no').value;
             // 주소 이동 
             if ([[${menu}]] == 'all') { // 전체 신고 목록 -> 전체 신고 목록 - 해당 댓글 번호
-                window.location.href = [[@{/replyreport.do(type='reply', menu='all')}]] + '&no=' + replyno;
+                window.location.href = [[@{/replyreport.do(menu='all')}]] + '&no=' + replyno;
             }
             else { // 관리자 삭제 페이지 - 해당 댓글 번호
-                window.location.href = [[@{/replyreport.do(type='reply', menu='deletebyadmin')}]] + '&no=' + replyno;
+                window.location.href = [[@{/replyreport.do(menu='deletebyadmin')}]] + '&no=' + replyno;
             }
         }
 
@@ -621,10 +621,10 @@
 
             // 주소 이동
             if ([[${menu}]] == 'all') { // 전체 신고 목록 -> 전체 신고 목록 - 해당 댓글 번호
-                window.location.href = [[@{/replyreport.do(type='reply', menu='all')}]] + '&no=' + replyno;
+                window.location.href = [[@{/replyreport.do(menu='all')}]] + '&no=' + replyno;
             }
             else { // 승인 대기 페이지 - 해당 댓글 번호
-                window.location.href = [[@{/replyreport.do(type='reply', menu='wait')}]] + '&no=' + replyno;
+                window.location.href = [[@{/replyreport.do(menu='wait')}]] + '&no=' + replyno;
             }
         }
     </script>

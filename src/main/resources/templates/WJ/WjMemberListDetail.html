@@ -297,7 +297,7 @@
         <div id="wrapper" class="container" style="display: flex; justify-content: center; align-items: center; margin-top: 40px; margin-bottom: 60px;">
             <div th:each="member : ${memberone}" id="body_content" style="width: 90%;">
                 <div id="member_list" style="text-align: right;">
-                    <a th:href="@{/adminhome.do(type=${type}, menu=${menu})}">
+                    <a th:href="@{/adminhome.do(type=memberlist, menu=${menu})}">
                         <i class="bi bi-list"></i>
                         <span th:if="${menu} eq 'all'">전체 회원 목록</span>
                         <span th:if="${menu} eq 'graylist'">블랙리스트 대기</span>
@@ -579,10 +579,10 @@
 
             // 주소 이동
             if ([[${menu}]] == 'all') { // 전체 회원 목록 -> 전체 회원 목록 - 해당 회원 이메일
-                window.location.href = [[@{/memberlist.do(type='memberlist', menu='all')}]] + '&email=' + email;
+                window.location.href = [[@{/memberlist.do(menu='all')}]] + '&email=' + email;
             }
             else { // 블랙리스트 회원 페이지 - 해당 회원 이메일
-                window.location.href = [[@{/memberlist.do(type='memberlist', menu='blacklist')}]] + '&email=' + email;
+                window.location.href = [[@{/memberlist.do(menu='blacklist')}]] + '&email=' + email;
             }
         }
 
@@ -619,10 +619,10 @@
 
             // 주소 이동
             if ([[${menu}]] == 'all') { // 전체 회원 목록 -> 전체 회원 목록 - 해당 회원 이메일
-                window.location.href = [[@{/memberlist.do(type='memberlist', menu='all')}]] + '&email=' + email;
+                window.location.href = [[@{/memberlist.do(menu='all')}]] + '&email=' + email;
             }
             else { // 블랙리스트 대기 페이지 - 해당 회원 이메일
-                window.location.href = [[@{/memberlist.do(type='memberlist', menu='graylist')}]] + '&email=' + email;
+                window.location.href = [[@{/memberlist.do(menu='graylist')}]] + '&email=' + email;
             }
         }
     </script>

@@ -470,7 +470,7 @@
                     }
                     
                     // 글번호에 맞는 상세 페이지로 이동
-                    window.location.href = [[@{/postreport.do}]] + `?type=${typeParam}&menu=${menuParam}&no=${postno}`;
+                    window.location.href = [[@{/postreport.do}]] + `?menu=${menuParam}&no=${postno}`;
                 });
 
                 document.getElementById("postreport").style.borderBottom = "3px solid #6F8DBF";
@@ -502,7 +502,7 @@
                     }
                     
                     // 댓글번호에 맞는 상세 페이지로 이동
-                    window.location.href = [[@{/replyreport.do}]] + `?type=${typeParam}&menu=${menuParam}&no=${replyno}`;
+                    window.location.href = [[@{/replyreport.do}]] + `?menu=${menuParam}&no=${replyno}`;
                 });
 
                 document.getElementById("replyreport").style.borderBottom = "3px solid #6F8DBF";
@@ -534,7 +534,7 @@
                     }
                     
                     // 이메일에 맞는 상세 페이지로 이동
-                    window.location.href = [[@{/memberlist.do}]] + `?type=${typeParam}&menu=${menuParam}&email=${email}`;
+                    window.location.href = [[@{/memberlist.do}]] + `?menu=${menuParam}&email=${email}`;
                 });
 
                 document.getElementById("memberlist").style.borderBottom = "3px solid #6F8DBF";
