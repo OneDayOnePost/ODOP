@@ -4,8 +4,6 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,12 +27,9 @@ public class WjHomeController {
     
     @GetMapping(value = "/adminhome.do")
     public String homeGET(Model model,
-                          @AuthenticationPrincipal User user,
                           @RequestParam(name = "type", required = false, defaultValue = "post") String type,
                           @RequestParam(name = "menu", required = false, defaultValue = "all") String menu) {
         try {
-            model.addAttribute("user", user);
-
             if (type.equals("post")) {
                 List<ReportListDTO> postreportlist = rService.selectPostListAll();
 
@@ -103,12 +98,9 @@ public class WjHomeController {
     // 신고된 게시글 상세 조회
     @GetMapping(value = "/postreport.do")
     public String postreportGET(Model model,
-                                @AuthenticationPrincipal User user,
                                 @RequestParam(name = "menu", required = true) String menu,
                                 @RequestParam(name = "no", required = true) BigInteger no) {
         try {
-            model.addAttribute("user", user);
-
             model.addAttribute("menu", menu);
             
             // 게시글 정보
@@ -178,12 +170,9 @@ public class WjHomeController {
     // 신고된 댓글 상세 조회
     @GetMapping(value = "/replyreport.do")
     public String replyreportGET(Model model,
-                                @AuthenticationPrincipal User user,
                                 @RequestParam(name = "menu", required = true) String menu,
                                 @RequestParam(name = "no", required = true) BigInteger no) {
         try {
-            model.addAttribute("user", user);
-
             model.addAttribute("menu", menu);
             
             // 댓글 정보
@@ -253,12 +242,9 @@ public class WjHomeController {
     // 회원 상세 조회
     @GetMapping(value = "/memberlist.do")
     public String memberlistGET(Model model,
-                                @AuthenticationPrincipal User user,
                                 @RequestParam(name = "menu", required = true) String menu,
                                 @RequestParam(name = "email", required = true) String email) {
         try {
-            model.addAttribute("user", user);
-            
             model.addAttribute("menu", menu);
             
             // 회원 1명 조회

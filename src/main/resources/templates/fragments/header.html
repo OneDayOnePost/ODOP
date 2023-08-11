@@ -79,9 +79,9 @@
                     <div class="line"></div>
                     <div class="category">
                     <table>
-                        <tr th:each="category : ${categories}">
-                            <td><input type="checkbox"></td>
-                            <td th:text="${category}"></td>
+                        <tr th:each="cate : ${categories}">
+                            <td><input type="checkbox" class="category-checkbox" th:value="${cate.no}"></td>
+                            <td th:text="${cate.category}"></td>
                         </tr>
                     </table>
                     </div>
@@ -96,59 +96,59 @@
                     <div class="select_mbti">
                     <table>
                         <tr>
-                        <td><input type="checkbox"></td>
-                        <td>ENFP</td>
-                        <td><input type="checkbox"></td>
-                        <td>ENFJ</td>
+                            <td><input type="checkbox" class="mbti-checkbox" th:value="ENFP"></td>
+                            <td>ENFP</td>
+                            <td><input type="checkbox" class="mbti-checkbox" th:value="ENFJ"></td>
+                            <td>ENFJ</td>
                         </tr>
                         <tr>
-                        <td><input type="checkbox"></td>
-                        <td>ENTP</td>
-                        <td><input type="checkbox"></td>
-                        <td>ENTJ</td>
+                            <td><input type="checkbox" class="mbti-checkbox" th:value="ENTP"></td>
+                            <td>ENTP</td>
+                            <td><input type="checkbox" class="mbti-checkbox" th:value="ENTJ"></td>
+                            <td>ENTJ</td>
                         </tr>
                         <tr>
-                        <td><input type="checkbox"></td>
-                        <td>ESTP</td>
-                        <td><input type="checkbox"></td>
-                        <td>ESTJ</td>
+                            <td><input type="checkbox" class="mbti-checkbox" th:value="ESFP"></td>
+                            <td>ESFP</td>
+                            <td><input type="checkbox" class="mbti-checkbox" th:value="ESFJ"></td>
+                            <td>ESFJ</td>
                         </tr>
                         <tr>
-                        <td><input type="checkbox"></td>
-                        <td>ESFP</td>
-                        <td><input type="checkbox"></td>
-                        <td>ESFJ</td>
+                            <td><input type="checkbox" class="mbti-checkbox" th:value="ESTP"></td>
+                            <td>ESTP</td>
+                            <td><input type="checkbox" class="mbti-checkbox" th:value="ESTJ"></td>
+                            <td>ESTJ</td>
                         </tr>
                         <tr>
-                        <td><input type="checkbox"></td>
-                        <td>INFP</td>
-                        <td><input type="checkbox"></td>
-                        <td>INFJ</td>
+                            <td><input type="checkbox" class="mbti-checkbox" th:value="INFP"></td>
+                            <td>INFP</td>
+                            <td><input type="checkbox" class="mbti-checkbox" th:value="INFJ"></td>
+                            <td>INFJ</td>
                         </tr>
                         <tr>
-                        <td><input type="checkbox"></td>
-                        <td>INTP</td>
-                        <td><input type="checkbox"></td>
-                        <td>INTJ</td>
+                            <td><input type="checkbox" class="mbti-checkbox" th:value="INTP"></td>
+                            <td>INTP</td>
+                            <td><input type="checkbox" class="mbti-checkbox" th:value="INTJ"></td>
+                            <td>INTJ</td>
                         </tr>
                         <tr>
-                        <td><input type="checkbox"></td>
-                        <td>ISTP</td>
-                        <td><input type="checkbox"></td>
-                        <td>ISTJ</td>
+                            <td><input type="checkbox" class="mbti-checkbox" th:value="ISFP"></td>
+                            <td>ISFP</td>
+                            <td><input type="checkbox" class="mbti-checkbox" th:value="ISFJ"></td>
+                            <td>ISFJ</td>
                         </tr>
                         <tr>
-                        <td><input type="checkbox"></td>
-                        <td>ISFP</td>
-                        <td><input type="checkbox"></td>
-                        <td>ISFJ</td>
+                            <td><input type="checkbox" class="mbti-checkbox" th:value="ISTP"></td>
+                            <td>ISTP</td>
+                            <td><input type="checkbox" class="mbti-checkbox" th:value="ISTJ"></td>
+                            <td>ISTJ</td>
                         </tr>
                     </table>
                     </div>
                 </div>
 
                 <div class="search">
-                    <input type="button" value="조 회">
+                    <input type="button" value="조 회" onclick="searchBtn()">
                 </div>
 
             </ul>
@@ -233,8 +233,22 @@
             }
 
         </script>
-    </div>
+        
+        <script th:inline="javascript" type="text/javascript">
+            function searchBtn() {
+                // 선택된 카테고리
+                const category = Array.from(document.querySelectorAll('.category-checkbox:checked')).map(checkbox => checkbox.value).join(',');
 
+                // 선택된 MBTI
+                const mbti = Array.from(document.querySelectorAll('.mbti-checkbox:checked')).map(checkbox => checkbox.value).join(',');
+
+                // console.log('Selected Categories:', category);
+                // console.log('Selected MBTI:', mbti);
+
+                window.location.href = [[@{/home.do}]] + '?category=' + category + '&mbti=' + mbti + '&type=newest';
+            }
+        </script>
+    </div>
 
 </body>
 
