@@ -290,7 +290,7 @@
             </select>
             <div class="search-container">
               <input type="text" class="search-input" placeholder="검색어를 입력하세요">
-              <button type="button" class="search-button" onclick="search()">
+              <button type="button" class="search-button" onclick="searchInList()">
                 <i class="bi bi-search search-icon"></i>
               </button>
             </div>
@@ -312,7 +312,7 @@
           </div>
           <div id="main-img">
             <img th:if="${obj.p_imgkey != null and obj.p_imgpath != null}"
-                  th:src="${obj.p_imgpath}" th:key="${obj.imgkey}" >
+                  th:src="${obj.p_imgpath}" th:key="${obj.imgkey}" th:data-content="${obj.content}" >
             <p th:if="${obj.p_imgkey == null and obj.p_imgpath == null}"
                   th:text="${T(org.jsoup.Jsoup).parse(obj.content).text()}"></p>
           </div>
@@ -338,6 +338,15 @@
   <script th:inline="javascript" type="text/javascript">
 
     window.addEventListener('load', function() {
+
+      // 엔터키 눌러서 검색기능 실행하기
+      const searchInput = document.querySelector(".search-input");
+
+      searchInput.addEventListener("keydown", function(event) {
+          if (event.key === "Enter") {
+              searchInList();
+          }
+      });
 
       const urlParams = new URLSearchParams(window.location.search);
       const typeParam = urlParams.get('type');
@@ -365,21 +374,44 @@
 
     });
 
-    function search(){
-      const selectBox = document.getElementById("select-box");
-      const searchInput = document.querySelector(".search-input");
+    // 검색 기능을 수행하는 함수
+    function searchInList() {
+        const selectBox = document.getElementById("select-box");
+        const searchInput = document.querySelector(".search-input");
 
-      const selectedOption = selectBox.value;
-      const keywrod = searchInput.value;
+        const selectedOption = selectBox.value;
+        const keywords = searchInput.value.toLowerCase().split(" "); // 검색어를 공백으로 분리
 
-      let url = "/home.do?type=" + selectedOption;
-      if(keywrod){
-        url += "&keyword=" + encodeURIComponent(keywrod);
-      }
+        const items = document.querySelectorAll("#items #item");
 
-      window.location.href = url;
+        items.forEach(item => {
+            const titleElement = item.querySelector("#title a");
+            const nicknameElement = item.querySelector("#profile a");
+            const contentElement = item.querySelector("#main-img p");
+            const imgElement = item.querySelector("#main-img img");
+
+            const title = titleElement ? titleElement.textContent.toLowerCase() : '';
+            const nickname = nicknameElement ? nicknameElement.textContent.toLowerCase() : '';
+            const content = contentElement ? contentElement.textContent.toLowerCase() : '';
+            const imgContent = imgElement ? imgElement.getAttribute("data-content").toLowerCase() : '';
+
+            // 각 단어를 포함하는지 검사
+            const found = keywords.every(keyword => {
+                return (
+                    (selectedOption === "title" && title.includes(keyword)) ||
+                    (selectedOption === "nickname" && nickname.includes(keyword)) ||
+                    (selectedOption === "content" && (content.includes(keyword) || imgContent.includes(keyword))) ||
+                    (selectedOption === "content" && !imgElement && content.includes(keyword))
+                );
+            });
+
+            if (found) {
+                item.style.display = "block";
+            } else {
+                item.style.display = "none";
+            }
+        });
     }
-    
 
   </script>
 </body>
