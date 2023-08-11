@@ -33,7 +33,6 @@ public class HomeController {
                             @RequestParam(name = "type", required = false, defaultValue = "newest") String type) {
         
         try {
-            model.addAttribute("user", user);
 
             if(type.equals("newest")){
                 List<PostAllViewDTO> postalllist = GhService.selectPostAllByRegdate();

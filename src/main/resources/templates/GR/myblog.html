@@ -405,7 +405,7 @@
                     <div class="blog-profile">
                         <div class="myimg">
                             <img id="profile_img" th:src="${member.imgpath}" th:key="${member.imgkey}" width="100px"
-                                height="100px"  onerror="this.src='/odop/images/default_thumbnail.png'">
+                                height="100px" onerror="this.src='/odop/images/default_thumbnail.png'">
                         </div>
                         <div class="myinfo_box">
                             <div class="myinfo">
@@ -449,7 +449,9 @@
                             <div class="cate_all"><a th:href="@{/myblog.do(email=${member.email})}">전체보기</a></div>
                             <div class="cate" th:each="obj:${pclist}">
 
-                                <a href=# onclick="loadPostsByCategory(this.getAttribute('data-category-id')); return false;" th:text="${obj.CATEGORY}" th:data-category-id="${obj.NO}" id="categorystyle"></a>
+                                <a href=#
+                                    onclick="loadPostsByCategory(this.getAttribute('data-category-id')); return false;"
+                                    th:text="${obj.CATEGORY}" th:data-category-id="${obj.NO}" id="categorystyle"></a>
                                 <div class="cate_num" th:text="${obj.PNOCOUNT}"></div>
                             </div>
 
@@ -549,20 +551,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.5/axios.min.js"></script>
     <script th:inline="javascript" type="text/javascript">
 
+        const contextPath = $('#contextPathHolder').attr('data-contextPath');
 
-  <script th:inline="javascript" type="text/javascript">
-
-
-     // 카테고리별 조회하기
-     function loadPostsByCategory(categoryId) {
+        // 카테고리별 조회하기
+        function loadPostsByCategory(categoryId) {
             // 클릭한 카테고리의 번호를 categoryId 변수로 받아옵니다.
             var newCategoryId = Number(categoryId);
-            var newUrl = [[@{/myblog.do}]] + "?email=" + [[${member.email}]] + "&categoryId=" + newCategoryId;
+            var newUrl = contextPath + "/myblog.do" + "?email=" + /*[[${member.email}]]*/'' + "&categoryId=" + newCategoryId;
             window.location.href = newUrl;
         }
 
         // 페이지 로드 시 실행되는 함수
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // 현재 URL에서 쿼리 파라미터로부터 categoryId 값을 읽어옵니다.
             var urlParams = new URLSearchParams(window.location.search);
             var categoryId = urlParams.get('categoryId');
@@ -579,226 +579,229 @@
         });
 
         async function changeMyBtn() {
-            let useremail = [[${ user.username }]];
-            let blogemail = [[${ member.email }]];
+            let useremail = /*[[${user.username}]]*/'';
+            let blogemail = /*[[${member.email}]]*/'';
             let button = document.getElementById('mybtn');
 
             if (button.value === '내 정보 수정') {
-                window.location.href = [[@{/ mypage.do}]];
+                window.location.href = contextPath + "/mypage.do";
 
-            return;
-        } 
-    else if (button.value === '팔로우 취소') {
-            // rest api 호출
-            const url = [[@{/ api / myblog / followdelete.json}]]+ '?useremail=' + useremail + '&blogemail=' + blogemail;
-        const headers = { "Content-Type": "application/json" };
-        const { data } = await axios.delete(url, { headers });
+                return;
+            }
+            else if (button.value === '팔로우 취소') {
+                // rest api 호출
 
-        if (data.status === 200) {
-            button.value = '팔로우';
+                const url = contextPath + "/api/myblog/followdelete.json" + '?useremail=' + useremail + '&blogemail=' + blogemail;
+                const headers = { "Content-Type": "application/json" };
+                const { data } = await axios.delete(url, { headers });
 
-            // 팔로워 숫자 변경 코드 추가
-            const followerNumber = parseInt(document.querySelector('.myfollower .follow_number').textContent);
-            document.querySelector('.myfollower .follow_number').textContent = followerNumber - 1;
+                if (data.status === 200) {
+                    button.value = '팔로우';
+
+                    // 팔로워 숫자 변경 코드 추가
+                    const followerNumber = parseInt(document.querySelector('.myfollower .follow_number').textContent);
+                    document.querySelector('.myfollower .follow_number').textContent = followerNumber - 1;
+                }
+            }
+            else { // button.value === '팔로우'
+                // rest api 호출
+                const url = contextPath + "/api/myblog/followinsert.json";
+                const headers = { "Content-Type": "application/json" };
+                const body = { "fromMember": { "email": useremail }, "toMember": { "email": blogemail } };
+                const { data } = await axios.post(url, body, { headers: headers });
+
+                if (data.status === 200) {
+                    button.value = '팔로우 취소';
+
+                    // 팔로워 숫자 변경 코드 추가
+                    const followerNumber = parseInt(document.querySelector('.myfollower .follow_number').textContent);
+                    document.querySelector('.myfollower .follow_number').textContent = followerNumber + 1;
+                }
+            }
         }
-    } 
-    else { // button.value === '팔로우'
-            // rest api 호출
-            const url = [[@{/ api / myblog / followinsert.json}]];
-        const headers = { "Content-Type": "application/json" };
-        const body = { "fromMember": { "email": useremail }, "toMember": { "email": blogemail } };
-        const { data } = await axios.post(url, body, { headers: headers });
-
-        if (data.status === 200) {
-            button.value = '팔로우 취소';
-
-            // 팔로워 숫자 변경 코드 추가
-            const followerNumber = parseInt(document.querySelector('.myfollower .follow_number').textContent);
-            document.querySelector('.myfollower .follow_number').textContent = followerNumber + 1;
-        }
-    }
-}
 
         async function followerlistcall() {
-            let useremail = [[${ user.username }]];
-            let blogemail = [[${ member.email }]];
+            let useremail = /*[[${user.username}]]*/'';
+            let blogemail = /*[[${ member.email }]]*/'';
 
             // rest api 호출
-            const url = [[@{/ api / myblog / followerlist.json}]]+ '?useremail=' + useremail + '&blogemail=' + blogemail;
-        const headers = { "Content-Type": "application/json" };
-        const { data } = await axios.get(url, { headers });
+            const url = contextPath + "/api/myblog/followerlist.json" + '?useremail=' + useremail + '&blogemail=' + blogemail;
+            const headers = { "Content-Type": "application/json" };
+            const { data } = await axios.get(url, { headers });
 
-        if (data.status === 200) {
-            const followerlist = data.followerlist;
+            if (data.status === 200) {
+                const followerlist = data.followerlist;
 
-            let tableHTML = '';
-            for (const follower of followerlist) {
-                const imgSrc = follower.imgpath || 'images/default_thumbnail.png';
+                let tableHTML = '';
+                for (const follower of followerlist) {
+                    const imgSrc = follower.imgpath || 'images/default_thumbnail.png';
 
-                let buttonHTML = '';
-                if (useremail !== follower.email) {
-                    buttonHTML = `
+                    let buttonHTML = '';
+                    if (useremail !== follower.email) {
+                        buttonHTML = `
                     <input type="button" id="follower_btn" value="${follower.follow_yumu === 0 ? '팔로우' : '팔로우 취소'}">
                 `;
+                    }
+
+                    tableHTML += `
+            <tr>
+                <td><img src="${imgSrc}" key="${follower.imgkey}" style="border-radius: 50%; width: 45px; height: 45px; margin-right: 15px"
+                    onerror="this.src='images/default_thumbnail.png'" onclick="goToBlog('${follower.email}')" class="myblog_img"></td>
+                <td style="font-size: 18px; padding-bottom: 5px; width: 246px;">
+                    <button type="button" onclick="goToBlog('${follower.email}')" style="border: none; background-color: #fff;">${follower.email}</button>
+                </td>
+                <td>${buttonHTML}</td>
+            </tr>
+            `;
                 }
 
-                tableHTML += `
-                <tr>
-                    <td><img src="${imgSrc}" key="${follower.imgkey}" style="border-radius: 50%; width: 45px; height: 45px; margin-right: 15px"
-                            onerror="this.src='images/default_thumbnail.png'" onclick="goToBlog('${follower.email}')" class="myblog_img"></td>
-                    <td style="font-size: 18px; padding-bottom: 5px; width: 246px;">
-                        <button type="button" onclick="goToBlog('${follower.email}')" style="border: none; background-color: #fff;">${follower.email}</button>
-                    </td>
-                    <td>${buttonHTML}</td>
-                </tr>
-            `;
+                document.getElementById('followerlisttable').innerHTML = tableHTML;
+
+                $("#follower_list").modal("show");
             }
-
-            document.getElementById('followerlisttable').innerHTML = tableHTML;
-
-            $("#follower_list").modal("show");
         }
-}
 
         async function followinglistcall() {
-            let useremail = [[${ user.username }]];
-            let blogemail = [[${ member.email }]];
+            let useremail = /*[[${user.username}]]*/'';
+            let blogemail = /*[[${member.email}]]*/'';
 
             // rest api 호출
-            const url = [[@{/ api / myblog / followinglist.json}]]+ '?useremail=' + useremail + '&blogemail=' + blogemail;
-        const headers = { "Content-Type": "application/json" };
-        const { data } = await axios.get(url, { headers });
+            const url = contextPath + "/api/myblog/followinglist.json" + '?useremail=' + useremail + '&blogemail=' + blogemail;
+            const headers = { "Content-Type": "application/json" };
+            const { data } = await axios.get(url, { headers });
 
-        if (data.status === 200) {
-            const followinglist = data.followinglist;
+            if (data.status === 200) {
+                const followinglist = data.followinglist;
 
-            let tableHTML = '';
-            for (const following of followinglist) {
-                const imgSrc = following.imgpath || 'images/default_thumbnail.png';
+                let tableHTML = '';
+                for (const following of followinglist) {
+                    const imgSrc = following.imgpath || 'images/default_thumbnail.png';
 
-                let buttonHTML = '';
-                if (useremail !== following.email) {
-                    buttonHTML = `
+                    let buttonHTML = '';
+                    if (useremail !== following.email) {
+                        buttonHTML = `
                     <input type="button" id="following_btn" value="${following.follow_yumu === 0 ? '팔로우' : '팔로우 취소'}">
                 `;
+                    }
+
+                    tableHTML += `
+            <tr>
+                <td><img src="${imgSrc}" key="${following.imgkey}" style="border-radius: 50%; width: 45px; height: 45px; margin-right: 15px"
+                    onerror="this.src='images/default_thumbnail.png'" onclick="goToBlog('${following.email}')" class="myblog_img"></td>
+                <td style="font-size: 18px; padding-bottom: 5px; width: 246px;">
+                    <button type="button" onclick="goToBlog('${following.email}')" style="border: none; background-color: #fff;">${following.email}</button>
+                </td>
+                <td>${buttonHTML}</td>
+            </tr>
+            `;
                 }
 
-                tableHTML += `
-                <tr>
-                    <td><img src="${imgSrc}" key="${following.imgkey}" style="border-radius: 50%; width: 45px; height: 45px; margin-right: 15px"
-                                onerror="this.src='images/default_thumbnail.png'" onclick="goToBlog('${following.email}')" class="myblog_img"></td>
-                    <td style="font-size: 18px; padding-bottom: 5px; width: 246px;">
-                        <button type="button" onclick="goToBlog('${following.email}')" style="border: none; background-color: #fff;">${following.email}</button>
-                    </td>
-                    <td>${buttonHTML}</td>
-                </tr>
-            `;
+                document.getElementById('followinglisttable').innerHTML = tableHTML;
+
+                $("#following_list").modal("show");
             }
-
-            document.getElementById('followinglisttable').innerHTML = tableHTML;
-
-            $("#following_list").modal("show");
         }
-}
 
         $("#followerlisttable").on("click", "tr #follower_btn", async function () {
-            let useremail = [[${ user.username }]];
-            let blogemail = [[${ member.email }]];
+            let useremail = /*[[${ user.username }]]*/'';
+            let blogemail = /*[[${ member.email }]]*/'';
             let button = $(this).closest("tr").find("td:nth-child(3) input");
 
             if (button.val() === '팔로우 취소') {
                 // rest api 호출
-                const url = [[@{/ api / myblog / followdelete.json}]]+ '?useremail=' + useremail + '&blogemail=' + $(this).closest("tr").find("td:nth-child(2)").text();
-            const headers = { "Content-Type": "application/json" };
-            const { data } = await axios.delete(url, { headers });
+                const url = contextPath + "/api/myblog/followdelete.json" + '?useremail=' + useremail + '&blogemail=' + $(this).closest("tr").find("td:nth-child(2)").text();
+                const headers = { "Content-Type": "application/json" };
+                const { data } = await axios.delete(url, { headers });
 
-            if (data.status === 200) {
-                button.val('팔로우');
+                if (data.status === 200) {
+                    button.val('팔로우');
 
-                if (useremail === blogemail) {
-                    // 팔로잉 숫자 변경 코드 추가
-                    const followingNumber = parseInt(document.querySelector('.myfollowing .follow_number').textContent);
-                    document.querySelector('.myfollowing .follow_number').textContent = followingNumber - 1;
+                    if (useremail === blogemail) {
+                        // 팔로잉 숫자 변경 코드 추가
+                        const followingNumber = parseInt(document.querySelector('.myfollowing .follow_number').textContent);
+                        document.querySelector('.myfollowing .follow_number').textContent = followingNumber - 1;
+                    }
                 }
             }
-        } 
-    else { // button === '팔로우'
+            else { // button === '팔로우'
                 // rest api 호출
-                const url = [[@{/ api / myblog / followinsert.json}]];
-        const headers = { "Content-Type": "application/json" };
-        const body = { "fromMember": { "email": useremail }, "toMember": { "email": $(this).closest("tr").find("td:nth-child(2)").text() } };
-        const { data } = await axios.post(url, body, { headers: headers });
+                const url = contextPath + "/api/myblog/followinsert.json";
+                const headers = { "Content-Type": "application/json" };
+                const body = { "fromMember": { "email": useremail }, "toMember": { "email": $(this).closest("tr").find("td:nth-child(2)").text() } };
+                const { data } = await axios.post(url, body, { headers: headers });
 
-        if (data.status === 200) {
-            button.val('팔로우 취소');
+                if (data.status === 200) {
+                    button.val('팔로우 취소');
 
-            if (useremail === blogemail) {
-                // 팔로잉 숫자 변경 코드 추가
-                const followingNumber = parseInt(document.querySelector('.myfollowing .follow_number').textContent);
-                document.querySelector('.myfollowing .follow_number').textContent = followingNumber + 1;
+                    if (useremail === blogemail) {
+                        // 팔로잉 숫자 변경 코드 추가
+                        const followingNumber = parseInt(document.querySelector('.myfollowing .follow_number').textContent);
+                        document.querySelector('.myfollowing .follow_number').textContent = followingNumber + 1;
+                    }
+                }
             }
-        }
-    }
-});
+        });
 
         $("#followinglisttable").on("click", "tr #following_btn", async function () {
-            let useremail = [[${ user.username }]];
-            let blogemail = [[${ member.email }]];
+            let useremail = /*[[${ user.username }]]*/'';
+            let blogemail = /*[[${ member.email }]]*/'';
             let button = $(this).closest("tr").find("td:nth-child(3) input");
 
             if (button.val() === '팔로우 취소') {
                 // rest api 호출
-                const url = [[@{/ api / myblog / followdelete.json}]]+ '?useremail=' + useremail + '&blogemail=' + $(this).closest("tr").find("td:nth-child(2)").text();
-            const headers = { "Content-Type": "application/json" };
-            const { data } = await axios.delete(url, { headers });
+                const url = contextPath + "/api/myblog/followdelete.json" + '?useremail=' + useremail + '&blogemail=' + $(this).closest("tr").find("td:nth-child(2)").text();
+                const headers = { "Content-Type": "application/json" };
+                const { data } = await axios.delete(url, { headers });
 
-            if (data.status === 200) {
-                button.val('팔로우');
+                if (data.status === 200) {
+                    button.val('팔로우');
 
-                if (useremail === blogemail) {
-                    // 팔로잉 숫자 변경 코드 추가
-                    const followingNumber = parseInt(document.querySelector('.myfollowing .follow_number').textContent);
-                    document.querySelector('.myfollowing .follow_number').textContent = followingNumber - 1;
+                    if (useremail === blogemail) {
+                        // 팔로잉 숫자 변경 코드 추가
+                        const followingNumber = parseInt(document.querySelector('.myfollowing .follow_number').textContent);
+                        document.querySelector('.myfollowing .follow_number').textContent = followingNumber - 1;
+                    }
                 }
             }
-        } 
-    else { // button === '팔로우'
+            else { // button === '팔로우'
                 // rest api 호출
-                const url = [[@{/ api / myblog / followinsert.json}]];
-        const headers = { "Content-Type": "application/json" };
-        const body = { "fromMember": { "email": useremail }, "toMember": { "email": $(this).closest("tr").find("td:nth-child(2)").text() } };
-        const { data } = await axios.post(url, body, { headers: headers });
+                const url = contextPath + "/api/myblog/followinsert.json";
+                const headers = { "Content-Type": "application/json" };
+                const body = { "fromMember": { "email": useremail }, "toMember": { "email": $(this).closest("tr").find("td:nth-child(2)").text() } };
+                const { data } = await axios.post(url, body, { headers: headers });
 
-        if (data.status === 200) {
-            button.val('팔로우 취소');
+                if (data.status === 200) {
+                    button.val('팔로우 취소');
 
-            if (useremail === blogemail) {
-                // 팔로잉 숫자 변경 코드 추가
-                const followingNumber = parseInt(document.querySelector('.myfollowing .follow_number').textContent);
-                document.querySelector('.myfollowing .follow_number').textContent = followingNumber + 1;
+                    if (useremail === blogemail) {
+                        // 팔로잉 숫자 변경 코드 추가
+                        const followingNumber = parseInt(document.querySelector('.myfollowing .follow_number').textContent);
+                        document.querySelector('.myfollowing .follow_number').textContent = followingNumber + 1;
+                    }
+                }
             }
-        }
-    }
-});
+        });
 
         function goToBlog(email) {
 
-            window.location.href = [[@{/myblog.do}]]+ '?email=' + email;
+            window.location.href = contextPath + "/myblog.do" + '?email=' + email;
 
-}
+        }
 
-    
 
-    const profile = document.querySelector("#profile_img");
-    profile.addEventListener("error", function() {
-        console.log(1);
-        profile.setAttribute("src", contextPath + 'images/default_thumbnail.png');
-    })
 
-            
+        const profile = document.querySelector("#profile_img");
+        profile.addEventListener("error", function () {
+            console.log(1);
+            profile.setAttribute("src", contextPath + 'images/default_thumbnail.png');
+        })
+
+
 
 
     </script>
+
+
 </body>
 
 </html>

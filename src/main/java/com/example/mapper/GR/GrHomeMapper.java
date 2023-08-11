@@ -7,9 +7,12 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import com.example.dto.PostAllViewDTO;
+import com.example.dto.PostDTO;
 
 @Mapper
 public interface GrHomeMapper {
+
+    public List<PostDTO> selectPostList();
 
     // 홈 게시글
     // 최신글 조회
@@ -28,4 +31,7 @@ public interface GrHomeMapper {
     // 제목 키워드 검색
     @Select({" SELECT * FROM postallview WHERE title LIKE CONCAT('%', #{keyword}, '%') ORDER BY regdate desc "})
     public List<PostAllViewDTO> selecttitlekeyword(@Param("keyword") String keyword);
+
+    // 게시글 조회
+    
 }
