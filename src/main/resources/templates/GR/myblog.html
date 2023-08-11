@@ -448,9 +448,13 @@
                             </div>
                             <div class="cate_all"><a th:href="@{/myblog.do(email=${member.email})}">전체보기</a></div>
                             <div class="cate" th:each="obj:${pclist}">
+<<<<<<< HEAD
                                 <a href=#
                                     onclick="loadPostsByCategory(this.getAttribute('data-category-id')); return false;"
                                     th:text="${obj.CATEGORY}" th:data-category-id="${obj.NO}"></a>
+=======
+                                <a href=# onclick="loadPostsByCategory(this.getAttribute('data-category-id')); return false;" th:text="${obj.CATEGORY}" th:data-category-id="${obj.NO}" id="categorystyle"></a>
+>>>>>>> GR
                                 <div class="cate_num" th:text="${obj.PNOCOUNT}"></div>
                             </div>
 
@@ -550,6 +554,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.5/axios.min.js"></script>
     <script th:inline="javascript" type="text/javascript">
 
+<<<<<<< HEAD
         // 카테고리별 조회하기
         function loadPostsByCategory(categoryId) {
             // 클릭한 카테고리의 번호를 categoryId 변수로 받아온다.
@@ -560,6 +565,47 @@
         window.location.href = newUrl; // 새로운 URL로 페이지 이동
         console.log(newCategoryId);
         }
+=======
+  <script th:inline="javascript" type="text/javascript">
+
+    // 카테고리별 조회하기
+    // function loadPostsByCategory(categoryId) {
+    //     // 클릭한 카테고리의 번호를 categoryId 변수로 받아온다.
+    //     console.log(typeof categoryId);
+    //     var newCategoryId = Number(categoryId);
+    //     console.log(typeof newCategoryId);
+    //     var newUrl = [[@{/myblog.do}]] + "?email=" + [[${member.email}]] + "&categoryId=" + newCategoryId; // 카테고리 번호를 추가하여 새로운 URL 생성
+    //     window.location.href = newUrl; // 새로운 URL로 페이지 이동
+    //     console.log(newCategoryId);
+    //     document.getElementById("categorystyle").style.borderBottom = " 2px solid #000";
+    //     document.getElementById("categorystyle").style.fontWeight= "bold";
+    // }
+
+     // 카테고리별 조회하기
+     function loadPostsByCategory(categoryId) {
+            // 클릭한 카테고리의 번호를 categoryId 변수로 받아옵니다.
+            var newCategoryId = Number(categoryId);
+            var newUrl = [[@{/myblog.do}]] + "?email=" + [[${member.email}]] + "&categoryId=" + newCategoryId;
+            window.location.href = newUrl;
+        }
+
+        // 페이지 로드 시 실행되는 함수
+        document.addEventListener('DOMContentLoaded', function() {
+            // 현재 URL에서 쿼리 파라미터로부터 categoryId 값을 읽어옵니다.
+            var urlParams = new URLSearchParams(window.location.search);
+            var categoryId = urlParams.get('categoryId');
+
+            // categoryId 값이 존재하면 해당 카테고리에 스타일을 적용합니다.
+            if (categoryId) {
+                // 카테고리 스타일 적용
+                var categoryElement = document.querySelector('a[data-category-id="' + categoryId + '"]');
+                if (categoryElement) {
+                    categoryElement.style.fontWeight = 'bold';
+                    categoryElement.style.borderBottom = '1px solid #000';
+                }
+            }
+        });
+>>>>>>> GR
 
         async function changeMyBtn() {
             let useremail = [[${ user.username }]];
