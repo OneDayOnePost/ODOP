@@ -228,7 +228,7 @@
                                     </select>
                                     <input name="email" id="email" type="hidden">
                                     <input type="button" id="emailchk" value="중복 확인"
-                                        onclick="ajaxEmCheck(email)"></input>
+                                        onclick="ajaxEmCheck()"></input>
                                     <input type="hidden" id="emjoongbokchk" name="emjoongbokchk"></input>
                                 </div>
                             </td>
@@ -244,7 +244,7 @@
                                             <tr>
                                                 <th style="padding-right: 35px;">비밀번호</th>
                                                 <td><input type="password" id="password" name="password" maxlength="16"
-                                                        style="padding: 0.5% 5% 0.5% 5%" autoComplete="off" /> </td>
+                                                        style="padding: 0.5% 5% 0.5% 5%" autoComplete="off" oninput="pwConfirm()"/> </td>
 
                                             </tr>
                                         </table>
@@ -254,7 +254,7 @@
                                         <tr>
                                             <th>비밀번호 확인</th>
                                             <td><input type="password" id="pwcheck" style="padding: 0.5% 5% 0.5% 5%"
-                                                    name="pwcheck" autoComplete="off" onkeyup="pwConfirm()" /></td>
+                                                    name="pwcheck" autoComplete="off" oninput="pwConfirm()"/></td>
                                         </tr>
                                     </table>
                                 </div>
@@ -420,8 +420,10 @@
 
         //이메일 중복 확인
         var emcheck = 0; //1 이면 사용 가능
-        async function ajaxEmCheck(e) {
+        async function ajaxEmCheck() {
             const email = document.getElementById("email");
+            const password = document.getElementById("password");
+            const email1 = document.getElementById("email1");
 
             if (email.value.length > 0) {
 
@@ -442,21 +444,22 @@
                 document.querySelector("#content").textContent = "이미 존재하는 이메일입니다.";
 
                 modal.show();
+                email1.value = '';
                 return false;
-                e.value = '';
+
             }
             else if (data.ret === 0) {
                 // 사용 가능
                 emcheck = 1;
                 document.querySelector("#title").textContent = "이메일 중복 확인";
-                document.querySelector("#title").setAttribute("focusElement", "email1");
+                document.querySelector("#title").setAttribute("focusElement", "password");
                 document.querySelector("#content").textContent = "사용가능한 이메일입니다.";
 
                 modal.show();
-                return false;
-                document.getElementById("password").focus();
                 $('input[name=emjoongbokchk]').attr('value', 'y'); //중복확인 여부
                 // console.log($('input[name=emjoongbokchk]').val());
+                return false;
+
             }
         }
             else {
@@ -520,6 +523,7 @@
         async function ajaxNickCheck(nick) {
 
             const nickname = document.getElementById("nickname");
+            const phone = document.getElementById("phone");
 
             if (nickname.value.length > 0) {
                 const url = `${contextPath}/api/nickcheck.do?nickname=${nickname.value}`;
@@ -533,15 +537,21 @@
                     //사용 불가
                     nickcheck = 0;
                     nick.value = '';
-                    alert('이미 존재하는 닉네임입니다. ');
+                    document.querySelector("#title").textContent = "닉네임 중복 확인";
+                    document.querySelector("#title").setAttribute("focusElement", "email1");
+                    document.querySelector("#content").textContent = "이미 존재하는 닉네임입니다.";
 
-                    console.log(data.ret.value);
+                    modal.show();
+                    return false;
                 }
                 else if (data.ret === 0) {
                     //사용 가능
                     nickcheck = 1;
-                    alert('사용 가능한 닉네임입니다.');
-                    document.getElementById("phone").focus();
+                    document.querySelector("#title").textContent = "닉네임 중복 확인";
+                    document.querySelector("#title").setAttribute("focusElement", "phone");
+                    document.querySelector("#content").textContent = "사용 가능한 닉네임입니다.";
+
+                    modal.show();
                     $('input[name=nickjoongbokchk]').attr('value', 'y'); //중복확인 여부
                     console.log($('input[name=nickjoongbokchk]').val());
 

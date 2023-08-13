@@ -85,19 +85,21 @@ public class ArRestMemberController {
 
     //이메일 인증 코드 발송
     @PostMapping("/emailconfirm.do")
-    public String emailConfirm(@RequestParam(name="toemail") String toemail) throws Exception {
+    public String emailConfirm(@RequestParam(name="email") String email) throws Exception {
 
-    String confirm = mailService.sendSimpleMessage(toemail);   
+    String confirm = mailService.sendSimpleMessage(email);   
     Map<String, Object> retMap = new HashMap<>();
       try{
             retMap.put("status",200);
             retMap.put("ret",confirm);
+            log.info(confirm);
 
         }
         catch(Exception e){
             e.printStackTrace();
             retMap.put("status", -1);
             retMap.put("error", e.getMessage());
+            
         }
         return confirm;
     }

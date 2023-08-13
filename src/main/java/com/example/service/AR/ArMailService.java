@@ -4,5 +4,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface ArMailService {
-    String sendSimpleMessage(String toemail)throws Exception;
+    String sendSimpleMessage(String email)throws Exception;
 }

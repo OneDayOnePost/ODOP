@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+
 import java.io.UnsupportedEncodingException;
 import java.util.Random;
 
@@ -63,19 +64,18 @@ public class ArMailServiceImpl implements ArMailService{
         // 메일 내용 설정
         String msgOfEmail="";
         msgOfEmail+= "<div style='margin:20px; text-align:center;'>";
-        msgOfEmail+= "<h1> 안녕하세요 </h1>";
-        msgOfEmail+= "<h1 style='color: #1D3563;'> OneDayOnePost, ODOP </h1>";
-        msgOfEmail+= "<h1> 입니다. </h1>";
+        msgOfEmail+= "<h1> 안녕하세요, 하루 한 개의 포스트 📚 </h1>";
+        msgOfEmail+= "<h1> OneDayOnePost, ODOP 입니다 </h1>";
         msgOfEmail+= "<br>";
         msgOfEmail+= "<p>아래 코드를 복사해 입력해주세요<p>";
         msgOfEmail+= "<br>";
         msgOfEmail+= "<p>감사합니다.<p>";
         msgOfEmail+= "<br>";
-        msgOfEmail+= "<div align='center' style='border:1px solid #9aa2c0; font-family:NanumSquare; background: #ffffff;';>";
-        msgOfEmail+= "<h3 style='color: #1D3563;'>이메일 인증 코드입니다.</h3>";
+        msgOfEmail+= "<div align='center' style='border:2px solid #9aa2c0; font-family:NanumSquare; background: #ffffff;';>";
+        msgOfEmail+= "<h3 style='color: #1D3563;'>이메일 인증 코드📧</h3>";
         msgOfEmail+= "<div style='font-size:130%'>";
-        msgOfEmail+= " <strong>";
-        msgOfEmail+= authNum+"</strong><div><br/> ";
+        msgOfEmail+= " <strong  style='background:#1D3563; color:#FFF;'> 📝";
+        msgOfEmail+= authNum+ "📝</strong><div><br/> ";
         msgOfEmail+= "</div>";
 
         message.setFrom(setFrom);		// 보내는 사람 설정
@@ -89,8 +89,8 @@ public class ArMailServiceImpl implements ArMailService{
 
     //실제 메일 전송
     @Override
-    public String sendSimpleMessage(String toemail) throws Exception {
-        MimeMessage message = createEmailForm(toemail);
+    public String sendSimpleMessage(String email) throws Exception {
+        MimeMessage message = createEmailForm(email);
         try{//예외처리
             emailSender.send(message);
         }catch(MailException es){

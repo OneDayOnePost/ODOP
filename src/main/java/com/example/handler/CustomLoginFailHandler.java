@@ -44,9 +44,9 @@ public class CustomLoginFailHandler implements AuthenticationFailureHandler {
         String password = request.getParameter("password");
         String errorMessage = "";
         log.info(email.toString());       
-         log.info(password.toString());
+        log.info(password.toString());
 
-        Member member = mService.findByEmail(request.getParameter("email").toString());
+        // Member member = mService.findByEmail(request.getParameter("email").toString());
         // log.info("Member=>{}", member.toString()); null일경우 이부분이 오류남 -> 주석처리 !!
 
 
