@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.dto.PostAllViewDTO;
+import com.example.entity.Cate;
 import com.example.service.GR.GrHomeService;
 import com.example.service.WJ.WjCateService;
 
@@ -30,7 +31,9 @@ public class HomeController {
 
     @GetMapping(value = "/home.do")
     public String homeGET(@AuthenticationPrincipal User user, Model model,
-                            @RequestParam(name = "type", required = false, defaultValue = "newest") String type) {
+                          @RequestParam(name = "category", required = false) String category,
+                          @RequestParam(name = "mbti", required = false) String mbti,
+                          @RequestParam(name = "type", required = false, defaultValue = "newest") String type) {
         
         try {
 
@@ -69,8 +72,8 @@ public class HomeController {
         // categories 데이터가 모든 페이지의 모델에 자동으로 추가
 
         @ModelAttribute("categories")
-        public List<String> getCategories() {
-            List<String> categories = WjcService.selectCateList();
+        public List<Cate> getCategories() {
+            List<Cate> categories = WjcService.selectCateList();
 
             return categories;
         }
