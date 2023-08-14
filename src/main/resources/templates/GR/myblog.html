@@ -651,48 +651,37 @@
                     let buttonHTML = '';
                     if (useremail !== follower.email) {
                         buttonHTML = `
-                        <input type="button" id="follower_btn" value="${follower.follow_yumu === 0 ? '팔로우' : '팔로우 취소'}">
-                    `;
+                            <input type="button" id="follower_btn" value="${follower.follow_yumu === 0 ? '팔로우' : '팔로우 취소'}">
+                        `;
                     }
 
                     let imgHTML = '';
                     if (follower.imgpath != null) {
                         imgHTML = `
-                        <img src="${follower.imgpath}" key="${follower.imgkey}" onclick="goToBlog('${follower.email}')" class="myblog_img">
-                    `;
+                            <img src="${follower.imgpath}" key="${follower.imgkey}" onclick="goToBlog('${follower.email}')" class="myblog_img">
+                        `;
                     } else {
                         imgHTML = `
-                        <img src="/odop/images/default_thumbnail.png" onclick="goToBlog('${follower.email}')" class="myblog_img">
+                            <img src="/odop/images/default_thumbnail.png" onclick="goToBlog('${follower.email}')" class="myblog_img">
+                        `;
+                    }
+
+                    tableHTML += `
+                        <tr>
+                            <td>${imgHTML}</td>
+                            <td style="font-size: 18px; padding-bottom: 5px; width: 246px;">
+                                <button type="button" onclick="goToBlog('${follower.email}')" style="border: none; background-color: #fff;">${follower.email}</button>
+                            </td>
+                            <td>${buttonHTML}</td>
+                        </tr>
                     `;
-                    }
-
-                    tableHTML += `
-                    <tr>
-                        <td>${imgHTML}</td>
-                        <td style="font-size: 18px; padding-bottom: 5px; width: 246px;">
-                            <button type="button" onclick="goToBlog('${follower.email}')" style="border: none; background-color: #fff;">${follower.email}</button>
-                        </td>
-                        <td>${buttonHTML}</td>
-                    </tr>
-                `;
-                    }
-
-                    tableHTML += `
-            <tr>
-                <td><img src="${imgSrc}" key="${follower.imgkey}" style="border-radius: 50%; width: 45px; height: 45px; margin-right: 15px"
-                    onerror="this.src='images/default_thumbnail.png'" onclick="goToBlog('${follower.email}')" class="myblog_img"></td>
-                <td style="font-size: 18px; padding-bottom: 5px; width: 246px;">
-                    <button type="button" onclick="goToBlog('${follower.email}')" style="border: none; background-color: #fff;">${follower.email}</button>
-                </td>
-                <td>${buttonHTML}</td>
-            </tr>
-            `;
                 }
 
-                document.getElementById('followerlisttable').innerHTML = tableHTML;
-
-                $("#follower_list").modal("show");
             }
+
+            document.getElementById('followerlisttable').innerHTML = tableHTML;
+
+            $("#follower_list").modal("show");
         }
 
         async function followinglistcall() {
@@ -712,48 +701,36 @@
                     let buttonHTML = '';
                     if (useremail !== following.email) {
                         buttonHTML = `
-                        <input type="button" id="following_btn" value="${following.follow_yumu === 0 ? '팔로우' : '팔로우 취소'}">
-                    `;
+                            <input type="button" id="following_btn" value="${following.follow_yumu === 0 ? '팔로우' : '팔로우 취소'}">
+                        `;
                     }
 
                     let imgHTML = '';
                     if (following.imgpath != null) {
                         imgHTML = `
-                        <img src="${following.imgpath}" key="${following.imgkey}" onclick="goToBlog('${following.email}')" class="myblog_img">
-                    `;
+                            <img src="${following.imgpath}" key="${following.imgkey}" onclick="goToBlog('${following.email}')" class="myblog_img">
+                        `;
                     } else {
                         imgHTML = `
-                        <img src="/odop/images/default_thumbnail.png" onclick="goToBlog('${following.email}')" class="myblog_img">
+                            <img src="/odop/images/default_thumbnail.png" onclick="goToBlog('${following.email}')" class="myblog_img">
+                        `;
+                    }
+
+                    tableHTML += `
+                        <tr>
+                            <td>${imgHTML}</td>
+                            <td style="font-size: 18px; padding-bottom: 5px; width: 246px;">
+                                <button type="button" onclick="goToBlog('${following.email}')" style="border: none; background-color: #fff;">${following.email}</button>
+                            </td>
+                            <td>${buttonHTML}</td>
+                        </tr>
                     `;
-                    }
-
-                    tableHTML += `
-                    <tr>
-                        <td>${imgHTML}</td>
-                        <td style="font-size: 18px; padding-bottom: 5px; width: 246px;">
-                            <button type="button" onclick="goToBlog('${following.email}')" style="border: none; background-color: #fff;">${following.email}</button>
-                        </td>
-                        <td>${buttonHTML}</td>
-                    </tr>
-                `;
-                    }
-
-                    tableHTML += `
-            <tr>
-                <td><img src="${imgSrc}" key="${following.imgkey}" style="border-radius: 50%; width: 45px; height: 45px; margin-right: 15px"
-                    onerror="this.src='images/default_thumbnail.png'" onclick="goToBlog('${following.email}')" class="myblog_img"></td>
-                <td style="font-size: 18px; padding-bottom: 5px; width: 246px;">
-                    <button type="button" onclick="goToBlog('${following.email}')" style="border: none; background-color: #fff;">${following.email}</button>
-                </td>
-                <td>${buttonHTML}</td>
-            </tr>
-            `;
                 }
-
-                document.getElementById('followinglisttable').innerHTML = tableHTML;
-
-                $("#following_list").modal("show");
             }
+
+            document.getElementById('followinglisttable').innerHTML = tableHTML;
+
+            $("#following_list").modal("show");
         }
 
         $("#followerlisttable").on("click", "tr #follower_btn", async function () {
@@ -781,7 +758,7 @@
                 // rest api 호출
                 const url = contextPath + "/api/myblog/followinsert.json";
                 const headers = { "Content-Type": "application/json" };
-                const body = { "fromMember": { "email": useremail }, "toMember": { "email": $(this).closest("tr").find("td:nth-child(2)").text().trim() } };
+                const body = { "fromMember": { "email": useremail }, "toMember": { "email": $(this).closest("tr").find("td:nth-child(2)").text() } };
                 const { data } = await axios.post(url, body, { headers: headers });
 
                 if (data.status === 200) {
@@ -821,7 +798,7 @@
                 // rest api 호출
                 const url = contextPath + "/api/myblog/followinsert.json";
                 const headers = { "Content-Type": "application/json" };
-                const body = { "fromMember": { "email": useremail }, "toMember": { "email": $(this).closest("tr").find("td:nth-child(2)").text().trim() } };
+                const body = { "fromMember": { "email": useremail }, "toMember": { "email": $(this).closest("tr").find("td:nth-child(2)").text() } };
                 const { data } = await axios.post(url, body, { headers: headers });
 
                 if (data.status === 200) {
@@ -846,7 +823,6 @@
             profile.setAttribute("src", contextPath + 'images/default_thumbnail.png');
         })
     </script>
-
 
 </body>
 
