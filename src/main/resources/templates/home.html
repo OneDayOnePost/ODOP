@@ -413,10 +413,10 @@
       console.log("keywords :", keywords);
       console.log("searchKeyword :", searchKeyword);
 
-      const url = contextPath + "/api/home/getList.json";
+      const url = contextPath + "/api/home/getlist.json";
       const headers = { "Content-Type": "application/json" };
       axios.get(url, {params: {category: encodeURI(category), mbti: encodeURI(mbti), type: searchtype, 
-        option: searchOption} }, { headers });
+        option: searchOption, keywords: encodeURI(searchKeyword), email: email} }, { headers });
 
     }
 

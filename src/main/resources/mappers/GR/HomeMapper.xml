@@ -5,30 +5,32 @@
 <mapper namespace="com.example.mapper.GR.GrHomeMapper"> 
 
     <!-- 1. 홈 게시글 조회 -->
-    <select id="selectPostList" parameterType="" resultType="PostDTO">
+    <select id="selectPostList" parameterType="map" resultType="PostDTO">
         SELECT * FROM (
             SELECT ROW_NUMBER() OVER(ORDER BY 
             <!--조회 방법 설정 ( 최신순, 조회순, 좋아요순 )-->
-            <if test = 'ordertype = 1'> p.NO DESC <if>
-            
+            <if test = 'type.equals("newest")'> p.NO DESC <if>
+            <if test = 'type.equals("like")'> p.dope_count DESC <if>
             ) AS rnum, p.*, NVL(s.dope_count, 0) AS dope, m.mbti,  FROM POST p 
             LEFT JOIN (SELECT postno, COUNT(*) AS dope_count FROM DOPE d GROUP BY d.postno) s ON p."NO" = s.postno 
             INNER JOIN MEMBER m ON p.WRITER  = m.EMAIL
-        ) T1 WHERE
+        ) T1 WHERE state = 0 AND secret = 0
             <!--카테고리 설정-->
-            <if test = 'cateno != null'>
+            <if test = 'category.size != 0'>
                 AND cateno IN(
-                    <foreach item="temp" collection="list" separator=" , ">#{temp}</foreach>
+                    <foreach item="temp" collection="category" separator=" , ">#{temp}</foreach>
                 ) 
             </if>
             <!--MBTI 설정-->
-            <if test= 'mbti != null'>
+            <if test = 'mbti.size != 0'>
                 AND mbti IN(
-                    <foreach item="temp" collection="list" separator=" , ">#{temp}</foreach>
+                    <foreach item="temp" collection="mbti" separator=" , ">#{temp}</foreach>
                 )
             </if>
             <!--작성자 설정 (팔로잉)-->
             <!--검색어 설정-->
+            <if test = 'op'>
+            </if>
             <!--페이징-->
             rnum BETWEEN 1 AND 10 AND cateno = 3 ORDER BY rnum ASC;
     </select>
