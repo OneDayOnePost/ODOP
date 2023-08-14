@@ -46,7 +46,7 @@
                     <!-- 로그인 되어있을 때 -->
                     <th:block th:if="${user} != null">
                         <div class="new-post">
-                            <a th:href="@{/mhwrite.do}"><input type="button" value="새 글 작성"></a>
+                            <a th:href="@{/blog/{email}/write.do(email=${user.username})}"><input type="button" value="새 글 작성"></a>
                         </div>
                         <div class="notification-icon">
                             <i class="bi bi-bell"></i>

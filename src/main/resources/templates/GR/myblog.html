@@ -393,6 +393,8 @@
         .myblog_img:hover {
             cursor: pointer;
         }
+
+      
     </style>
 
 
@@ -416,8 +418,10 @@
                 <div id="left-area">
                     <div class="blog-profile">
                         <div class="myimg">
-                            <img id="profile_img" th:src="${member.imgpath}" th:key="${member.imgkey}" width="100px"
-                                height="100px" onerror="this.src='/odop/images/default_thumbnail.png'">
+                            <!-- <img id="profile_img" th:src="${member.imgpath}" th:key="${member.imgkey}" width="100px"
+                                height="100px" onerror="this.src='/odop/images/default_thumbnail.png'"> -->
+                            <img th:if="${member.imgpath != null}" th:src="${member.imgpath}" th:key="${member.imgkey}" width="100px" height="100px">
+                            <img th:unless="${member.imgpath != null}" th:src="@{/images/default_thumbnail.png}" width="100px" height="100px">
                         </div>
                         <div class="myinfo_box">
                             <div class="myinfo">
@@ -575,15 +579,13 @@
             var newUrl = contextPath + "/blog/" + email + "/" + newCategoryId + "/home.do";
             window.location.href = newUrl;
         }
+            
 
-        // 페이지 로드 시 실행되는 함수
-        document.addEventListener('DOMContentLoaded', function () {
-            // 현재 URL에서 쿼리 파라미터로부터 categoryId 값을 읽어옵니다.
-            var urlParams = new URLSearchParams(window.location.search);
-            var categoryId = urlParams.get('categoryId');
+            document.addEventListener('DOMContentLoaded', function () {
+            // 현재 URL에서 카테고리 ID 값을 읽어옵니다.
+            var categoryId = /*[[${categoryId}]]*/ null;
 
-            // categoryId 값이 존재하면 해당 카테고리에 스타일을 적용합니다.
-            if (categoryId) {
+            if (categoryId !== null) {
                 // 카테고리 스타일 적용
                 var categoryElement = document.querySelector('a[data-category-id="' + categoryId + '"]');
                 if (categoryElement) {
