@@ -404,8 +404,7 @@
                 <div id="left-area">
                     <div class="blog-profile">
                         <div class="myimg">
-                            <img id="profile_img" th:src="${member.imgpath}" th:key="${member.imgkey}" width="100px"
-                                height="100px" onerror="this.src='/odop/images/default_thumbnail.png'">
+                            <img id="profile_img" onerror="this.src='/odop/images/default_thumbnail.png'" th:src="${member.imgpath}" th:key="${member.imgkey}" style="width: 100px; height: 100px;">
                         </div>
                         <div class="myinfo_box">
                             <div class="myinfo">
@@ -547,11 +546,7 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.5/axios.min.js"></script>
-    <script th:inline="javascript" type="text/javascript">
-
-        const contextPath = $('#contextPathHolder').attr('data-contextPath');
+    <script th:inline="javascript">
 
         // 카테고리별 조회하기
         function loadPostsByCategory(categoryId) {
@@ -787,14 +782,20 @@
             window.location.href = contextPath + "/myblog.do" + '?email=' + email;
 
         }
+        
+        console.log(contextPath);
 
 
 
-        const profile = document.querySelector("#profile_img");
-        profile.addEventListener("error", function () {
-            console.log(1);
-            profile.setAttribute("src", contextPath + 'images/default_thumbnail.png');
-        })
+        // const profile = document.querySelector("#profile_img");
+        // profile.addEventListener("error", function () {
+        //     console.log(1);
+        //     profile.setAttribute("src", contextPath + '/images/default_thumbnail.png');
+        // })
+
+        // function test() {
+        //     console.log(1);
+        // }
 
 
 
