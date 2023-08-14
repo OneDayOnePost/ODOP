@@ -677,11 +677,10 @@
                     `;
                 }
 
+                document.getElementById('followerlisttable').innerHTML = tableHTML;
+    
+                $("#follower_list").modal("show");
             }
-
-            document.getElementById('followerlisttable').innerHTML = tableHTML;
-
-            $("#follower_list").modal("show");
         }
 
         async function followinglistcall() {
@@ -726,11 +725,10 @@
                         </tr>
                     `;
                 }
+                document.getElementById('followinglisttable').innerHTML = tableHTML;
+    
+                $("#following_list").modal("show");
             }
-
-            document.getElementById('followinglisttable').innerHTML = tableHTML;
-
-            $("#following_list").modal("show");
         }
 
         $("#followerlisttable").on("click", "tr #follower_btn", async function () {
@@ -758,7 +756,7 @@
                 // rest api 호출
                 const url = contextPath + "/api/myblog/followinsert.json";
                 const headers = { "Content-Type": "application/json" };
-                const body = { "fromMember": { "email": useremail }, "toMember": { "email": $(this).closest("tr").find("td:nth-child(2)").text() } };
+                const body = { "fromMember": { "email": useremail }, "toMember": { "email": $(this).closest("tr").find("td:nth-child(2)").text().trim() } };
                 const { data } = await axios.post(url, body, { headers: headers });
 
                 if (data.status === 200) {
@@ -798,7 +796,7 @@
                 // rest api 호출
                 const url = contextPath + "/api/myblog/followinsert.json";
                 const headers = { "Content-Type": "application/json" };
-                const body = { "fromMember": { "email": useremail }, "toMember": { "email": $(this).closest("tr").find("td:nth-child(2)").text() } };
+                const body = { "fromMember": { "email": useremail }, "toMember": { "email": $(this).closest("tr").find("td:nth-child(2)").text().trim() } };
                 const { data } = await axios.post(url, body, { headers: headers });
 
                 if (data.status === 200) {
