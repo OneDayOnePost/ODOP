@@ -418,7 +418,7 @@
                 <div id="left-area">
                     <div class="blog-profile">
                         <div class="myimg">
-                            <img th:if="${member.imgpath != null}" th:src="${member.imgpath}" th:key="${member.imgkey}" width="100px" height="100px">
+                            <img th:if="${member.imgpath != null}" th:src="${member.imgpath}" th:key="${member.imgkey}" width="100px" height="100px" onerror="this.src='/odop/images/default_thumbnail.png'">
                             <img th:unless="${member.imgpath != null}" th:src="@{/images/default_thumbnail.png}" width="100px" height="100px">
                         </div>
                         <div class="myinfo_box">
@@ -815,11 +815,6 @@
             window.location.href = contextPath + "/blog/" + email + "/0/home.do";
         }
 
-        // const profile = document.querySelector("#profile_img");
-        // profile.addEventListener("error", function () {
-        //     console.log(1);
-        //     profile.setAttribute("src", contextPath + 'images/default_thumbnail.png');
-        // })
     </script>
 
 </body>
