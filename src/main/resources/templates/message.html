@@ -1,18 +1,33 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>알림창</title>
+    <title>ODOP Email Verification</title>
 </head>
-<body>
+<style>
+    @import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
 
-    <!-- <script th:inline="javascript" type="text/javascript">
-        const msg = [[${msg}]];
-        alert(msg);   
-        window.location.replace([[${url}]]);   
-    </script> -->
-    
+    body {
+        font-family: 'NanumSquare';
+    }
+</style>
+<body>
+    <div style="margin: 20px; text-align: center;">
+        <h1>안녕하세요, 하루 한 개의 포스트 📚</h1>
+        <h2>OneDayOnePost, ODOP 입니다</h2>
+        <br>
+        <p>아래 코드를 복사해 입력해주세요</p>
+        <br>
+        <p>감사합니다</p>
+        <br>
+        <div style="border: 2px solid #9aa2c0; font-family: NanumSquare; background: #ffffff;">
+            <h3 style="color: #1D3563;">이메일 인증 코드📧</h3>
+            <br>
+            <div style="font-size: 130%;">
+                <strong style="background: #1D3563; color: #FFF;"> 📝 [[${authNum}]] 📝</strong>
+            </div>
+            <br>
+        </div>
+    </div>
 </body>
 </html>

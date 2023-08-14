@@ -431,37 +431,38 @@
             const url = `${contextPath}/api/emailconfirm.do?email=${email.value}`;
             const headers = { "Content-Type": "application/json" };
             const dataToSend = {
-                    email: email.value,
-                    ret: data.ret // 문자열 값
+                    email: email.value
                     };
             try {
                 
-                const { data } = await axios.post(url, dataToSend, { headers });
-                console.log(ret.value);
+                // const { data } = await axios.post(url, dataToSend, { headers });
+                const response = await axios.post(url, dataToSend, { headers });
+                const retValue = response.data.ret; // 서버에서 받은 ret 값
 
-                // if (!ret.value.isempty()) {
-                //     // 인증번호 발송 성공 처리
-                //     document.querySelector("#title").textContent = "성공 :)";
-                //     document.querySelector("#title").setAttribute("focusElement", "chkbox");
-                //     document.querySelector("#content").textContent = "인증번호가 발송되었습니다";
+                console.log(retValue);
+                if (retValue != null) {
+                    // 인증번호 발송 성공 처리
+                    document.querySelector("#title").textContent = "성공 :)";
+                    document.querySelector("#title").setAttribute("focusElement", "chkbox");
+                    document.querySelector("#content").textContent = "인증번호가 발송되었습니다";
 
-                //     modal.show();
-                //     sendbutton.style ="visibility:visible";
+                    modal.show();
+                    sendbutton.style ="visibility:visible";
                     
-                //     // 타이머 시작
-                //     startTimer(300, timerDisplay);
+                    // 타이머 시작
+                    startTimer(300, timerDisplay);
                   
 
-                // } else if(ret.value =='') {
-                //     // 인증번호 발송 실패 처리
-                //     document.querySelector("#title").textContent = "실패 :(";
-                //     document.querySelector("#title").setAttribute("focusElement", "chkbox");
-                //     document.querySelector("#content").textContent = "발송 실패하였습니다";
+                } else if(retValue == null) {
+                    // 인증번호 발송 실패 처리
+                    document.querySelector("#title").textContent = "실패 :(";
+                    document.querySelector("#title").setAttribute("focusElement", "chkbox");
+                    document.querySelector("#content").textContent = "발송 실패하였습니다";
 
-                //     modal.show();
-                //     sendbutton.style ="visibility:hidden";
-                //     return false;
-                // }
+                    modal.show();
+                    sendbutton.style ="visibility:hidden";
+                    return false;
+                }
             } catch (error) {
                     // 네트워크 오류 등 예외 처리
                     console.error("Email sending error:", error);
