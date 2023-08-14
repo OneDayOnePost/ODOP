@@ -339,14 +339,7 @@
 
     window.addEventListener('load', function() {
 
-      // 엔터키 눌러서 검색기능 실행하기
-      const searchInput = document.querySelector(".search-input");
-
-      searchInput.addEventListener("keydown", function(event) {
-          if (event.key === "Enter") {
-              searchInList();
-          }
-      });
+      
 
       const urlParams = new URLSearchParams(window.location.search);
       const typeParam = urlParams.get('type');
@@ -380,15 +373,25 @@
 
     // 검색 기능 
     function searchInList(){
+
+      // 엔터키 눌러서 검색기능 실행하기
+      const searchInput = document.querySelector(".search-input");
+
+      searchInput.addEventListener("keydown", function(event) {
+          if (event.key === "Enter") {
+              searchInList();
+          }
+      }); 
+
       // 선택한 값과 검색어 가져오기
       const searchOption = document.getElementById("select-box").value;
-      const searchKeyword = document.getElementById("search-input").value;
-      const keywords = searchKeyword.split(" ");
+      const keywords = document.getElementById("search-input").value;
+      const searchKeyword = keywords.split(" ");
 
       // 검색 로직을 추가하여 가져온 값들을 활용하세요
       console.log("searchOption :", searchOption);
-      console.log("searchKeyword :", searchKeyword);
       console.log("keywords :", keywords);
+      console.log("searchKeyword :", searchKeyword);
 
     }
 
