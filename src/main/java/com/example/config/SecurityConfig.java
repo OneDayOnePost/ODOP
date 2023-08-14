@@ -1,6 +1,5 @@
 package com.example.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +14,6 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.stereotype.Component;
 
 import com.example.handler.CustomLogoutSuccessHandler;
-import com.example.handler.CustomLoginFailHandler;
 import com.example.service.SecurityServiceImpl;
 import com.example.service.AR.ArMemberService;
 
