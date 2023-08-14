@@ -20,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,17 +51,17 @@ public class GrMemberController {
 
     final WjMyblogService wjmyblogservice;
 
-    @GetMapping(value = "/myblog.do")
+    @GetMapping(value = "/blog/{email}/{categoryId}/home.do")
     public String myblogGET(Model model, @AuthenticationPrincipal User user,
-            @RequestParam(name = "categoryId", required = false) Long categoryId,
-            @RequestParam(name = "email", required = true) String email) { // @AuthenticationPrincipal User user
+            @PathVariable(value = "categoryId") Long categoryId,
+            @PathVariable(value = "email") String email) { // @AuthenticationPrincipal User user
         try {
 
             // log.info("categoryId received: {}", categoryId);
             log.info("user 정보 => {}", user.toString());
             log.info("user user => {}", user.getAuthorities());
 
-            if (categoryId != null) {
+            if (categoryId != 0) {
                 log.info("categoryId: {}", categoryId); // categoryId 값 로그로 출력
                 log.info("cate val => {}", BigInteger.valueOf(categoryId));
                 List<Post> list = postRepository.findByWriterAndCateNoOrderByNoDesc(email,

@@ -381,6 +381,13 @@
         height: 35px;
     }
 
+    .myblog_img {
+        border-radius: 50%;
+        width: 45px;
+        height: 45px;
+        margin-right: 15px;
+    }
+
     .myblog_img:hover {
         cursor: pointer;
     }
@@ -407,8 +414,9 @@
                 <div id="left-area">
                     <div class="blog-profile">
                         <div class="myimg">
-                            <img th:src="${member.imgpath}" th:key="${member.imgkey}" width="100px" height="100px" onerror="this.src='images/default_thumbnail.png'">
-                        </div>
+                            <img th:if="${member.imgpath != null}" th:src="${member.imgpath}" th:key="${member.imgkey}" width="100px" height="100px">
+                            <img th:unless="${member.imgpath != null}" th:src="@{/images/default_thumbnail.png}" width="100px" height="100px">
+                        </div>                        
                         <div class="myinfo_box">
                             <div class="myinfo">
                                 <div id="nickname">
@@ -444,7 +452,7 @@
                                     <p>카테고리</p>
                                 </div>
                             </div>
-                            <div class="cate_all"><a th:href="@{/myblog.do(email=${member.email})}">전체보기</a></div>
+                            <div class="cate_all"><a th:href="@{/blog/{email}/0/home.do(email=${member.email})}">전체보기</a></div>
                             <div class="cate" th:each="obj:${pclist}">
                                 <a href=# onclick="loadPostsByCategory(this.getAttribute('data-category-id')); return false;" th:text="${obj.CATEGORY}" th:data-category-id="${obj.NO}"></a>
                                 <div class="cate_num" th:text="${obj.PNOCOUNT}"></div>
@@ -549,7 +557,7 @@
         console.log(typeof categoryId);
         var newCategoryId = Number(categoryId);
         console.log(typeof newCategoryId);
-        var newUrl = [[@{/myblog.do}]] + "?email=" + [[${member.email}]] + "&categoryId=" + newCategoryId; // 카테고리 번호를 추가하여 새로운 URL 생성
+        var newUrl = [[@{/blog/}]] + [[${member.email}]] + "/" + newCategoryId + "/home.do"; // 카테고리 번호를 추가하여 새로운 URL 생성
         window.location.href = newUrl; // 새로운 URL로 페이지 이동
         console.log(newCategoryId);
     }
@@ -606,11 +614,9 @@
 
         if (data.status === 200) {
             const followerlist = data.followerlist;
-
+            
             let tableHTML = '';
             for (const follower of followerlist) {
-                const imgSrc = follower.imgpath || 'images/default_thumbnail.png';
-
                 let buttonHTML = '';
                 if (useremail !== follower.email) {
                     buttonHTML = `
@@ -618,10 +624,20 @@
                     `;
                 }
 
+                let imgHTML = '';
+                if (follower.imgpath != null) {
+                    imgHTML = `
+                        <img src="${follower.imgpath}" key="${follower.imgkey}" onclick="goToBlog('${follower.email}')" class="myblog_img">
+                    `;
+                } else {
+                    imgHTML = `
+                        <img src="/odop/images/default_thumbnail.png" onclick="goToBlog('${follower.email}')" class="myblog_img">
+                    `;
+                }
+
                 tableHTML += `
                     <tr>
-                        <td><img src="${imgSrc}" key="${follower.imgkey}" style="border-radius: 50%; width: 45px; height: 45px; margin-right: 15px"
-                                onerror="this.src='images/default_thumbnail.png'" onclick="goToBlog('${follower.email}')" class="myblog_img"></td>
+                        <td>${imgHTML}</td>
                         <td style="font-size: 18px; padding-bottom: 5px; width: 246px;">
                             <button type="button" onclick="goToBlog('${follower.email}')" style="border: none; background-color: #fff;">${follower.email}</button>
                         </td>
@@ -629,7 +645,7 @@
                     </tr>
                 `;
             }
-            
+
             document.getElementById('followerlisttable').innerHTML = tableHTML;
 
             $("#follower_list").modal("show");
@@ -650,8 +666,6 @@
 
             let tableHTML = '';
             for (const following of followinglist) {
-                const imgSrc = following.imgpath || 'images/default_thumbnail.png';
-
                 let buttonHTML = '';
                 if (useremail !== following.email) {
                     buttonHTML = `
@@ -659,10 +673,20 @@
                     `;
                 }
 
+                let imgHTML = '';
+                if (following.imgpath != null) {
+                    imgHTML = `
+                        <img src="${following.imgpath}" key="${following.imgkey}" onclick="goToBlog('${following.email}')" class="myblog_img">
+                    `;
+                } else {
+                    imgHTML = `
+                        <img src="/odop/images/default_thumbnail.png" onclick="goToBlog('${following.email}')" class="myblog_img">
+                    `;
+                }
+
                 tableHTML += `
                     <tr>
-                        <td><img src="${imgSrc}" key="${following.imgkey}" style="border-radius: 50%; width: 45px; height: 45px; margin-right: 15px"
-                                 onerror="this.src='images/default_thumbnail.png'" onclick="goToBlog('${following.email}')" class="myblog_img"></td>
+                        <td>${imgHTML}</td>
                         <td style="font-size: 18px; padding-bottom: 5px; width: 246px;">
                             <button type="button" onclick="goToBlog('${following.email}')" style="border: none; background-color: #fff;">${following.email}</button>
                         </td>
@@ -758,7 +782,7 @@
     });
 
     function goToBlog(email) {
-        window.location.href = [[@{/myblog.do}]] + '?email=' + email;
+        window.location.href = [[@{/blog/}]] + email + "/0/home.do";
     }
   </script>
 </body>
