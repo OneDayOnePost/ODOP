@@ -92,7 +92,7 @@ public class ArRestMemberController {
       try{
             retMap.put("status",200);
             retMap.put("ret",confirm);
-            log.info(confirm);
+            log.info(retMap.toString());
 
         }
         catch(Exception e){
