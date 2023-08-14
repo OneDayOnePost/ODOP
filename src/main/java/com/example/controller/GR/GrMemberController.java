@@ -51,18 +51,17 @@ public class GrMemberController {
 
     final WjMyblogService wjmyblogservice;
 
-    @GetMapping(value = "/blog/{email}/home.do")
+    @GetMapping(value = "/blog/{email}/{categoryId}/home.do")
     public String myblogGET(Model model, @AuthenticationPrincipal User user,
-            @RequestParam(name = "categoryId", required = false) Long categoryId,
-            @PathVariable(name = "email") String email) { // @AuthenticationPrincipal User user
+            @PathVariable(value = "categoryId") Long categoryId,
+            @PathVariable(value = "email") String email) { // @AuthenticationPrincipal User user
         try {
 
-            log.info("email 정보 => {}", email);
             // log.info("categoryId received: {}", categoryId);
             log.info("user 정보 => {}", user.toString());
             log.info("user user => {}", user.getAuthorities());
 
-            if (categoryId != null) {
+            if (categoryId != 0) {
                 log.info("categoryId: {}", categoryId); // categoryId 값 로그로 출력
                 log.info("cate val => {}", BigInteger.valueOf(categoryId));
                 List<Post> list = postRepository.findByWriterAndCateNoOrderByNoDesc(email,
@@ -127,7 +126,7 @@ public class GrMemberController {
                 model.addAttribute("my_btn_value", 2);
             }
 
-            // model.addAttribute("user", user);
+            model.addAttribute("user", user);
             model.addAttribute("member", member);
             model.addAttribute("following", following);
             model.addAttribute("follower", follower);

@@ -498,23 +498,22 @@
     </script>
 
     <script th:inline="javascript" type="text/javascript">
+        const contextPath = $('#contextPathHolder').attr('data-contextPath');
+
         function goto_writerinfo() {
             const writer = document.getElementById('link_writerinfo').textContent;
             // console.log(writer);
 
-            window.location.href = [[@{/memberlist.do(menu=all)}]] + '&email=' + writer;
+            window.location.href = contextPath + "/memberlist.do?menu=all" + '&email=' + writer;
         }
-    </script>
 
-
-    <script th:inline="javascript" type="text/javascript">
         // 신고 승인 버튼
         // (1) confirm
         async function deleteReply() {
             const replyno = document.getElementById('reply_no').value;
 
             // rest api 호출
-            const url = [[@{/api/admin/replydelete.json}]];
+            const url = contextPath + "/api/admin/replydelete.json";
             const headers = {"Content-Type":"application/json"};
             const body = {no:replyno};
             const { data } = await axios.put(url, body, { headers });
@@ -533,17 +532,19 @@
         }
         // (2) alert
         function deleteReplyOk() {
+            const menu = /*[[${menu}]]*/'';
+
             // 승인 alert 모달창 닫기
             const replymodal_alert = new bootstrap.Modal(document.getElementById('replymodal_alert'));
             replymodal_alert.hide();
 
             const replyno = document.getElementById('reply_no').value;
             // 주소 이동 
-            if ([[${menu}]] == 'all') { // 전체 신고 목록 -> 전체 신고 목록 - 해당 댓글 번호
-                window.location.href = [[@{/replyreport.do(menu='all')}]] + '&no=' + replyno;
+            if (menu == 'all') { // 전체 신고 목록 -> 전체 신고 목록 - 해당 댓글 번호
+                window.location.href = contextPath + "/replyreport.do?menu=all" + '&no=' + replyno;
             }
             else { // 관리자 삭제 페이지 - 해당 댓글 번호
-                window.location.href = [[@{/replyreport.do(menu='deletebyadmin')}]] + '&no=' + replyno;
+                window.location.href = contextPath + "/replyreport.do?menu=deletebyadmin" + '&no=' + replyno;
             }
         }
 
@@ -555,7 +556,7 @@
             const replyno = document.getElementById('reply_no').value;
 
             // rest api 호출
-            const url = [[@{/api/admin/replyreportdelete.json}]] + '?no=' + replyno;
+            const url = contextPath + "/api/admin/replyreportdelete.json" + '?no=' + replyno;
             const headers = {"Content-Type":"application/json"};
             const { data } = await axios.delete(url, { headers });
 
@@ -573,16 +574,18 @@
         }
         // (2) alert
         function deleteReportOk() {
+            const menu = /*[[${menu}]]*/'';
+
             // 거절 alert 모달창 닫기
             const reportmodal_alert = new bootstrap.Modal(document.getElementById('reportmodal_alert'));
             reportmodal_alert.hide();
 
             // 주소 이동 
-            if ([[${menu}]] == 'all') { // 전체 신고 목록 -> 전체 신고 목록
-                window.location.href = [[@{/adminhome.do(type='reply', menu='all')}]];
+            if (menu == 'all') { // 전체 신고 목록 -> 전체 신고 목록
+                window.location.href = contextPath + "/adminhome.do?type=reply&menu=all";
             }
             else { // 승인 대기 페이지
-                window.location.href = [[@{/adminhome.do(type='reply', menu='wait')}]];
+                window.location.href = contextPath + "/adminhome.do?type=reply&menu=wait";
             }
         }
 
@@ -594,7 +597,7 @@
             const replyno = document.getElementById('reply_no').value;
 
             // rest api 호출
-            const url = [[@{/api/admin/replydeletecancel.json}]];
+            const url = contextPath + "/api/admin/replydeletecancel.json";
             const headers = {"Content-Type":"application/json"};
             const body = {no:replyno};
             const { data } = await axios.put(url, body, { headers });
@@ -613,6 +616,8 @@
         }
         // (2) alert
         function cancelDeleteOk() {
+            const menu = /*[[${menu}]]*/'';
+
             // 취소 alert 모달창 닫기
             const cancelmodal_alert = new bootstrap.Modal(document.getElementById('cancelmodal_alert'));
             cancelmodal_alert.hide();
@@ -620,11 +625,11 @@
             const replyno = document.getElementById('reply_no').value;
 
             // 주소 이동
-            if ([[${menu}]] == 'all') { // 전체 신고 목록 -> 전체 신고 목록 - 해당 댓글 번호
-                window.location.href = [[@{/replyreport.do(menu='all')}]] + '&no=' + replyno;
+            if (menu == 'all') { // 전체 신고 목록 -> 전체 신고 목록 - 해당 댓글 번호
+                window.location.href = contextPath + "/replyreport.do?menu=all" + '&no=' + replyno;
             }
             else { // 승인 대기 페이지 - 해당 댓글 번호
-                window.location.href = [[@{/replyreport.do(menu='wait')}]] + '&no=' + replyno;
+                window.location.href = contextPath + "/replyreport.do?menu=wait" + '&no=' + replyno;
             }
         }
     </script>

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@PropertySource(value = {"classpath:application.properties"})
+@PropertySource(value = {"classpath:application-oauth.properties"})
 @EntityScan(basePackages = { "com.example.entity" })
 @EnableJpaRepositories(basePackages = {
 		"com.example.repository.AR", "com.example.repository.GR", "com.example.repository.MH",
