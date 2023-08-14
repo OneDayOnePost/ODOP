@@ -289,7 +289,7 @@
               <option value="content">내용</option>
             </select>
             <div class="search-container">
-              <input type="text" class="search-input" placeholder="검색어를 입력하세요">
+              <input type="text" class="search-input" id="search-input" >
               <button type="button" class="search-button" onclick="searchInList()">
                 <i class="bi bi-search search-icon"></i>
               </button>
@@ -374,46 +374,68 @@
 
     });
 
-    // 검색 기능을 수행하는 함수
-    function searchInList() {
-        const selectBox = document.getElementById("select-box");
-        const searchInput = document.querySelector(".search-input");
+  </script>
 
-        const selectedOption = selectBox.value;
-        const keywords = searchInput.value.toLowerCase().split(" "); // 검색어를 공백으로 분리
+  <script th:inline="javascript" type="text/javascript">
 
-        const items = document.querySelectorAll("#items #item");
+    // 검색 기능 
+    function searchInList(){
+      // 선택한 값과 검색어 가져오기
+      const searchOption = document.getElementById("select-box").value;
+      const searchKeyword = document.getElementById("search-input").value;
+      const keywords = searchKeyword.split(" ");
 
-        items.forEach(item => {
-            const titleElement = item.querySelector("#title a");
-            const nicknameElement = item.querySelector("#profile a");
-            const contentElement = item.querySelector("#main-img p");
-            const imgElement = item.querySelector("#main-img img");
+      // 검색 로직을 추가하여 가져온 값들을 활용하세요
+      console.log("searchOption :", searchOption);
+      console.log("searchKeyword :", searchKeyword);
+      console.log("keywords :", keywords);
 
-            const title = titleElement ? titleElement.textContent.toLowerCase() : '';
-            const nickname = nicknameElement ? nicknameElement.textContent.toLowerCase() : '';
-            const content = contentElement ? contentElement.textContent.toLowerCase() : '';
-            const imgContent = imgElement ? imgElement.getAttribute("data-content").toLowerCase() : '';
-
-            // 각 단어를 포함하는지 검사
-            const found = keywords.every(keyword => {
-                return (
-                    (selectedOption === "title" && title.includes(keyword)) ||
-                    (selectedOption === "nickname" && nickname.includes(keyword)) ||
-                    (selectedOption === "content" && (content.includes(keyword) || imgContent.includes(keyword))) ||
-                    (selectedOption === "content" && !imgElement && content.includes(keyword))
-                );
-            });
-
-            if (found) {
-                item.style.display = "block";
-            } else {
-                item.style.display = "none";
-            }
-        });
     }
 
   </script>
+<!-- 
+    // ----------------------------------------------------------------
+
+    // 검색 기능을 수행하는 함수
+    // function searchInList() {
+    //     const selectBox = document.getElementById("select-box");
+    //     const searchInput = document.querySelector(".search-input");
+
+    //     const selectedOption = selectBox.value;
+    //     const keywords = searchInput.value.toLowerCase().split(" "); // 검색어를 공백으로 분리
+
+    //     const items = document.querySelectorAll("#items #item");
+
+    //     items.forEach(item => {
+    //         const titleElement = item.querySelector("#title a");
+    //         const nicknameElement = item.querySelector("#profile a");
+    //         const contentElement = item.querySelector("#main-img p");
+    //         const imgElement = item.querySelector("#main-img img");
+
+    //         const title = titleElement ? titleElement.textContent.toLowerCase() : '';
+    //         const nickname = nicknameElement ? nicknameElement.textContent.toLowerCase() : '';
+    //         const content = contentElement ? contentElement.textContent.toLowerCase() : '';
+    //         const imgContent = imgElement ? imgElement.getAttribute("data-content").toLowerCase() : '';
+
+    //         // 각 단어를 포함하는지 검사
+    //         const found = keywords.every(keyword => {
+    //             return (
+    //                 (selectedOption === "title" && title.includes(keyword)) ||
+    //                 (selectedOption === "nickname" && nickname.includes(keyword)) ||
+    //                 (selectedOption === "content" && (content.includes(keyword) || imgContent.includes(keyword))) ||
+    //                 (selectedOption === "content" && !imgElement && content.includes(keyword))
+    //             );
+    //         });
+
+    //         if (found) {
+    //             item.style.display = "block";
+    //         } else {
+    //             item.style.display = "none";
+    //         }
+    //     });
+    // } -->
+
+  
 </body>
 
 </html>
