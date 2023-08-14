@@ -15,6 +15,8 @@ public interface GrPostRepository extends JpaRepository<Post, BigInteger> {
 
     List<Post> findByWriterOrderByNoDesc(String writer);
 
+    List<Post> findByNoOrderByRegdateDesc(BigInteger postno);
+
     // 카테고리 별 조회
     List<Post> findByWriterAndCateNoOrderByNoDesc(String writer, BigInteger cateno);
     // @Query("SELECT p FROM Post p WHERE p.writer = :writer AND p.cate.no = :cateNo")

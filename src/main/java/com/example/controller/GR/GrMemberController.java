@@ -188,4 +188,34 @@ public class GrMemberController {
 
     }
 
+    // ------------------------------------------------------------------------------
+    // tag 조회
+    @GetMapping(value = "/tag.do")
+    public String tagGET(Model model){
+
+        try {
+
+
+            List<Post> list = postRepository.findByWriterOrderByNoDesc("test1@gmail.com");
+
+                // 포스트 갯수 세기
+                int postallcount = list.size();
+                // 포스트 갯수가 한자리일 경우 앞에 0붙이기
+                String formattedpostcount = String.valueOf(postallcount);
+                if (postallcount < 10) {
+                    formattedpostcount = "0" + formattedpostcount;
+                }
+                log.info("나와라!! => {}", formattedpostcount);
+                model.addAttribute("formattedpostcount", formattedpostcount);
+                model.addAttribute("list", list);
+
+                log.info("아아 => {}", list.toString());
+
+            return "/GR/tag";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "/home";
+        }
+
+    }
 }
