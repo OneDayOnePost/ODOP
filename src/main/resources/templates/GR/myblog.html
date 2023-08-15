@@ -500,7 +500,7 @@
                                     <span th:text="${T(org.jsoup.Jsoup).parse(obj.content).text()}"></span>
                                 </div>
                                 <div class="post_tag" th:each="temp : ${obj.postTagList}">
-                                    <input type="button" th:value="'# ' + ${temp.tag}">
+                                    <input type="button" th:value="'# ' + ${temp.tag}" data-tag="${temp.tag}" onclick="searchTag(this)">
                                 </div>
                                 <div class="post_lastline">
                                     <div class="post_date">
@@ -817,11 +817,13 @@
         // 태그 조회
         function searchTag(button){
 
+            const contextPath1 = /*[[ @{/} ]]*/ '';
+
             const clickTag = button.value;
             const searchTag = clickTag.replace('# ', '').replace(' ', '');
             console.log("tag : ", searchTag);
 
-            window.location.href = contextPath + '/tags/' + searchTag;
+            window.location.href = contextPath1 + 'tags/' + searchTag;
 
         }
 
