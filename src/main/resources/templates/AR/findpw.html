@@ -277,25 +277,28 @@
                     <form th:action="@{/findpw.do}" method="post" id="findpwform">
                         <div id="loginpart">
                             <div id="inputpart">
-                                <div id="emailpart">
+                                <!-- <div id="emailpart"> -->
                                     <div style="padding-left: 41px;display: flex;align-items: center;">
                                         <span class="label_span">이메일</span>
                                         <input class="email_input" type="text" id="email" name="email"
                                             style="margin-left: 25px;" oninput="ajaxEmCheck(event)">
                                         <input type="button" id="sendbutton" value="인증번호 발송" style="visibility: hidden;" onclick="sendEmailAction()"></input>
-                                        <span id="timer"></span>
+                                        <!-- <span id="timer"></span> -->
                                         <input type="hidden" id="sendbuttonclick" name="sendbuttonclick"></input>
                                     </div>
-                                    <p id="confirmMsg" style="padding-left: 118px; margin-bottom: 0px;"></p>
-                                </div>
-                                <div id="chkbox" style="padding-left: 126px; padding-top: 6px; display: none;" >
+                                    <div id="msgtimer" style="display: flex; padding-bottom: 5px;">
+                                        <span id="confirmMsg"></span>
+                                        <span id="timer" style="padding-left: 30px;"></span>
+                                    </div>
+                                <!-- </div> -->
+                                <div id="chkbox" style="padding-left: 126px; display: none; padding-bottom: 16px;" >
                                     <span class="label_span">인증번호</span>
-                                    <input class="chk_input" type="text" id="chk_number" name="chk_number"
+                                    <input class="chk_input" type="text" id="verificationCode" name="verificationCode"
                                         style="margin-left: 32px;">
                                     <input type="button" id="sendchkbutton" value="확인" onclick="certificationAction()"></input>
                                     <input type="hidden" id="sendchkbuttonclick" name="sendchkbuttonclick"></input>
                                 </div>
-                                <div style="padding-top: 10px; padding-right: 185px;">
+                                <div style=" padding-right: 185px; padding-top: 7px;">
                                     <span class="label_span">새 비밀번호</span>
                                     <input class="newpw_input" type="password" maxlength="16" id="password"
                                         name="password" style="margin-left: 27px;" >
@@ -393,6 +396,7 @@
                 if (data.ret === 1) { //DB내에 존재하는 이메일 
                     sendbutton.style.visibility = "visible";
                     confirmMsg.style.color = correctColor;
+                    confirmMsg.style = "padding-right:20px";
                     confirmMsg.innerHTML = "존재하는 이메일입니다. 인증번호 발송을 눌러주세요";
                     return email;
                 } else if (!regEmail.test(email.value)) { //이메일 형식 확인
@@ -423,10 +427,16 @@
             const chkbox = document.getElementById("chkbox");
             const sendbutton = document.getElementById("sendbutton");
             const timerDisplay = document.getElementById("timer");
-
+            const msgtimer = document.getElementById("msgtimer");
+            const confirmMsg = document.getElementById('confirmMsg');	//확인 메세지
+            const correctColor = "#1D3563";	//맞았을 때 출력되는 색깔
+            const wrongColor = "#ff0000";	//틀렸을 때 출력되는 색깔
             chkbox.style = "visibility:visible; padding-left: 126px; padding-top: 6px;";
             $('input[name=sendbuttonclick]').attr('value', 'y'); //클릭확인 여부
-
+            if(sendbuttonclick.value=="y"){
+                email.readOnly = true; 
+            }
+             
             //이메일 인증번호 발송
             const url = `${contextPath}/api/emailconfirm.do?email=${email.value}`;
             const headers = { "Content-Type": "application/json" };
@@ -448,9 +458,15 @@
 
                     modal.show();
                     sendbutton.style ="visibility:visible";
-                    
+                    msgtimer.style = "padding-left:30px";
                     // 타이머 시작
                     startTimer(300, timerDisplay);
+                    if(--timer < 0){
+                        email.value='';
+                        sendbutton.style ="visibility:hidden";
+                        chkbox.style="display:none";
+                     
+                    }
                   
 
                 } else if(retValue == null) {
@@ -493,48 +509,65 @@
 
                 if (--timer < 0) {
                     clearInterval(interval);
-                    display.textContent = "";
+                    display.textContent = "00:00";
+                    document.querySelector("#timer").style="color:#ff0000";
                 }
             }, 1000);
         }
 
         //인증번호 확인
-        // function certificationAction() {
+        //127.0.0.1:5059/odop/api/verifycode.do?email=arin_980921@daum.net&verificationCode=qGEHMKAM
+        async function certificationAction() {
 
-        //     $('input[name=sendchkbuttonclick]').attr('value', 'y'); //클릭확인 여부
+            const email = document.getElementById("email");
+            const verificationCode = document.getElementById("verificationCode");
+            const sendbuttonclick = document.getElementById("sendbuttonclick");
+            const sendchkbuttonclick = document.getElementById("sendchkbuttonclick");
+            const newpw_input = document.getElementById("newpw_input");
 
-        //     const email = document.getElementById("email");
-        //     const chk_number = document.getElementById("chk_number");
-        //     const password = document.getElementById("password");
-        //     const pwcheck = document.getElementById("pwcheck");
-        //     const sendbuttonclick = document.getElementById("sendbuttonclick");
-        //     const sendchkbuttonclick = document.getElementById("sendchkbuttonclick");
+            const url = `${contextPath}/api/emailconfirm.do?email=${email.value}&verificationCode=${verificationCode.value}`;
+            const headers = { "Content-Type": "application/json" };
+            const requestData = {
+                                email: email.value,
+                                verificationCode: verificationCode.value
+                                };
             
 
+        try {
+            const response = await axios.post(url, requestData, { headers });
+            const responseData = response.data;
 
-        
-        //     if(chk_number.value.length <= 0 ){ //인증번호를 입력했는가
-        //         document.querySelector("#title").style ="display:none;";
-        //         document.querySelector("#title").setAttribute("focusElement", "chk_number");
-        //         document.querySelector("#content").textContent = "인증번호를 입력해주세요.";
+            if (responseData.status === 200) {
+                // 인증번호 일치
+                document.querySelector("#title").textContent = "성공 :)";
+                document.querySelector("#title").setAttribute("focusElement", "newpw_input");
+                document.querySelector("#content").textContent = "인증번호가 일치합니다";
 
-        //         modal.show();
-        //         return false;
-        //         if(){ //유효시간안에 입력햇는가
-        //             if(){//인증번호가 일치하는가
+                modal.show();
+                $('input[name=sendchkbuttonclick]').attr('value', 'y'); // 클릭확인 여부 설정
+            } else {
+                // 인증번호 불일치
+                document.querySelector("#title").textContent = "실패 :)";
+                document.querySelector("#title").setAttribute("focusElement", "verificationCode");
+                document.querySelector("#content").textContent = "인증번호를 확인해주세요";
 
-        //             }
+                modal.show();
+                return false;
+            }
+        } catch (error) {
+            // 네트워크 오류 등 예외 처리
+            console.error("Email sending error:", error);
+            document.querySelector("#title").textContent = "오류 발생 :(";
+            document.querySelector("#title").setAttribute("focusElement", "chkbox");
+            document.querySelector("#content").textContent = "잠시 후 다시 시도해주세요";
 
-        //         }
-            
-            
+            modal.show();
+            return false;
+        }
 
-        //     }
-            
-        //     //전송하기
-        //     document.getElementById("findpwform").submit();
-
-        // }
+                            
+          
+        }
 
          //form 전송
         function findAction() {
@@ -542,7 +575,7 @@
             $('input[name=sendchkbuttonclick]').attr('value', 'y'); //클릭확인 여부
 
             const email = document.getElementById("email");
-            const chk_number = document.getElementById("chk_number");
+            const verificationCode = document.getElementById("verificationCode");
             const password = document.getElementById("password");
             const pwcheck = document.getElementById("pwcheck");
             const sendbuttonclick = document.getElementById("sendbuttonclick");
@@ -551,9 +584,9 @@
 
 
 
-            if(chk_number.value.length <= 0 ){ //인증번호를 입력했는가
+            if(verificationCode.value.length <= 0 ){ //인증번호를 입력했는가
                 document.querySelector("#title").style ="display:none;";
-                document.querySelector("#title").setAttribute("focusElement", "chk_number");
+                document.querySelector("#title").setAttribute("focusElement", "verificationCode");
                 document.querySelector("#content").textContent = "인증번호를 입력해주세요.";
 
                 modal.show();

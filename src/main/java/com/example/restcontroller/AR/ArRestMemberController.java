@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.service.AR.ArMailService;
@@ -39,6 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ArRestMemberController {
     final ArMemberService mService;
     final ArMailService mailService;
+
 
     // 아이디 중복 확인
     // 127.0.0.1:5059/odop/api/emailcheck.do?email=이메일
@@ -82,17 +84,23 @@ public class ArRestMemberController {
     }
 
 
+    // 인증번호 저장
+    private Map<String, String> verificationCodes = new HashMap<>();
 
     //이메일 인증 코드 발송
     @PostMapping("/emailconfirm.do")
-    public String emailConfirm(@RequestParam(name="email") String email) throws Exception {
+    public Map<String, Object> emailConfirm(@RequestParam(name="email") String email) throws Exception {
 
-    String confirm = mailService.sendSimpleMessage(email);   
+    String confirm = mailService.sendSimpleMessage(email);  
+
+    // 생성된 인증번호를 저장
+    verificationCodes.put(email, confirm); 
+
     Map<String, Object> retMap = new HashMap<>();
       try{
             retMap.put("status",200);
             retMap.put("ret",confirm);
-            log.info(retMap.toString());
+            
 
         }
         catch(Exception e){
@@ -101,8 +109,33 @@ public class ArRestMemberController {
             retMap.put("error", e.getMessage());
             
         }
-        return confirm;
+        return retMap;
     }
+
+
+    @PostMapping("/verifycode.do")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> verifyCode(@RequestBody Map<String, String> requestData) {
+        String email = requestData.get("email");
+        String inputCode = requestData.get("verificationCode"); //입력될 값
+        String code = verificationCodes.get(email); // 저장된 인증번호 가져오기
+        log.info("code=>{}", inputCode);
+        Map<String, Object> response = new HashMap<>();
+        
+        if (code != null && inputCode != null && inputCode.equals(code)) {
+            // 이 부분은 인증번호가 일치하는 경우의 처리입니다.
+            response.put("status", 200);
+            response.put("message", "인증번호가 일치합니다.");
+        } else {
+            // 이 부분은 인증번호가 일치하지 않는 경우의 처리입니다.
+            response.put("status", 400);
+            response.put("message", "인증번호가 일치하지 않습니다.");
+        }
+        
+    
+        return ResponseEntity.ok(response);
+    }
+    
 
 }
 
