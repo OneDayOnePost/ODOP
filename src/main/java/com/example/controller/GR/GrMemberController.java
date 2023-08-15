@@ -35,7 +35,7 @@ public class GrMemberController {
     final GrMemberService gService;
     final WjMyblogService wjmyblogservice;
 
-    @GetMapping(value = "/blog/{email}/home.do")
+    @GetMapping(value = "/blog/{email}/{categoryId}/home.do")
     public String myblogGET(Model model, @AuthenticationPrincipal User user,
             @PathVariable(value = "categoryId") Long categoryId,
             @PathVariable(value = "email") String email) {
