@@ -272,14 +272,14 @@
 
         const contextPath = /*[[ @{/} ]]*/ '';
 
-        // 태그 보내기
+        // 태그 조회
         function searchTag(button){
 
         const clickTag = button.value;
         const searchTag = clickTag.replace('# ', '').replace(' ', '');
         console.log("tag : ", searchTag);
 
-        window.location.href = contextPath + searchTag;
+        window.location.href = contextPath + 'tags/' + searchTag;
 
         }
 

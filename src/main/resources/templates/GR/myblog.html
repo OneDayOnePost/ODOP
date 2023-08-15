@@ -814,6 +814,17 @@
             window.location.href = contextPath + "/blog/" + email + "/0/home.do";
         }
 
+        // 태그 조회
+        function searchTag(button){
+
+            const clickTag = button.value;
+            const searchTag = clickTag.replace('# ', '').replace(' ', '');
+            console.log("tag : ", searchTag);
+
+            window.location.href = contextPath + '/tags/' + searchTag;
+
+        }
+
     </script>
 
 </body>

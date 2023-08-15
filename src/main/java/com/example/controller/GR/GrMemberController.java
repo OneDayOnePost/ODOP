@@ -1,19 +1,9 @@
 package com.example.controller.GR;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -23,16 +13,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.dto.MemberFollowDTO;
 import com.example.entity.Follow;
 import com.example.entity.Member;
 import com.example.entity.Post;
-import com.example.mapper.GR.GrMyblogMapper;
 import com.example.repository.GR.GrMemberRepository;
-import com.example.repository.GR.GrPostRepository;
-import com.example.repository.MH.MhMemberRepository;
+import com.example.service.GR.GrMemberService;
 import com.example.service.WJ.WjMyblogService;
 
 import lombok.RequiredArgsConstructor;
@@ -44,17 +30,16 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class GrMemberController {
 
-    // test용
-    final GrMyblogMapper gMapper;
-    final GrPostRepository postRepository;
     final private GrMemberRepository gRepository;
 
+    final GrMemberService gService;
     final WjMyblogService wjmyblogservice;
 
     @GetMapping(value = "/blog/{email}/home.do")
     public String myblogGET(Model model, @AuthenticationPrincipal User user,
-            @RequestParam(value = "categoryId", required = false, defaultValue = "0") Long categoryId,
-            @PathVariable(value = "email") String email) { // @AuthenticationPrincipal User user
+            @PathVariable(value = "categoryId") Long categoryId,
+            @PathVariable(value = "email") String email) {
+
         try {
 
             // log.info("categoryId received: {}", categoryId);
@@ -64,7 +49,7 @@ public class GrMemberController {
             if (categoryId != 0) {
                 log.info("categoryId: {}", categoryId); // categoryId 값 로그로 출력
                 log.info("cate val => {}", BigInteger.valueOf(categoryId));
-                List<Post> list = postRepository.findByWriterAndCateNoOrderByNoDesc(email,
+                List<Post> list = gService.findByWriterAndCateNoOrderByNoDesc(email,
                         BigInteger.valueOf(categoryId));
 
                 model.addAttribute("list", list);
@@ -81,9 +66,8 @@ public class GrMemberController {
                 model.addAttribute("formattedpostcount", formattedpostcount);
 
             } else {
-                // 카테고리를 선택하지 않았을 때의 기본 동작
-                // 기본적으로 전체 포스트 목록을 보여주는 등의 처리를 추가할 수 있음
-                List<Post> list = postRepository.findByWriterOrderByNoDesc(email);
+                // 카테고리를 선택하지 않았을 때의 전체 목록
+                List<Post> list = gService.findByWriterOrderByNoDesc(email);
                 model.addAttribute("list", list);
                 log.info("skdhkfk => {}", list.toString());
 
@@ -107,13 +91,13 @@ public class GrMemberController {
                 member.setIntroduce(member.getNickname() + "님의 블로그입니다.");
             }
 
-            int following = gMapper.countfollowing(email);
-            int follower = gMapper.countfollower(email);
+            int following = gService.countfollowing(email);
+            int follower = gService.countfollower(email);
 
             log.info("user1 => {}", user.toString());
 
             // 카테고리별 게시글 갯수
-            List<Map<String, Integer>> pclist = gMapper.selectpostcatecount(email);
+            List<Map<String, Integer>> pclist = gService.selectpostcatecount(email);
             log.info("listlist=>{}", pclist.toString());
 
             // 내 정보 수정 / 팔로우 / 팔로우 취소 버튼 구분
@@ -190,13 +174,13 @@ public class GrMemberController {
 
     // ------------------------------------------------------------------------------
     // tag 조회
-    @GetMapping(value = "/{searchTag}")
+    @GetMapping(value = "/tags/{searchTag}")
     public String tagGET(Model model, @PathVariable(value = "searchTag") String searchTag){
 
         try {
 
             log.info("제발제발제발 => {} ", searchTag);
-            List<Post> list = postRepository.findByPostTagListTag(searchTag);
+            List<Post> list = gService.findByPostTagListTag(searchTag);
 
                 // 포스트 갯수 세기
                 int postallcount = list.size();

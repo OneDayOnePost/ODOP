@@ -6,12 +6,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
-import org.springframework.data.repository.query.Param;
 
-import com.example.dto.CateDTO;
 import com.example.dto.MemberDTO;
-import com.example.dto.PostDTO;
-import com.example.entity.Post;
 
 @Mapper
 public interface GrMyblogMapper {
@@ -32,7 +28,6 @@ public interface GrMyblogMapper {
     @Select({
             " SELECT c.NO, c.category, count(p.no) AS pnocount FROM cate c LEFT JOIN post p ON c.NO = p.CATENO AND p.WRITER = #{email} GROUP BY c.category ORDER BY NO ASC; " })
     public List<Map<String, Integer>> selectpostcatecount(String email);
-
 
     // post태그 조회
     @Select({ "SELECT * FROM postall WHERE WRITER=#{email} AND NO=#{postno}" })
