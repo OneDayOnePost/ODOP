@@ -51,9 +51,9 @@ public class GrMemberController {
 
     final WjMyblogService wjmyblogservice;
 
-    @GetMapping(value = "/blog/{email}/{categoryId}/home.do")
+    @GetMapping(value = "/blog/{email}/home.do")
     public String myblogGET(Model model, @AuthenticationPrincipal User user,
-            @PathVariable(value = "categoryId") Long categoryId,
+            @RequestParam(value = "categoryId", required = false, defaultValue = "0") Long categoryId,
             @PathVariable(value = "email") String email) { // @AuthenticationPrincipal User user
         try {
 

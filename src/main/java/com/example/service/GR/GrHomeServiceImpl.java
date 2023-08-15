@@ -16,44 +16,44 @@ public class GrHomeServiceImpl implements GrHomeService{
 
     // 홈게시글 불러오기
     // 최신순
-    @Override
-    public List<PostAllViewDTO> selectPostAllByRegdate() {
-        try {
-            return hMapper.selectPostAllByRegdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }    
-    }
+    // @Override
+    // public List<PostAllViewDTO> selectPostAllByRegdate() {
+    //     try {
+    //         return hMapper.selectPostAllByRegdate();
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //         return null;
+    //     }    
+    // }
 
-    @Override
-    public List<PostAllViewDTO> selectPostAllByDope() {
-        try {
-            return hMapper.selectPostAllByDope();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        } 
-    }
+    // @Override
+    // public List<PostAllViewDTO> selectPostAllByDope() {
+    //     try {
+    //         return hMapper.selectPostAllByDope();
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //         return null;
+    //     } 
+    // }
 
-    @Override
-    public List<PostAllViewDTO> selectPostAllByFollow(String email) {
-        try {
-            return hMapper.selectPostAllByFollow( email);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        } 
-    }
+    // @Override
+    // public List<PostAllViewDTO> selectPostAllByFollow(String email) {
+    //     try {
+    //         return hMapper.selectPostAllByFollow( email);
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //         return null;
+    //     } 
+    // }
 
-    @Override
-    public List<PostAllViewDTO> selecttitlekeyword(String keyword) {
-        try {
-            return hMapper.selecttitlekeyword(keyword);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+    // @Override
+    // public List<PostAllViewDTO> selecttitlekeyword(String keyword) {
+    //     try {
+    //         return hMapper.selecttitlekeyword(keyword);
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //         return null;
+    //     }
+    // }
     
 }
