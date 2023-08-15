@@ -51,9 +51,14 @@
             max-width: 950px;
         }
 
+        .tagname{
+            padding-left: 55px;
+        }
+
         .tagname h3 {
             font-size: 45px;
             padding-top: 90px;
+            display: inline-block;
         }
 
         #post-area {
@@ -200,7 +205,7 @@
         <!-- 본문 영역 -->
         <div id="wrapper" class="container" style="margin-bottom: 200px;">
             <div class="tagname">
-                <h3># 태그</h3>
+                <h3>#&nbsp;</h3><h3 th:text="${tagname}"></h3>
             </div>
 
                 <div id="post-area" class="side-width side-width-1">
@@ -229,8 +234,8 @@
                                     <div class="post_content">
                                         <span th:text="${T(org.jsoup.Jsoup).parse(obj.content).text()}"></span>
                                     </div>
-                                    <div class="post_tag" style="margin-right: 5px; text-align: left;" th:each="temp : ${obj.postTagList}">
-                                        <input type="button" th:value="'# ' + ${temp.tag}">
+                                    <div class="post_tag" th:each="temp : ${obj.postTagList}">
+                                        <input id="post_tag" type="button" th:value="'# ' + ${temp.tag}" data-tag="${temp.tag}" onclick="searchTag(this)">
                                     </div>
                                     <div class="post_lastline">
                                         <div class="post_date">
@@ -264,6 +269,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.5/axios.min.js"></script>
 
     <script th:inline="javascript" type="text/javascript">
+
+        const contextPath = /*[[ @{/} ]]*/ '';
+
+        // 태그 보내기
+        function searchTag(button){
+
+        const clickTag = button.value;
+        const searchTag = clickTag.replace('# ', '').replace(' ', '');
+        console.log("tag : ", searchTag);
+
+        window.location.href = contextPath + searchTag;
+
+        }
 
     </script>
 

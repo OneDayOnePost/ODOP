@@ -190,13 +190,13 @@ public class GrMemberController {
 
     // ------------------------------------------------------------------------------
     // tag 조회
-    @GetMapping(value = "/tag.do")
-    public String tagGET(Model model){
+    @GetMapping(value = "/{searchTag}")
+    public String tagGET(Model model, @PathVariable(value = "searchTag") String searchTag){
 
         try {
 
-
-            List<Post> list = postRepository.findByWriterOrderByNoDesc("test1@gmail.com");
+            log.info("제발제발제발 => {} ", searchTag);
+            List<Post> list = postRepository.findByPostTagListTag(searchTag);
 
                 // 포스트 갯수 세기
                 int postallcount = list.size();
@@ -206,6 +206,8 @@ public class GrMemberController {
                     formattedpostcount = "0" + formattedpostcount;
                 }
                 log.info("나와라!! => {}", formattedpostcount);
+
+                model.addAttribute("tagname", searchTag);
                 model.addAttribute("formattedpostcount", formattedpostcount);
                 model.addAttribute("list", list);
 

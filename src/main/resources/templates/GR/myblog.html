@@ -500,7 +500,7 @@
                                     <span th:text="${T(org.jsoup.Jsoup).parse(obj.content).text()}"></span>
                                 </div>
                                 <div class="post_tag" th:each="temp : ${obj.postTagList}">
-                                    <input type="button" th:value="'# ' + ${temp.tag}">
+                                    <input id="post_tag" type="button" th:value="'# ' + ${temp.tag}" data-tag="${temp.tag}" onclick="searchTag(this)">
                                 </div>
                                 <div class="post_lastline">
                                     <div class="post_date">
@@ -820,6 +820,20 @@
         //     console.log(1);
         //     profile.setAttribute("src", contextPath + 'images/default_thumbnail.png');
         // })
+
+        // ---------------------------------------------------------------------------------------------------------------
+
+        // 태그 보내기
+        function searchTag(button){
+
+            const clickTag = button.value;
+            const searchTag = clickTag.replace('# ', '').replace(' ', '');
+            console.log("tag : ", searchTag);
+
+            window.location.href = contextPath + '/' + searchTag;
+
+        }
+
     </script>
 
 </body>
