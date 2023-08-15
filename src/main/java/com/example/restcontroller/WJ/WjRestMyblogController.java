@@ -66,7 +66,7 @@ public class WjRestMyblogController {
 
             // 팔로우 알림
             String content = mService.findByEmail(fromMember).getNickname() + "님이 회원님을 팔로우하셨습니다.";
-            String url = "/blog/" + toMember + "/0/home.do";
+            String url = "/blog/" + fromMember + "/0/home.do";
             int followret = aService.followInsert(toMember, content, url);
 
             if (ret == 1 && followret == 1) {

@@ -93,6 +93,7 @@ public class HomeController {
 
         }
 
+        // 알림 기능
         @ModelAttribute("alertList")
         public List<Alert> getAlertList(@AuthenticationPrincipal User user) {
             // 로그인 상태인 경우에만 alertList 생성
