@@ -49,7 +49,7 @@
                             <a th:href="@{/blog/{email}/write.do(email=${user.username})}"><input type="button"
                                     value="새 글 작성"></a>
                         </div>
-                        <div class="notification-icon">
+                        <div class="notification-icon" id="alertIcon">
                             <i class="bi bi-bell"></i>
                         </div>
                         <div class="my-page-icon" id="myPageIcon">
@@ -233,6 +233,36 @@
                 myPageMenu.classList.toggle('show');
             });
 
+            // 알림 아이콘 클릭 시 알림 메뉴 토글 처리
+            const alertIcon = document.getElementById('alertIcon');
+            const alertMenu = document.getElementById('alertMenu');
+            
+            alertIcon.addEventListener('click', () => {
+                alertMenu.classList.toggle('show');
+            });
+
+            // 바깥을 클릭하면 메뉴 닫히게!
+            document.addEventListener('click', (event) => {
+                const target = event.target;
+
+                // 클릭된 대상이 myPageIcon 또는 그 하위 요소가 아니면 myPageMenu 닫기
+                if (!target.closest('#myPageIcon')) {
+                    myPageMenu.classList.remove('show');
+                }
+
+                // 클릭된 대상이 hamburgerBtn, closeBtn, subMenu 또는 그 하위 요소가 아니면 subMenu 닫기
+                if (!target.closest('#hamburgerBtn') && !target.closest('#closeBtn') && !target.closest('#subMenu')) {
+                    subMenu.classList.remove('show');
+                    hamburgerBtn.classList.remove('hide');
+                    closeBtn.classList.add('hide');
+                }
+
+                // 클릭된 대상이 alertIcon 또는 그 하위 요소가 아니면 alertMenu 닫기
+                if (!target.closest('#alertIcon')) {
+                    alertMenu.classList.remove('show');
+                }
+            });
+
             // 로그아웃
             function logoutAction() {
                 const logoutform = document.createElement("form");
@@ -292,49 +322,9 @@
 
                 })
 
-                // console.log('선택된 카테고리 : ', category);
-                // console.log('선택된 MBTI : ', mbti);
-
-                // 시도해보니 배열 형태가 아니라서 주석 처리했습니다!
-                // const category = Array.from(document.querySelectorAll('.category-checkbox:checked')).map(checkbox => checkbox.value).join(',');
-                // const mbti = Array.from(document.querySelectorAll('.mbti-checkbox:checked')).map(checkbox => checkbox.value).join(',');
-
                 form.submit();
 
             }
-        </script>
-        
-        <script th:inline="javascript" type="text/javascript">
-
-            // 알림 아이콘 클릭 시 알림 메뉴 토글 처리
-            const alertIcon = document.getElementById('alertIcon');
-            const alertMenu = document.getElementById('alertMenu');
-            
-            alertIcon.addEventListener('click', () => {
-                alertMenu.classList.toggle('show');
-            });
-
-            // 바깥을 클릭하면 메뉴 닫히게!
-            document.addEventListener('click', (event) => {
-                const target = event.target;
-
-                // 클릭된 대상이 myPageIcon 또는 그 하위 요소가 아니면 myPageMenu 닫기
-                if (!target.closest('#myPageIcon')) {
-                    myPageMenu.classList.remove('show');
-                }
-
-                // 클릭된 대상이 hamburgerBtn, closeBtn, subMenu 또는 그 하위 요소가 아니면 subMenu 닫기
-                if (!target.closest('#hamburgerBtn') && !target.closest('#closeBtn') && !target.closest('#subMenu')) {
-                    subMenu.classList.remove('show');
-                    hamburgerBtn.classList.remove('hide');
-                    closeBtn.classList.add('hide');
-                }
-
-                // 클릭된 대상이 alertIcon 또는 그 하위 요소가 아니면 alertMenu 닫기
-                if (!target.closest('#alertIcon')) {
-                    alertMenu.classList.remove('show');
-                }
-            });
 
 
         </script>
