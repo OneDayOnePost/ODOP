@@ -48,9 +48,9 @@ public class HomeController {
         }
 
         // if (type.equals("newest")) {
-        List<PostAllViewDTO> postalllist = GhService.selectPostAllByRegdate();
+        // List<PostAllViewDTO> postalllist = GhService.selectPostAllByRegdate();
 
-        model.addAttribute("plist", postalllist);
+        // model.addAttribute("plist", postalllist);
 
         // } else if (type.equals("like")) {
         // List<PostAllViewDTO> postalllist = GhService.selectPostAllByDope();
