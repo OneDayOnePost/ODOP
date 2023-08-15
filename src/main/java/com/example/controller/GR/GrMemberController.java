@@ -173,7 +173,7 @@ public class GrMemberController {
 
     // ------------------------------------------------------------------------------
     // tag 조회
-    @GetMapping(value = "/{searchTag}")
+    @GetMapping(value = "/tags/{searchTag}")
     public String tagGET(Model model, @PathVariable(value = "searchTag") String searchTag){
 
         try {
