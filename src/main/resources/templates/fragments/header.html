@@ -48,7 +48,7 @@
                         <div class="new-post">
                             <a th:href="@{/blog/{email}/write.do(email=${user.username})}"><input type="button" value="새 글 작성"></a>
                         </div>
-                        <div class="notification-icon">
+                        <div class="notification-icon" id="alertIcon">
                             <i class="bi bi-bell"></i>
                         </div>
                         <div class="my-page-icon" id="myPageIcon">
@@ -167,7 +167,21 @@
             </nav>
         </th:block>
 
-
+        <!-- 알림 눌렀을 때 나오는 메뉴 -->
+        <th:block th:if="${user != null}">
+            <nav class="sub-menu" id="alertMenu">
+                <table>
+                    <tr th:each="alert : ${alertList}">
+                        <td>
+                            <img th:if="${alert.imgpath != null}" th:src="${alert.imgpath}" th:key="${alert.imgkey}" width="45px" height="45px">
+                            <img th:unless="${alert.imgpath != null}" th:src="@{/images/default_thumbnail.png}" width="45px" height="45px">
+                        </td>
+                        <td th:text="${alert.content}"></td>
+                        <td th:text="${#dates.format(alert.regdate, 'yyyy년 MM월 dd일 HH시 mm분')}"></td>
+                    </tr>
+                </table>
+            </nav>
+        </th:block>
 
         <script th:inline="javascript" type="text/javascript">
             // 햄버거 버튼과 서브 메뉴 요소를 가져옴
@@ -218,6 +232,36 @@
                 document.body.appendChild(logoutform);
                 logoutform.submit();
             }
+
+            // 알림 아이콘 클릭 시 알림 메뉴 토글 처리
+            const alertIcon = document.getElementById('alertIcon');
+            const alertMenu = document.getElementById('alertMenu');
+            
+            alertIcon.addEventListener('click', () => {
+                alertMenu.classList.toggle('show');
+            });
+
+            // 바깥을 클릭하면 메뉴 닫히게!
+            document.addEventListener('click', (event) => {
+                const target = event.target;
+
+                // 클릭된 대상이 myPageIcon 또는 그 하위 요소가 아니면 myPageMenu 닫기
+                if (!target.closest('#myPageIcon')) {
+                    myPageMenu.classList.remove('show');
+                }
+
+                // 클릭된 대상이 hamburgerBtn, closeBtn, subMenu 또는 그 하위 요소가 아니면 subMenu 닫기
+                if (!target.closest('#hamburgerBtn') && !target.closest('#closeBtn') && !target.closest('#subMenu')) {
+                    subMenu.classList.remove('show');
+                    hamburgerBtn.classList.remove('hide');
+                    closeBtn.classList.add('hide');
+                }
+
+                // 클릭된 대상이 alertIcon 또는 그 하위 요소가 아니면 alertMenu 닫기
+                if (!target.closest('#alertIcon')) {
+                    alertMenu.classList.remove('show');
+                }
+            });
 
         </script>
         

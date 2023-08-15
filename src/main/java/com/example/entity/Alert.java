@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -48,4 +49,12 @@ public class Alert {
   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
   @Column(name = "REGDATE", insertable = true, updatable = false)
   private Date regdate;
+
+  // 알림 보낸 사람 
+  // 프로필 이미지 키를 저장할 임시변수
+  @Transient
+  private String imgkey;
+  // 프로필 이미지 경로를 저장할 임시변수
+  @Transient
+  private String imgpath;
 }
