@@ -543,11 +543,8 @@
     <script th:src="@{/js/axios.min.js}"></script>
     <script th:inline="javascript" type="text/javascript">
 
-        // contextPath 값 호출 => /odop + url
-        // const contextPath = $('#contextPathHolder').attr('data-contextPath');
-
         // 로그인 중인 사용자의 이메일 값
-        const user_email = "test2@naver.com";
+        const user_email = /*[[${user.username}]]*/'';
 
         // 프로필 이미지 업로드 및 변경용
 
@@ -599,6 +596,8 @@
                     aws_path = response.data.path;
                     aws_key = response.data.key;
 
+                    saveProfile(response.data.key, response.data.path)
+
                 })
                 .catch(error => {
                     // 에러 발생 시
@@ -637,7 +636,7 @@
 
         }
 
-        function saveProfile() {
+        function saveProfile(key, path) {
 
             const url = contextPath + '/api/member/update.json';
             const headers = { "Content-Type": "application/json" };
