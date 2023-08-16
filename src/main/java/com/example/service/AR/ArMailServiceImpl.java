@@ -25,7 +25,6 @@ public class ArMailServiceImpl implements ArMailService{
     @Autowired
     private TemplateEngine templateEngine;
 
-    public static final String authNum = createKey();
 
     //인증번호 8자리 무작위 생성
     public static String createKey() {
@@ -58,6 +57,9 @@ public class ArMailServiceImpl implements ArMailService{
     // 실제 메일 전송
     @Override
     public String sendSimpleMessage(String email) throws Exception {
+
+        String authNum = createKey();//인증번호 생성
+
         // HTML 템플릿 렌더링
         Context context = new Context();
         context.setVariable("authNum", authNum);

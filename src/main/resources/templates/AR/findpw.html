@@ -301,12 +301,13 @@
                                 <div style=" padding-right: 185px; padding-top: 7px;">
                                     <span class="label_span">새 비밀번호</span>
                                     <input class="newpw_input" type="password" maxlength="16" id="password"
-                                        name="password" style="margin-left: 27px;" >
+                                        name="password" style="margin-left: 27px;" autoComplete="off" oninput="pwConfirm()">
                                 </div>
-                                <div style="padding-top: 16px; padding-right: 226px;">
+                                <span id="pwconfirmMsg" style="padding-top: 6px; padding-bottom: 3px;"></span>
+                                <div style=" padding-right: 226px;">
                                     <span class="label_span" style="padding-right: 26px;">새 비밀번호 확인</span>
                                     <input class="newpwchk_input" type="password" id="pwcheck" name="pwcheck"
-                                         maxlength="16" >
+                                         maxlength="16" autoComplete="off" oninput="pwConfirm()">
                                 </div>
 
                             </div>
@@ -465,6 +466,7 @@
                         email.value='';
                         sendbutton.style ="visibility:hidden";
                         chkbox.style="display:none";
+                        sendbutton.style ="visibility:visible";
                      
                     }
                   
@@ -506,11 +508,14 @@
                 seconds = seconds < 10 ? "0" + seconds : seconds;
 
                 display.textContent = minutes + ":" + seconds;
+                display.style.color = "black";
 
                 if (--timer < 0) {
                     clearInterval(interval);
                     display.textContent = "00:00";
-                    document.querySelector("#timer").style="color:#ff0000";
+                    display.style.color = "red";
+                    document.querySelector("#sendchkbutton").style ="visibility:hidden";
+                   
                 }
             }, 1000);
         }
@@ -569,6 +574,48 @@
           
         }
 
+        
+        //비밀번호 유효성 검사
+        //비밀번호 일치 확인
+        function pwConfirm() {
+            const password = document.getElementById("password").value;
+            const pwcheck = document.getElementById("pwcheck").value;
+            const pwconfirmMsg = document.getElementById('pwconfirmMsg');	//확인 메세지
+            const correctColor = "#1D3563";	//맞았을 때 출력되는 색깔
+            const wrongColor = "#ff0000";	//틀렸을 때 출력되는 색깔
+            let reg = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/;
+
+            console.log(password);
+            if (false === reg.test(password)) {
+                pwconfirmMsg.style.color = wrongColor;
+                pwconfirmMsg.innerHTML = "비밀번호는 8자 이상이어야 하며," + "<br>" + "숫자/대문자/소문자/특수문자(!@#$%^*+=-)를" + "<br>" + "모두 포함해야 합니다.";
+                return false;
+            }
+            if (/(\w)\1\1\1/.test(password)) {
+                pwconfirmMsg.style.color = wrongColor;
+                pwconfirmMsg.innerHTML = "같은 문자를 4번 이상 사용하실 수 없습니다.";
+                return false;
+            }
+            if (password.search(/\s/) != -1) {
+                pwconfirmMsg.style.color = wrongColor;
+                pwconfirmMsg.innerHTML = "비밀번호는 공백 없이 입력해주세요.";
+                return false;
+            }
+            else {
+                if (password == pwcheck) {
+                    pwconfirmMsg.style.color = correctColor;
+                    pwconfirmMsg.innerHTML = "비밀번호가 일치합니다";
+                }
+                else {
+                    pwconfirmMsg.style.color = wrongColor;
+                    pwconfirmMsg.innerHTML = "비밀번호를 확인해주세요";
+                }
+            }
+
+
+        }
+
+
          //form 전송
         function findAction() {
 
@@ -593,9 +640,6 @@
                 return false;
             }
 
-            // if(){ //인증번호가 일치하는가
-
-            // }
 
             //전송하기
             document.getElementById("findpwform").submit();
