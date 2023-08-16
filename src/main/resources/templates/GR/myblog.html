@@ -817,13 +817,11 @@
         // 태그 조회
         function searchTag(button){
 
-            const contextPath1 = /*[[ @{/} ]]*/ '';
-
             const clickTag = button.value;
             const searchTag = clickTag.replace('# ', '').replace(' ', '');
             console.log("tag : ", searchTag);
 
-            window.location.href = contextPath1 + 'tags/' + searchTag;
+            window.location.href = contextPath + '/tags/' + searchTag;
 
         }
 

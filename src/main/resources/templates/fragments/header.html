@@ -209,7 +209,7 @@
         <script th:src="@{/js/bootstrap.min.js}"></script>
         <script th:inline="javascript" type="text/javascript">
 
-            const contextPath1 = $('#contextPathHolder').attr('data-contextPath');
+            const contextPath = $('#contextPathHolder').attr('data-contextPath');
 
             // 햄버거 버튼과 서브 메뉴 요소를 가져옴
             const hamburgerBtn = document.getElementById('hamburgerBtn');
@@ -276,7 +276,7 @@
                 // logoutform.action = /*[[@{/logout.do}]]*/"";
                 // logoutform.method = "post";
                 // logoutform.style.display="none";
-                logoutform.setAttribute("action", contextPath1 + "/logout.do");
+                logoutform.setAttribute("action", contextPath + "/logout.do");
                 logoutform.setAttribute("method", "post");
                 logoutform.style.display = "none";
 

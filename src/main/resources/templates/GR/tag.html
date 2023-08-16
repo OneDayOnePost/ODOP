@@ -270,8 +270,6 @@
 
     <script th:inline="javascript" type="text/javascript">
 
-        const contextPath1 = /*[[ @{/} ]]*/ '';
-
         // 태그 조회
         function searchTag(button){
 
@@ -279,7 +277,7 @@
         const searchTag = clickTag.replace('# ', '').replace(' ', '');
         console.log("tag : ", searchTag);
 
-        window.location.href = contextPath1 + 'tags/' + searchTag;
+        window.location.href = contextPath + '/tags/' + searchTag;
 
         }
 
