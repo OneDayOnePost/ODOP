@@ -249,4 +249,106 @@
                 cursor: pointer; 
             }
 
+            /* 알림 메뉴 */
+            #alertMenu {
+                position: fixed;
+                top: 80px;
+                right: 10px;
+                width: 350px;
+                height: 88vh;
+                background-color:  rgba(182, 198, 211, 0.8);
+                transform: translateY(-100%);
+                transition: transform 0.3s ease-in-out;
+                z-index: 1000;
+                overflow-y: auto; 
+
+                animation: slideFromRight 0.2s ease-in-out; 
+                animation-fill-mode: forwards;
+                transform: translateX(100%);
+            }
+
+            @keyframes slideFromRight {
+                0% {
+                    transform: translateX(100%);
+                }
+                100% {
+                    transform: translateX(0);
+                }
+            }
+            
+            #alertMenu.show {
+                transform: translateY(0);
+            }
+            
+            #alerttitle {
+                border-bottom: 1.5px solid #3A5485;
+                margin: 0 6px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding-bottom: 3px;
+            }
+
+            #alerttitle h3{
+                margin: 4px 9px;
+                font-size: 20px;
+            }
+
+            #alerttitle .bi-bell{
+                font-size: 20px;
+                padding-left: 9px;
+            }
+
+            #alerttitle .bi-x{
+                margin-left: auto;
+                padding-right: 5px;
+                font-size: 20px;
+
+                cursor: pointer;
+            }
+
+            #alerttable {
+                padding: 0 10px 15px 10px;
+            }
+            
+            #alerttable table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            
+            #alerttable tr {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                border-bottom: 1px solid #ddd; /* 행 사이에 구분선 추가 */
+                padding: 10px 0;
+            }
+            
+            #alerttable tr img {
+                max-width: 45px;
+                max-height: 45px;
+                vertical-align: middle;
+                margin-right: 10px;
+                border-radius: 50%;
+            }
+            
+            #alerttable tr td:nth-child(2) {
+                flex: 1;
+                padding: 0 10px; 
+            }
+            
+            #alerttable tr p:last-child {
+                margin: 0;
+                color: #999;
+                font-size: 12px;
+            }
+
+            #alerttable #alertcontent{
+                font-size: 14px;
+                margin: 0;
+            }
+            
+
+           
+
 
