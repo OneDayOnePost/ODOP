@@ -101,8 +101,10 @@ public class HomeController {
         @ModelAttribute("user")
         public User getUser(@AuthenticationPrincipal User user) {
 
+            // log.info("HomeController => {}", user);
+            
             return user;
-
+        
         }
     }
 }

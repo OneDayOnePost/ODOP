@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.entity.Cate;
 import com.example.entity.Post;
@@ -16,11 +17,15 @@ import com.example.service.MH.PostInsertService;
 import com.example.service.MH.PostSelectService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequestMapping(value = "/blog/{email}")
 @RequiredArgsConstructor
 @Controller
 public class MhPostController {
+
+    final private String logger = "MhPostController => {}";
 
     final private PostInsertService pService;
     final private PostSelectService postSelectService;
@@ -36,9 +41,16 @@ public class MhPostController {
     }
 
     @GetMapping(value = "/select.do")
-    public String selectGET(Model model) {
+    public String selectGET(@RequestParam(name = "postno", required = false, defaultValue = "0") BigInteger postno, Model model) {
 
-        BigInteger postno = new BigInteger("44");
+        // BigInteger postno = new BigInteger("44");
+
+        /* postno가 없을 경우, myblog 홈으로 이동 */
+        if(postno.compareTo(new BigInteger("0")) == 0) {
+            return "redirect:home.do";
+        }
+        
+        log.info(logger, postno);
 
         Post post = postSelectService.selectPostOne(postno);
 
@@ -48,9 +60,16 @@ public class MhPostController {
     }
 
     @GetMapping(value = "/update.do")
-    public String updateGET(Model model) {
+    public String updateGET(@RequestParam(name = "postno", required = false, defaultValue = "0") BigInteger postno, Model model) {
 
-        BigInteger postno = new BigInteger("40");
+        // BigInteger postno = new BigInteger("40");
+
+        /* postno가 없을 경우, myblog 홈으로 이동 */
+        if(postno.compareTo(new BigInteger("0")) == 0) {
+            return "redirect:home.do";
+        }
+
+        log.info(logger, postno);
 
         List<Cate> catelist = pService.selectCateList();
         Post post = postSelectService.selectPostOne(postno);

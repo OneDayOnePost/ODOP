@@ -482,7 +482,7 @@
                         </div>
                         <div class="mypost">
                             <div class="post_info" th:each="obj:${list}">
-                                <div style="position: relative;">
+                                <div style="position: relative;" th:onclick="selectPost([[${obj.no}]], [[${email}]])">
                                     <!-- obj.postImageList.?[image.chk == 1] : chk 값이 1인 이미지들의 리스트를 반환 -->
                                     <!-- 대표 이미지가 존재하는 경우 -->
                                     <img th:if="${obj.postImageList.?[image.chk == 1].size() > 0}"
@@ -493,7 +493,7 @@
                                         <i class="bi bi-eye me-2"></i><span th:text="${obj.hit}"></span>
                                     </div>
                                 </div>
-                                <div class="post_title">
+                                <div class="post_title" th:onclick="selectPost([[${obj.no}]], [[${email}]])">
                                     <p th:text="${obj.title}"></p>
                                 </div>
                                 <div class="post_content">
@@ -573,7 +573,7 @@
 
             // 클릭한 카테고리의 번호를 categoryId 변수로 받아옵니다.
             var newCategoryId = Number(categoryId);
-            var newUrl = contextPath + "/blog/" + email + "/" + newCategoryId + "/home.do";
+            var newUrl = contextPath + "/blog/" + email + "/home.do?categoryId=" + categoryId;
             window.location.href = newUrl;
         }
             
@@ -811,7 +811,14 @@
         });
 
         function goToBlog(email) {
-            window.location.href = contextPath + "/blog/" + email + "/0/home.do";
+            window.location.href = contextPath + "/blog/" + email + "/home.do";
+        }
+
+        function selectPost(postno, email) {
+
+            // console.log(postno);
+            window.location.href = `${contextPath}/blog/${email}/select.do?postno=${postno}`;
+
         }
 
     </script>

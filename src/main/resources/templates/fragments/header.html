@@ -160,7 +160,7 @@
             <nav class="sub-menu" id="myPageMenu"
                 th:style="${#strings.contains(user.authorities, 'ROLE_A')} ? 'height: 145px;' : ''">
                 <ul>
-                    <li><a th:href="@{/blog/{email}/0/home.do(email=${user.username})}">My Blog</a></li>
+                    <li><a th:href="@{/blog/{email}/home.do(email=${user.username})}">My Blog</a></li>
                     <hr style="border: solid 0.5px #3A5485; margin-top:15px; margin-bottom: 15px;">
                     <li th:if="${#strings.contains(user.authorities, 'ROLE_A')}"><a
                             th:href="@{/adminhome.do(type=post, menu=all)}">관리자 홈</a></li>

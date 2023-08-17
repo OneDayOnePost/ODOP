@@ -387,7 +387,7 @@
 
   <script th:inline="javascript" type="text/javascript">
 
-    const email = /*[[${user.username}]]*/'';
+    const email = /*[[${user?.username}]]*/'';
 
     category = /*[[${category}]]*/'';
     mbti = /*[[${mbti}]]*/'';

@@ -32,7 +32,6 @@ import com.example.entity.Post;
 import com.example.mapper.GR.GrMyblogMapper;
 import com.example.repository.GR.GrMemberRepository;
 import com.example.repository.GR.GrPostRepository;
-import com.example.repository.MH.MhMemberRepository;
 import com.example.service.WJ.WjMyblogService;
 
 import lombok.RequiredArgsConstructor;
@@ -58,8 +57,8 @@ public class GrMemberController {
         try {
 
             // log.info("categoryId received: {}", categoryId);
-            log.info("user 정보 => {}", user.toString());
-            log.info("user user => {}", user.getAuthorities());
+            // log.info("user 정보 => {}", user.toString());
+            // log.info("user user => {}", user.getAuthorities());
 
             if (categoryId != 0) {
                 log.info("categoryId: {}", categoryId); // categoryId 값 로그로 출력

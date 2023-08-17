@@ -264,8 +264,6 @@
     <script th:src="@{/js/axios.min.js}"></script>
     <script th:inline="javascript">
 
-        const contextPath = $('#contextPathHolder').attr('data-contextPath');
-
         const postno = /*[[${post.no}]]*/'';
 
         /* 댓글 등록 */
@@ -568,7 +566,8 @@
                 // console.log(data);
 
                 if (data.status === 200) {
-                    selectAction();
+                    $('.reply_output').empty(); // 댓글 영역 초기화 
+                    selectAction(); // 삭제된 댓글 반영해서 다시 조회
                 }
             }
 
