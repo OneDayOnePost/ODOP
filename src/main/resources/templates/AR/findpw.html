@@ -96,7 +96,7 @@
         .chk_input {
         border: none;
         background: #EFEFEF;
-        width: 220px;
+        width: 218px;
         height: 40px;
         border-radius: 5px;
         text-align: center;
@@ -227,7 +227,7 @@
         background: #1D3563;
         color: #FFF;
         font-size: 18px;
-        margin-left: 20px;
+        margin-left: 18px;
         }
 
         #findbutton {
@@ -274,7 +274,6 @@
             <div id="homeline"></div>
             <div id="login_box" class="container">
                 <div id="box_row1" class="row">
-                    <form th:action="@{/findpw.do}" method="post" id="findpwform">
                         <div id="loginpart">
                             <div id="inputpart">
                                 <!-- <div id="emailpart"> -->
@@ -288,39 +287,41 @@
                                     </div>
                                     <div id="msgtimer" style="display: flex; padding-bottom: 5px;">
                                         <span id="confirmMsg"></span>
-                                        <span id="timer" style="padding-left: 30px;"></span>
+                                        <span id="timer" style="padding-left: 21px;"></span>
                                     </div>
                                 <!-- </div> -->
-                                <div id="chkbox" style="padding-left: 126px; display: none; padding-bottom: 16px;" >
+                                <div id="chkbox" style="padding-left: 126px; display: none; " >
                                     <span class="label_span">인증번호</span>
                                     <input class="chk_input" type="text" id="verificationCode" name="verificationCode"
-                                        style="margin-left: 32px;">
+                                        style="margin-left: 28px;">
                                     <input type="button" id="sendchkbutton" value="확인" onclick="certificationAction()"></input>
                                     <input type="hidden" id="sendchkbuttonclick" name="sendchkbuttonclick"></input>
                                 </div>
-                                <div style=" padding-right: 185px; padding-top: 7px;">
+                            <form th:action="@{/findpw.do}" method="post" id="findpwform">
+                                <div style=" padding-right: 185px;">
                                     <span class="label_span">새 비밀번호</span>
                                     <input class="newpw_input" type="password" maxlength="16" id="password"
                                         name="password" style="margin-left: 27px;" autoComplete="off" oninput="pwConfirm()">
                                 </div>
-                                <span id="pwconfirmMsg" style="padding-top: 6px; padding-bottom: 3px;"></span>
+                                <span id="pwconfirmMsg" style="padding-top: 6px; padding-bottom: 3px ; padding-right: 45px;"></span>
                                 <div style=" padding-right: 226px;">
                                     <span class="label_span" style="padding-right: 26px;">새 비밀번호 확인</span>
                                     <input class="newpwchk_input" type="password" id="pwcheck" name="pwcheck"
                                          maxlength="16" autoComplete="off" oninput="pwConfirm()">
                                 </div>
 
-                            </div>
-                            <div id="buttonbox">
-                                <th style="padding-left: 400px;">
-                                    <input type="button" id="cancelbutton" value="취소"
-                                        onclick="location.href='login.do'"></input>
-                                    <input type="button" id="findbutton" value="변경" onclick="findAction()"></input>
+                                </div>
+                                <div id="buttonbox">
+                                    <th style="padding-left: 400px;">
+                                        <input type="button" id="cancelbutton" value="취소"
+                                            onclick="location.href='login.do'"></input>
+                                        <input type="button" id="findbutton" value="변경" onclick="findAction()"></input>
 
-                                </th>
-                            </div>
+                                    </th>
+                                </div>
+                            </form>
                         </div>
-                    </form>
+
                 </div>
                 
 
@@ -432,7 +433,7 @@
             const confirmMsg = document.getElementById('confirmMsg');	//확인 메세지
             const correctColor = "#1D3563";	//맞았을 때 출력되는 색깔
             const wrongColor = "#ff0000";	//틀렸을 때 출력되는 색깔
-            chkbox.style = "visibility:visible; padding-left: 126px; padding-top: 6px;";
+            chkbox.style = "visibility:visible; padding-left: 126px; padding-bottom: 8px;";
             $('input[name=sendbuttonclick]').attr('value', 'y'); //클릭확인 여부
             if(sendbuttonclick.value=="y"){
                 email.readOnly = true; 
@@ -450,7 +451,7 @@
                 const response = await axios.post(url, dataToSend, { headers });
                 const retValue = response.data.ret; // 서버에서 받은 ret 값
 
-                console.log(retValue);
+                // console.log(retValue);
                 if (retValue != null) {
                     // 인증번호 발송 성공 처리
                     document.querySelector("#title").textContent = "성공 :)";
@@ -509,13 +510,19 @@
 
                 display.textContent = minutes + ":" + seconds;
                 display.style.color = "black";
-
+                document.querySelector("#sendchkbutton").style ="visibility:visible";
                 if (--timer < 0) {
                     clearInterval(interval);
                     display.textContent = "00:00";
                     display.style.color = "red";
                     document.querySelector("#sendchkbutton").style ="visibility:hidden";
                    
+                }
+
+                if( document.querySelector("#sendchkbuttonclick").value=="y"){ //인증완료
+                    display.textContent = "";
+                    document.querySelector("#sendchkbutton").value ="인증 완료";
+                    document.querySelector("#confirmMsg").textContent="";
                 }
             }, 1000);
         }
@@ -545,11 +552,15 @@
             if (responseData.status === 200) {
                 // 인증번호 일치
                 document.querySelector("#title").textContent = "성공 :)";
-                document.querySelector("#title").setAttribute("focusElement", "newpw_input");
+                document.querySelector("#title").setAttribute("focusElement", "password");
                 document.querySelector("#content").textContent = "인증번호가 일치합니다";
 
                 modal.show();
+                
                 $('input[name=sendchkbuttonclick]').attr('value', 'y'); // 클릭확인 여부 설정
+                if(sendchkbuttonclick.value=="y"){
+                    verificationCode.readOnly = true; 
+                }
             } else {
                 // 인증번호 불일치
                 document.querySelector("#title").textContent = "실패 :)";
