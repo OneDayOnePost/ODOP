@@ -71,24 +71,16 @@
         }
 
         .post {
-            padding-left: 105px;
+            padding-left: 85px;
         }
 
         .post p{
             margin-bottom: 5px;
-            color: #9b9b9b;
+            color: #5C5960;
         }
 
-        .post_img {
-            float: right;
-            position: relative;
-        }
-
-        .me-3 {
-            position: absolute;
-            top: 13px;
-            right: 7px;
-            z-index: 1;
+        #post_img {
+            margin-top: 10px;
         }
 
         .post_box {
@@ -115,7 +107,7 @@
         .post_title {
             padding-left: 10px;
             font-weight: bold;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         .post_info p {
@@ -162,7 +154,10 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            width: 780px;
+            width: 800px;
+
+            border-bottom: #e5e5e5 solid 1px;
+            padding-bottom: 30px;
         }
 
         .post_date {
@@ -175,16 +170,47 @@
 
         .post_infoinfo {
             /* order: 2; */
-            flex: 1;
+            /* flex: 1; */
             font-size: 13px;
-            width: 150px;
+            width: 130px;
+            justify-content: flex-end;
         }
 
         .post_line {
-            width: 100%;
+            width: 110%;
             height: 1px;
             background-color: #e5e5e5;
             margin-top: 30px;
+        }
+
+        .first_post_line{
+            width: 100%;
+            height: 2px;
+            background-color: #000;
+            margin-top: 30px;
+        }
+
+        .writer{
+            display: flex;
+            align-items: center;
+            padding-left: 15px;
+            padding-top: 10px;
+        }
+
+        .writer img{
+            width: 30px;
+            height: 30px;
+            margin-right: 15px;
+            border-radius: 50%;
+            /* display: inline-block; */
+        }
+
+        .writer p{
+            display: inline-block;
+            margin: 0;
+            max-width: 100px;
+            text-decoration: none;
+            color: #000;
         }
 
         
@@ -207,54 +233,63 @@
             <div class="tagname">
                 <h3>#&nbsp;</h3><h3 th:text="${tagname}"></h3>
             </div>
-
-                <div id="post-area" class="side-width side-width-1">
-                    <div class="post_box">
-                        <div class="post">
-                            <p>post&nbsp;&nbsp;</p>
-                            <p th:text="${formattedpostcount}"></p>
-                        </div>
-                        <div class="d-flex justify-content-center">
-                            <div class="mypost">
-                                <div class="post_info" th:each="obj:${list}">
-                                    <div style="position: relative;">
-                                        <!-- obj.postImageList.?[image.chk == 1] : chk 값이 1인 이미지들의 리스트를 반환 -->
-                                        <!-- 대표 이미지가 존재하는 경우 -->
-                                        <img th:if="${obj.postImageList.?[image.chk == 1].size() > 0}"
-                                            th:src="${obj.postImageList.?[image.chk == 1][0].image.imgpath}" width="780px"
-                                            height="300px">
-
-                                        <div class="me-3" th:if="${obj.postImageList.?[image.chk == 1].size() > 0}">
-                                            <i class="bi bi-eye me-2"></i><span th:text="${obj.hit}"></span>
+                <div class="d-flex justify-content-center">
+                    <div id="post-area" class="side-width side-width-1">
+                        <div class="post_box">
+                            <div class="post">
+                                <p style="padding-left: 10px;">post&nbsp;&nbsp;</p>
+                                <p th:text="${formattedpostcount}"></p>
+                                <div class="first_post_line"></div>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <div class="mypost">
+                                    <div class="post_info" th:each="obj, postIndex : ${list}">
+                                        <div style="position: relative;">
+                                            <div class="writer">
+                                                <a th:href="@{/blog/{email}/0/home.do(email=${members[postIndex.index].email})}">
+                                                    <img th:if="${members[postIndex.index].imgpath != null}" th:src="${members[postIndex.index].imgpath}" th:key="${members[postIndex.index].imgkey}" onerror="this.src='/odop/images/default_thumbnail.png'">
+                                                    <img th:unless="${members[postIndex.index].imgpath != null}" th:src="@{/images/default_thumbnail.png}">
+                                                </a>
+                                                <a th:href="@{/blog/{email}/0/home.do(email=${members[postIndex.index].email})}">
+                                                    <p th:text="${members[postIndex.index].nickname}"></p>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div id="post-container">
+                                            <div class="d-flex justify-content-center">
+                                                <!-- obj.postImageList.?[image.chk == 1] : chk 값이 1인 이미지들의 리스트를 반환 -->
+                                                <!-- 대표 이미지가 존재하는 경우 -->
+                                                <img id="post_img" th:if="${obj.postImageList.?[image.chk == 1].size() > 0}"
+                                                th:src="${obj.postImageList.?[image.chk == 1][0].image.imgpath}" width="760px"
+                                                height="300px">
+                                            </div>
+                                            <div class="post_title">
+                                                <p th:text="${obj.title}"></p>
+                                            </div>
+                                            <div class="post_content">
+                                                <span th:text="${T(org.jsoup.Jsoup).parse(obj.content).text()}"></span>
+                                            </div>
+                                            <div class="post_tag" th:each="temp : ${obj.postTagList}">
+                                                <input id="post_tag" type="button" th:value="'# ' + ${temp.tag}" data-tag="${temp.tag}" onclick="searchTag(this)">
+                                            </div>
+                                            <div class="post_lastline">
+                                                <div class="post_date">
+                                                    <p th:text="${obj.regdate}"></p>
+                                                </div>
+                                                <div class="post_infoinfo" name="countreply">
+                                                    <i class="bi bi-eye me-2"></i><span style="font-weight: bold;" th:text="${obj.hit}"></span>
+                                                    &nbsp;&#183;&nbsp;&nbsp;<i class="bi bi-chat-dots me-2"></i><span style="font-weight: bold;" th:text="${obj.replyList.size()}"></span>
+                                                    &nbsp;&#183;&nbsp;&nbsp;<i class="bi bi-heart me-2"></i><span style="font-weight: bold;" th:text="${obj.dopeList.size()}"></span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="post_title">
-                                        <p th:text="${obj.title}"></p>
-                                    </div>
-                                    <div class="post_content">
-                                        <span th:text="${T(org.jsoup.Jsoup).parse(obj.content).text()}"></span>
-                                    </div>
-                                    <div class="post_tag" th:each="temp : ${obj.postTagList}">
-                                        <input id="post_tag" type="button" th:value="'# ' + ${temp.tag}" data-tag="${temp.tag}" onclick="searchTag(this)">
-                                    </div>
-                                    <div class="post_lastline">
-                                        <div class="post_date">
-                                            <p th:text="${obj.regdate}"></p>
-                                        </div>
-                                        <div class="post_infoinfo" name="countreply">
-                                            <i class="bi bi-chat-dots me-2"></i><span>댓글&nbsp;</span><span
-                                                style="font-weight: bold;" th:text="${obj.replyList.size()}"></span>
-                                            &nbsp;&nbsp;<i class="bi bi-heart me-2"></i><span>좋아요&nbsp;</span><span
-                                                style="font-weight: bold;" th:text="${obj.dopeList.size()}"></span>
-                                        </div>
-                                    </div>
-                                    <div class="post_line"></div>
                                 </div>
                             </div>
+
                         </div>
 
                     </div>
-
                 </div>
             </div>
         </div>

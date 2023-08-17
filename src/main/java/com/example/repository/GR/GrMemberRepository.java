@@ -8,5 +8,6 @@ import com.example.entity.Member;
 @Repository
 public interface GrMemberRepository  extends JpaRepository<Member, String> {
     
+    Member findByEmail(String email);
     
 }

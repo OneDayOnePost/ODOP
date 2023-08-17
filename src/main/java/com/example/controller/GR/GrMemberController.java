@@ -1,6 +1,7 @@
 package com.example.controller.GR;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -191,6 +192,14 @@ public class GrMemberController {
                 }
                 log.info("나와라!! => {}", formattedpostcount);
 
+                List<Member> members = new ArrayList<>();
+                for(Post post : list){
+                    Member member = gRepository.findByEmail(post.getWriter());
+                    log.info("왜이래 => {}", member.toString());
+                    members.add(member);
+                }
+                
+                model.addAttribute("members", members);
                 model.addAttribute("tagname", searchTag);
                 model.addAttribute("formattedpostcount", formattedpostcount);
                 model.addAttribute("list", list);
