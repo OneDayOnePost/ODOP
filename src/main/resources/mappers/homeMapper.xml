@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mapper 폴더에 어떤 Mapper인지를 명시 -->
+<mapper namespace="com.example.mapper.GR.GrHomeMapper"> 
+
+    <!-- 1. 홈 게시글 조회 -->
+    <select id="selectPostList" parameterType="map" resultType="PostAllViewDTO">
+        SELECT * FROM (
+            SELECT ROW_NUMBER() OVER(ORDER BY 
+            <!--조회 방법 설정 ( 최신순, 조회순, 좋아요순 )-->
+            <if test = 'type.equals("newest")'> p.NO DESC </if>
+            <if test = 'type.equals("like")'> p.dope_count DESC </if>
+            ) AS rnum, p.*, NVL(s.dope_count, 0) AS dope, m.mbti, m.NICKNAME, pi2.IMAGENO, pi2.imgpath, pi2.imgkey FROM POST p 
+            LEFT JOIN (SELECT postno, COUNT(*) AS dope_count FROM DOPE d GROUP BY d.postno) s ON p."NO" = s.postno 
+            INNER JOIN MEMBER m ON p.WRITER  = m.EMAIL
+            LEFT JOIN 
+            (SELECT pi3.postno, pi3.IMAGENO, i.IMGKEY, i.IMGPATH FROM POST_IMAGE pi3 INNER JOIN IMAGE i ON pi3.IMAGENO = i.NO WHERE chk = 1) pi2
+            ON pi2.POSTNO = p.NO
+        ) T1 WHERE state = 0 AND secret = 0
+            <!--카테고리 설정-->
+            <if test = 'category.size != 0'>
+                and cateno in(
+                    <foreach item="temp" collection="category" separator=" , ">#{temp}</foreach>
+                ) 
+            </if>
+            <!--MBTI 설정-->
+            <if test = 'mbti.size != 0'>
+                and mbti in(
+                    <foreach item="temp" collection="mbti" separator=" , ">#{temp}</foreach>
+                )
+            </if>
+            <!--작성자 설정 (팔로잉)-->
+            <!--추가 필요-->
+            <!--검색어 설정-->
+            <!--검색어 옵션이 제목, 내용, 닉네임일 경우-->
+            <if test = 'option.equals("title") or option.equals("content") or option.equals("nickname")'>
+                and (
+                    <foreach item="keyword" collection="keywords" separator= " and ">
+                        ${option} like '%' ||  #{keyword} || '%'
+                    </foreach>
+                )
+            </if>
+            <!--검색어 옵션이 없는 경우 (전체 검색)-->
+            <if test = 'option.equals("all")'>
+                and (
+                    <foreach item="keyword" collection="keywords" separator= " and ">
+                        title like '%' ||  #{keyword} || '%' 
+                    </foreach>
+                    or
+                    <foreach item="keyword" collection="keywords" separator= " and ">
+                        content like '%' ||  #{keyword} || '%' 
+                    </foreach>
+                    or
+                    <foreach item="keyword" collection="keywords" separator= " and ">
+                        nickname like '%' ||  #{keyword} || '%' 
+                    </foreach>
+                )
+            </if>
+            <!--페이징-->
+            <!-- rnum BETWEEN 1 AND 10 AND cateno = 3 ORDER BY rnum ASC; -->
+    </select>
+
+</mapper>

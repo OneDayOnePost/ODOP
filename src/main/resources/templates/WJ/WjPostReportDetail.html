@@ -272,7 +272,7 @@
         <div id="wrapper" class="container" style="display: flex; justify-content: center; align-items: center; margin-top: 40px; margin-bottom: 30px;">
             <!-- 이전글 -->
             <div id="prevdiv" th:if="${prev > 0}">
-                <a th:href="@{/postreport.do(type=${type}, menu=${menu}, no=${prev})}" id="prev">
+                <a th:href="@{/postreport.do(menu=${menu}, no=${prev})}" id="prev">
                     <i class="bi bi-chevron-compact-left" style="font-size: 80px; color: #90909055; font-weight: 100; border: none;"></i>
                 </a>
             </div>
@@ -281,7 +281,7 @@
                 <input type="text" th:value="${post.no}" id="post_no" hidden />
     
                 <div id="post_list" style="text-align: right;">
-                    <a th:href="@{/adminhome.do(type=${type}, menu=${menu})}">
+                    <a th:href="@{/adminhome.do(type=post, menu=${menu})}">
                         <i class="bi bi-list"></i>
                         <span th:if="${#strings.equals(param.menu, 'all')}">전체 신고 목록</span>
                         <span th:if="${menu} eq 'wait'">승인 대기</span>
@@ -343,7 +343,7 @@
     
             <!-- 다음글 -->
             <div id="nextdiv" th:if="${next > 0}">
-                <a th:href="@{/postreport.do(type=${type}, menu=${menu}, no=${next})}" id="next">
+                <a th:href="@{/postreport.do(menu=${menu}, no=${next})}" id="next">
                     <i class="bi bi-chevron-compact-right" style="font-size: 80px; color: #90909055; font-weight: 100; border: none;"></i>
                 </a>
             </div>
@@ -508,22 +508,22 @@
     </script>
 
     <script th:inline="javascript" type="text/javascript">
+        
+
         function goto_writerinfo() {
             const writer = document.getElementById('link_writerinfo').textContent;
             // console.log(writer);
 
-            window.location.href = [[@{/memberlist.do(type=memberlist, menu=all)}]] + '&email=' + writer;
+            window.location.href = contextPath + "/memberlist.do?menu=all" + '&email=' + writer;
         }
-    </script>
 
-    <script th:inline="javascript" type="text/javascript">
         // 신고 승인 버튼
         // (1) confirm
         async function deletePost() {
             const postno = document.getElementById('post_no').value;
 
             // rest api 호출
-            const url = [[@{/api/admin/postdelete.json}]];
+            const url = contextPath + "/api/admin/postdelete.json";
             const headers = {"Content-Type":"application/json"};
             const body = {no:postno};
             const { data } = await axios.put(url, body, { headers });
@@ -542,17 +542,19 @@
         }
         // (2) alert
         function deletePostOk() {
+            const menu = /*[[${menu}]]*/'';
+
             // 승인 alert 모달창 닫기
             const postmodal_alert = new bootstrap.Modal(document.getElementById('postmodal_alert'));
             postmodal_alert.hide();
 
             const postno = document.getElementById('post_no').value;
             // 주소 이동
-            if ([[${menu}]] == 'all') { // 전체 신고 목록 -> 전체 신고 목록 - 해당 게시글 번호
-                window.location.href = [[@{/postreport.do(type='post', menu='all')}]] + '&no=' + postno;
+            if (menu == 'all') { // 전체 신고 목록 -> 전체 신고 목록 - 해당 게시글 번호
+                window.location.href = contextPath + "/postreport.do?menu=all" + '&no=' + postno;
             }
             else { // 관리자 삭제 페이지 - 해당 게시글 번호
-                window.location.href = [[@{/postreport.do(type='post', menu='deletebyadmin')}]] + '&no=' + postno;
+                window.location.href = contextPath + "/postreport.do?menu=deletebyadmin" + '&no=' + postno;
             }
         }
 
@@ -564,7 +566,7 @@
             const postno = document.getElementById('post_no').value;
 
             // rest api 호출
-            const url = [[@{/api/admin/postreportdelete.json}]] + '?no=' + postno;
+            const url = contextPath + "/api/admin/postreportdelete.json" + '?no=' + postno;
             const headers = {"Content-Type":"application/json"};
             const { data } = await axios.delete(url, { headers });
 
@@ -582,16 +584,18 @@
         }
         // (2) alert
         function deleteReportOk() {
+            const menu = /*[[${menu}]]*/'';
+
             // 거절 alert 모달창 닫기
             const reportmodal_alert = new bootstrap.Modal(document.getElementById('reportmodal_alert'));
             reportmodal_alert.hide();
 
             // 주소 이동 
-            if ([[${menu}]] == 'all') { // 전체 신고 목록 -> 전체 신고 목록
-                window.location.href = [[@{/adminhome.do(type='post', menu='all')}]];
+            if (menu == 'all') { // 전체 신고 목록 -> 전체 신고 목록
+                window.location.href = contextPath + "/adminhome.do?type=post&menu=all";
             }
             else { // 승인 대기 페이지
-                window.location.href = [[@{/adminhome.do(type='post', menu='wait')}]];
+                window.location.href = contextPath + "/adminhome.do?type=post&menu=wait";
             }
         }
 
@@ -603,7 +607,7 @@
             const postno = document.getElementById('post_no').value;
 
             // rest api 호출
-            const url = [[@{/api/admin/postdeletecancel.json}]];
+            const url = contextPath + "/api/admin/postdeletecancel.json";
             const headers = {"Content-Type":"application/json"};
             const body = {no:postno};
             const { data } = await axios.put(url, body, { headers });
@@ -622,6 +626,8 @@
         }
         // (2) alert
         function cancelDeleteOk() {
+            const menu = /*[[${menu}]]*/'';
+
             // 취소 alert 모달창 닫기
             const cancelmodal_alert = new bootstrap.Modal(document.getElementById('cancelmodal_alert'));
             cancelmodal_alert.hide();
@@ -629,11 +635,11 @@
             const postno = document.getElementById('post_no').value;
 
             // 주소 이동
-            if ([[${menu}]] == 'all') { // 전체 신고 목록 -> 전체 신고 목록 - 해당 게시글 번호
-                window.location.href = [[@{/postreport.do(type='post', menu='all')}]] + '&no=' + postno;
+            if (menu == 'all') { // 전체 신고 목록 -> 전체 신고 목록 - 해당 게시글 번호
+                window.location.href = contextPath + "/postreport.do?menu=all" + '&no=' + postno;
             }
             else { // 승인 대기 페이지 - 해당 게시글 번호
-                window.location.href = [[@{/postreport.do(type='post', menu='wait')}]] + '&no=' + postno;
+                window.location.href = contextPath + "/postreport.do?menu=wait" + '&no=' + postno;
             }
         }
     </script>

@@ -21,8 +21,11 @@
   <link th:href="@{/css/footer.css}" rel="stylesheet">
   <!--thymeleaf contextpath-->
   <link id="contextPathHolder" th:data-contextPath="${#httpServletRequest.getContextPath()}" />
-  <style>
+  <!--jQuery 추가-->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+  integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
 
+  <style>
     /* 여기 지정된 부분은 모든 html 파일에 공통적으로 넣어줍니다. */
     html,
     body {
@@ -40,12 +43,12 @@
       position: relative;
       transform: translateY(-100%);
     }
-   
+
 
     /* 본문 내용 */
-    .container{
-        max-width: 1210px;
-        margin-bottom: 200px;
+    .container {
+      max-width: 1210px;
+      margin-bottom: 200px;
     }
 
     #menu-box {
@@ -56,26 +59,32 @@
       padding: 10px;
     }
 
-    #left-area{
+    #left-area {
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
-    #left-area i{
+    #left-area i {
       font-size: 20px;
       cursor: pointer;
     }
 
-    #left-area a{
+    #left-area button {
       font-size: 20px;
       font-weight: bold;
       cursor: pointer;
       text-decoration: none;
       color: #000;
+      border: none;
+      background-color: white;
     }
 
-  /* 최신순, 좋아요, 팔로잉 링크에 왼쪽에서 오른쪽으로 밑줄 추가 */
+    #left-area button.active {
+      border-bottom: 2px solid #000;
+    }
+
+    /* 최신순, 좋아요, 팔로잉 링크에 왼쪽에서 오른쪽으로 밑줄 추가 */
     #newest,
     #like,
     #follow {
@@ -89,12 +98,14 @@
     #follow::after {
       content: " ";
       position: absolute;
-      bottom: -2px; /* 밑줄이 텍스트 아래로 위치하도록 조정 */
+      bottom: -2px;
+      /* 밑줄이 텍스트 아래로 위치하도록 조정 */
       left: 0;
       width: 0;
       height: 2px;
       background-color: black;
-      transition: width 0.3s ease; /* 효과를 위한 transition 추가 */
+      transition: width 0.3s ease;
+      /* 효과를 위한 transition 추가 */
     }
 
     #newest:hover::after,
@@ -103,23 +114,21 @@
       width: 110%;
     }
 
-
-
-    #right-area{
+    #right-area {
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
     /* 셀렉박스 */
-    #select-box{
+    #select-box {
       width: 100px;
       height: 35px;
       padding-left: 5px;
       padding-right: 5px;
       background-color: #EFEFEF;
       border: #EFEFEF;
-      
+
     }
 
     /* 검색창 */
@@ -132,7 +141,8 @@
       padding: 5px;
       width: 240px;
       height: 40px;
-      flex-shrink: 0; /* 아이콘이 줄어들지 않도록 고정 */
+      flex-shrink: 0;
+      /* 아이콘이 줄어들지 않도록 고정 */
     }
 
     .search-input {
@@ -140,7 +150,6 @@
       outline: none;
       flex: 1;
       padding: 5px;
-      width: ;
     }
 
     .search-icon {
@@ -149,13 +158,13 @@
       cursor: pointer;
     }
 
-    .search-button{
-      background-color: transparent; 
+    .search-button {
+      background-color: transparent;
       border: none;
     }
 
     /* 게시글 부분 */
-    #items{
+    #items {
       padding: 20px 10px 20px 30px;
       display: flex;
 
@@ -163,7 +172,7 @@
       gap: 20px;
     }
 
-    #item{
+    #item {
       width: 260px;
 
       flex-basis: calc(25% - 20px);
@@ -173,15 +182,19 @@
     /* 미디어 쿼리를 사용하여 화면 크기에 따라 아이템 개수 조정 */
     @media (max-width: 1023px) {
       #item {
-        flex-basis: calc(33.33% - 20px); /* 각 아이템의 기본 크기를 33.33%로 지정 (3개가 보일 때) */
-        max-width: calc(33.33% - 20px); /* 아이템의 최대 너비를 33.33%로 지정 (3개가 보일 때) */
+        flex-basis: calc(33.33% - 20px);
+        /* 각 아이템의 기본 크기를 33.33%로 지정 (3개가 보일 때) */
+        max-width: calc(33.33% - 20px);
+        /* 아이템의 최대 너비를 33.33%로 지정 (3개가 보일 때) */
       }
     }
 
     @media (max-width: 767px) {
       #item {
-        flex-basis: calc(50% - 20px); /* 각 아이템의 기본 크기를 50%로 지정 (2개가 보일 때) */
-        max-width: calc(50% - 20px); /* 아이템의 최대 너비를 50%로 지정 (2개가 보일 때) */
+        flex-basis: calc(50% - 20px);
+        /* 각 아이템의 기본 크기를 50%로 지정 (2개가 보일 때) */
+        max-width: calc(50% - 20px);
+        /* 아이템의 최대 너비를 50%로 지정 (2개가 보일 때) */
       }
     }
 
@@ -197,11 +210,12 @@
       }
     }
 
-    #content_1{
+    #content_1 {
       background-color: #DFECF6;
       padding: 7px 14px;
     }
-    #title{
+
+    #title {
       font-size: 17px;
       line-height: 1.5;
       text-overflow: ellipsis;
@@ -210,11 +224,11 @@
       font-weight: bold;
     }
 
-    #profile a{
+    #profile a {
       font-size: 14px;
     }
 
-    #profile img{
+    #profile img {
       border-radius: 50%;
     }
 
@@ -224,18 +238,24 @@
     } */
 
     #main-img {
-      width: 100%; /* 이미지의 기본 너비를 100%로 설정 */
-      height: 200px; /* 이미지 높이를 자동으로 조정하여 비율을 유지 */
-      max-width: 100%; /* 이미지의 최대 너비를 부모 요소인 #item의 너비로 설정 */
+      width: 100%;
+      /* 이미지의 기본 너비를 100%로 설정 */
+      height: 200px;
+      /* 이미지 높이를 자동으로 조정하여 비율을 유지 */
+      max-width: 100%;
+      /* 이미지의 최대 너비를 부모 요소인 #item의 너비로 설정 */
     }
 
-    #main-img img{
-      width: 100%; /* 이미지의 기본 너비를 100%로 설정 */
-      height: 200px; /* 이미지 높이를 자동으로 조정하여 비율을 유지 */
-      max-width: 100%; /* 이미지의 최대 너비를 부모 요소인 #item의 너비로 설정 */
+    #main-img img {
+      width: 100%;
+      /* 이미지의 기본 너비를 100%로 설정 */
+      height: 200px;
+      /* 이미지 높이를 자동으로 조정하여 비율을 유지 */
+      max-width: 100%;
+      /* 이미지의 최대 너비를 부모 요소인 #item의 너비로 설정 */
     }
 
-    #main-img p{
+    #main-img p {
       padding: 5px 10px;
       /* 텍스트가 3줄을 넘어가면 말줄임표로 처리 */
       display: -webkit-box;
@@ -244,7 +264,7 @@
       overflow: hidden;
     }
 
-    #content_2{
+    #content_2 {
       background-color: #DFECF6;
       padding: 7px 10px;
       font-size: 12px;
@@ -252,10 +272,9 @@
       justify-content: space-between;
     }
 
-    #likelike i{
+    #likelike i {
       color: #FF5555;
     }
-
   </style>
 
 
@@ -273,24 +292,26 @@
     <div id="wrapper" class="container">
       <div id="menu-box">
         <div id="left-area">
-          <a th:href="@{/home.do(type=newest)}" id="newest" class="active" ><i class="bi bi-clock-history"></i>&nbsp;&nbsp;최신순</a>&nbsp;
-          <a th:href="@{/home.do(type=like)}" id="like" class="active"><i class="bi bi-heart"></i>&nbsp;&nbsp;좋아요</a>&nbsp;
+          <button id="newest" class="searchtype active" type="button"><i
+              class="bi bi-clock-history"></i>&nbsp;&nbsp;최신순</button>&nbsp;
+          <button id="like" class="searchtype" type="button"><i class="bi bi-heart"></i>&nbsp;&nbsp;좋아요</button>&nbsp;
           <!-- 팔로잉 버튼은 로그인 했을 때 나타남 -->
           <th:block th:if="${user} != null">
-            <a th:href="@{/home.do(type=follow)}" id="follow" class="active"><i class="bi bi-person-check"></i>&nbsp;&nbsp;팔로잉</a>
+            <button id="follow" class="searchtype" type="button"><i
+                class="bi bi-person-check"></i>&nbsp;&nbsp;팔로잉</button>
           </th:block>
         </div>
         <div id="right-area">
           <div style="display: flex; gap: 10px; align-items: center;">
-            <select name="" id="select-box" >
-              <option value="" selected disabled>선택</option>
+            <select name="" id="select-box">
+              <option value="all">전체</option>
               <option value="title">제목</option>
               <option value="nickname">닉네임</option>
               <option value="content">내용</option>
             </select>
             <div class="search-container">
-              <input type="text" class="search-input" placeholder="검색어를 입력하세요">
-              <button type="button" class="search-button" onclick="search()">
+              <input type="text" class="search-input" id="search-input">
+              <button type="button" class="search-button" onclick="searchInList()">
                 <i class="bi bi-search search-icon"></i>
               </button>
             </div>
@@ -306,15 +327,16 @@
               <a th:text="${obj.title}"></a>
             </div>
             <div id="profile">
-              <img th:src="${obj.imgpath}" th:key="${obj.imgkey}" style="width: 20px; height: 20px;" onerror="this.src='images/default_thumbnail.png'">
+              <img th:src="${obj.imgpath}" th:key="${obj.imgkey}" style="width: 20px; height: 20px;"
+                onerror="this.src='images/default_thumbnail.png'">
               <a th:text="${obj.nickname}"></a>
             </div>
           </div>
           <div id="main-img">
-            <img th:if="${obj.p_imgkey != null and obj.p_imgpath != null}"
-                  th:src="${obj.p_imgpath}" th:key="${obj.imgkey}" >
+            <img th:if="${obj.p_imgkey != null and obj.p_imgpath != null}" th:src="${obj.p_imgpath}"
+              th:key="${obj.imgkey}" th:data-content="${obj.content}">
             <p th:if="${obj.p_imgkey == null and obj.p_imgpath == null}"
-                  th:text="${T(org.jsoup.Jsoup).parse(obj.content).text()}"></p>
+              th:text="${T(org.jsoup.Jsoup).parse(obj.content).text()}"></p>
           </div>
           <div id="content_2">
             <div id="date">
@@ -326,7 +348,7 @@
           </div>
         </div>
       </div>
-      
+
     </div>
 
   </div>
@@ -335,7 +357,7 @@
   <th:block th:replace="~{/fragments/footer :: footerHTML}"></th:block>
 
 
-  <script th:inline="javascript" type="text/javascript">
+  <!-- <script th:inline="javascript" type="text/javascript">
 
     window.addEventListener('load', function() {
 
@@ -365,23 +387,116 @@
 
     });
 
-    function search(){
-      const selectBox = document.getElementById("select-box");
-      const searchInput = document.querySelector(".search-input");
+  </script> -->
 
-      const selectedOption = selectBox.value;
-      const keywrod = searchInput.value;
+  <script th:inline="javascript" type="text/javascript">
 
-      let url = "/home.do?type=" + selectedOption;
-      if(keywrod){
-        url += "&keyword=" + encodeURIComponent(keywrod);
-      }
+    const email = /*[[${user.username}]]*/'';
 
-      window.location.href = url;
+    category = /*[[${category}]]*/'';
+    mbti = /*[[${mbti}]]*/'';
+
+    console.log(category);
+    console.log(mbti);
+
+    /* 선택된 카테고리 & MBTI 정보 유지 */
+    // 여기서 받은 category, mbti 정보를 header 사이드 메뉴 체크 박스에 표시해주기!
+
+    var searchtype = "newest";
+
+    // 검색 기능 
+    function searchInList() {
+
+      // 선택한 값과 검색어 가져오기
+      const searchOption = document.getElementById("select-box").value;
+      const keywords = document.getElementById("search-input").value;
+      const searchKeyword = keywords.split(" ");
+
+      // 검색 로직을 추가하여 가져온 값들을 활용하세요
+      console.log("searchOption :", searchOption);
+      console.log("keywords :", keywords);
+      console.log("searchKeyword :", searchKeyword);
+
+      // Rest API 사용 - 파라미터 전달
+      const url = contextPath + "/api/home/getlist.json";
+      const headers = { "Content-Type": "application/json" };
+      axios.get(
+        url, {params: {category: encodeURI(category), mbti: encodeURI(mbti), type: searchtype, 
+        option: searchOption, keywords: encodeURI(searchKeyword), email: email} }, { headers }
+        ).then(function(response) {
+          console.log(response.data);
+        });
+
     }
-    
+
+    // 엔터키 눌러서 검색기능 실행하기 -> searchInList() 함수 내부에 있으면, 두 번 호출 되어서 함수 밖에 두었습니다!
+    const searchInput = document.querySelector(".search-input");
+
+    searchInput.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        searchInList();
+      }
+    });
+
+    // document.querySelectorAll(".searchtype").forEach(function(element) {
+    //   element.addEventListener("click", function() {
+    //     console.log(element.id);
+    //   })
+    // })
+
+    $(".searchtype").on("click", function () {
+
+      searchtype = this.id;
+      console.log(searchtype);
+
+      searchInList();
+
+    })
 
   </script>
+  <!-- 
+    // ----------------------------------------------------------------
+
+    // 검색 기능을 수행하는 함수
+    // function searchInList() {
+    //     const selectBox = document.getElementById("select-box");
+    //     const searchInput = document.querySelector(".search-input");
+
+    //     const selectedOption = selectBox.value;
+    //     const keywords = searchInput.value.toLowerCase().split(" "); // 검색어를 공백으로 분리
+
+    //     const items = document.querySelectorAll("#items #item");
+
+    //     items.forEach(item => {
+    //         const titleElement = item.querySelector("#title a");
+    //         const nicknameElement = item.querySelector("#profile a");
+    //         const contentElement = item.querySelector("#main-img p");
+    //         const imgElement = item.querySelector("#main-img img");
+
+    //         const title = titleElement ? titleElement.textContent.toLowerCase() : '';
+    //         const nickname = nicknameElement ? nicknameElement.textContent.toLowerCase() : '';
+    //         const content = contentElement ? contentElement.textContent.toLowerCase() : '';
+    //         const imgContent = imgElement ? imgElement.getAttribute("data-content").toLowerCase() : '';
+
+    //         // 각 단어를 포함하는지 검사
+    //         const found = keywords.every(keyword => {
+    //             return (
+    //                 (selectedOption === "title" && title.includes(keyword)) ||
+    //                 (selectedOption === "nickname" && nickname.includes(keyword)) ||
+    //                 (selectedOption === "content" && (content.includes(keyword) || imgContent.includes(keyword))) ||
+    //                 (selectedOption === "content" && !imgElement && content.includes(keyword))
+    //             );
+    //         });
+
+    //         if (found) {
+    //             item.style.display = "block";
+    //         } else {
+    //             item.style.display = "none";
+    //         }
+    //     });
+    // } -->
+
+
 </body>
 
 </html>

@@ -29,13 +29,13 @@ public interface WjMyblogMapper {
     @Select({" SELECT m.email, m.imgkey, m.imgpath, " +
              " (SELECT COUNT(no) FROM follow WHERE myid = #{useremail} AND yourid = m.email) AS follow_yumu FROM follow f " + 
              " LEFT JOIN MEMBER m ON f.myid = m.email " + 
-             " WHERE f.yourid = #{blogemail} "})
+             " WHERE f.yourid = #{blogemail} ORDER BY f.NO DESC "})
     public List<MemberFollowDTO> followerList(@Param("useremail") String useremail, @Param("blogemail") String blogemail);
 
     // 팔로잉 목록
     @Select({" SELECT m.email, m.imgkey, m.imgpath, " +
              " (SELECT COUNT(no) FROM follow WHERE myid = #{useremail} AND yourid = m.email) AS follow_yumu FROM follow f " + 
              " LEFT JOIN MEMBER m ON f.yourid = m.email " + 
-             " WHERE f.myid = #{blogemail} "})
+             " WHERE f.myid = #{blogemail} ORDER BY f.NO DESC "})
     public List<MemberFollowDTO> followingList(@Param("useremail") String useremail, @Param("blogemail") String blogemail);
 }

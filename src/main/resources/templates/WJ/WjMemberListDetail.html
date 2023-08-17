@@ -297,7 +297,7 @@
         <div id="wrapper" class="container" style="display: flex; justify-content: center; align-items: center; margin-top: 40px; margin-bottom: 60px;">
             <div th:each="member : ${memberone}" id="body_content" style="width: 90%;">
                 <div id="member_list" style="text-align: right;">
-                    <a th:href="@{/adminhome.do(type=${type}, menu=${menu})}">
+                    <a th:href="@{/adminhome.do(type=memberlist, menu=${menu})}">
                         <i class="bi bi-list"></i>
                         <span th:if="${menu} eq 'all'">전체 회원 목록</span>
                         <span th:if="${menu} eq 'graylist'">블랙리스트 대기</span>
@@ -311,7 +311,7 @@
                     <div id="info_top">
                         <div id="left-area">
                             <img th:src="${member.imgpath}" th:key="${member.imgkey}" style="border-radius: 50%; width: 170px; height: 170px;"
-                                 onerror="this.src='images/default_thumbnail.png'">
+                                 onerror="this.src='/odop/images/default_thumbnail.png'">
                         </div>
         
                         <div id="middle-area">
@@ -546,13 +546,14 @@
     </script>
 
     <script th:inline="javascript" type="text/javascript">
+
         // 블랙리스트 등록 버튼
         // (1) confirm 
         async function updateBlacklist() {
             const email = document.getElementById('email').textContent;
 
             // rest api 호출
-            const url = [[@{/api/admin/updateblacklist.json}]];
+            const url = contextPath + "/api/admin/updateblacklist.json";
             const headers = {"Content-Type":"application/json"};
             const body = {"email":email};
             const { data } = await axios.put(url, body, { headers });
@@ -571,6 +572,8 @@
         }
         // (2) alert
         function updateBlacklistOk() {
+            const menu = /*[[${menu}]]*/'';
+
             // 등록 alert 모달창 닫기
             const blacklist_alert = new bootstrap.Modal(document.getElementById('blacklist_alert'));
             blacklist_alert.hide();
@@ -578,11 +581,11 @@
             const email = document.getElementById('email').textContent;
 
             // 주소 이동
-            if ([[${menu}]] == 'all') { // 전체 회원 목록 -> 전체 회원 목록 - 해당 회원 이메일
-                window.location.href = [[@{/memberlist.do(type='memberlist', menu='all')}]] + '&email=' + email;
+            if (menu == 'all') { // 전체 회원 목록 -> 전체 회원 목록 - 해당 회원 이메일
+                window.location.href = contextPath + "/memberlist.do?menu=all" + '&email=' + email;
             }
             else { // 블랙리스트 회원 페이지 - 해당 회원 이메일
-                window.location.href = [[@{/memberlist.do(type='memberlist', menu='blacklist')}]] + '&email=' + email;
+                window.location.href = contextPath + "/memberlist.do?menu=blacklist" + '&email=' + email;
             }
         }
 
@@ -592,7 +595,7 @@
             const email = document.getElementById('email').textContent;
 
             // rest api 호출
-            const url = [[@{/api/admin/updategraylist.json}]];
+            const url = contextPath + "/api/admin/updategraylist.json";
             const headers = {"Content-Type":"application/json"};
             const body = {email:email};
             const { data } = await axios.put(url, body, { headers });
@@ -611,6 +614,8 @@
         }
         // (2) alert
         function updateGraylistOk() {
+            const menu = /*[[${menu}]]*/'';
+
             // 취소 alert 모달창 닫기
             const graylist_alert = new bootstrap.Modal(document.getElementById('graylist_alert'));
             graylist_alert.hide();
@@ -618,11 +623,11 @@
             const email = document.getElementById('email').textContent;
 
             // 주소 이동
-            if ([[${menu}]] == 'all') { // 전체 회원 목록 -> 전체 회원 목록 - 해당 회원 이메일
-                window.location.href = [[@{/memberlist.do(type='memberlist', menu='all')}]] + '&email=' + email;
+            if (menu == 'all') { // 전체 회원 목록 -> 전체 회원 목록 - 해당 회원 이메일
+                window.location.href = contextPath + "/memberlist.do?menu=all" + '&email=' + email;
             }
             else { // 블랙리스트 대기 페이지 - 해당 회원 이메일
-                window.location.href = [[@{/memberlist.do(type='memberlist', menu='graylist')}]] + '&email=' + email;
+                window.location.href = contextPath + "/memberlist.do?menu=graylist" + '&email=' + email;
             }
         }
     </script>

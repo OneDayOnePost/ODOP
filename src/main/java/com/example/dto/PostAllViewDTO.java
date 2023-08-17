@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class PostAllViewDTO {
 
-     // 게시글 번호(시퀀스)
+    // 게시글 번호(시퀀스)
     private BigInteger no;
 
     // 작성자
@@ -27,6 +27,7 @@ public class PostAllViewDTO {
 
     // 작성일
     private Date regdate;
+
     public String regdate1() {
         if (regdate != null) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
@@ -50,6 +51,7 @@ public class PostAllViewDTO {
 
     // 좋아요 (카운트)
     private int dope_count;
+    
     public String dope_count1() {
         if (dope_count >= 0 && dope_count <= 9) {
             return "0" + dope_count;
@@ -58,9 +60,11 @@ public class PostAllViewDTO {
         }
     }
 
-
     // 닉네임
     private String nickname;
+
+    // mbti
+    private String mbti;
 
     // 프로필 이미지
     private String imgkey;
