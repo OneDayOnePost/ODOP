@@ -57,4 +57,7 @@ public class Alert {
   // 프로필 이미지 경로를 저장할 임시변수
   @Transient
   private String imgpath;
+  // (현재 날짜 - 등록 날짜)로 계산된 값을 저장할 임시변수
+  @Transient
+  private String diffRegdate;
 }
