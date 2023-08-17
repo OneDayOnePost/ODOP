@@ -183,17 +183,7 @@
                     <i class="bi bi-x" id="closeAlertBtn"></i>
                 </div>
                 <div id="alerttable">
-                    <table>
-                        <tr th:each="alert : ${alertList}">
-                            <td>
-                                <img th:if="${alert.imgpath != null}" th:src="${alert.imgpath}" th:key="${alert.imgkey}" width="45px" height="45px">
-                                <img th:unless="${alert.imgpath != null}" th:src="@{/images/default_thumbnail.png}" width="45px" height="45px">
-                            </td>
-                            <td>
-                                <p id="alertcontent" th:text="${alert.content}"></p>
-                                <p th:text="${#dates.format(alert.regdate, 'yyyy년 MM월 dd일 HH시 mm분')}"></p>
-                            </td>                            
-                        </tr>
+                    <table id="alertlisttable">
                     </table>
                 </div>
             </nav>
@@ -240,13 +230,87 @@
                 myPageMenu.classList.toggle('show');
             });
 
+            // ---------------------------------------------------------------------
+
             // 알림 아이콘 클릭 시 알림 메뉴 토글 처리
             const alertIcon = document.getElementById('alertIcon');
             const alertMenu = document.getElementById('alertMenu');
+            const closeAlertBtn = document.getElementById('closeAlertBtn');
+            let isAlertMenuOpen = false; // 알림 메뉴 열리면 true, 닫히면 false (초기 상태는 false)
             
-            alertIcon.addEventListener('click', () => {
-                alertMenu.classList.toggle('show');
+            closeAlertBtn.addEventListener('click', () => {
+                alertMenu.classList.remove('show');
+
+                isAlertMenuOpen = false;
+            })
+
+            alertIcon.addEventListener('click', async () => {
+                isAlertMenuOpen = !isAlertMenuOpen;
+                
+                if (isAlertMenuOpen) {
+                    // user가 null이 아니면(로그인 o) userinfo = user.username / null이면(로그인 x) userinfo는 빈 문자열
+                    const userinfo = /*[[${user != null ? user.username : ''}]]*/ '';
+
+                    // rest api 호출
+                    const url = contextPath + "/api/home/alert.json" + '?useremail=' + userinfo;
+                    const headers = { "Content-Type": "application/json" };
+                    const { data } = await axios.get(url, { headers });
+
+                    if (data.status === 200) {
+                        const alertlist = data.alertList;
+
+                        let tableHTML = '';
+                        for (const alert of alertlist) {
+                            // 프로필 이미지
+                            let imgHTML = '';
+                            if (alert.imgpath != null) {
+                                imgHTML = `
+                                    <img src="${alert.imgpath}" key="${alert.imgkey}" width="45px" height="45px">
+                                `;
+                            } else {
+                                imgHTML = `
+                                    <img src="/odop/images/default_thumbnail.png" width="45px" height="45px">
+                                `;
+                            }
+
+                            tableHTML += `
+                                <tr class="alerttablerow" onclick="alertClick(${alert.no}, ${alert.chk}, '${alert.url}')">
+                                    <td>${imgHTML}</td>
+                                    <td>
+                                        <p class="${alert.chk == 0 ? 'alert_chk0' : (alert.chk == 1 ? 'alert_chk1' : '')}">${alert.content}</p>
+                                        <p class="alert_regdate">${alert.diffRegdate}</p>
+                                    </td>
+                                </tr>
+                            `;
+                        }
+
+                        document.getElementById('alertlisttable').innerHTML = tableHTML;
+                    }
+                    alertMenu.classList.toggle('show');
+                }
+                else {
+                    alertMenu.classList.remove('show');
+                }
             });
+
+            async function alertClick(no, chk, blogurl) {
+                if (chk === 0) {
+                    // rest api 호출
+                    const url = contextPath + "/api/home/updatealertchk.json";
+                    const headers = {"Content-Type":"application/json"};
+                    const body = {no:no};
+                    const { data } = await axios.put(url, body, { headers });
+                    
+                    if (data.status === 200){
+                        window.location.href = contextPath + blogurl;
+                    }
+                }
+                else {
+                    window.location.href = contextPath + blogurl;
+                }
+            }
+
+            // ---------------------------------------------------------------------
 
             // 바깥을 클릭하면 메뉴 닫히게!
             document.addEventListener('click', (event) => {
@@ -264,9 +328,11 @@
                     closeBtn.classList.add('hide');
                 }
 
-                // 클릭된 대상이 alertIcon 또는 그 하위 요소가 아니면 alertMenu 닫기
-                if (!target.closest('#alertIcon')) {
+                // 클릭된 대상이 alertIcon, closeAlertBtn, alertMenu 또는 그 하위 요소가 아니면 alertMenu 닫기
+                if (!target.closest('#alertIcon') && !target.closest('#closeAlertBtn') && !target.closest('#alertMenu')) {
                     alertMenu.classList.remove('show');
+
+                    isAlertMenuOpen = false;
                 }
             });
 

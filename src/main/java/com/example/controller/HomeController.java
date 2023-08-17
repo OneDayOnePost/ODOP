@@ -18,13 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.dto.PostAllViewDTO;
-import com.example.entity.Alert;
 import com.example.entity.Cate;
-import com.example.entity.Member;
 import com.example.service.GR.GrHomeService;
-import com.example.service.WJ.WjAlertService;
 import com.example.service.WJ.WjCateService;
-import com.example.service.WJ.WjMemberService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,8 +31,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class HomeController {
     final WjCateService WjcService;
-    final WjAlertService WjaService;
-    final WjMemberService WjmService;
     final GrHomeService GhService;
 
     @GetMapping(value = "/home.do")
@@ -110,31 +104,6 @@ public class HomeController {
 
             return user;
 
-        }
-
-        // 알림 기능
-        @ModelAttribute("alertList")
-        public List<Alert> getAlertList(@AuthenticationPrincipal User user) {
-            // 로그인 상태인 경우에만 alertList 생성
-            if (user != null) { 
-                List<Alert> alertList = WjaService.selectAlertList(user.getUsername());
-
-                for (Alert alert : alertList) {
-                    // alert 테이블의 content -> "님이" 이전의 문자열을 추출 -> 닉네임
-                    String fromNickname = alert.getContent().substring(0, alert.getContent().indexOf("님이"));
-
-                    Member member = WjmService.findByNickname(fromNickname);
-    
-                    if (member != null) {
-                        alert.setImgkey(member.getImgkey());
-                        alert.setImgpath(member.getImgpath());
-                    }
-                }
-                
-                return alertList;
-            }
-
-            return null;
         }
     }
 }

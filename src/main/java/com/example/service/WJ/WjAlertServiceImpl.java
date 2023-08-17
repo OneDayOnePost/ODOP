@@ -1,5 +1,6 @@
 package com.example.service.WJ;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -35,6 +36,18 @@ public class WjAlertServiceImpl implements WjAlertService {
         catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    // 알림 상태 업데이트 (chk=0 -> chk=1)
+    @Override
+    public int updateAlertChk(BigInteger no) {
+        try {
+            return aMapper.updateAlertChk(no);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return -1;
         }
     }
 }
