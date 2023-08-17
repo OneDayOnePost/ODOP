@@ -249,7 +249,7 @@
                 
                 if (isAlertMenuOpen) {
                     // user가 null이 아니면(로그인 o) userinfo = user.username / null이면(로그인 x) userinfo는 빈 문자열
-                    const userinfo = /*[[${user != null ? user.username : ''}]]*/ '';
+                    const userinfo = /*[[${user?.username}]]*/'';
 
                     // rest api 호출
                     const url = contextPath + "/api/home/alert.json" + '?useremail=' + userinfo;
