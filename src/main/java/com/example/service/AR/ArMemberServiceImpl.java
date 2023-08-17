@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.dto.MemberDTO;
 import com.example.entity.Member;
+import com.example.mapper.AR.ArMemberMapper;
 import com.example.repository.AR.ArMemberRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ArMemberServiceImpl implements ArMemberService {
     final ArMemberRepository mRepository;
+    final ArMemberMapper mMapper;
 
    	// 회원가입
 	@Override
@@ -75,6 +77,28 @@ public class ArMemberServiceImpl implements ArMemberService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public int updateMemberPassword(MemberDTO member) {
+       try{
+        return mMapper.updateMemberPassword(member);
+       }
+       catch(Exception e){
+        e.printStackTrace();
+        return 0;
+       }
+    }
+
+    @Override
+    public List<MemberDTO> selectMemberEmail(String email) {
+         try{
+        return mMapper.selectMemberEmail(email);
+       }
+       catch(Exception e){
+        e.printStackTrace();
+        return null;
+       }
     }
 
 

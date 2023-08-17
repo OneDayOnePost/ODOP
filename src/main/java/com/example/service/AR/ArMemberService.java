@@ -2,6 +2,8 @@ package com.example.service.AR;
 
 
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,12 @@ public interface ArMemberService {
 
     //아이디 찾기 findByEmailAndNameAndPhone
     public Member selectMemberEmail(@Param("name") String name, @Param("phone") String phone);
+
+    //비밀번호 찾기 및 변경
+    public int updateMemberPassword(@Param("member") MemberDTO member);
+
+    //이메일 찾기
+    public List<MemberDTO> selectMemberEmail(@Param("email") String email);
 
     
 
