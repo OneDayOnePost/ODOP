@@ -113,7 +113,13 @@ public class HomeController {
         // header - 알림 개수
         @ModelAttribute("alertcount")
         public BigInteger getAlertCount(@AuthenticationPrincipal User user) {
-            return WjaService.selectAlertCount(user.getUsername());
+            BigInteger alertcount = BigInteger.valueOf(0);
+            
+            if (user != null) {
+                alertcount = WjaService.selectAlertCount(user.getUsername());
+            }
+
+            return alertcount;
         }
     }
 }
