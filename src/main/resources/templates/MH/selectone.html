@@ -402,18 +402,23 @@
                     var div3 = document.createElement('div');
                     div3.className = "reply_output_content"
 
-                    var div3_1 = document.createElement('div');
-                    div3_1.className = "pt-4 ps-4 pb-2";
-                    div3_1.style = "font-size: 15px; font-weight: 600;";
-                    div3_1.textContent = "댓글 내용"
-
                     var div3_textarea = document.createElement('textarea');
-                    div3_textarea.className = "reply_read p-4";
+                    div3_textarea.className = "reply_read p-3";
                     div3_textarea.textContent = obj.content;
                     div3_textarea.readOnly = true;
 
-                    div3.append(div3_1);
+                    var div3_1 = document.createElement('div');
+                    div3_1.className = "ps-3 pb-2";
+                    div3_1.style = "font-size: 15px; font-weight: 600;";
+
+                    var div3_1_button = document.createElement('button');
+                    div3_1_button.className = "btn btn-secondary btn-sm";
+                    div3_1_button.textContent = "답글";
+
+                    div3_1.append(div3_1_button);
+
                     div3.append(div3_textarea);
+                    div3.append(div3_1);
 
                     /***********/
 
@@ -501,20 +506,25 @@
                 reply_output_content.css("background-color", "#EFEFEF");
 
                 // 2. 기존 형식으로 태그 재생성
-                var div3_1 = document.createElement('div');
-                div3_1.className = "pt-4 ps-4 pb-2";
-                div3_1.style = "font-size: 15px; font-weight: 600;";
-                div3_1.textContent = "댓글 내용"
-
                 var div3_textarea = document.createElement('textarea');
-                div3_textarea.className = "reply_read p-4";
+                div3_textarea.className = "reply_read p-3";
                 div3_textarea.textContent = reply_text;
                 div3_textarea.readOnly = true;
 
-                // 3. 태그 삽입
-                reply_output_content.append(div3_1);
-                reply_output_content.append(div3_textarea);
+                var div3_1 = document.createElement('div');
+                div3_1.className = "ps-3 pb-2";
+                div3_1.style = "font-size: 15px; font-weight: 600;";
 
+                var div3_1_button = document.createElement('button');
+                div3_1_button.className = "btn btn-secondary btn-sm";
+                div3_1_button.textContent = "답글";
+
+                // 3. 태그 삽입
+                div3_1.append(div3_1_button);
+
+                reply_output_content.append(div3_textarea);
+                reply_output_content.append(div3_1);
+                
             });
 
             div2_1.append(div2_1_button1);
