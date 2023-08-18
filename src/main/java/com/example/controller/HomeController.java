@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.dto.PostAllViewDTO;
 import com.example.entity.Cate;
 import com.example.service.GR.GrHomeService;
+import com.example.service.WJ.WjAlertService;
 import com.example.service.WJ.WjCateService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class HomeController {
     final WjCateService WjcService;
+    final WjAlertService WjaService;
     final GrHomeService GhService;
 
     @GetMapping(value = "/home.do")
@@ -106,6 +108,12 @@ public class HomeController {
             
             return user;
         
+        }
+
+        // header - 알림 개수
+        @ModelAttribute("alertcount")
+        public BigInteger getAlertCount(@AuthenticationPrincipal User user) {
+            return WjaService.selectAlertCount(user.getUsername());
         }
     }
 }

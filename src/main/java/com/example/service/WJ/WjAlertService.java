@@ -18,4 +18,7 @@ public interface WjAlertService {
 
     // 알림 상태 업데이트 (chk=0 -> chk=1)
     public int updateAlertChk(@Param("no") BigInteger no);
+
+    // 읽지 않은(chk=0) 알림 개수
+    public BigInteger selectAlertCount(@Param("email") String email);
 }

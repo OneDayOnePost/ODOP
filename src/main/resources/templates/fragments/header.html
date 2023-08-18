@@ -50,6 +50,7 @@
                         </div>
                         <div class="notification-icon" id="alertIcon">
                             <i class="bi bi-bell"></i>
+                            <div id="alert_count" class="notification-count" th:text="${alertcount}"></div>
                         </div>
                         <div class="my-page-icon" id="myPageIcon">
                             <i class="bi bi-person-circle"></i>
@@ -257,6 +258,7 @@
                     const { data } = await axios.get(url, { headers });
 
                     if (data.status === 200) {
+                        // 알림 테이블
                         const alertlist = data.alertList;
 
                         let tableHTML = '';
@@ -285,6 +287,9 @@
                         }
 
                         document.getElementById('alertlisttable').innerHTML = tableHTML;
+
+                        // 알림 개수 업데이트
+                        document.getElementById('alert_count').textContent = data.alertcount;
                     }
                     alertMenu.classList.toggle('show');
                 }

@@ -24,4 +24,8 @@ public interface WjAlertMapper {
     // 알림 상태 업데이트 (chk=0 -> chk=1)
     @Update({" UPDATE alert SET chk=1 WHERE no = #{no} "})
     public int updateAlertChk(@Param("no") BigInteger no);
+
+    // 읽지 않은(chk=0) 알림 개수
+    @Select({" SELECT COUNT(NO) FROM ALERT WHERE email = #{email} AND regdate >= DATEADD('MONTH', -1, CURRENT_TIMESTAMP) AND chk=0 "})
+    public BigInteger selectAlertCount(@Param("email") String email);
 }
