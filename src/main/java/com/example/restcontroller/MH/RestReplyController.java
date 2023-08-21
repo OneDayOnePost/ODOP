@@ -38,8 +38,6 @@ public class RestReplyController {
 
         log.info(format, obj.toString());
 
-        obj.setWriter("test1@gmail.com");
-
         int ret = replyService.insertReplyOne(obj);
 
         if(ret == 1) {

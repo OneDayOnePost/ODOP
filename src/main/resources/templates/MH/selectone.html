@@ -265,9 +265,18 @@
     <script th:inline="javascript">
 
         const postno = /*[[${post.no}]]*/'';
+        const email = /*[[${user?.username}]]*/'';
 
         /* 댓글 등록 */
-        async function writeAction() {
+        async function writeAction(replyno = null) {
+
+            console.log(replyno);
+
+            var repgroup = null;
+
+            if(replyno !== null) {
+                repgroup = replyno;
+            }
 
             const reply_content = $("#reply_content");
             var secret = 0;
@@ -289,9 +298,9 @@
             const url = contextPath + '/api/reply/write.json';
             const headers = { "Content-Type": "application/json" };
             const body = {
-                writer: "writer", content: reply_content.val(), post: { no: postno },
-                secret: secret
-            }; // 로그인 email 추가
+                writer: email, content: reply_content.val(), post: { no: postno },
+                secret: secret, repgroup: repgroup
+            };
 
             const { data } = await axios.post(url, body, { headers });
 
@@ -414,6 +423,7 @@
                     var div3_1_button = document.createElement('button');
                     div3_1_button.className = "btn btn-secondary btn-sm";
                     div3_1_button.textContent = "답글";
+                    div3_1_button.addEventListener("click", () => writeNestedReply(obj.no));
 
                     div3_1.append(div3_1_button);
 
@@ -446,7 +456,7 @@
             return regdateFormat;
         }
 
-        /* 댓글 수정 */
+        /* 댓글 수정 가능하도록 DOM 조작 */
         function updateAction(no) {
 
             // console.log(no);
@@ -619,6 +629,53 @@
                 selectAction();
             }
 
+        }
+
+        function writeNestedReply(replyno) {
+
+            console.log(replyno);
+
+            var html = "";
+
+            html += '<div class="mt-1 d-flex">'
+
+            html += '<div class="flex-shrink-1 me-2" style="line-height : 175px;">';
+            html += '<i class="bi bi-arrow-return-right"></i>';
+            html += '</div>';
+
+            html += '<div class="w-100">';
+
+            html += '<div class="form-check d-flex justify-content-end">';
+            html += '<input class="form-check-input me-2" type="checkbox" id="secret_check">';
+            html += '<label class="form-check-label" for="secret_check">비밀 댓글</label>';
+            html += '</div>';
+
+            html += '<div id="reply_input" class="my-2">';
+            html += '<textarea id="reply_content" rows="5"></textarea>';
+            html += '<div class="d-flex justify-content-end mt-2">';
+            html += `<button id="reply_input_button" onclick="writeAction(${replyno})">댓글 작성</button>`;
+            html += '</div>';
+            html += '</div>';
+
+            html += '</div>';
+
+            html += '</div>';
+
+            var reply_box = document.querySelector("#reply_box" + replyno);
+            reply_box.innerHTML += html;
+
+            // <div class="form-check d-flex justify-content-end">
+            //     <input class="form-check-input me-2" type="checkbox" id="secret_check">
+            //     <label class="form-check-label" for="secret_check">
+            //         비밀 댓글
+            //     </label>
+            // </div>
+            // <div id="reply_input" class="my-2">
+            //     <textarea id="reply_content" rows="5"></textarea>
+            //     <div class="d-flex justify-content-end mt-2">
+            //         <button id="reply_input_button" onclick="writeAction()">댓글 작성</button>
+            //     </div>
+            // </div>
         }
 
 
