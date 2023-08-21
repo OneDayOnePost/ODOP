@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -189,7 +190,7 @@ public class GrMemberController {
 
     // ------------------------------------------------------------------------------
     // tag 조회
-    @GetMapping(value = "/{searchTag}")
+    @GetMapping(value = "/tags/{searchTag}")
     public String tagGET(Model model, @PathVariable(value = "searchTag") String searchTag){
 
         try {
@@ -205,6 +206,15 @@ public class GrMemberController {
                     formattedpostcount = "0" + formattedpostcount;
                 }
                 log.info("나와라!! => {}", formattedpostcount);
+
+                List<Member> members = new ArrayList<>();
+                for(Post post : list){
+                    Member member = gRepository.findByEmail(post.getWriter());
+                    log.info("왜이래 => {}", member.toString());
+                    members.add(member);
+                }
+                
+                model.addAttribute("members", members);
 
                 model.addAttribute("tagname", searchTag);
                 model.addAttribute("formattedpostcount", formattedpostcount);

@@ -219,7 +219,7 @@
                 </div>
 
                 <!--댓글 조회-->
-                <div class="reply_output">
+                <div class="reply_output" id="reply_ourtput">
                     <!--동적 생성-->
                     <!-- <div class="reply_box mb-3">
                                 <div class="d-flex mb-2">
@@ -610,6 +610,21 @@
             }
 
         }
+
+        // 댓글 클릭시 댓글 영역으로 이동 (가람)
+        $(document).ready(function() {
+            // URL 파라미터 읽기
+            const urlParams = new URLSearchParams(window.location.search);
+            const commentId = urlParams.get('commentId');
+            
+            // 댓글 영역으로 스크롤 조정
+            if (commentId) {
+                const yOffset = 200; // 조정할 y 좌표 값 (양수로 수정)
+                const y = document.getElementById('reply_ourtput').getBoundingClientRect().top + window.pageYOffset + yOffset;
+                window.scrollTo({ top: y, behavior: 'auto' });
+            }
+        });
+
 
 
 
