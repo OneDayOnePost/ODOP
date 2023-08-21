@@ -237,6 +237,7 @@
         .post_img {
             float: right;
             position: relative;
+
         }
 
         .me-3 {
@@ -275,6 +276,8 @@
             padding-left: 10px;
             font-weight: bold;
             margin-top: 20px;
+
+            cursor: pointer;
         }
 
         .post_info p {
@@ -487,7 +490,7 @@
                                     <!-- 대표 이미지가 존재하는 경우 -->
                                     <img th:if="${obj.postImageList.?[image.chk == 1].size() > 0}"
                                         th:src="${obj.postImageList.?[image.chk == 1][0].image.imgpath}" width="780px"
-                                        height="300px">
+                                        height="300px" style="cursor: pointer;">
 
                                     <div class="me-3" th:if="${obj.postImageList.?[image.chk == 1].size() > 0}">
                                         <i class="bi bi-eye me-2"></i><span th:text="${obj.hit}"></span>
