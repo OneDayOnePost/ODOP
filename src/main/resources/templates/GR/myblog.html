@@ -461,7 +461,7 @@
                                 </div>
                             </div>
                             <div class="cate_all"><a
-                                    th:href="@{/blog/{email}/0/home.do(email=${member.email})}">전체보기</a></div>
+                                    th:href="@{/blog/{email}/home.do(email=${member.email})}">전체보기</a></div>
                             <div class="cate" th:each="obj:${pclist}">
 
                                 <a href=#
@@ -669,9 +669,10 @@
                         <tr>
                             <td>${imgHTML}</td>
                             <td style="font-size: 18px; padding-bottom: 5px; width: 246px;">
-                                <button type="button" onclick="goToBlog('${follower.email}')" style="border: none; background-color: #fff;">${follower.email}</button>
+                                <button type="button" onclick="goToBlog('${follower.email}')" style="border: none; background-color: #fff;">${follower.nickname}</button>
                             </td>
                             <td>${buttonHTML}</td>
+                            <td hidden>${follower.email}</td>
                         </tr>
                     `;
                 }
@@ -718,9 +719,10 @@
                         <tr>
                             <td>${imgHTML}</td>
                             <td style="font-size: 18px; padding-bottom: 5px; width: 246px;">
-                                <button type="button" onclick="goToBlog('${following.email}')" style="border: none; background-color: #fff;">${following.email}</button>
+                                <button type="button" onclick="goToBlog('${following.email}')" style="border: none; background-color: #fff;">${following.nickname}</button>
                             </td>
                             <td>${buttonHTML}</td>
+                            <td hidden>${following.email}</td>
                         </tr>
                     `;
                 }
@@ -737,7 +739,7 @@
 
             if (button.val() === '팔로우 취소') {
                 // rest api 호출
-                const url = contextPath + "/api/myblog/followdelete.json" + '?useremail=' + useremail + '&blogemail=' + $(this).closest("tr").find("td:nth-child(2)").text().trim();
+                const url = contextPath + "/api/myblog/followdelete.json" + '?useremail=' + useremail + '&blogemail=' + $(this).closest("tr").find("td:nth-child(4)").text().trim();
                 const headers = { "Content-Type": "application/json" };
                 const { data } = await axios.delete(url, { headers });
 
@@ -755,7 +757,7 @@
                 // rest api 호출
                 const url = contextPath + "/api/myblog/followinsert.json";
                 const headers = { "Content-Type": "application/json" };
-                const body = { "fromMember": { "email": useremail }, "toMember": { "email": $(this).closest("tr").find("td:nth-child(2)").text().trim() } };
+                const body = { "fromMember": { "email": useremail }, "toMember": { "email": $(this).closest("tr").find("td:nth-child(4)").text().trim() } };
                 const { data } = await axios.post(url, body, { headers: headers });
 
                 if (data.status === 200) {
@@ -777,7 +779,7 @@
 
             if (button.val() === '팔로우 취소') {
                 // rest api 호출
-                const url = contextPath + "/api/myblog/followdelete.json" + '?useremail=' + useremail + '&blogemail=' + $(this).closest("tr").find("td:nth-child(2)").text().trim();
+                const url = contextPath + "/api/myblog/followdelete.json" + '?useremail=' + useremail + '&blogemail=' + $(this).closest("tr").find("td:nth-child(4)").text().trim();
                 const headers = { "Content-Type": "application/json" };
                 const { data } = await axios.delete(url, { headers });
 
@@ -795,7 +797,7 @@
                 // rest api 호출
                 const url = contextPath + "/api/myblog/followinsert.json";
                 const headers = { "Content-Type": "application/json" };
-                const body = { "fromMember": { "email": useremail }, "toMember": { "email": $(this).closest("tr").find("td:nth-child(2)").text().trim() } };
+                const body = { "fromMember": { "email": useremail }, "toMember": { "email": $(this).closest("tr").find("td:nth-child(4)").text().trim() } };
                 const { data } = await axios.post(url, body, { headers: headers });
 
                 if (data.status === 200) {

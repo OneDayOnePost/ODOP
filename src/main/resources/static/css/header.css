@@ -225,6 +225,25 @@
                 cursor: pointer;
             }
 
+            .notification-icon {
+                position: relative;
+                display: inline-block;
+            }
+            
+            .notification-count {
+                position: absolute;
+                top: -8px; /* 숫자를 아이콘 위로 위치시키는 값 */
+                right: -8px; /* 숫자를 아이콘 오른쪽으로 위치시키는 값 */
+                background-color: red; /* 배경색 */
+                color: white; /* 글자색 */
+                border-radius: 50%; /* 원형 모양으로 만들기 */
+                width: 20px;
+                height: 20px;
+                text-align: center;
+                line-height: 20px;
+                font-size: 12px;
+            }            
+
             .new-post input{
                 width: 130px;
                 height: 30px;

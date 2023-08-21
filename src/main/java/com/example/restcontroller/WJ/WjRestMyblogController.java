@@ -1,6 +1,7 @@
 package com.example.restcontroller.WJ;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.dto.MemberFollowDTO;
 import com.example.entity.Follow;
 import com.example.service.WJ.WjAlertService;
 import com.example.service.WJ.WjMemberService;
@@ -66,7 +68,7 @@ public class WjRestMyblogController {
 
             // 팔로우 알림
             String content = mService.findByEmail(fromMember).getNickname() + "님이 회원님을 팔로우하셨습니다.";
-            String url = "/blog/" + fromMember + "/0/home.do";
+            String url = "/blog/" + fromMember + "/home.do";
             int followret = aService.followInsert(toMember, content, url);
 
             if (ret == 1 && followret == 1) {
@@ -91,8 +93,14 @@ public class WjRestMyblogController {
         Map<String, Object> retMap = new HashMap<>();
 
         try {
+            List<MemberFollowDTO> followerlist = mbService.followerList(useremail, blogemail);
+
+            for (MemberFollowDTO follower : followerlist) {
+                follower.setNickname(mService.findByEmail(follower.getEmail()).getNickname());
+            }
+
             retMap.put("status", 200);
-            retMap.put("followerlist", mbService.followerList(useremail, blogemail));
+            retMap.put("followerlist", followerlist);
         } 
         catch (Exception e) {
             e.printStackTrace();
@@ -110,8 +118,14 @@ public class WjRestMyblogController {
         Map<String, Object> retMap = new HashMap<>();
 
         try {
+            List<MemberFollowDTO> followinglist = mbService.followingList(useremail, blogemail);
+
+            for (MemberFollowDTO following : followinglist) {
+                following.setNickname(mService.findByEmail(following.getEmail()).getNickname());
+            }
+
             retMap.put("status", 200);
-            retMap.put("followinglist", mbService.followingList(useremail, blogemail));
+            retMap.put("followinglist", followinglist);
         } 
         catch (Exception e) {
             e.printStackTrace();

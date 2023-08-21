@@ -151,6 +151,7 @@ public class RestHomeController {
 	
 				retMap.put("status", 200);
 				retMap.put("alertList", alertList);
+				retMap.put("alertcount", WjaService.selectAlertCount(useremail));
 			}
         } 
         catch (Exception e) {

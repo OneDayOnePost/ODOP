@@ -297,6 +297,7 @@
             vertical-align: middle;
         }
 
+
         #name,
         #phone,
         #selectmbti {
@@ -307,6 +308,7 @@
             margin-left: 90px;
         }
 
+        #email,
         #name,
         #nickname,
         #phone,
@@ -428,8 +430,8 @@
                             <tr class="tableline">
                                 <th>이메일</th>
                                 <td class="email-box">
-                                    <div class="email" style="padding-top: 17px;">
-                                        <p>이메일 불러오기</p>
+                                    <div class="email" >
+                                        <input type="text" id="email" name="email" th:value="${member.email}" readonly style="background:none;">
                                     </div>
                                 </td>
 
@@ -440,7 +442,7 @@
                                 <td>
                                     <div style="display: flex;">
                                         <input type="text" id="name" name="name" maxlength="10"
-                                            style="padding: 0.5% 3% 0.5% 0%;">
+                                            style="padding: 0.5% 3% 0.5% 0%;"th:value="${member.name}">
                                         <p style="padding-top: 10px; padding-left: 30px;">10자 이내로 입력해주세요</p>
                                     </div>
                                 </td>
@@ -451,7 +453,7 @@
                                 <td>
                                     <div id="nickbox">
                                         <input type="text" id="nickname" name="nickname" maxlength="10"
-                                            style="padding: 0.5% 3% 0.5% 0%;">
+                                            style="padding: 0.5% 3% 0.5% 0%;"th:value="${member.nickname}">
                                         <input type="button" id="nickchk" value="중복 확인"
                                             onclick="ajaxNickCheck(nickname)"></input>
                                         <input type="hidden" id="nickjoongbokchk" name="nickjoongbokchk"></input>
@@ -465,7 +467,7 @@
                             <tr class="tableline">
                                 <th>전화 번호</th>
                                 <td><input type="text" id="phone" name="phone" maxlength="13"
-                                        style="padding: 0.5% 5% 0.5% 5%" placeholder="010 - 0000 - 0000"></td>
+                                        style="padding: 0.5% 5% 0.5% 5%" th:value="${member.phone}"></td>
                                 <td></td>
                             </tr>
                             <tr class="tableline">
@@ -543,7 +545,7 @@
     <th:block th:replace="~{/fragments/footer :: footerHTML}"></th:block>
 
     <!-- modal 알림창 -->
-    <div class="modal fade" style="width: 400px; display: flex; align-items: center; justify-content: center; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);" id="alert" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    <div class="modal fade" id="alert" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">

@@ -50,4 +50,16 @@ public class WjAlertServiceImpl implements WjAlertService {
             return -1;
         }
     }
+
+    // 읽지 않은(chk=0) 알림 개수
+    @Override
+    public BigInteger selectAlertCount(String email) {
+        try {
+            return aMapper.selectAlertCount(email);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return BigInteger.valueOf(-1);
+        }
+    }
 }

@@ -16,4 +16,7 @@ public class MemberFollowDTO {
   // 로그인한 유저 -> 해당 이메일 팔로우 유무
   // 팔로우 o : 1 / 팔로우 x : 0
   private BigInteger follow_yumu;
+
+  // 닉네임
+  private String nickname;
 }
