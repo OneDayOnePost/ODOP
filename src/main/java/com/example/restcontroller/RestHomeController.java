@@ -119,15 +119,17 @@ public class RestHomeController {
 				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분");
 	
 				for (Alert alert : alertList) {
-					// 프로필 이미지
-					// alert 테이블의 content -> "님이" 이전의 문자열을 추출 -> 닉네임
-					String fromNickname = alert.getContent().substring(0, alert.getContent().indexOf("님이"));
-	
-					Member member = WjmService.findByNickname(fromNickname);
-	
-					if (member != null) {
-						alert.setImgkey(member.getImgkey());
-						alert.setImgpath(member.getImgpath());
+					if (alert.getType().equals("팔로우") || alert.getType().equals("팔로잉게시글")) {
+						// 프로필 이미지
+						// alert 테이블의 content -> "님이" 이전의 문자열을 추출 -> 닉네임
+						String fromNickname = alert.getContent().substring(alert.getContent().indexOf("<b>") + 3, alert.getContent().indexOf("</b>"));
+		
+						Member member = WjmService.findByNickname(fromNickname);
+		
+						if (member != null) {
+							alert.setImgkey(member.getImgkey());
+							alert.setImgpath(member.getImgpath());
+						}
 					}
 					
 					// 등록 날짜

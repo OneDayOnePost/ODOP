@@ -1,5 +1,6 @@
 package com.example.restcontroller.WJ;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,14 +66,15 @@ public class WjRestMyblogController {
             String toMember = follow.getToMember().getEmail();
 
             int ret = mbService.Follow(fromMember, toMember);
-
-            // 팔로우 알림
-            String content = mService.findByEmail(fromMember).getNickname() + "님이 회원님을 팔로우하셨습니다.";
-            String url = "/blog/" + fromMember + "/home.do";
-            int followret = aService.followInsert(toMember, content, url);
-
-            if (ret == 1 && followret == 1) {
+            
+            if (ret == 1) {
                 retMap.put("status", 200);
+                
+                // 팔로우 알림
+                String content = "<b>" + mService.findByEmail(fromMember).getNickname() + "</b>님이 회원님을 팔로우하셨습니다.";
+                String url = "/blog/" + fromMember + "/home.do";
+                Date regdate = new Date();
+                aService.alertInsert(toMember, content, "팔로우", url, regdate);
             } else {
                 retMap.put("status", 0);
             }
