@@ -54,12 +54,8 @@ public class GrMemberController {
     @GetMapping(value = "/blog/{email}/home.do")
     public String myblogGET(Model model, @AuthenticationPrincipal User user,
             @RequestParam(value = "categoryId", required = false, defaultValue = "0") Long categoryId,
-            @PathVariable(value = "email") String email) { // @AuthenticationPrincipal User user
+            @PathVariable(value = "email") String email) {
         try {
-
-            // log.info("categoryId received: {}", categoryId);
-            // log.info("user 정보 => {}", user.toString());
-            // log.info("user user => {}", user.getAuthorities());
 
             if (categoryId != 0) {
                 log.info("categoryId: {}", categoryId); // categoryId 값 로그로 출력
