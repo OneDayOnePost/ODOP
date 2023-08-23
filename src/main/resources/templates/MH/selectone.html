@@ -253,7 +253,10 @@
             </div>
 
         </div>
+        <button id="test">버튼 테스트</button>
     </div>
+    
+    
 
     <!--footer 영역-->
     <th:block th:replace="~{/fragments/footer :: footerHTML}"></th:block>
@@ -266,6 +269,12 @@
 
         const postno = /*[[${post.no}]]*/'';
         const email = /*[[${user?.username}]]*/'';
+
+        document.querySelector("#test").addEventListener("click", () => test(1));
+
+        function test(e) {
+            console.log(e);
+        }
 
         /* 댓글 등록 */
         async function writeAction(replyno = null) {
@@ -631,10 +640,26 @@
 
         }
 
+        /* 답글 버튼 시 호출되는 함수 */
         function writeNestedReply(replyno) {
 
+            console.log(1);
+
+            // 1. 댓글 번호를 파라미터로 받음
             console.log(replyno);
 
+            // 2. 댓글 번호 -> 해당 번호를 ID 값으로 가지는 댓글 박스 조회
+            var reply_box = document.querySelector("#reply_box" + replyno);
+
+            var nested_reply = reply_box.children[2];
+
+            console.log(nested_reply);
+
+            if(nested_reply) {
+                nested_reply.remove();
+            }
+        
+            // 3. 답글 작성 양식을 만드는 html 요소를 담을 변수 선언
             var html = "";
 
             html += '<div class="mt-1 d-flex">'
@@ -661,8 +686,9 @@
 
             html += '</div>';
 
-            var reply_box = document.querySelector("#reply_box" + replyno);
+            // 4. 댓글 박스에 html 요소 추가
             reply_box.innerHTML += html;
+
 
             // <div class="form-check d-flex justify-content-end">
             //     <input class="form-check-input me-2" type="checkbox" id="secret_check">
@@ -677,6 +703,20 @@
             //     </div>
             // </div>
         }
+
+        // 댓글 클릭시 댓글 영역으로 이동 (가람)
+        $(document).ready(function() {
+            // URL 파라미터 읽기
+            const urlParams = new URLSearchParams(window.location.search);
+            const commentId = urlParams.get('commentId');
+            
+            // 댓글 영역으로 스크롤 조정
+            if (commentId) {
+                const yOffset = 200; // 조정할 y 좌표 값 (양수로 수정)
+                const y = document.getElementById('reply_ourtput').getBoundingClientRect().top + window.pageYOffset + yOffset;
+                window.scrollTo({ top: y, behavior: 'auto' });
+            }
+        });
 
 
 
