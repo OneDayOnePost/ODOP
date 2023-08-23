@@ -231,12 +231,13 @@
 
         .post {
             padding-left: 53px;
-            margin-bottom: -45px;
+            margin-bottom: -25px;
         }
 
         .post_img {
             float: right;
             position: relative;
+
         }
 
         .me-3 {
@@ -263,7 +264,6 @@
         .post_info {
             width: 820px;
             padding-left: 50px;
-            padding-top: 40px;
             display: flex;
             flex-wrap: wrap;
             align-items: flex-start;
@@ -275,6 +275,8 @@
             padding-left: 10px;
             font-weight: bold;
             margin-top: 20px;
+
+            cursor: pointer;
         }
 
         .post_info p {
@@ -337,6 +339,7 @@
             flex: 1;
             font-size: 13px;
             width: 150px;
+            cursor: pointer;
         }
 
         .post_line {
@@ -482,12 +485,12 @@
                         </div>
                         <div class="mypost">
                             <div class="post_info" th:each="obj:${list}">
-                                <div style="position: relative;" th:onclick="selectPost([[${obj.no}]], [[${email}]])">
+                                <div style="position: relative; margin-top: 20px;" th:onclick="selectPost([[${obj.no}]], [[${email}]])">
                                     <!-- obj.postImageList.?[image.chk == 1] : chk 값이 1인 이미지들의 리스트를 반환 -->
                                     <!-- 대표 이미지가 존재하는 경우 -->
                                     <img th:if="${obj.postImageList.?[image.chk == 1].size() > 0}"
                                         th:src="${obj.postImageList.?[image.chk == 1][0].image.imgpath}" width="780px"
-                                        height="300px">
+                                        height="300px" style="cursor: pointer;">
 
                                     <div class="me-3" th:if="${obj.postImageList.?[image.chk == 1].size() > 0}">
                                         <i class="bi bi-eye me-2"></i><span th:text="${obj.hit}"></span>
@@ -506,7 +509,7 @@
                                     <div class="post_date">
                                         <p th:text="${obj.regdate}"></p>
                                     </div>
-                                    <div class="post_infoinfo" name="countreply">
+                                    <div class="post_infoinfo" name="countreply" th:onclick="scrollToComment([[${obj.no}]], [[${email}]])">
                                         <i class="bi bi-chat-dots me-2"></i><span>댓글&nbsp;</span><span
                                             style="font-weight: bold;" th:text="${obj.replyList.size()}"></span>
                                         &nbsp;&nbsp;<i class="bi bi-heart me-2"></i><span>좋아요&nbsp;</span><span
@@ -576,13 +579,15 @@
             var newUrl = contextPath + "/blog/" + email + "/home.do?categoryId=" + categoryId;
             window.location.href = newUrl;
         }
-            
 
-            document.addEventListener('DOMContentLoaded', function () {
-            // 현재 URL에서 카테고리 ID 값을 읽어옵니다.
-            var categoryId = /*[[${categoryId}]]*/ null;
+        // 페이지 로드 시 실행되는 함수
+        document.addEventListener('DOMContentLoaded', function() {
+            // 현재 URL에서 쿼리 파라미터로부터 categoryId 값을 읽어옵니다.
+            var urlParams = new URLSearchParams(window.location.search);
+            var categoryId = urlParams.get('categoryId');
 
-            if (categoryId !== null) {
+            // categoryId 값이 존재하면 해당 카테고리에 스타일을 적용합니다.
+            if (categoryId) {
                 // 카테고리 스타일 적용
                 var categoryElement = document.querySelector('a[data-category-id="' + categoryId + '"]');
                 if (categoryElement) {
@@ -821,6 +826,15 @@
             // console.log(postno);
             window.location.href = `${contextPath}/blog/${email}/select.do?postno=${postno}`;
 
+        }
+
+        // 댓글로 이동
+        function scrollToComment(commentId, email){
+            const url = `${contextPath}/blog/${email}/select.do`;
+            const params = new URLSearchParams({ postno: commentId });
+            params.set('commentId', commentId);
+            const targetUrl = `${url}?${params.toString()}`;
+            window.location.href = targetUrl;
         }
 
         // 태그 조회

@@ -1,6 +1,7 @@
 package com.example.service.WJ;
 
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -15,11 +16,11 @@ import lombok.RequiredArgsConstructor;
 public class WjAlertServiceImpl implements WjAlertService {
     final WjAlertMapper aMapper;
     
-    // 팔로우 알림
+    // 알림 추가
     @Override
-    public int followInsert(String email, String content, String url) {
+    public int alertInsert(String email, String content, String type, String url, Date regdate) {
         try {
-            return aMapper.followInsert(email, content, url);
+            return aMapper.alertInsert(email, content, type, url, regdate);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -60,6 +61,18 @@ public class WjAlertServiceImpl implements WjAlertService {
         catch (Exception e) {
             e.printStackTrace();
             return BigInteger.valueOf(-1);
+        }
+    }
+
+     // 팔로워 목록
+    @Override
+    public List<String> selectFollowerList(String email) {
+        try {
+            return aMapper.selectFollowerList(email);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

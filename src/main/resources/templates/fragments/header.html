@@ -263,27 +263,39 @@
 
                         let tableHTML = '';
                         for (const alert of alertlist) {
-                            // 프로필 이미지
-                            let imgHTML = '';
-                            if (alert.imgpath != null) {
-                                imgHTML = `
-                                    <img src="${alert.imgpath}" key="${alert.imgkey}" width="45px" height="45px">
-                                `;
-                            } else {
-                                imgHTML = `
-                                    <img src="/odop/images/default_thumbnail.png" width="45px" height="45px">
+                            if (alert.type === "팔로우" || alert.type === "팔로잉게시글") {
+                                // 프로필 이미지
+                                let imgHTML = '';
+                                if (alert.imgpath != null) {
+                                    imgHTML = `
+                                        <img src="${alert.imgpath}" key="${alert.imgkey}" width="45px" height="45px">
+                                    `;
+                                } else {
+                                    imgHTML = `
+                                        <img src="/odop/images/default_thumbnail.png" width="45px" height="45px">
+                                    `;
+                                }
+    
+                                tableHTML += `
+                                    <tr class="alerttablerow" onclick="alertClick(${alert.no}, ${alert.chk}, '${alert.url}')">
+                                        <td>${imgHTML}</td>
+                                        <td>
+                                            <p class="${alert.chk == 0 ? 'alert_chk0' : (alert.chk == 1 ? 'alert_chk1' : '')}">${alert.content}</p>
+                                            <p class="alert_regdate">${alert.diffRegdate}</p>
+                                        </td>
+                                    </tr>
                                 `;
                             }
-
-                            tableHTML += `
-                                <tr class="alerttablerow" onclick="alertClick(${alert.no}, ${alert.chk}, '${alert.url}')">
-                                    <td>${imgHTML}</td>
-                                    <td>
-                                        <p class="${alert.chk == 0 ? 'alert_chk0' : (alert.chk == 1 ? 'alert_chk1' : '')}">${alert.content}</p>
-                                        <p class="alert_regdate">${alert.diffRegdate}</p>
-                                    </td>
-                                </tr>
-                            `;
+                            else {
+                                tableHTML += `
+                                    <tr class="alerttablerow" onclick="alertClick(${alert.no}, ${alert.chk}, '${alert.url}')">
+                                        <td>
+                                            <p class="${alert.chk == 0 ? 'alert_chk0' : (alert.chk == 1 ? 'alert_chk1' : '')}">${alert.content}</p>
+                                            <p class="alert_regdate" style="float: right;">${alert.diffRegdate}</p>
+                                        </td>
+                                    </tr>
+                                `;
+                            }
                         }
 
                         document.getElementById('alertlisttable').innerHTML = tableHTML;
