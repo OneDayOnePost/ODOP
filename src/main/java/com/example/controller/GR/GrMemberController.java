@@ -187,7 +187,7 @@ public class GrMemberController {
     // ------------------------------------------------------------------------------
     // tag 조회
     @GetMapping(value = "/tags/{searchTag}")
-    public String tagGET(Model model, @PathVariable(value = "searchTag") String searchTag){
+    public String tagGET(Model model, @PathVariable(value = "searchTag") String searchTag, @AuthenticationPrincipal User user){
 
         try {
 

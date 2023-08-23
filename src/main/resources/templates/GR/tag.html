@@ -214,6 +214,17 @@
             color: #000;
         }
 
+        .heartBtn{
+            border: none;
+            background-color: transparent;
+            padding: 0;
+            cursor: pointer;
+        }
+        
+        .heartBtn .fa-heart{
+            color: #FA5500;
+        }
+
         
       
     </style>
@@ -279,8 +290,10 @@
                                                 </div>
                                                 <div class="post_infoinfo" name="countreply">
                                                     <i class="bi bi-eye me-2"></i><span style="font-weight: bold;" th:text="${obj.hit}"></span>
-                                                    &nbsp;&#183;&nbsp;&nbsp;<i style="cursor: pointer;" class="bi bi-chat-dots me-2" th:onclick="scrollToComment([[${obj.no}]], [[${members[postIndex.index].email}]])"></i><span style="font-weight: bold; cursor: pointer;" th:text="${obj.replyList.size()}" th:onclick="scrollToComment([[${obj.no}]], [[${members[postIndex.index].email}]])"></span>
-                                                    &nbsp;&#183;&nbsp;&nbsp;<i style="cursor: pointer;" class="bi bi-heart me-2" th:onclick="scrollToComment([[${obj.no}]], [[${members[postIndex.index].email}]])"></i><span style="font-weight: bold; cursor: pointer;" th:text="${obj.dopeList.size()}" th:onclick="scrollToComment([[${obj.no}]], [[${members[postIndex.index].email}]])"></span>
+                                                    &nbsp;&#183;&nbsp;&nbsp;<i style="cursor: pointer;" class="bi bi-chat-dots me-2" th:onclick="scrollToComment([[${obj.no}]], [[${members[postIndex.index].email}]])"></i><span style="font-weight: bold; cursor: pointer;" th:text="${obj.replyList.size()}" th:onclick="scrollToComment([[${obj.no}]], [[${members[postIndex.index].email}]])"></span>&nbsp;&#183;&nbsp;&nbsp;
+                                                    <button type="button" class="heartBtn" th:onclick="chkheart([[${obj.no}]],[[${postIndex.index}]])">
+                                                        <i class="fa-solid fa-heart heartIcon" ></i><span style="font-weight: bold; cursor: pointer;" th:text="${obj.dopeList.size()}"></span>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -333,6 +346,43 @@
             const targetUrl = `${url}?${params.toString()}`;
             window.location.href = targetUrl;
         }
+
+    </script>
+
+    <script th:inline="javascript" type="text/javascript">
+
+        const username = /*[[${user.username}]]*/"";
+        console.log("user정보", username);
+        
+        // 좋아요 기능
+        async function chkheart(postno, index){
+
+            const url = /*[[@{/api/blog/dope.json}]]*/"";
+            const headers = {"Content-Type":"application/json"};
+            const body = {id:username, postno:postno};
+            const { data } = await axios.post(url, body, { headers:headers  });
+            console.log('반환되는 결과', data);
+
+            console.log(data.result);
+
+            const button = $('.heartBtn');
+            const heartIcon = $('.heartIcon');
+
+
+            console.log("postno => ", postno);
+            console.log("index => ", index);
+
+            if (data.jjimstate === 1) {
+                // 찜 한 상태인 경우
+                $(heartIcon[index]).addClass('fa-regular');
+                $(heartIcon[index]).removeClass('fa-solid');
+            } else {
+                // 찜 안한 상태인 경우
+                $(heartIcon[index]).addClass('fa-solid');
+                $(heartIcon[index]).removeClass('fa-regular');
+            }
+
+            }
 
     </script>
 
