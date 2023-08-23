@@ -336,9 +336,9 @@
 
         .post_infoinfo {
             /* order: 2; */
-            flex: 1;
+            /* flex: 1; */
             font-size: 13px;
-            width: 150px;
+            width: 160px;
             cursor: pointer;
         }
 
@@ -394,6 +394,13 @@
         }
 
         .myblog_img:hover {
+            cursor: pointer;
+        }
+
+        .heartBtn{
+            border: none;
+            background-color: transparent;
+            padding: 0;
             cursor: pointer;
         }
 
@@ -492,18 +499,21 @@
                             <p th:text="${formattedpostcount}"></p>
                         </div>
                         <div class="mypost">
-                            <div class="post_info" th:each="obj:${list}">
-                                <div style="position: relative; margin-top: 20px;" th:onclick="selectPost([[${obj.no}]], [[${email}]])">
+                            <div class="post_info" th:each="obj, postIndex : ${list}">
+                                <div style="position: relative; margin-top: 20px; text-align: center;" th:onclick="selectPost([[${obj.no}]], [[${email}]])">
                                     <!-- obj.postImageList.?[image.chk == 1] : chk 값이 1인 이미지들의 리스트를 반환 -->
                                     <!-- 대표 이미지가 존재하는 경우 -->
-                                    <img th:if="${obj.postImageList.?[image.chk == 1].size() > 0}"
-                                        th:src="${obj.postImageList.?[image.chk == 1][0].image.imgpath}" width="780px"
-                                        height="300px" style="cursor: pointer;">
-
+                                    <div style="display: inline-block; text-align: center;">
+                                        <img th:if="${obj.postImageList.?[image.chk == 1].size() > 0}"
+                                            th:src="${obj.postImageList.?[image.chk == 1][0].image.imgpath}" width="770px"
+                                            height="300px" style="cursor: pointer;">
+                                    </div>
+                                
                                     <div class="me-3" th:if="${obj.postImageList.?[image.chk == 1].size() > 0}">
                                         <i class="bi bi-eye me-2"></i><span th:text="${obj.hit}"></span>
                                     </div>
                                 </div>
+                                
                                 <div class="post_title" th:onclick="selectPost([[${obj.no}]], [[${email}]])">
                                     <p th:text="${obj.title}"></p>
                                 </div>
@@ -517,12 +527,12 @@
                                     <div class="post_date">
                                         <p th:text="${obj.regdate}"></p>
                                     </div>
-                                    <div class="post_infoinfo" name="countreply" th:onclick="scrollToComment([[${obj.no}]], [[${email}]])">
-                                        <i class="bi bi-chat-dots me-2"></i><span>댓글&nbsp;</span><span
-                                            style="font-weight: bold;" th:text="${obj.replyList.size()}"></span>&nbsp;&nbsp;
+                                    <div class="post_infoinfo" name="countreply" >
+                                        <i class="bi bi-chat-dots me-2" th:onclick="scrollToComment([[${obj.no}]], [[${email}]])"></i><span th:onclick="scrollToComment([[${obj.no}]], [[${email}]])">댓글&nbsp;</span><span
+                                            style="font-weight: bold;" th:text="${obj.replyList.size()}" th:onclick="scrollToComment([[${obj.no}]], [[${email}]])"></span>&nbsp;&nbsp;
                                             <!-- 좋아요 -->
                                             <button type="button" class="heartBtn" th:onclick="chkheart([[${obj.no}]],[[${postIndex.index}]])">
-                                                <i class="fa-heart heartIcon" th:classappend="${dopes[postIndex.index]} ? 'fa-solid' : 'fa-regular'"></i>&nbsp;
+                                                <i class="fa-heart heartIcon" th:classappend="${dopes[postIndex.index]} ? 'fa-solid' : 'fa-regular'"></i>&nbsp;<span>좋아요</span>
                                                 <span style="font-weight: bold; cursor: pointer;" th:text="${obj.dopeList.size()}" class="dopeCount"></span>
                                             </button>
                                     </div>
@@ -859,6 +869,47 @@
 
         }
 
+
+        const username = /*[[${user.username}]]*/"";
+        const user = /*[[${user}]]*/"";
+        console.log("user정보", username);
+        
+        // 좋아요 기능
+        async function chkheart(postno, index){
+
+            if ( user == null ){
+                if(confirm('로그인이 필요한 서비스입니다. 로그인하시겠습니까? ')){
+                    location.replace(/*[[@{/login.do}]]*/"");
+                }
+            } else{
+
+                const url = /*[[@{/api/blog/dope.json}]]*/"";
+                const headers = {"Content-Type":"application/json"};
+                const body = {"email":username, "post":{"no":postno}};
+                const { data } = await axios.post(url, body, { headers:headers  });
+                console.log('반환되는 결과', data);
+
+                console.log(data.result);
+
+                const button = $('.heartBtn');
+                const heartIcon = $('.heartIcon');
+
+
+                console.log("postno => ", postno);
+                console.log("index => ", index);
+
+                if (data.dopestate === 1) {
+                    // 찜 한 상태인 경우
+                    $(heartIcon[index]).addClass('fa-regular');
+                    $(heartIcon[index]).removeClass('fa-solid');
+                } else {
+                    // 찜 안한 상태인 경우
+                    $(heartIcon[index]).addClass('fa-solid');
+                    $(heartIcon[index]).removeClass('fa-regular');
+                }
+
+            }
+        }
     </script>
 
 </body>

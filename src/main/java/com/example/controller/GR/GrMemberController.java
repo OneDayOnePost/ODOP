@@ -77,6 +77,18 @@ public class GrMemberController {
                     formattedpostcount = "0" + formattedpostcount;
                 }
 
+                List<Boolean> dopes = new ArrayList<>();
+                for(Post post : list){
+                    boolean dope = false;
+
+                    if (user != null){
+                        dope = dRepository.existsByEmailAndPost_no(user.getUsername(), post.getNo());    
+                        log.info("나와라!@@@ => {}", dope);
+                        dopes.add(dope);
+                    } 
+                }
+
+                model.addAttribute("dopes", dopes);
                 model.addAttribute("formattedpostcount", formattedpostcount);
 
             } else {
@@ -93,6 +105,18 @@ public class GrMemberController {
                 if (postallcount < 10) {
                     formattedpostcount = "0" + formattedpostcount;
                 }
+                List<Boolean> dopes = new ArrayList<>();
+                for(Post post : list){
+                    boolean dope = false;
+
+                    if (user != null){
+                        dope = dRepository.existsByEmailAndPost_no(user.getUsername(), post.getNo());    
+                        log.info("나와라!@@@ => {}", dope);
+                        dopes.add(dope);
+                    } 
+                }
+
+                model.addAttribute("dopes", dopes);
 
                 model.addAttribute("formattedpostcount", formattedpostcount);
             }
