@@ -359,7 +359,7 @@
 
             const url = /*[[@{/api/blog/dope.json}]]*/"";
             const headers = {"Content-Type":"application/json"};
-            const body = {id:username, postno:postno};
+            const body = {"email":username, "post":{"no":postno}};
             const { data } = await axios.post(url, body, { headers:headers  });
             console.log('반환되는 결과', data);
 
@@ -372,7 +372,7 @@
             console.log("postno => ", postno);
             console.log("index => ", index);
 
-            if (data.jjimstate === 1) {
+            if (data.dopestate === 1) {
                 // 찜 한 상태인 경우
                 $(heartIcon[index]).addClass('fa-regular');
                 $(heartIcon[index]).removeClass('fa-solid');

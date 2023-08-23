@@ -1,7 +1,5 @@
 package com.example.restcontroller.GR;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,28 +24,26 @@ public class GrRestdopeController {
     final GrDopeRepository dRepository;
 
     @PostMapping(value = "/dope.json")
-    public Map<String, Integer> dopePOST(@RequestBody Map<String, Object> map){
+    public Map<String, Integer> dopePOST(@RequestBody Dope dope){
 
         Map<String, Integer> retMap = new HashMap<>();
 
         try {
-
-            Dope dope = new Dope();
-
-            int ret = dRepository.countByEmailAndPost_no(map.get("id").toString(), BigDecimal.valueOf((Long.parseLong(map.get("postno").toString()))));
+            int ret = dRepository.countByEmailAndPost_no(dope.getEmail(), dope.getPost().getNo());
+            // int ret = dRepository.countByEmailAndPost_no(map.get("id").toString(), BigDecimal.valueOf((Long.parseLong(map.get("postno").toString()))));
             
             if (ret == 1 ){
-                dRepository.deleteByEmailAndPost_no(map.get("id").toString(), BigDecimal.valueOf((Long.parseLong(map.get("postno").toString()))));
+                dRepository.deleteByEmailAndPost_no(dope.getEmail(), dope.getPost().getNo());
 
                 retMap.put("result", 1);
                 retMap.put("dopestate", 1);
             }
             else {
             
-                dope.setEmail(map.get("id").toString());
+                dope.setEmail(dope.getEmail());
 
                 Post post = new Post();
-                post.setNo(BigInteger.valueOf(Long.parseLong(map.get("postno").toString())));
+                post.setNo(dope.getPost().getNo());
                 dope.setPost(post);
 
                 dRepository.save(dope);
