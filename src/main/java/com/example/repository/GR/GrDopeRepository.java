@@ -19,4 +19,10 @@ public interface GrDopeRepository extends JpaRepository<Dope, BigInteger> {
     Dope findByEmailAndPost_no(String email, BigInteger postno);
 
     int countByEmailAndPost_no(String email, BigInteger postno);
+
+    // 좋아요 여부 확인
+    boolean existsByEmailAndPost_no(String email, BigInteger postno);
+
+    // 좋아요 갯수
+    int countByPost_no(BigInteger postno);
 }

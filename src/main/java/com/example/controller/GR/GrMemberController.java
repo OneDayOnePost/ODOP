@@ -27,10 +27,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.dto.MemberFollowDTO;
+import com.example.entity.Dope;
 import com.example.entity.Follow;
 import com.example.entity.Member;
 import com.example.entity.Post;
 import com.example.mapper.GR.GrMyblogMapper;
+import com.example.repository.GR.GrDopeRepository;
 import com.example.repository.GR.GrMemberRepository;
 import com.example.repository.GR.GrPostRepository;
 import com.example.service.WJ.WjMyblogService;
@@ -48,6 +50,7 @@ public class GrMemberController {
     final GrMyblogMapper gMapper;
     final GrPostRepository postRepository;
     final private GrMemberRepository gRepository;
+    final GrDopeRepository dRepository;
 
     final WjMyblogService wjmyblogservice;
 
@@ -204,13 +207,24 @@ public class GrMemberController {
                 log.info("나와라!! => {}", formattedpostcount);
 
                 List<Member> members = new ArrayList<>();
+                List<Boolean> dopes = new ArrayList<>();
+
                 for(Post post : list){
                     Member member = gRepository.findByEmail(post.getWriter());
                     log.info("왜이래 => {}", member.toString());
                     members.add(member);
+
+                    boolean dope = false;
+
+                    if (user != null){
+                        dope = dRepository.existsByEmailAndPost_no(user.getUsername(), post.getNo());    
+                        log.info("나와라!@@@ => {}", dope);
+                        dopes.add(dope);
+                    } 
                 }
                 
                 model.addAttribute("members", members);
+                model.addAttribute("dopes", dopes);
 
                 model.addAttribute("tagname", searchTag);
                 model.addAttribute("formattedpostcount", formattedpostcount);

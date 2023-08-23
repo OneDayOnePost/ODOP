@@ -1,6 +1,9 @@
 package com.example.restcontroller.GR;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,6 +60,19 @@ public class GrRestdopeController {
         }
 
         return retMap;
+    }
+
+    @PostMapping(value = "/dopeCounts.json")
+    public List<Integer> getDopeCounts(@RequestBody List<Long> postNos){
+        
+    
+        List<Integer> dopeCounts = new ArrayList<>();
+        for( Long postNo : postNos){
+            int count = dRepository.countByPost_no(BigInteger.valueOf(postNo));
+            dopeCounts.add(count);
+        }
+        return dopeCounts;
+
     }
     
 }
