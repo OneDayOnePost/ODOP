@@ -266,8 +266,9 @@
                     <div>
                         <img onclick="naver_login()" class="login_social" th:src="@{/images/logo_naver.png}"
                             style="width: 50px; height: 50px; margin-left: 20px;">
+                        <a class="kakaoLoginBtn" id="kakao-login-btn" href="javascript:loginWithKakao()">
                         <img class="login_social" th:src="@{/images/logo_kakao.png}"
-                            style="width: 50px; height: 50px; margin-left: 20px;">
+                            style="width: 50px; height: 50px; margin-left: 20px;"></a>
                         <img class="login_social" th:src="@{/images/logo_google.png}"
                             style="width: 50px; height: 50px; margin-left: 20px; border: lightgray 1px solid;">
                     </div>
@@ -302,6 +303,127 @@
             document.getElementById("form").submit();
 
         }
+    </script>
+
+    <!-- 카카오 로그인 -->
+    <script src = "https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+    <script th:inline="javascript" type="text/javascript">
+
+        var id = "";
+        var email = "";
+        var nickname = "";
+
+        // 소셜로그인 김가람
+        Kakao.init('d68da7773e44f038a17f7e6f54569270');
+
+        function loginWithKakao() {
+            Kakao.Auth.login({
+                success: function(authObj) {
+                    console.log('authObj', authObj);
+                    Kakao.API.request({
+                        url: '/v2/user/me',
+                        success: async function(response) {
+                            console.log('response', response);
+                            console.log('response', response.kakao_account.id);
+                            console.log('response', response.kakao_account.email);
+                            console.log('response', response.kakao_account.profile.nickname);
+                            // alert('로그인 성공');
+
+                            id = response.id + '@k';
+                            email = response.kakao_account.email;
+                            nickname = response.kakao_account.profile.nickname;
+
+                            // if(!email ) {
+                            //     alert('이메일정보 제공에 동의해주세요');
+
+                            //     // 카카오톡 로그아웃
+                            //     if (Kakao.Auth.getAccessToken()) {
+                                    
+                            //         Kakao.API.request({
+                            //             url: '/v1/user/unlink',
+                            //             success: function (response) {
+                            //                 console.log(response)
+                            //             },
+                            //             fail: function (error) {
+                            //                 console.log(error)
+                            //             },
+                            //         });
+                                
+                            //         Kakao.Auth.setAccessToken(null);
+                            //     }
+                            //     return false;
+                            // }
+                            
+                            // 성공시 이동할 페이지
+                            const url = /*[[@{/api/kakaologin.json}]]*/'';
+                            const body = { "id":id, "email":email };
+                            const headers = {"Content-Type":"application/json"};
+                            const {data} = await axios.post(url, body,  {headers});
+                            console.log(data.ret);
+
+                            if(data.ret === 0) { // 등록된 회원이 없을 때 회원가입으로
+                                kakaojoin();
+                            }
+                            else if(data.ret === 1) { // 탈퇴회원
+                                alert('이미 탈퇴한 회원입니다');
+                                return false;
+                            }
+                            else if(data.ret === 2) { // 블랙리스트 회원
+                                alert('블랙리스트 회원입니다');
+                                return false;
+                            }
+                            else if(data.ret === 3){ // 정상회원 => 홈으로
+                                location.href="/odop/home.do";
+                            }
+
+
+                        }
+                    })
+                },
+                fail: function(err) {
+                    alert(JSON.stringify(err));
+                }
+            });
+        }
+
+        function kakaojoin() {
+            console.log(email, nickname, id);
+            const kakaojoinform = document.createElement("form");
+            kakaojoinform.action = /*[[@{/odop/kakaojoin.do}]]*/"";
+            kakaojoinform.method = "post";
+            kakaojoinform.style.display="none";
+
+            const input1 = document.createElement("input");
+            input1.type = "hidden";
+            input1.name = "id";
+            input1.value = id;
+            kakaojoinform.appendChild(input1);
+            
+            const input2 = document.createElement("input");
+            input2.type = "hidden";
+            input2.name = "email";
+            input2.value = email;
+            kakaojoinform.appendChild(input2);
+            
+            const input3 = document.createElement("input");
+            input3.type = "hidden";
+            input3.name = "nickname";
+            input3.value = nickname;
+            kakaojoinform.appendChild(input3);
+
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "_csrf";
+            input.value =  /*[[${_csrf.token}]]*/"";
+            kakaojoinform.appendChild(input);
+
+            document.body.appendChild(kakaojoinform);
+
+            kakaojoinform.submit();
+        }
+
+ 
+        
     </script>
 </body>
 
