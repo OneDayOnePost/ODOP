@@ -298,7 +298,7 @@
                                                     <!-- 좋아요 -->
                                                     <button type="button" class="heartBtn" th:onclick="chkheart([[${obj.no}]],[[${postIndex.index}]])">
                                                         <i class="fa-heart heartIcon" th:classappend="${dopes[postIndex.index]} ? 'fa-solid' : 'fa-regular'"></i>&nbsp;
-                                                        <span style="font-weight: bold; cursor: pointer;" th:text="${obj.dopeList.size()}" class="dopeCount"></span>
+                                                        <span style="font-weight: bold; cursor: pointer;" id="postdopecount" th:text="${obj.dopeList.size()}" class="dopeCount"></span>
                                                     </button>
                                                 </div>
                                             </div>
@@ -381,7 +381,6 @@
                 const button = $('.heartBtn');
                 const heartIcon = $('.heartIcon');
 
-
                 console.log("postno => ", postno);
                 console.log("index => ", index);
 
@@ -389,10 +388,14 @@
                     // 찜 한 상태인 경우
                     $(heartIcon[index]).addClass('fa-regular');
                     $(heartIcon[index]).removeClass('fa-solid');
+
+                    $(postdopecount[index]).text(parseInt($(postdopecount[index]).text()) - 1);
                 } else {
                     // 찜 안한 상태인 경우
                     $(heartIcon[index]).addClass('fa-solid');
                     $(heartIcon[index]).removeClass('fa-regular');
+
+                    $(postdopecount[index]).text(parseInt($(postdopecount[index]).text()) + 1);
                 }
 
             }
