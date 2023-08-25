@@ -71,14 +71,26 @@
             font-weight: bold;
             font-size: 25px;
             white-space: nowrap;
+            position: relative;
         }
 
         .link-container a:not(:last-child) {
             margin-right: 65px;
         }
 
-        .link-container a:hover {
-            color: #B6C6D3;
+        .link-container a::after {
+            content: " ";
+            position: absolute;
+            top: 39px;
+            left: 0;
+            width: 0;
+            border-bottom: 3px solid #000;
+            transition: width 0.3s ease;
+            /* 효과를 위한 transition 추가 */
+        }
+
+        .link-container a:hover::after {
+            width: 100%;
         }
 
         #preasonlist {
@@ -468,7 +480,7 @@
                     window.location.href = contextPath + "/postreport.do" + `?menu=${menuParam}&no=${postno}`;
                 });
 
-                document.getElementById("postreport").style.borderBottom = "3px solid #6F8DBF";
+                document.getElementById("postreport").style.borderBottom = "3px solid #000";
                 document.getElementById("postreport").style.paddingBottom = "5px";
             }
             else if (typeParam === 'reply') {
@@ -500,7 +512,7 @@
                     window.location.href = contextPath + "/replyreport.do" + `?menu=${menuParam}&no=${replyno}`;
                 });
 
-                document.getElementById("replyreport").style.borderBottom = "3px solid #6F8DBF";
+                document.getElementById("replyreport").style.borderBottom = "3px solid #000";
                 document.getElementById("replyreport").style.paddingBottom = "5px";
             }
             else if (typeParam === 'memberlist') {
@@ -532,7 +544,7 @@
                     window.location.href = contextPath+ "/memberlist.do" + `?menu=${menuParam}&email=${email}`;
                 });
 
-                document.getElementById("memberlist").style.borderBottom = "3px solid #6F8DBF";
+                document.getElementById("memberlist").style.borderBottom = "3px solid #000";
                 document.getElementById("memberlist").style.paddingBottom = "5px";
             }
         });

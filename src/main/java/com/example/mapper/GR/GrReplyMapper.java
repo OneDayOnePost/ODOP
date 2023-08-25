@@ -1,5 +1,6 @@
 package com.example.mapper.GR;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
@@ -35,8 +36,8 @@ public interface GrReplyMapper {
     public List<ReplyDTO> selectlistReply(@Param("bno") long bno);
 
     //댓글 개수(해당 게시글)
-    @Select({" SELECT count(*) cnt FROM reply WHERE bno=#{bno} "})
-    public int countReply(@Param("bno") long bno);
+    @Select({" SELECT count(*) FROM reply WHERE postno = #{postno} "})
+    public BigInteger countReply(@Param("postno") BigInteger postno);
 
     
 }

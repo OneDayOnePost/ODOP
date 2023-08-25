@@ -190,6 +190,12 @@
 
         /* --------------------------------------------------------------------------- */
 
+        /* 작성자 - 글 제목 */
+        #link_postdetail:hover {
+            color: #B6C6D3;
+            cursor: pointer;
+        }
+
         /* 작성자 - 회원 정보 */
         #link_writerinfo:hover {
             color: #B6C6D3;
@@ -288,7 +294,7 @@
                 </div>
 
                 <div id="post_title" style="display: flex; justify-content: center;">
-                    <p th:text="${post.title}" style="font-size: 30px; margin-bottom: 0px; width: 96%;"></p>
+                    <p th:text="${post.title}" id="link_postdetail" onclick="goto_postdetail()" style="font-size: 30px; margin-bottom: 0px; width: 96%;"></p>
                 </div>
     
                 <div id="post_namedate" style="display: flex; align-items: center; margin-top: 8px; margin-bottom: 0px; justify-content: center;">
@@ -501,7 +507,12 @@
     </script>
 
     <script th:inline="javascript" type="text/javascript">
-        
+        function goto_postdetail() {
+            const postno = document.getElementById('post_no').value;
+            const writer = document.getElementById('link_writerinfo').textContent;
+
+            window.location.href = contextPath + "/blog/" + writer + "/select.do?postno=" + postno;
+        }
 
         function goto_writerinfo() {
             const writer = document.getElementById('link_writerinfo').textContent;
