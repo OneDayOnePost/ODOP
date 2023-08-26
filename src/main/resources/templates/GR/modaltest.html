@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+  <title>ODOP</title>
+  <!--Bootstrap 용 CSS-->
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+  <!--Bootstrap 용 Icon CDN-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+  <!--font awesome 용-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!--google fonts-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+  <!--CSS-->
+  <link th:href="@{/css/header.css}" rel="stylesheet">
+  <link th:href="@{/css/footer.css}" rel="stylesheet">
+  <!--thymeleaf contextpath-->
+  <link id="contextPathHolder" th:data-contextPath="${#httpServletRequest.getContextPath()}" />
+  <!--jQuery 추가-->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+  integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+
+  <style>
+    /* 여기 지정된 부분은 모든 html 파일에 공통적으로 넣어줍니다. */
+    html,
+    body {
+      height: 100%;
+    }
+
+    #body-wrapper {
+      position: relative;
+      min-height: 100vh;
+      padding-bottom: 230px;
+    }
+
+    footer {
+      height: 230px;
+      position: relative;
+      transform: translateY(-100%);
+    }
+
+
+    /* 본문 내용 */
+    .container {
+      max-width: 1210px;
+      margin-bottom: 200px;
+    }
+
+    #modal-title{
+        margin-bottom: 15px;
+    }
+
+    #modal-title i{
+        color: #000;
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    #modal-title span{
+        color: #000;
+        font-weight: bold;
+        font-size: 16px;
+        margin-left: 5px;
+    }
+
+    #modal-reason{
+        margin: 10px 15px;
+    }
+
+    .radio-label span{
+        color: gray;
+        font-weight: bold;
+        font-size: 15px;
+        margin-left: 5px;
+    }
+
+    #modal-button{
+        float: right;
+        margin-top: 5px;
+    }
+
+    #cbutton{
+        height: 30px;
+        width: 70px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        padding: 0;
+        border: none;
+        background-color: white;
+        color: #999;
+    }
+
+    #okbutton{
+        height: 30px;
+        width: 70px;
+        text-align: center;
+        font-size: 14px;
+        padding: 0;
+    }
+   
+  </style>
+
+
+</head>
+
+<body>
+
+  <!--wrapper 영역-->
+  <div id="body-wrapper">
+
+    <!-- header 영역 -->
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <!-- 본문 영역 -->
+    <div id="wrapper" class="container">
+      <div id="menu-box">
+        <div id="left-area">
+          <button id="newest" class="searchtype active" type="button" onclick="modaltest()">
+            <i class="bi bi-clock-history"></i>&nbsp;&nbsp;모달창
+        </button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- footer 영역 -->
+  <th:block th:replace="~{/fragments/footer :: footerHTML}"></th:block>
+
+  <!-- modal 알림창 -->
+  <div class="modal fade" id="alert" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-body" style="display: inline-block;">
+                <div id="modal-title">
+                    <i class="bi bi-exclamation-circle"></i>
+                    <span>게시글 신고</span>
+                </div>
+                <div id="modal-reason" th:each="pReason : ${plist}">
+                    <label class="radio-label">
+                        <input type="radio" name="reportOption" th:value="${pReason.no}" />
+                        <span th:text="${pReason.reason}"></span>
+                    </label>
+                </div>
+              <div id="modal-button">
+                    <button type="button" id="cbutton" class="btn btn-secondary" data-bs-dismiss="modal">취 소</button>
+                    <button type="button" id="okbutton" class="btn btn-secondary" data-bs-dismiss="modal">확 인</button>
+              </div>
+              <!-- 홈으로 이동 -->
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
+  <script th:inline="javascript" type="text/javascript">
+
+    const modal = new bootstrap.Modal(
+                    document.getElementById("alert"),
+                    {}
+                );
+
+
+    function modaltest(){
+
+        modal.show();
+
+    }
+
+
+  </script>
+
+
+</body>
+
+</html>

@@ -31,10 +31,14 @@ import com.example.entity.Dope;
 import com.example.entity.Follow;
 import com.example.entity.Member;
 import com.example.entity.Post;
+import com.example.entity.PostReason;
+import com.example.entity.ReplyReason;
 import com.example.mapper.GR.GrMyblogMapper;
 import com.example.repository.GR.GrDopeRepository;
 import com.example.repository.GR.GrMemberRepository;
+import com.example.repository.GR.GrPostReasonRepository;
 import com.example.repository.GR.GrPostRepository;
+import com.example.repository.GR.GrReplyReasonRepository;
 import com.example.service.WJ.WjMyblogService;
 
 import lombok.RequiredArgsConstructor;
@@ -266,4 +270,24 @@ public class GrMemberController {
 
     // 카카오 로그인!!
     // 카카오 로그인 - 
+
+    // ---------------------------------------------------------------------
+    // 모달창 test
+    final GrPostReasonRepository prRepository;
+    final GrReplyReasonRepository rrRepository;
+    @GetMapping(value = "/modaltest.do")
+    public String modaltestGET(Model model){
+
+        // 게시글 사유
+        List<PostReason> plist = prRepository.findAll();
+
+        // 댓글 사유 
+        // List<ReplyReason> plist = rrRepository.findAll(); 
+
+        log.info("신고사유 => {}", plist.toString());
+
+        model.addAttribute("plist", plist);
+
+        return "/GR/modaltest";
+    }
 }
