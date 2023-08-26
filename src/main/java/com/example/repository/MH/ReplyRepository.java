@@ -11,8 +11,8 @@ import com.example.entity.Reply;
 @Repository
 public interface ReplyRepository extends JpaRepository<Reply, BigInteger> {
 
-    List<Reply> findByPost_noOrderByRepgroupDesc(BigInteger postno);
+    List<Reply> findByPost_noAndRepdepthAndStateOrderByRepgroupDesc(BigInteger postno, BigInteger repdepth, BigInteger state);
 
-    int countByPost_no(BigInteger postno);
+    int countByPost_noAndRepdepthAndState(BigInteger postno, BigInteger repdepth, BigInteger state);
     
 }

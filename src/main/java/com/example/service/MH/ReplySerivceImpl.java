@@ -60,10 +60,10 @@ public class ReplySerivceImpl implements ReplyService {
     }
 
     @Override
-    public List<Reply> selectReplyList(BigInteger postno) {
+    public List<Reply> selectReplyList(BigInteger postno, BigInteger repdepth) {
 
         try {
-            return replyRepository.findByPost_noOrderByRepgroupDesc(postno);
+            return replyRepository.findByPost_noAndRepdepthAndStateOrderByRepgroupDesc(postno, repdepth, new BigInteger("0"));
         } catch (Exception e) {
             e.printStackTrace();
             return null;

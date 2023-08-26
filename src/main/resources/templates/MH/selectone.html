@@ -64,18 +64,18 @@
             background: #DFECF6;
         }
 
-        #reply_input {
+        .reply_input {
             width: 100%;
         }
 
-        #reply_content {
+        .reply_content {
             width: 100%;
             border: 1px solid #D9D9D9;
             outline-color: #FE6B8B;
             resize: none;
         }
 
-        #reply_input_button {
+        .reply_input_button {
             width: 125px;
             height: 40px;
             border-radius: 17px;
@@ -84,7 +84,7 @@
             background-color: #3A5485;
         }
 
-        #reply_input_button:hover {
+        .reply_input_button:hover {
             background-color: #1D3563;
         }
 
@@ -201,7 +201,7 @@
             <hr class="divider">
 
             <!--댓글 영역-->
-            <div class="p-3">
+            <div class="reply_section p-3">
                 <div th:text="|${post.replyCount}개의 댓글|"></div>
 
                 <!--댓글 입력-->
@@ -211,52 +211,51 @@
                         비밀 댓글
                     </label>
                 </div>
-                <div id="reply_input" class="my-2">
-                    <textarea id="reply_content" rows="5"></textarea>
+                <div class="reply_input my-2">
+                    <textarea id="reply_content" class="reply_content" rows="5"></textarea>
                     <div class="d-flex justify-content-end mt-2">
-                        <button id="reply_input_button" onclick="writeAction()">댓글 작성</button>
+                        <button class="reply_input_button" onclick="writeAction()">댓글 작성</button>
                     </div>
                 </div>
 
                 <!--댓글 조회-->
-                <div class="reply_output">
-                    <!--동적 생성-->
+                <!--동적 생성-->
+                <!-- <div class="reply_output"> -->
                     <!-- <div class="reply_box mb-3">
-                                <div class="d-flex mb-2">
-                                    <div class="me-2">
-                                        <img class="d-block img-thumbnail w-100" th:src="@{/images/default_thumbnail.png}" style="width: 73px; height: 73px;">
-                                    </div>
-                                    <div class="d-flex flex-column">
-                                        <div>닉네임</div>
-                                        <div>날짜</div>
-                                    </div>
-                                    <div class="d-flex flex-column ms-auto mt-auto">
-                                        <div class="d-flex justify-content-end">
-                                            <button class="reply_output_button me-1">수정</button>
-                                            <span class="vr"></span>
-                                            <button class="reply_output_button mx-1">삭제</button>
-                                            <span class="vr"></span>
-                                            <button class="reply_output_button ms-1">신고</button>
-                                        </div>
-                                    </div>
+                        <div class="d-flex mb-2">
+                            <div class="me-2">
+                                <img class="d-block img-thumbnail w-100" th:src="@{/images/default_thumbnail.png}"
+                                    style="width: 73px; height: 73px;">
+                            </div>
+                            <div class="d-flex flex-column">
+                                <div>닉네임</div>
+                                <div>날짜</div>
+                            </div>
+                            <div class="d-flex flex-column ms-auto mt-auto">
+                                <div class="d-flex justify-content-end">
+                                    <button class="reply_output_button me-1">수정</button>
+                                    <span class="vr"></span>
+                                    <button class="reply_output_button mx-1">삭제</button>
+                                    <span class="vr"></span>
+                                    <button class="reply_output_button ms-1">신고</button>
                                 </div>
-                                
-                                
-                                <div class="reply_output_content">
-                                    <div class="pt-4 px-4" style="font-size: 18px; font-weight: 600;">댓글 내용</div>
-                                    <div class="p-4" readonly>댓글 내용입력합니다.</div>
-                                    <button class="mx-4">답글</button>
-                                </div>
-                                
-                            </div> -->
-                </div>
+                            </div>
+                        </div>
+                        <div class="reply_output_content">
+                            <teaxarea class="reply_read p-3" readonly></textarea>
+                            <div class="ps-3 pb-2" style="font-size: 15px; font-weight: 600;">
+                                <button class="btn btn-secondary btn-sm">답글</button>
+                            </div>
+                        </div>
+                    </div> -->
+                <!-- </div> -->
+
             </div>
 
         </div>
-        <button id="test">버튼 테스트</button>
     </div>
-    
-    
+
+
 
     <!--footer 영역-->
     <th:block th:replace="~{/fragments/footer :: footerHTML}"></th:block>
@@ -270,22 +269,8 @@
         const postno = /*[[${post.no}]]*/'';
         const email = /*[[${user?.username}]]*/'';
 
-        document.querySelector("#test").addEventListener("click", () => test(1));
-
-        function test(e) {
-            console.log(e);
-        }
-
         /* 댓글 등록 */
-        async function writeAction(replyno = null) {
-
-            console.log(replyno);
-
-            var repgroup = null;
-
-            if(replyno !== null) {
-                repgroup = replyno;
-            }
+        async function writeAction() {
 
             const reply_content = $("#reply_content");
             var secret = 0;
@@ -308,7 +293,7 @@
             const headers = { "Content-Type": "application/json" };
             const body = {
                 writer: email, content: reply_content.val(), post: { no: postno },
-                secret: secret, repgroup: repgroup
+                secret: secret
             };
 
             const { data } = await axios.post(url, body, { headers });
@@ -316,6 +301,8 @@
             console.log(data);
 
             if (data.status === 200) {
+                $("#secret_check").prop("checked", false);
+                reply_content.val('');
                 selectAction();
             }
 
@@ -324,19 +311,26 @@
         /* 댓글 조회 */
         async function selectAction() {
 
-            const url = contextPath + '/api/reply/select.json?postno=' + postno;
+            const url = contextPath + '/api/reply/select.json?postno=' + postno + '&depth=0';
             const headers = { "Content-Type": "application/json" };
 
             const { data } = await axios.get(url, { headers });
 
             console.log(data);
 
-            var reply_output = document.querySelector(".reply_output");
+            var reply_section = document.querySelector(".reply_section");
+
+            console.log(reply_section.children[3]);
+
+            // 동적 생성 댓글 조회 영역 초기화
+            if (reply_section.children[3]) {
+                reply_section.removeChild(reply_section.children[3]);
+            }
 
             if (data.status === 200) {
 
-                // 댓글 영역 초기화
-                $('.reply_output').empty();
+                var reply_output = document.createElement("div");
+                reply_output.className = "reply_output";
 
                 data.list.forEach((obj, index) => {
 
@@ -448,6 +442,8 @@
 
                 })
 
+                reply_section.append(reply_output);
+
             }
 
         }
@@ -535,6 +531,7 @@
                 div3_1.style = "font-size: 15px; font-weight: 600;";
 
                 var div3_1_button = document.createElement('button');
+                div3_1_button.addEventListener("click", () => writeNestedReply(no));
                 div3_1_button.className = "btn btn-secondary btn-sm";
                 div3_1_button.textContent = "답글";
 
@@ -543,7 +540,7 @@
 
                 reply_output_content.append(div3_textarea);
                 reply_output_content.append(div3_1);
-                
+
             });
 
             div2_1.append(div2_1_button1);
@@ -599,7 +596,6 @@
                     selectAction(); // 삭제된 댓글 반영해서 다시 조회
                 }
             }
-
         }
 
         /* 댓글 수정 */
@@ -637,13 +633,10 @@
             if (data.status === 200) {
                 selectAction();
             }
-
         }
 
         /* 답글 버튼 시 호출되는 함수 */
         function writeNestedReply(replyno) {
-
-            console.log(1);
 
             // 1. 댓글 번호를 파라미터로 받음
             console.log(replyno);
@@ -651,18 +644,21 @@
             // 2. 댓글 번호 -> 해당 번호를 ID 값으로 가지는 댓글 박스 조회
             var reply_box = document.querySelector("#reply_box" + replyno);
 
-            // var nested_reply = reply_box.children[2];
+            // 3. 답글 영역이 열린 상태인지 확인 ( 정확히는 아래에서 만들 답글 영역이 추가된 상태인지 확인 )
+            var nested_reply = reply_box.children[2];
 
             // console.log(nested_reply);
 
-            // if(nested_reply) {
-            //     nested_reply.remove();
-            // }
-        
-            // 3. 답글 작성 양식을 만드는 html 요소를 담을 변수 선언
+            // 3-1. 열린 상태라면 닫음 ( 정확히는 요소 삭제 )
+            if (nested_reply) {
+                nested_reply.remove();
+                return false;
+            }
+
+            // 4. 답글 작성 양식을 만드는 html 요소를 담을 변수 선언
             var html = "";
 
-            html += '<div class="mt-1 d-flex">'
+            html += `<div id="nested_reply${replyno}" class="mt-1 d-flex">`;
 
             html += '<div class="flex-shrink-1 me-2" style="line-height : 175px;">';
             html += '<i class="bi bi-arrow-return-right"></i>';
@@ -671,14 +667,14 @@
             html += '<div class="w-100">';
 
             html += '<div class="form-check d-flex justify-content-end">';
-            html += '<input class="form-check-input me-2" type="checkbox" id="secret_check">';
-            html += '<label class="form-check-label" for="secret_check">비밀 댓글</label>';
+            html += `<input class="form-check-input me-2" type="checkbox" id="secret_check${replyno}">`;
+            html += `<label class="form-check-label" for="secret_check${replyno}">비밀 댓글</label>`;
             html += '</div>';
 
-            html += '<div id="reply_input" class="my-2">';
-            html += '<textarea id="reply_content" rows="5"></textarea>';
+            html += '<div class="my-2 reply_input">';
+            html += '<textarea class="reply_content" rows="5"></textarea>';
             html += '<div class="d-flex justify-content-end mt-2">';
-            html += `<button id="reply_input_button" onclick="writeAction(${replyno})">댓글 작성</button>`;
+            html += `<button class="reply_input_button" onclick="replyAction(${replyno})">댓글 작성</button>`;
             html += '</div>';
             html += '</div>';
 
@@ -686,8 +682,8 @@
 
             html += '</div>';
 
-            // 4. 댓글 박스에 html 요소 추가
-            reply_box.innerHTML += html;
+            // 5. 댓글 박스에 html 요소 추가
+            reply_box.insertAdjacentHTML("beforeend", html);
 
 
             // <div class="form-check d-flex justify-content-end">
@@ -704,12 +700,93 @@
             // </div>
         }
 
+        /* 답글 작성 */
+        function replyAction(replyno) {
+
+            // console.log(replyno);
+
+            const nested_reply = document.querySelector(`#nested_reply${replyno}`);
+
+            var secret = 0;
+
+            if (nested_reply.querySelector(`#secret_check${replyno}`).checked === true) {
+                secret = 1;
+            }
+
+            // 1. 유효성 검사
+            var nested_reply_content = nested_reply.querySelector('.reply_content');
+
+            if (nested_reply_content.value.length < 1) {
+                alert("답글 내용을 입력해주세요");
+                nested_reply_content.focus();
+                return false;
+            }
+
+            var repdepth = 1;
+
+            // 2. 답글 작성
+            const url = contextPath + '/api/reply/write.json';
+            const headers = { "Content-Type": "application/json" };
+            const body = {
+                writer: email, content: nested_reply_content.value, post: { no: postno },
+                secret: secret, repdepth: repdepth, repgroup: replyno
+            };
+
+            axios.post(url, body, { headers })
+                .then(response => {
+                    console.log(response.data);
+                })
+
+        }
+
+        function selectNestedReply(replyno) {
+
+            console.log(replyno);
+
+            const url = contextPath + '/api/reply/select.json?postno=' + postno + '&depth=1';
+            const headers = { "Content-Type": "application/json" };
+
+            axios.get(url, { headers })
+                .then(response => {
+                    console.log(response.data);
+                });
+
+
+                    <div class="reply_box mb-3">
+                        <div class="d-flex mb-2">
+                            <div class="me-2">
+                                <img class="d-block img-thumbnail w-100" th:src="@{/images/default_thumbnail.png}"
+                                    style="width: 73px; height: 73px;">
+                            </div>
+                            <div class="d-flex flex-column">
+                                <div>닉네임</div>
+                                <div>날짜</div>
+                            </div>
+                            <div class="d-flex flex-column ms-auto mt-auto">
+                                <div class="d-flex justify-content-end">
+                                    <button class="reply_output_button me-1">수정</button>
+                                    <span class="vr"></span>
+                                    <button class="reply_output_button mx-1">삭제</button>
+                                    <span class="vr"></span>
+                                    <button class="reply_output_button ms-1">신고</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="reply_output_content">
+                            <teaxarea class="reply_read p-3" readonly></textarea>
+                            <div class="ps-3 pb-2" style="font-size: 15px; font-weight: 600;">
+                                <button class="btn btn-secondary btn-sm">답글</button>
+                            </div>
+                        </div>
+                    </div>
+        }
+
         // 댓글 클릭시 댓글 영역으로 이동 (가람)
-        $(document).ready(function() {
+        $(document).ready(function () {
             // URL 파라미터 읽기
             const urlParams = new URLSearchParams(window.location.search);
             const commentId = urlParams.get('commentId');
-            
+
             // 댓글 영역으로 스크롤 조정
             if (commentId) {
                 const yOffset = 200; // 조정할 y 좌표 값 (양수로 수정)

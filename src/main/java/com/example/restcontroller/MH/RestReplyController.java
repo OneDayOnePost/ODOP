@@ -59,13 +59,16 @@ public class RestReplyController {
     }
 
     @GetMapping(value = "/select.json")
-    public Map<String, Object> selectGET(@RequestParam(name = "postno") BigInteger postno) {
+    public Map<String, Object> selectGET(
+        @RequestParam(name = "postno") BigInteger postno,
+        @RequestParam(name = "depth") BigInteger repdepth) {
 
         Map<String, Object> retMap = new HashMap<>();
 
         // log.info(format, postno);
+        log.info(format, repdepth);
 
-        List<Reply> list = replyService.selectReplyList(postno);
+        List<Reply> list = replyService.selectReplyList(postno, repdepth);
 
         // log.info(format, list);
 

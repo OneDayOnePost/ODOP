@@ -14,7 +14,7 @@ public interface ReplyService {
     public int insertReplyOne(Reply obj);
 
     // 2. 댓글 조회
-    public List<Reply> selectReplyList(BigInteger postno);
+    public List<Reply> selectReplyList(BigInteger postno, BigInteger repdepth);
 
     // 3. 댓글 삭제
     public int deleteReplyOne(Reply obj);

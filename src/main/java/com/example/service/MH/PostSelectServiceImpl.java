@@ -32,7 +32,7 @@ public class PostSelectServiceImpl implements PostSelectService {
 
             // 2. 글 번호로 댓글수 조회
 
-            int replyCount = replyRepository.countByPost_no(no);
+            int replyCount = replyRepository.countByPost_noAndRepdepthAndState(no, new BigInteger("0"), new BigInteger("0"));
 
             // 3. 댓글수를 Post의 댓글수 저장 임시 변수에 set
 
