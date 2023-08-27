@@ -51,19 +51,7 @@ public class RestReplyController {
         int ret = replyService.insertReplyOne(obj);
 
         if(ret == 1) {
-
             retMap.put("status", 200);
-
-            // 글 작성자 -> 댓글 알림
-            // Post post = postselectService.selectPostOne(obj.getPost().getNo());
-            // String email = post.getWriter();
-            // if (!email.equals(user.getUsername())) { // 본인 글에 댓글을 달 경우에는 알림 X
-            //     String title = (post.getTitle().length() > 7) ? post.getTitle().substring(0, 7) + "..." : post.getTitle();
-            //     String content = "[" + title + "]에 댓글이 달렸습니다.";
-            //     String url = "/blog/" + email + "/select.do?postno=" + post.getNo();
-            //     WjaService.alertInsert(email, content, "댓글", url, obj.getRegdate());
-            // }
-
         }
 
         return retMap;
@@ -71,13 +59,17 @@ public class RestReplyController {
     }
 
     @GetMapping(value = "/select.json")
-    public Map<String, Object> selectGET(@RequestParam(name = "postno") BigInteger postno) {
+    public Map<String, Object> selectGET(
+        @RequestParam(name = "postno") BigInteger postno,
+        @RequestParam(name = "depth") BigInteger repdepth,
+        @RequestParam(name = "repgroup", required = false, defaultValue = "0") BigInteger repgroup) {
 
         Map<String, Object> retMap = new HashMap<>();
 
         // log.info(format, postno);
+        log.info(format, repdepth);
 
-        List<Reply> list = replyService.selectReplyList(postno);
+        List<Reply> list = replyService.selectReplyList(postno, repdepth, repgroup);
 
         // log.info(format, list);
 

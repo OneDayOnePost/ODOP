@@ -19,6 +19,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -32,6 +33,7 @@ import lombok.ToString;
 @Data
 @Entity
 @Table(name = "REPLY")
+@DynamicInsert
 @SequenceGenerator(name = "SEQ_REPLY_NO", sequenceName = "SEQ_REPLY_NO", initialValue = 1, allocationSize = 1)
 public class Reply {
   // 댓글 번호(시퀀스)
@@ -75,8 +77,6 @@ public class Reply {
   private BigInteger reporder = new BigInteger("0");
 
   // 댓글 그룹(부모 댓글 번호)
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_REPLY_NO")
-  @Generated(GenerationTime.INSERT)
   private BigInteger repgroup;
 
   // 게시글
