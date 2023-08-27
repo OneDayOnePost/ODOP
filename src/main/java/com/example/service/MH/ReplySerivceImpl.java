@@ -1,8 +1,10 @@
 package com.example.service.MH;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.entity.Post;
@@ -60,10 +62,37 @@ public class ReplySerivceImpl implements ReplyService {
     }
 
     @Override
-    public List<Reply> selectReplyList(BigInteger postno, BigInteger repdepth) {
+    public List<Reply> selectReplyList(BigInteger postno, BigInteger repdepth, BigInteger repgroup) {
 
         try {
-            return replyRepository.findByPost_noAndRepdepthAndStateOrderByRepgroupDesc(postno, repdepth, new BigInteger("0"));
+
+            // 정렬에 사용할 sort 변수
+            Sort sort = null;
+
+            // return 할 List 객체 초기화
+            List<Reply> list = new ArrayList<>();
+
+            /* 1. 댓글 or 답글 확인 ( repdepth 값 확인 ) */
+            // 댓글일 경우 ( repdepth == 0 )
+            if (repdepth.compareTo(new BigInteger("0")) == 0) {
+
+                sort = Sort.by("no").descending(); // 최신순
+                list = replyRepository.findByPost_noAndRepdepthAndState(postno, repdepth, new BigInteger("0"), sort);
+
+            }
+            // 답글일 경우 ( repdepth == 1 )
+            else if (repdepth.compareTo(new BigInteger("1")) == 0) {
+                
+                sort = Sort.by("no").ascending(); // 오래된순
+                list = replyRepository.findByPost_noAndRepdepthAndStateAndRepgroup(postno, repdepth,
+                        new BigInteger("0"), repgroup, sort);
+
+            }
+
+            /* 2. 댓글 or 답글 조회 */
+
+            return list;
+
         } catch (Exception e) {
             e.printStackTrace();
             return null;
