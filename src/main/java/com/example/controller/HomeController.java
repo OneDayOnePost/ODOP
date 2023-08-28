@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,36 +36,37 @@ public class HomeController {
     final WjAlertService WjaService;
     final GrHomeService GhService;
 
-    @GetMapping(value = "/home.do")
-    public String homeGET(@AuthenticationPrincipal User user, Model model, HttpSession httpSession) {
+    @GetMapping(value = "/{type}/home.do")
+    public String homeGET(@AuthenticationPrincipal User user, Model model, HttpSession httpSession,
+                            @PathVariable(value = "type") String type) {
 
-        if(httpSession.getAttribute("cateList") != null && httpSession.getAttribute("mbtiList") != null) {
+        // if(httpSession.getAttribute("cateList") != null && httpSession.getAttribute("mbtiList") != null) {
 
-            List<BigInteger> cateList = (List<BigInteger>) httpSession.getAttribute("cateList");
-            List<String> mbtiList = (List<String>) httpSession.getAttribute("mbtiList");
+        //     List<BigInteger> cateList = (List<BigInteger>) httpSession.getAttribute("cateList");
+        //     List<String> mbtiList = (List<String>) httpSession.getAttribute("mbtiList");
 
-            log.info("homeGET => {}", cateList.toString());
-            log.info("homeGET => {}", mbtiList.toString());
+        //     log.info("homeGET => {}", cateList.toString());
+        //     log.info("homeGET => {}", mbtiList.toString());
 
-            model.addAttribute("category", cateList);
-            model.addAttribute("mbti", mbtiList);
-        }
-
-        // if (type.equals("newest")) {
-        // List<PostAllViewDTO> postalllist = GhService.selectPostAllByRegdate();
-
-        // model.addAttribute("plist", postalllist);
-
-        // } else if (type.equals("like")) {
-        // List<PostAllViewDTO> postalllist = GhService.selectPostAllByDope();
-
-        // model.addAttribute("plist", postalllist);
-        // } else if (type.equals(("follow"))) {
-        // List<PostAllViewDTO> postalllist =
-        // GhService.selectPostAllByFollow(user.getUsername());
-
-        // model.addAttribute("plist", postalllist);
+        //     model.addAttribute("category", cateList);
+        //     model.addAttribute("mbti", mbtiList);
         // }
+
+        if (type.equals("newest")) {
+        List<PostAllViewDTO> postalllist = GhService.selectPostAllByRegdate();
+
+        model.addAttribute("plist", postalllist);
+
+        } else if (type.equals("like")) {
+        List<PostAllViewDTO> postalllist = GhService.selectPostAllByDope();
+
+        model.addAttribute("plist", postalllist);
+        } else if (type.equals(("follow"))) {
+        List<PostAllViewDTO> postalllist =
+        GhService.selectPostAllByFollow(user.getUsername());
+
+        model.addAttribute("plist", postalllist);
+        }
 
         return "/home";
 
