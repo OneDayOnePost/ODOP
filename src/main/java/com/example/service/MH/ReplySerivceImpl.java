@@ -64,9 +64,6 @@ public class ReplySerivceImpl implements ReplyService {
             String url = "/blog/" + writer + "/select.do?postno=" + post.getNo();
 
             // 3. 댓글 알림이 존재하는지 확인
-
-
-            
             int result = alertMapper.alertInsert(writer, content, "댓글", url, obj.getRegdate());
 
             System.out.println(result);
