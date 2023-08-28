@@ -31,34 +31,53 @@ public class ReplySerivceImpl implements ReplyService {
 
             /* 댓글 알림 전송 */
 
-            // 1. 댓글 작성자 확인 - 본인이 게시물이 아닐 때만
+            
 
-            String user = obj.getWriter();
-
-            Post post = postRepository.findById(obj.getPost().getNo()).orElse(null);
-
-            String writer = post.getWriter();
-
-            if (!user.equals(writer)) {
-                String title = (post.getTitle().length() > 7) ? post.getTitle().substring(0, 7) + "..."
-                        : post.getTitle();
-                String content = "[" + title + "]에 댓글이 달렸습니다.";
-                String url = "/blog/" + writer + "/select.do?postno=" + post.getNo();
-                int result = alertMapper.alertInsert(writer, content, "댓글", url, obj.getRegdate());
-
-                System.out.println(result);
-
-                if (result < 1) {
-                    return -1;
-                }
-
-            }
+            sendAlertMessage(obj);
 
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
         }
+    }
+
+    /* 알림 전송 */
+    private int sendAlertMessage(Reply obj) {
+
+        // 1. 댓글 작성자 확인 - 본인이 게시물이 아닐 때만
+
+        // 댓글 작성자
+        String user = obj.getWriter();
+
+        Post post = postRepository.findById(obj.getPost().getNo()).orElse(null);
+        
+        // 게시글 작성자
+        String writer = post.getWriter();
+
+        if (!user.equals(writer)) {
+
+            // 2. 알림 내용 생성
+            String title = (post.getTitle().length() > 7) ? post.getTitle().substring(0, 7) + "..."
+                    : post.getTitle();
+            String content = "[" + title + "]에 댓글이 달렸습니다.";
+            String url = "/blog/" + writer + "/select.do?postno=" + post.getNo();
+
+            // 3. 댓글 알림이 존재하는지 확인
+
+
+            
+            int result = alertMapper.alertInsert(writer, content, "댓글", url, obj.getRegdate());
+
+            System.out.println(result);
+
+            if (result < 1) {
+                return -1;
+            }
+
+        }
+
+        return 1;
     }
 
     @Override
@@ -82,7 +101,7 @@ public class ReplySerivceImpl implements ReplyService {
             }
             // 답글일 경우 ( repdepth == 1 )
             else if (repdepth.compareTo(new BigInteger("1")) == 0) {
-                
+
                 sort = Sort.by("no").ascending(); // 오래된순
                 list = replyRepository.findByPost_noAndRepdepthAndStateAndRepgroup(postno, repdepth,
                         new BigInteger("0"), repgroup, sort);
