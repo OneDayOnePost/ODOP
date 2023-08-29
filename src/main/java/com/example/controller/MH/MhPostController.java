@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.entity.Cate;
 import com.example.entity.Post;
+import com.example.entity.PostReason;
 import com.example.entity.PostTagProjection;
+import com.example.repository.GR.GrPostReasonRepository;
 import com.example.service.MH.PostInsertService;
 import com.example.service.MH.PostSelectService;
 
@@ -29,6 +31,7 @@ public class MhPostController {
 
     final private PostInsertService pService;
     final private PostSelectService postSelectService;
+    final GrPostReasonRepository prRepository;
     
     @GetMapping(value = "/write.do")
     public String writeGET(Model model) {
@@ -54,6 +57,10 @@ public class MhPostController {
 
         Post post = postSelectService.selectPostOne(postno);
 
+        // 게시글? 신고 사유
+        List<PostReason> plist = prRepository.findAll();
+
+        model.addAttribute("plist", plist);
         model.addAttribute("post", post);
 
         return "/MH/selectone";

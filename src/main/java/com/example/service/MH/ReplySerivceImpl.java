@@ -7,8 +7,10 @@ import java.util.List;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.example.dto.AlertDTO;
 import com.example.entity.Post;
 import com.example.entity.Reply;
+import com.example.mapper.GR.GrReplyMapper;
 import com.example.mapper.WJ.WjAlertMapper;
 import com.example.repository.MH.PostRepository;
 import com.example.repository.MH.ReplyRepository;
@@ -22,6 +24,7 @@ public class ReplySerivceImpl implements ReplyService {
     final private ReplyRepository replyRepository;
     final private PostRepository postRepository;
     final private WjAlertMapper alertMapper;
+    final private GrReplyMapper replyMapper;
 
     @Override
     public int insertReplyOne(Reply obj) {
@@ -30,12 +33,16 @@ public class ReplySerivceImpl implements ReplyService {
             replyRepository.save(obj);
 
             /* 댓글 알림 전송 */
+            int result = 0;
 
-            
+            result = sendAlertMessage(obj);
 
-            sendAlertMessage(obj);
+            if(result < 1) {
+                result = -1;
+            }
 
-            return 1;
+            return result;
+
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
@@ -51,33 +58,49 @@ public class ReplySerivceImpl implements ReplyService {
         String user = obj.getWriter();
 
         Post post = postRepository.findById(obj.getPost().getNo()).orElse(null);
-        
+
         // 게시글 작성자
         String writer = post.getWriter();
+
+        // 반환 결과 변수 선언
+        int result = 0; 
 
         if (!user.equals(writer)) {
 
             // 2. 알림 내용 생성
+            BigInteger reply_count = replyMapper.countReply(post.getNo());
+
             String title = (post.getTitle().length() > 7) ? post.getTitle().substring(0, 7) + "..."
                     : post.getTitle();
-            String content = "[" + title + "]에 댓글이 달렸습니다.";
+            String content = "[" + title + "]에 댓글이 " + reply_count + "개 달렸습니다.";
             String url = "/blog/" + writer + "/select.do?postno=" + post.getNo();
 
+            AlertDTO alert = new AlertDTO();
+            alert.setContent(content);
+            alert.setUrl(url);
+            alert.setEmail(writer);
+            alert.setType("댓글");
+
+            System.out.println(alert.toString());
+
             // 3. 댓글 알림이 존재하는지 확인
+            int check = alertMapper.selectReplyAlertCount(alert);
 
+            System.out.println(check);
 
-            
-            int result = alertMapper.alertInsert(writer, content, "댓글", url, obj.getRegdate());
-
-            System.out.println(result);
-
-            if (result < 1) {
-                return -1;
+            if (check == 0) {
+                // 3-1. 기존 알림이 없을 경우 -> insert
+                result = alertMapper.alertInsert2(alert);
             }
-
+            else if (check == 1) {
+                // 3-2. 기존 알림이 있을 경우 -> update
+                result = alertMapper.updateReplyAlert(alert);
+            }
         }
 
-        return 1;
+        System.out.println(result);
+
+        return result;
     }
 
     @Override
