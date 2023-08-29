@@ -153,6 +153,60 @@
         .reply_modify_button:nth-child(2):hover {
             background-color: #DFECF6;
         }
+
+        /* Modal CSS */
+        #modal-title {
+            margin-bottom: 15px;
+        }
+
+        #modal-title i {
+            color: #000;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        #modal-title span {
+            color: #000;
+            font-weight: bold;
+            font-size: 16px;
+            margin-left: 5px;
+        }
+
+        #modal-reason {
+            margin: 10px 15px;
+        }
+
+        .radio-label span {
+            color: gray;
+            font-weight: bold;
+            font-size: 15px;
+            margin-left: 5px;
+        }
+
+        #modal-button {
+            float: right;
+            margin-top: 5px;
+        }
+
+        #cbutton {
+            height: 30px;
+            width: 70px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+            padding: 0;
+            border: none;
+            background-color: white;
+            color: #999;
+        }
+
+        #okbutton {
+            height: 30px;
+            width: 70px;
+            text-align: center;
+            font-size: 14px;
+            padding: 0;
+        }
     </style>
 </head>
 
@@ -195,7 +249,9 @@
 
             <div class="d-flex justify-content-center align-items-center mb-5">
                 <button class="select_button me-3" type="button"><i class="bi bi-heart me-2"></i>좋아요</button>
-                <button class="select_button" type="button"><i class="bi bi-megaphone me-2"></i>신고</button>
+                <button class="select_button" type="button" onclick="modalShow()">
+                    <i class="bi bi-megaphone me-2"></i>신고
+                </button>
             </div>
 
             <hr class="divider">
@@ -255,7 +311,33 @@
         </div>
     </div>
 
-
+    <!-- modal 알림창 -->
+    <div class="modal fade" id="alert" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body" style="display: inline-block;">
+                    <div id="modal-title">
+                        <i class="bi bi-exclamation-circle"></i>
+                        <span>게시글 신고</span>
+                    </div>
+                    <div id="modal-reason" th:each="pReason : ${plist}">
+                        <label class="radio-label">
+                            <input type="radio" name="reportOption" th:value="${pReason.no}" />
+                            <span th:text="${pReason.reason}"></span>
+                        </label>
+                    </div>
+                    <div id="modal-button">
+                        <button type="button" id="cbutton" class="btn btn-secondary" data-bs-dismiss="modal">취
+                            소</button>
+                        <button type="button" id="okbutton" class="btn btn-secondary" data-bs-dismiss="modal">확
+                            인</button>
+                    </div>
+                    <!-- 홈으로 이동 -->
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!--footer 영역-->
     <th:block th:replace="~{/fragments/footer :: footerHTML}"></th:block>
@@ -662,8 +744,6 @@
                 selectNestedReply(replyno);
             }
 
-
-
             // <div class="form-check d-flex justify-content-end">
             //     <input class="form-check-input me-2" type="checkbox" id="secret_check">
             //     <label class="form-check-label" for="secret_check">
@@ -713,7 +793,7 @@
             axios.post(url, body, { headers })
                 .then(response => {
                     console.log(response.data);
-                    
+
                 })
 
         }
@@ -823,6 +903,13 @@
                     selectNestedFlag = false;
 
                 });
+        }
+
+        // 게시글 및 댓글 신고 Modal 호출
+        function modalShow() {
+            const modal = new bootstrap.Modal(
+                document.getElementById("alert"), {});
+            modal.show();
         }
 
         // 댓글 클릭시 댓글 영역으로 이동 (가람)
