@@ -134,11 +134,11 @@
                     </div>
                     <div id="box_row2" class="row">
                         <div class="d-flex justify-content-center" style="padding-left: 100px;">
-                            <img onclick="naver_login()" class="login_social mx-3"
-                                th:src="@{/images/logo_naver.png}" style="width: 50px; height: 50px;">
+                            <img onclick="naver_login()" class="login_social mx-3" th:src="@{/images/logo_naver.png}"
+                                style="width: 50px; height: 50px;">
                             <img class="login_social mx-3" th:src="@{/images/logo_kakao.png}"
                                 style="width: 50px; height: 50px;">
-                            <img class="login_social mx-3" th:src="@{/images/logo_google.png}"
+                            <img onclick="google_login()" class="login_social mx-3" th:src="@{/images/logo_google.png}"
                                 style="width: 50px; height: 50px; border: lightgray 1px solid;">
                             <!-- <img class="login_social mx-3" th:src="@{/images/logo_apple.png}"
                                 style="width: 50px; height: 50px; border: lightgray 1px solid;"> -->
@@ -188,35 +188,35 @@
 
     <script>
         // Initialize Swiper
-        var menuButton = document.querySelector('.menu-button');
-        var openMenu = function () {
-            swiper.slidePrev();
-        };
-        var swiper = new Swiper('.swiper', {
-            slidesPerView: 'auto',
-            initialSlide: 1,
-            resistanceRatio: 0,
-            slideToClickedSlide: true,
-            on: {
-                slideChangeTransitionStart: function () {
-                    var slider = this;
-                    if (slider.activeIndex === 0) {
-                        menuButton.classList.add('cross');
-                        // required because of slideToClickedSlide
-                        menuButton.removeEventListener('click', openMenu, true);
-                    } else {
-                        menuButton.classList.remove('cross');
-                    }
-                },
-                slideChangeTransitionEnd: function () {
-                    var slider = this;
-                    if (slider.activeIndex === 1) {
-                        menuButton.addEventListener('click', openMenu, true);
-                    }
-                },
-            },
-        });
-        
+        // var menuButton = document.querySelector('.menu-button');
+        // var openMenu = function () {
+        //     swiper.slidePrev();
+        // };
+        // var swiper = new Swiper('.swiper', {
+        //     slidesPerView: 'auto',
+        //     initialSlide: 1,
+        //     resistanceRatio: 0,
+        //     slideToClickedSlide: true,
+        //     on: {
+        //         slideChangeTransitionStart: function () {
+        //             var slider = this;
+        //             if (slider.activeIndex === 0) {
+        //                 menuButton.classList.add('cross');
+        //                 // required because of slideToClickedSlide
+        //                 menuButton.removeEventListener('click', openMenu, true);
+        //             } else {
+        //                 menuButton.classList.remove('cross');
+        //             }
+        //         },
+        //         slideChangeTransitionEnd: function () {
+        //             var slider = this;
+        //             if (slider.activeIndex === 1) {
+        //                 menuButton.addEventListener('click', openMenu, true);
+        //             }
+        //         },
+        //     },
+        // });
+
         function loginAction() {
 
             const email = document.querySelector("#login_email");
@@ -243,7 +243,20 @@
             // 함수 작동 확인 -> 삭제해도 됩니다
             console.log(1);
         }
-        
+
+        function google_login() {
+            console.log(2);
+
+            const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=` +
+                process.env.VUE_APP_GOOGLE_CLIENT_ID +
+                '&redirect_uri=' +
+                process.env.VUE_APP_GOOGLE_REDIRECT_URL +
+                '&response_type=code' +
+                '&scope=email profile';
+
+            this.showSocialLoginPopup(url)
+        }
+
     </script>
 </body>
 

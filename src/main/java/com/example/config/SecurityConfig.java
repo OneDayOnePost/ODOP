@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.stereotype.Component;
 
 import com.example.handler.CustomLogoutSuccessHandler;
+import com.example.service.CustomOAuth2UserServiceImpl;
 import com.example.service.SecurityServiceImpl;
 import com.example.service.AR.ArMemberService;
 
@@ -26,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 
     final private SecurityServiceImpl userLoginService;
-    final private ArMemberService mService;
+    final private CustomOAuth2UserServiceImpl oAuth2UserService;
     private final AuthenticationFailureHandler customLoginFailHandler; // 핸들러 필드는 이렇게 선언하고, 생성자에서 주입하도록 수정
 
 
@@ -60,6 +61,10 @@ public class SecurityConfig {
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
                 .permitAll();
+        
+        http.oauth2Login()
+            .userInfoEndpoint()
+            .userService(oAuth2UserService);
 
         // post는 csrf를 전송해야하지만, 주소가 /api로 시작하는 모든 url은 csrf가 없어도 허용하도록 설정
         http.csrf().ignoringAntMatchers("/api/**");
