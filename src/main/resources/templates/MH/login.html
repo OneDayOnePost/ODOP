@@ -138,8 +138,10 @@
                                 style="width: 50px; height: 50px;">
                             <img class="login_social mx-3" th:src="@{/images/logo_kakao.png}"
                                 style="width: 50px; height: 50px;">
-                            <img onclick="google_login()" class="login_social mx-3" th:src="@{/images/logo_google.png}"
+                            <a th:href="@{/oauth2/authorization/google}">
+                                <img class="login_social mx-3" th:src="@{/images/logo_google.png}"
                                 style="width: 50px; height: 50px; border: lightgray 1px solid;">
+                            </a>
                             <!-- <img class="login_social mx-3" th:src="@{/images/logo_apple.png}"
                                 style="width: 50px; height: 50px; border: lightgray 1px solid;"> -->
                         </div>
@@ -158,6 +160,7 @@
         </div>
     </div>
 
+    <a th:href="@{/oauth2/authorization/google}">구글 로그인</a>
 
     <!-- Swiper -->
     <!-- <div class="swiper">
@@ -244,18 +247,7 @@
             console.log(1);
         }
 
-        function google_login() {
-            console.log(2);
-
-            const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=` +
-                process.env.VUE_APP_GOOGLE_CLIENT_ID +
-                '&redirect_uri=' +
-                process.env.VUE_APP_GOOGLE_REDIRECT_URL +
-                '&response_type=code' +
-                '&scope=email profile';
-
-            this.showSocialLoginPopup(url)
-        }
+        
 
     </script>
 </body>
